@@ -15,46 +15,52 @@ extern QMutex s_GlobalMutex;
 class AppendCharacterJob : public ThreadWeaver::Job
 {
 public:
-    AppendCharacterJob(QChar c = QChar(), QString* stringref = 0)
+    AppendCharacterJob(QChar c = QChar(), QString *stringref = 0)
         : ThreadWeaver::Job()
     {
-        setValues( c, stringref );
+        setValues(c, stringref);
     }
 
-    void setValues ( QChar c, QString* stringref )
+    void setValues(QChar c, QString *stringref)
     {
         m_c = c;
         m_stringref = stringref;
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread*)
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
     {
-        QMutexLocker locker ( &s_GlobalMutex );
-        m_stringref->append( m_c );
+        QMutexLocker locker(&s_GlobalMutex);
+        m_stringref->append(m_c);
         using namespace ThreadWeaver;
-        debug( 3, "AppendCharacterJob::run: %c appended, result is %s.\n",
-               m_c.toLatin1(), qPrintable( *m_stringref ) );
+        debug(3, "AppendCharacterJob::run: %c appended, result is %s.\n",
+              m_c.toLatin1(), qPrintable(*m_stringref));
     }
 
-    QChar character() const { return m_c; }
+    QChar character() const
+    {
+        return m_c;
+    }
 
 protected:
-    QString* stringRef() const { return m_stringref; }
+    QString *stringRef() const
+    {
+        return m_stringref;
+    }
 
 private:
     QChar m_c;
-    QString* m_stringref;
+    QString *m_stringref;
 };
 
 class FailingAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    FailingAppendCharacterJob(QChar c = QChar(), QString* stringref = 0)
+    FailingAppendCharacterJob(QChar c = QChar(), QString *stringref = 0)
         : AppendCharacterJob(c, stringref)
     {
     }
 
-    bool success () const
+    bool success() const
     {
         return false;
     }
@@ -74,12 +80,12 @@ public:
 //        debug(0, "~BusyJob\n");
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread*)
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
     {
 //        debug(0, "BusyJob: entered run()\n");
         for (int i = 0; i < 100; ++i) {
             int k = (i << 3) + (i >> 4);
-            Q_UNUSED( k );
+            Q_UNUSED(k);
         }
     }
 };

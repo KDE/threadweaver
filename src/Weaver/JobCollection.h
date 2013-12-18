@@ -32,7 +32,8 @@
 #include "Job.h"
 #include "JobPointer.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Thread;
 class CollectionExecuteWrapper;
@@ -50,7 +51,7 @@ class THREADWEAVER_EXPORT JobCollection : public Job
 {
 public:
     JobCollection();
-    ~JobCollection ();
+    ~JobCollection();
     /** Append a job to the collection.
      *
      * To use JobCollection, create the Job objects first, add them to the collection, and then queue it. After
@@ -69,11 +70,11 @@ public:
     int jobListLength() const;
 
     /** @brief Add the job to this collection by pointer. */
-    JobCollection& operator<<(ThreadWeaver::JobInterface* job);
+    JobCollection &operator<<(ThreadWeaver::JobInterface *job);
 
     /** @brief Add the job to this collection. */
-    JobCollection& operator<<(const ThreadWeaver::JobPointer& job);
-    JobCollection& operator<<(JobInterface& job);
+    JobCollection &operator<<(const ThreadWeaver::JobPointer &job);
+    JobCollection &operator<<(JobInterface &job);
 
 protected:
     /** Overload to queue the collection. */
@@ -84,7 +85,6 @@ protected:
 
     /** Return a ref-erence to the job in the job list at position i. */
     JobPointer jobAt(int i);
-
 
     /** Return the number of jobs in the joblist.
      *  Assumes that the mutex is being held.
@@ -99,20 +99,19 @@ protected:
 
 protected:
     friend class CollectionExecuteWrapper;
-    virtual void elementStarted(JobPointer job, Thread* thread);
-    virtual void elementFinished(JobPointer job, Thread* thread);
+    virtual void elementStarted(JobPointer job, Thread *thread);
+    virtual void elementFinished(JobPointer job, Thread *thread);
 
     //FIXME needed when using BlockExecutionPolicy?
     JobPointer self() const;
 
 protected:
     /** Overload the execute method. */
-    void execute(JobPointer job, Thread*) Q_DECL_OVERRIDE;
-
+    void execute(JobPointer job, Thread *) Q_DECL_OVERRIDE;
 
     /** Overload run().
      * We have to. */
-    void run(JobPointer self, Thread* thread) Q_DECL_OVERRIDE;
+    void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
 
     /** @brief Enqueue the elements of the collection. */
     virtual void enqueueElements();
@@ -124,7 +123,7 @@ private:
     void dequeueElements(bool queueApiIsLocked);
 
     class Private;
-    Private * const d;
+    Private *const d;
 };
 
 }

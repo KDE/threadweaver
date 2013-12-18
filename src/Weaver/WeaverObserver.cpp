@@ -30,8 +30,8 @@ $Id: WeaverObserver.cpp 31 2005-08-16 16:21:10Z mirko $
 
 using namespace ThreadWeaver;
 
-WeaverObserver::WeaverObserver ( QObject *parent )
-    : QObject ( parent ), d ( 0 )
+WeaverObserver::WeaverObserver(QObject *parent)
+    : QObject(parent), d(0)
 {
 }
 

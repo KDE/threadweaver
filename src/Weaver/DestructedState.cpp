@@ -28,9 +28,10 @@ $Id: DestructedState.cpp 30 2005-08-16 16:16:04Z mirko $
 
 #include "DestructedState.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-DestructedState::DestructedState(Queue*)
+DestructedState::DestructedState(Queue *)
     : WeaverImplState(0) // make sure we cannot use weaver, ever :-)
 {
 }
@@ -63,15 +64,15 @@ int DestructedState::currentNumberOfThreads() const
     return 0;
 }
 
-void DestructedState::registerObserver(WeaverObserver*)
+void DestructedState::registerObserver(WeaverObserver *)
 {
 }
 
-void DestructedState::enqueue(const QVector<JobPointer>&)
+void DestructedState::enqueue(const QVector<JobPointer> &)
 {
 }
 
-bool DestructedState::dequeue(const JobPointer&)
+bool DestructedState::dequeue(const JobPointer &)
 {
     return false;
 }
@@ -111,14 +112,14 @@ void DestructedState::resume()
 {
 }
 
-JobPointer DestructedState::applyForWork(Thread*, bool wasBusy)
+JobPointer DestructedState::applyForWork(Thread *, bool wasBusy)
 {
     Q_UNUSED(wasBusy) // except in Q_ASSERT
-    Q_ASSERT(wasBusy==false);
+    Q_ASSERT(wasBusy == false);
     return JobPointer();
 }
 
-void DestructedState::waitForAvailableJob(Thread*)
+void DestructedState::waitForAvailableJob(Thread *)
 {
 }
 

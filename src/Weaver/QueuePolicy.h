@@ -32,7 +32,8 @@
 #include "JobPointer.h"
 #include "threadweaver_export.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class JobInterface;
 
@@ -77,7 +78,7 @@ public:
 
     /** @brief destructing() is called when a Job that has this queue policy assigned gets destructed.
      */
-    virtual void destructed(JobInterface* job) = 0;
+    virtual void destructed(JobInterface *job) = 0;
 };
 
 }

@@ -4,12 +4,14 @@
 #include "Weaver.h"
 #include "Queueing.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-class QueueStream::Private {
+class QueueStream::Private
+{
 public:
-    Private(Weaver* w) : weaver(w) {}
-    Weaver* weaver;
+    Private(Weaver *w) : weaver(w) {}
+    Weaver *weaver;
     QVector<JobPointer> jobs;
 };
 
@@ -24,7 +26,6 @@ QueueStream::~QueueStream()
     flush();
     delete d;
 }
-
 
 void ThreadWeaver::QueueStream::add(const ThreadWeaver::JobPointer &job)
 {
@@ -66,5 +67,4 @@ QueueStream stream()
 }
 
 }
-
 

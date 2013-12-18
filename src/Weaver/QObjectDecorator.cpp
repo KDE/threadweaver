@@ -3,7 +3,8 @@
 #include <JobSequence.h>
 #include <ManagedJobPointer.h>
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 QObjectDecorator::QObjectDecorator(JobInterface *decoratee, QObject *parent)
     : QObject(parent)

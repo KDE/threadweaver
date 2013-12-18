@@ -3,7 +3,8 @@
 
 #include "Job.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class Thread;
@@ -14,14 +15,14 @@ class Executor
 {
 public:
     virtual ~Executor();
-    virtual void begin(JobPointer, Thread*) = 0;
-    void defaultBegin(JobPointer job, Thread* thread);
-    virtual void execute(JobPointer, Thread*) = 0;
-    virtual void end(JobPointer, Thread*) = 0;
-    void defaultEnd(JobPointer job, Thread* thread);
-    virtual void cleanup(JobPointer, Thread*);
+    virtual void begin(JobPointer, Thread *) = 0;
+    void defaultBegin(JobPointer job, Thread *thread);
+    virtual void execute(JobPointer, Thread *) = 0;
+    virtual void end(JobPointer, Thread *) = 0;
+    void defaultEnd(JobPointer job, Thread *thread);
+    virtual void cleanup(JobPointer, Thread *);
 
-    void run(JobPointer job, Thread* thread);
+    void run(JobPointer job, Thread *thread);
 };
 
 }

@@ -37,38 +37,39 @@
 #include <ThreadWeaver.h>
 #include <threadweavergui_export.h>
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-    class THREADWEAVERGUI_EXPORT WeaverThreadGrid : public QFrame
-    {
-        Q_OBJECT
-    public:
-        WeaverThreadGrid ( QWidget *parent = 0 );
-        ~WeaverThreadGrid ();
-	// attach this object to a Weaver to visualize its activity:
-	void attach (Weaver *weaver);
-    protected:
-        // rewrite the paintEvent handler:
-        void paintEvent ( QPaintEvent * event );
-        QSize minimumSize () const;
-        QSize minimumSizeHint () const;
-        QSize sizeHint () const;
-	// the WeaverObserver:
-	WeaverObserver m_observer;
-        // the cells (one for each thread):
-        QMap<Thread*, bool> m_cells;
-        QColor m_colorBusyFrame;
-        QColor m_colorBusy;
-        QColor m_colorIdleFrame;
-        QColor m_colorIdle;
-    protected Q_SLOTS:
-        void threadStarted ( ThreadWeaver::Thread* );
-        void threadBusy ( ThreadWeaver::Thread*, ThreadWeaver::Job* );
-        void threadSuspended ( ThreadWeaver::Thread* );
-    private:
-        class Private;
-        Private * const d;
-    };
+class THREADWEAVERGUI_EXPORT WeaverThreadGrid : public QFrame
+{
+    Q_OBJECT
+public:
+    WeaverThreadGrid(QWidget *parent = 0);
+    ~WeaverThreadGrid();
+    // attach this object to a Weaver to visualize its activity:
+    void attach(Weaver *weaver);
+protected:
+    // rewrite the paintEvent handler:
+    void paintEvent(QPaintEvent *event);
+    QSize minimumSize() const;
+    QSize minimumSizeHint() const;
+    QSize sizeHint() const;
+    // the WeaverObserver:
+    WeaverObserver m_observer;
+    // the cells (one for each thread):
+    QMap<Thread *, bool> m_cells;
+    QColor m_colorBusyFrame;
+    QColor m_colorBusy;
+    QColor m_colorIdleFrame;
+    QColor m_colorIdle;
+protected Q_SLOTS:
+    void threadStarted(ThreadWeaver::Thread *);
+    void threadBusy(ThreadWeaver::Thread *, ThreadWeaver::Job *);
+    void threadSuspended(ThreadWeaver::Thread *);
+private:
+    class Private;
+    Private *const d;
+};
 }
 
 #endif

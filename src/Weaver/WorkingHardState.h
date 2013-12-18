@@ -36,14 +36,15 @@
 #define THREADWEAVER_PRIVATE_API
 #endif
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 /* WorkingHardState handles the state dependent calls in the state where
  * jobs are executed.  */
 class WorkingHardState : public WeaverImplState
 {
 public:
-    explicit WorkingHardState( WeaverImpl *weaver);
+    explicit WorkingHardState(WeaverImpl *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */

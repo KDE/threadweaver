@@ -4,8 +4,9 @@
 #include <QtCore/QObject>
 #include <Weaver/JobPointer.h>
 
-namespace ThreadWeaver{
-    class Job;
+namespace ThreadWeaver
+{
+class Job;
 }
 
 using ThreadWeaver::Job;
@@ -16,7 +17,7 @@ class JobTests : public QObject
 
 private Q_SLOTS:
 
-    void initTestCase ();
+    void initTestCase();
     void WeaverLazyThreadCreationTest();
     void SimpleJobTest();
     void SimpleJobCollectionTest();
@@ -43,7 +44,7 @@ private Q_SLOTS:
     void SimpleRecursiveSequencesTest();
     void SequenceOfSequencesTest();
     void QueueAndStopTest();
-    void ResourceRestrictionPolicyBasicsTest ();
+    void ResourceRestrictionPolicyBasicsTest();
     void JobSignalsAreEmittedAsynchronouslyTest();
     void JobSignalsDeliveryTest();
     void JobPointerExecutionTest();

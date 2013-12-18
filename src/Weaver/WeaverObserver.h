@@ -33,45 +33,46 @@
 
 #include "threadweaver_export.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-    class Job;
-    class State;
-    class Thread;
+class Job;
+class State;
+class Thread;
 
-    /** Observers provides signals on some Weaver events that are
-        otherwise only available through objects of different classes
-        (threads, jobs). Usually, access to the signals of those objects
-        is not provided through the ThreadWeaver API. Use an observer to receive
-        notice, for example, on thread activity.
+/** Observers provides signals on some Weaver events that are
+    otherwise only available through objects of different classes
+    (threads, jobs). Usually, access to the signals of those objects
+    is not provided through the ThreadWeaver API. Use an observer to receive
+    notice, for example, on thread activity.
 
-        Observers are registered through the WeaverInterface API
-        (see WeaverInterface::registerObserver).
+    Observers are registered through the WeaverInterface API
+    (see WeaverInterface::registerObserver).
 
-        To unregister, simply delete the observer.
+    To unregister, simply delete the observer.
 
-        Observers are meant to be used within the controlling thread (usually
-        the main thread), that creates the Jobs. If this is not the case, be
-        aware not to delete Job objects externally that you reference in a
-        WeaverObserver implementation.
-    */
-    class THREADWEAVER_EXPORT WeaverObserver : public QObject
-    {
-        Q_OBJECT
-    public:
-        explicit WeaverObserver ( QObject *parent = 0 );
-        virtual ~WeaverObserver();
-    Q_SIGNALS:
-        void threadStarted ( ThreadWeaver::Thread* );
-        void threadBusy( ThreadWeaver::Thread*, ThreadWeaver::Job* );
-        void threadSuspended ( ThreadWeaver::Thread* );
-        void threadExited ( ThreadWeaver::Thread* );
-        void weaverStateChanged ( ThreadWeaver::State* );
+    Observers are meant to be used within the controlling thread (usually
+    the main thread), that creates the Jobs. If this is not the case, be
+    aware not to delete Job objects externally that you reference in a
+    WeaverObserver implementation.
+*/
+class THREADWEAVER_EXPORT WeaverObserver : public QObject
+{
+    Q_OBJECT
+public:
+    explicit WeaverObserver(QObject *parent = 0);
+    virtual ~WeaverObserver();
+Q_SIGNALS:
+    void threadStarted(ThreadWeaver::Thread *);
+    void threadBusy(ThreadWeaver::Thread *, ThreadWeaver::Job *);
+    void threadSuspended(ThreadWeaver::Thread *);
+    void threadExited(ThreadWeaver::Thread *);
+    void weaverStateChanged(ThreadWeaver::State *);
 
-    private:
-        class Private;
-        Private * const d;
-    };
+private:
+    class Private;
+    Private *const d;
+};
 
 }
 

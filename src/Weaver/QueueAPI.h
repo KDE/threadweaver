@@ -6,7 +6,8 @@
 #include "State.h"
 #include "JobPointer.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class QueueAPI : public Queue, public QueueInterface
 {
@@ -14,14 +15,14 @@ class QueueAPI : public Queue, public QueueInterface
 
 public:
     explicit QueueAPI(QObject *parent = 0);
-    
+
     virtual void shutDown_p() = 0;
-    virtual const State* state() const = 0;
-    virtual State* state() = 0;
+    virtual const State *state() const = 0;
+    virtual State *state() = 0;
     virtual void setMaximumNumberOfThreads_p(int cap) = 0;
     virtual int maximumNumberOfThreads_p() const = 0;
     virtual int currentNumberOfThreads_p() const = 0;
-    virtual void registerObserver_p(WeaverObserver*) = 0;
+    virtual void registerObserver_p(WeaverObserver *) = 0;
     virtual bool dequeue_p(JobPointer) = 0;
     virtual void dequeue_p() = 0;
     virtual void finish_p() = 0;

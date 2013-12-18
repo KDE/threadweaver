@@ -32,7 +32,8 @@
 #include "WeaverImpl.h"
 #include "ThreadWeaver.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 SuspendingState::SuspendingState(WeaverImpl *weaver)
     : WeaverImplState(weaver)

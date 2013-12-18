@@ -45,7 +45,7 @@ using namespace ThreadWeaver;
 class Thread::Private
 {
 public:
-    explicit Private(WeaverImpl* theParent)
+    explicit Private(WeaverImpl *theParent)
         : parent(theParent)
         , id(makeId())
         , job(0)
@@ -65,14 +65,14 @@ public:
     }
 };
 
-Thread::Thread (WeaverImpl *parent)
+Thread::Thread(WeaverImpl *parent)
     : QThread() // no parent, because the QObject hierarchy of this thread
-                 // does not have a parent (see QObject::pushToThread)
+    // does not have a parent (see QObject::pushToThread)
     , d(new Private(parent))
 {
     const QString queueName = parent->objectName().isEmpty()
-            ? tr("Queue(0x%1)").arg(quintptr(parent), 0, 16, QChar::fromLatin1('0'))
-            : parent->objectName();
+                              ? tr("Queue(0x%1)").arg(quintptr(parent), 0, 16, QChar::fromLatin1('0'))
+                              : parent->objectName();
     setObjectName(tr("%1[%2]").arg(queueName).arg(QString::number(id()), 2, QChar::fromLatin1('0')));
 }
 
@@ -116,10 +116,10 @@ void Thread::run()
         QMutexLocker l(&d->mutex); Q_UNUSED(l);
         d->job.clear();
     }
-    debug ( 3, "Thread::run [%u]: exiting.\n", id() );
+    debug(3, "Thread::run [%u]: exiting.\n", id());
 }
 
-void Thread::requestAbort ()
+void Thread::requestAbort()
 {
     QMutexLocker l(&d->mutex); Q_UNUSED(l);
     if (d->job) {

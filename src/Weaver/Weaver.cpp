@@ -8,30 +8,31 @@
 
 using namespace ThreadWeaver;
 
-namespace {
-static Weaver::GlobalQueueFactory* globalQueueFactory;
+namespace
+{
+static Weaver::GlobalQueueFactory *globalQueueFactory;
 }
 
 class Weaver::Private
 {
 public:
-    Private(Weaver* q, Queue *queue)
+    Private(Weaver *q, Queue *queue)
         : implementation(queue)
     {
-        Q_ASSERT_X(qApp!=0, Q_FUNC_INFO, "Cannot create global ThreadWeaver instance before QApplication!");
+        Q_ASSERT_X(qApp != 0, Q_FUNC_INFO, "Cannot create global ThreadWeaver instance before QApplication!");
         Q_ASSERT(queue);
         queue->setParent(q);
-        q->connect(implementation, SIGNAL (finished()), SIGNAL (finished()));
-        q->connect(implementation, SIGNAL (suspended()), SIGNAL (suspended()));
-        q->connect(implementation, SIGNAL (jobDone(ThreadWeaver::JobPointer)), SIGNAL(jobDone(ThreadWeaver::JobPointer)));
+        q->connect(implementation, SIGNAL(finished()), SIGNAL(finished()));
+        q->connect(implementation, SIGNAL(suspended()), SIGNAL(suspended()));
+        q->connect(implementation, SIGNAL(jobDone(ThreadWeaver::JobPointer)), SIGNAL(jobDone(ThreadWeaver::JobPointer)));
     }
 
-    Queue* implementation;
+    Queue *implementation;
     void init(Queue *implementation);
 };
 
 /** @brief Construct a Weaver object. */
-Weaver::Weaver(QObject* parent)
+Weaver::Weaver(QObject *parent)
     : Queue(parent)
     , d(new Private(this, new WeaverImpl))
 {
@@ -47,7 +48,7 @@ Weaver::Weaver(Queue *implementation, QObject *parent)
 
 Weaver::~Weaver()
 {
-    if (d->implementation->state()->stateId()!=Destructed) {
+    if (d->implementation->state()->stateId() != Destructed) {
         d->implementation->shutDown();
     }
     delete d->implementation;
@@ -77,44 +78,48 @@ void Weaver::setGlobalQueueFactory(Weaver::GlobalQueueFactory *factory)
     globalQueueFactory = factory;
 }
 
-const State* Weaver::state() const
+const State *Weaver::state() const
 {
     return d->implementation->state();
 }
 
-void Weaver::registerObserver ( WeaverObserver *ext )
+void Weaver::registerObserver(WeaverObserver *ext)
 {
-    d->implementation->registerObserver ( ext );
+    d->implementation->registerObserver(ext);
 }
 
-namespace {
+namespace
+{
 
-class StaticThreadWeaverInstanceGuard : public QObject {
+class StaticThreadWeaverInstanceGuard : public QObject
+{
     Q_OBJECT
 public:
-    explicit StaticThreadWeaverInstanceGuard(QAtomicPointer<Weaver>& instance, QCoreApplication* app)
+    explicit StaticThreadWeaverInstanceGuard(QAtomicPointer<Weaver> &instance, QCoreApplication *app)
         : QObject(app)
         , instance_(instance)
     {
-        Q_ASSERT_X(app!=0, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
-        QObject* impl = instance.load()->findChild<Queue*>();
+        Q_ASSERT_X(app != 0, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
+        QObject *impl = instance.load()->findChild<Queue *>();
         Q_ASSERT(impl);
         impl->setObjectName(tr("GlobalQueue"));
         qAddPostRoutine(shutDownGlobalQueue);
     }
 
-    ~StaticThreadWeaverInstanceGuard() {
+    ~StaticThreadWeaverInstanceGuard()
+    {
         instance_.fetchAndStoreOrdered(0);
         delete globalQueueFactory;
         globalQueueFactory = 0;
     }
 private:
-    static void shutDownGlobalQueue() {
+    static void shutDownGlobalQueue()
+    {
         Weaver::instance()->shutDown();
         Q_ASSERT(Weaver::instance()->state()->stateId() == Destructed);
     }
 
-    QAtomicPointer<Weaver>& instance_;
+    QAtomicPointer<Weaver> &instance_;
 };
 
 }
@@ -123,15 +128,15 @@ private:
  * This  instance will only be created if this method is actually called in the lifetime of the application.
  * The method will create the Weaver instance on first call. The Q(Core)Application object must exist at that time.
  * The instance will be deleted when Q(Core)Application is destructed. After that, the instance() method returns zero. */
-Weaver* Weaver::instance()
+Weaver *Weaver::instance()
 {
     static QAtomicPointer<Weaver> s_instance(globalQueueFactory
-                                             ? globalQueueFactory->create(qApp)
-                                             : new Weaver(qApp));
+            ? globalQueueFactory->create(qApp)
+            : new Weaver(qApp));
     //Order is of importance here:
     //When s_instanceGuard is destructed (first, before s_instance), it sets the value of s_instance to zero. Next, qApp will delete
     //the object s_instance pointed to.
-    static StaticThreadWeaverInstanceGuard* s_instanceGuard = new StaticThreadWeaverInstanceGuard(s_instance, qApp);
+    static StaticThreadWeaverInstanceGuard *s_instanceGuard = new StaticThreadWeaverInstanceGuard(s_instance, qApp);
     Q_UNUSED(s_instanceGuard);
     Q_ASSERT_X(s_instance.load() == 0 || s_instance.load()->thread() == QCoreApplication::instance()->thread(),
                Q_FUNC_INFO,
@@ -139,37 +144,37 @@ Weaver* Weaver::instance()
     return s_instance.loadAcquire();
 }
 
-void Weaver::enqueue(const QVector<JobPointer>& jobs)
+void Weaver::enqueue(const QVector<JobPointer> &jobs)
 {
     d->implementation->enqueue(jobs);
 }
 
-void Weaver::enqueue(const JobPointer& job)
+void Weaver::enqueue(const JobPointer &job)
 {
     enqueue(QVector<JobPointer>() << job);
 }
 
-bool Weaver::dequeue(const JobPointer& job)
+bool Weaver::dequeue(const JobPointer &job)
 {
     return d->implementation->dequeue(job);
 }
 
-void Weaver::dequeue ()
+void Weaver::dequeue()
 {
     return d->implementation->dequeue();
 }
 
-void Weaver::finish ()
+void Weaver::finish()
 {
-    return d->implementation->finish ();
+    return d->implementation->finish();
 }
 
-void Weaver::suspend ()
+void Weaver::suspend()
 {
     return d->implementation->suspend();
 }
 
-void Weaver::resume ()
+void Weaver::resume()
 {
     return d->implementation->resume();
 }
@@ -189,9 +194,9 @@ int Weaver::queueLength() const
     return d->implementation->queueLength();
 }
 
-void Weaver::setMaximumNumberOfThreads( int cap )
+void Weaver::setMaximumNumberOfThreads(int cap)
 {
-    d->implementation->setMaximumNumberOfThreads( cap );
+    d->implementation->setMaximumNumberOfThreads(cap);
 }
 
 int Weaver::currentNumberOfThreads() const

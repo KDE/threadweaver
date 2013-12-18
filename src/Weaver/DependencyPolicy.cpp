@@ -49,12 +49,12 @@ public:
      *  For each dependency A->B, which means Job B depends on Job A and may only be executed after A has been
      *  finished, an entry will be added with key A and value B. When A is finished, the entry will be removed.
      */
-    JobMultiMap& dependencies()
+    JobMultiMap &dependencies()
     {
-       return depMap_;
+        return depMap_;
     }
 
-    QMutex* mutex()
+    QMutex *mutex()
     {
         return &mutex_;
     }
@@ -82,36 +82,34 @@ void DependencyPolicy::addDependency(JobPointer jobA, JobPointer jobB)
     jobA->assignQueuePolicy(this);
     jobB->assignQueuePolicy(this);
     QMutexLocker l(d->mutex());
-    d->dependencies().insert( jobA, jobB );
+    d->dependencies().insert(jobA, jobB);
 
-    ENSURE ( d->dependencies().contains (jobA));
+    ENSURE(d->dependencies().contains(jobA));
 }
 
-void DependencyPolicy::addDependency(const Dependency& dep)
+void DependencyPolicy::addDependency(const Dependency &dep)
 {
     addDependency(dep.dependent(), dep.dependee());
 }
 
 bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
 {
-    REQUIRE (jobA != 0 && jobB != 0);
+    REQUIRE(jobA != 0 && jobB != 0);
     bool result = false;
     QMutexLocker l(d->mutex());
 
     // there may be only one (!) occurrence of [this, dep]:
     QMutableMapIterator<JobPointer, JobPointer> it(d->dependencies());
-    while ( it.hasNext() )
-    {
+    while (it.hasNext()) {
         it.next();
-        if ( it.key()==jobA && it.value()==jobB )
-        {
+        if (it.key() == jobA && it.value() == jobB) {
             it.remove();
             result = true;
             break;
         }
     }
 
-    ENSURE ( ! d->dependencies().keys(jobB).contains(jobA) );
+    ENSURE(! d->dependencies().keys(jobB).contains(jobA));
     return result;
 }
 
@@ -120,7 +118,7 @@ bool DependencyPolicy::removeDependency(const Dependency &dep)
     return removeDependency(dep.dependent(), dep.dependee());
 }
 
-void DependencyPolicy::resolveDependencies(JobPointer job )
+void DependencyPolicy::resolveDependencies(JobPointer job)
 {
     if (job->success()) {
         QMutexLocker l(d->mutex());
@@ -128,7 +126,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job )
         // there has to be a better way to do this: (?)
         while (it.hasNext()) { // we remove all entries where jobs depend on *this* :
             it.next();
-            if (it.value()==job) {
+            if (it.value() == job) {
                 it.remove();
             }
         }
@@ -159,7 +157,7 @@ bool DependencyPolicy::hasUnresolvedDependencies(JobPointer job) const
     return d->dependencies().contains(job);
 }
 
-DependencyPolicy& DependencyPolicy::instance()
+DependencyPolicy &DependencyPolicy::instance()
 {
     static DependencyPolicy policy;
     return policy;
@@ -177,10 +175,10 @@ void DependencyPolicy::free(JobPointer job)
     REQUIRE(job->status() > Job::Status_Running);
     if (job->success()) {
         resolveDependencies(job);
-        debug( 3, "DependencyPolicy::free: dependencies resolved for job %p.\n", (void*)job.data());
+        debug(3, "DependencyPolicy::free: dependencies resolved for job %p.\n", (void *)job.data());
     } else {
-        debug( 3, "DependencyPolicy::free: not resolving dependencies for %p (execution not successful).\n",
-               (void*)job.data());
+        debug(3, "DependencyPolicy::free: not resolving dependencies for %p (execution not successful).\n",
+              (void *)job.data());
     }
     ENSURE((!hasUnresolvedDependencies(job) && job->success()) || !job->success());
 }

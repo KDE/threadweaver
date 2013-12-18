@@ -31,7 +31,8 @@
 
 #include "JobCollection.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 /** A JobSequence is a vector of Jobs that will be executed in a sequence.
  *
@@ -51,7 +52,7 @@ protected:
 
 private:
     class Private;
-    Private * const d;
+    Private *const d;
 };
 
 }

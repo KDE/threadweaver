@@ -33,7 +33,8 @@
 
 #include "Thread.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 // FIXME (0.7) it looks like we do not need this if the Thread object is
 // moved to its own thread (weaverimpl does that)
@@ -41,22 +42,22 @@ class ThreadRunHelper : public QObject
 {
     Q_OBJECT
 public:
-    explicit ThreadRunHelper ();
+    explicit ThreadRunHelper();
 
 Q_SIGNALS: // see Thread:
 
     /** The thread has been started. */
-    void started ( ThreadWeaver::Thread* );
+    void started(ThreadWeaver::Thread *);
     /** The thread started to process a job. */
-    void jobStarted ( ThreadWeaver::Thread*, ThreadWeaver::Job* );
+    void jobStarted(ThreadWeaver::Thread *, ThreadWeaver::Job *);
     /** The thread finished to execute a job. */
-    void jobDone ( ThreadWeaver::Job* );
+    void jobDone(ThreadWeaver::Job *);
 
 private:
-    Job* m_job;
+    Job *m_job;
 
 public:
-    void run ( WeaverImpl *parent, Thread* th );
+    void run(WeaverImpl *parent, Thread *th);
 
     void requestAbort();
 };

@@ -31,10 +31,11 @@ $Id: SuspendedState.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "ThreadWeaver.h"
 #include "WeaverImpl.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 SuspendedState::SuspendedState(WeaverImpl *weaver)
-    : WeaverImplState (weaver)
+    : WeaverImplState(weaver)
 {
 }
 
@@ -49,8 +50,9 @@ void SuspendedState::resume()
 }
 
 JobPointer SuspendedState::applyForWork(Thread *th, bool wasBusy)
-{   // suspend all threads in case they wake up:
-    Q_ASSERT(wasBusy==0);
+{
+    // suspend all threads in case they wake up:
+    Q_ASSERT(wasBusy == 0);
     weaver()->waitForAvailableJob(th);
     return weaver()->applyForWork(th, wasBusy);
 }

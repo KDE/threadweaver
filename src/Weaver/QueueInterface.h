@@ -3,12 +3,14 @@
 
 #include "JobPointer.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class Thread;
 
-class THREADWEAVER_EXPORT QueueInterface {
+class THREADWEAVER_EXPORT QueueInterface
+{
 public:
     virtual ~QueueInterface() {}
 

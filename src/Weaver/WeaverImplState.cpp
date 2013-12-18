@@ -30,7 +30,8 @@
 
 #include "WeaverImpl.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 WeaverImplState::WeaverImplState(Queue *weaver)
     : State(weaver)
@@ -46,16 +47,16 @@ void WeaverImplState::shutDown()
     weaver()->shutDown_p();
 }
 
-WeaverImpl* WeaverImplState::weaver()
+WeaverImpl *WeaverImplState::weaver()
 {
-    Q_ASSERT ( dynamic_cast<WeaverImpl*> ( State::weaver() ) );
-    return static_cast<WeaverImpl*> ( State::weaver() );
+    Q_ASSERT(dynamic_cast<WeaverImpl *>(State::weaver()));
+    return static_cast<WeaverImpl *>(State::weaver());
 }
 
 const WeaverImpl *WeaverImplState::weaver() const
 {
-    Q_ASSERT ( dynamic_cast<const WeaverImpl*> ( State::weaver() ) );
-    return static_cast<const WeaverImpl*> ( State::weaver() );
+    Q_ASSERT(dynamic_cast<const WeaverImpl *>(State::weaver()));
+    return static_cast<const WeaverImpl *>(State::weaver());
 }
 
 void WeaverImplState::setMaximumNumberOfThreads(int cap)
@@ -78,12 +79,12 @@ void WeaverImplState::registerObserver(WeaverObserver *obs)
     weaver()->registerObserver_p(obs);
 }
 
-void WeaverImplState::enqueue(const QVector<JobPointer>& jobs)
+void WeaverImplState::enqueue(const QVector<JobPointer> &jobs)
 {
     weaver()->enqueue_p(jobs);
 }
 
-bool WeaverImplState::dequeue(const JobPointer& job)
+bool WeaverImplState::dequeue(const JobPointer &job)
 {
     return weaver()->dequeue_p(job);
 }

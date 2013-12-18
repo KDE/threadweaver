@@ -32,7 +32,8 @@
 #include "DebuggingAids.h"
 #include "DependencyPolicy.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 JobSequence::JobSequence()
     : d(0)
@@ -48,7 +49,7 @@ void JobSequence::enqueueElements()
         // set up the dependencies:
         for (int i = 1; i < jobs; ++i) {
             JobPointer jobA = jobAt(i);
-            JobPointer jobB = jobAt(i-1);
+            JobPointer jobB = jobAt(i - 1);
             P_ASSERT(jobA != 0);
             P_ASSERT(jobB != 0);
             DependencyPolicy::instance().addDependency(jobA, jobB);

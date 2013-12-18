@@ -35,7 +35,8 @@
 
 #include "WeaverImplState.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Queue;
 

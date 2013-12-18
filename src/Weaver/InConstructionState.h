@@ -35,7 +35,8 @@
 
 #include "WeaverImplState.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class WeaverImpl;
 class Queue;
@@ -46,7 +47,7 @@ class Queue;
 class InConstructionState : public WeaverImplState
 {
 public:
-    explicit InConstructionState( Queue *weaver);
+    explicit InConstructionState(Queue *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */

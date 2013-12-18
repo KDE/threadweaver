@@ -36,7 +36,8 @@
 #include "Queue.h"
 #include "threadweaver_export.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class Thread;
@@ -75,7 +76,7 @@ class THREADWEAVER_EXPORT State : public WeaverInterface, public QueueInterface
 {
 public:
     /** Default constructor. */
-    explicit State( Queue *weaver );
+    explicit State(Queue *weaver);
 
     /** Destructor. */
     virtual ~State();
@@ -94,12 +95,12 @@ public:
 
 protected:
     /** The Weaver interface this state handles. */
-    virtual WeaverInterface* weaver();
-    virtual const WeaverInterface* weaver() const;
+    virtual WeaverInterface *weaver();
+    virtual const WeaverInterface *weaver() const;
 
 private:
     class Private;
-    Private * const d;
+    Private *const d;
 };
 
 }

@@ -43,7 +43,8 @@ $Id: WeaverImpl.h 32 2005-08-17 08:38:01Z mirko $
 #include "State.h"
 #include "QueueAPI.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class Thread;
@@ -60,33 +61,33 @@ class THREADWEAVER_EXPORT WeaverImpl : public QueueAPI
     Q_OBJECT
 public:
     /** Construct a WeaverImpl object. */
-    explicit WeaverImpl (QObject* parent=0 );
+    explicit WeaverImpl(QObject *parent = 0);
     /** Destruct a WeaverImpl object. */
-    virtual ~WeaverImpl ();
+    virtual ~WeaverImpl();
     /** Enter Destructed state.
      * Once this method returns, it is save to delete this object. */
     void shutDown() Q_DECL_OVERRIDE;
     void shutDown_p() Q_DECL_OVERRIDE;
 
-    const State* state() const Q_DECL_OVERRIDE;
-    State* state() Q_DECL_OVERRIDE;
+    const State *state() const Q_DECL_OVERRIDE;
+    State *state() Q_DECL_OVERRIDE;
 
     void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
-    int currentNumberOfThreads () const Q_DECL_OVERRIDE;
+    int currentNumberOfThreads() const Q_DECL_OVERRIDE;
 
     /** Set the object state. */
-    void setState( StateId );
-    void registerObserver(WeaverObserver*) Q_DECL_OVERRIDE;
-    void enqueue(const QVector<JobPointer>& jobs) Q_DECL_OVERRIDE;
-    bool dequeue(const JobPointer& job) Q_DECL_OVERRIDE;
+    void setState(StateId);
+    void registerObserver(WeaverObserver *) Q_DECL_OVERRIDE;
+    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
+    bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
     void dequeue() Q_DECL_OVERRIDE;
     void finish() Q_DECL_OVERRIDE;
     void suspend() Q_DECL_OVERRIDE;
     void resume() Q_DECL_OVERRIDE;
-    bool isEmpty () const Q_DECL_OVERRIDE;
-    bool isIdle () const Q_DECL_OVERRIDE;
-    int queueLength () const Q_DECL_OVERRIDE;
+    bool isEmpty() const Q_DECL_OVERRIDE;
+    bool isIdle() const Q_DECL_OVERRIDE;
+    int queueLength() const Q_DECL_OVERRIDE;
     /** Assign a job to the calling thread.
         This is supposed to be called from the Thread objects in
         the inventory. Do not call this method from your code.
@@ -98,14 +99,14 @@ public:
         met.
         In *previous*, threads give the job they have completed. If this is
         the first job, previous is zero. */
-    virtual JobPointer applyForWork (Thread *thread, bool wasBusy) Q_DECL_OVERRIDE;
+    virtual JobPointer applyForWork(Thread *thread, bool wasBusy) Q_DECL_OVERRIDE;
     /** Wait for a job to become available. */
     void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
     /** Blocks the calling thread until some actor calls assignJobs. */
-    void blockThreadUntilJobsAreBeingAssigned(Thread* th);
+    void blockThreadUntilJobsAreBeingAssigned(Thread *th);
     /** Blocks the calling thread until some actor calls assignJobs.
       * Mutex must be held when calling this method. */
-    void blockThreadUntilJobsAreBeingAssigned_locked(Thread* th);
+    void blockThreadUntilJobsAreBeingAssigned_locked(Thread *th);
     /** Increment the count of active threads. */
     void incActiveThreadCount();
     /** Decrement the count of active threads. */
@@ -117,14 +118,14 @@ public:
     int activeThreadCount();
 
     /** Called from a new thread when entering the run method. */
-    void threadEnteredRun(Thread* thread);
+    void threadEnteredRun(Thread *thread);
     /** Take the first available job out of the queue and return it.
      * The job will be removed from the queue (therefore, take). Only jobs that have no unresolved dependencies are considered
      * available. If only jobs that depened on other, unfinished jobs are in the queue, this method blocks on m_jobAvailable.
      * Go to suspended state if the active thread count is now zero and suspendIfAllThreadsInactive is true.
      * If justReturning is true, do not assign a new job, just process the completed previous one. */
-    JobPointer takeFirstAvailableJobOrSuspendOrWait(Thread* th, bool threadWasBusy,
-                                                    bool suspendIfAllThreadsInactive, bool justReturning);
+    JobPointer takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy,
+            bool suspendIfAllThreadsInactive, bool justReturning);
     void requestAbort() Q_DECL_OVERRIDE;
 
     void reschedule() Q_DECL_OVERRIDE;
@@ -135,12 +136,12 @@ public:
     //FIXME: rename _p to _locked:
     friend class WeaverImplState;
     friend class SuspendingState;
-    void setState_p( StateId );
+    void setState_p(StateId);
     void setMaximumNumberOfThreads_p(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads_p() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads_p() const Q_DECL_OVERRIDE;
-    void registerObserver_p(WeaverObserver*) Q_DECL_OVERRIDE;
-    void enqueue_p(const QVector<JobPointer>& jobs);
+    void registerObserver_p(WeaverObserver *) Q_DECL_OVERRIDE;
+    void enqueue_p(const QVector<JobPointer> &jobs);
     bool dequeue_p(JobPointer job) Q_DECL_OVERRIDE;
     void dequeue_p() Q_DECL_OVERRIDE;
     void finish_p() Q_DECL_OVERRIDE;
@@ -153,22 +154,22 @@ public:
 
 Q_SIGNALS:
     /** A Thread has been created. */
-    void threadStarted(ThreadWeaver::Thread*);
+    void threadStarted(ThreadWeaver::Thread *);
     /** A thread has exited. */
-    void threadExited(ThreadWeaver::Thread*);
+    void threadExited(ThreadWeaver::Thread *);
     /** A thread has been suspended. */
-    void threadSuspended(ThreadWeaver::Thread*);
+    void threadSuspended(ThreadWeaver::Thread *);
     /** The thread is busy executing job j. */
-    void threadBusy(ThreadWeaver::JobPointer, ThreadWeaver::Thread*);
+    void threadBusy(ThreadWeaver::JobPointer, ThreadWeaver::Thread *);
 
 protected:
     /** Adjust active thread count.
             This is a helper function for incActiveThreadCount and decActiveThreadCount. */
-    void adjustActiveThreadCount ( int diff );
+    void adjustActiveThreadCount(int diff);
     /** Factory method to create the threads.
             Overload in adapted Weaver implementations.
         */
-    virtual Thread* createThread();
+    virtual Thread *createThread();
     /** Adjust the inventory size.
      * Requires that the mutex is being held when called
      *
@@ -180,7 +181,7 @@ protected:
      */
     //TODO add code to raise inventory size over inventoryMin
     //TODO add code to quit unnecessary threads
-    void adjustInventory ( int noOfNewJobs );
+    void adjustInventory(int noOfNewJobs);
     /** Lock the mutex for this weaver. The threads in the
         inventory need to lock the weaver's mutex to synchronize
         the job management. */
@@ -194,7 +195,7 @@ private:
      * at a later time. */
     bool canBeExecuted(JobPointer);
     /** The thread inventory. */
-    QList<Thread*> m_inventory;
+    QList<Thread *> m_inventory;
     /** The job queue. */
     QList<JobPointer> m_assignments;
     /** The number of jobs that are assigned to the worker

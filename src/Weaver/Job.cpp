@@ -42,26 +42,31 @@ $Id: Job.cpp 20 2005-08-08 21:02:51Z mirko $
 #include "ManagedJobPointer.h"
 #include "Exception.h"
 
-namespace {
+namespace
+{
 
-class DefaultExecutor : public ThreadWeaver::Executor {
+class DefaultExecutor : public ThreadWeaver::Executor
+{
 public:
-    void begin(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread) {
+    void begin(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+    {
         defaultBegin(job, thread);
     }
 
-    void execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread* thread) Q_DECL_OVERRIDE {
+    void execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread) Q_DECL_OVERRIDE {
         run(job, thread);
     }
 
-    void end(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread) {
+    void end(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+    {
         defaultEnd(job, thread);
     }
 };
 
-class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper {
+class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper
+{
 public:
-    void execute(ThreadWeaver::JobPointer job,ThreadWeaver::Thread *th) Q_DECL_OVERRIDE {
+    void execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *th) Q_DECL_OVERRIDE {
         Q_ASSERT_X(job, Q_FUNC_INFO, "job may not be zero!");
         ThreadWeaver::debug(3, "DefaultExecuteWrapper::execute: executing job %p in thread %i.\n", job.data(), th ? th->id() : 0);
         executeWrapped(job, th);
@@ -72,12 +77,13 @@ public:
 static DefaultExecutor defaultExecutor;
 }
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job::Private
 {
 public:
-    Private ()
+    Private()
         : mutex(QMutex::NonRecursive)
         , status(Job::Status_NoStatus)
         , executor(&defaultExecutor)
@@ -87,7 +93,7 @@ public:
     {}
 
     /* The list of QueuePolicies assigned to this Job. */
-    QList<QueuePolicy*> queuePolicies;
+    QList<QueuePolicy *> queuePolicies;
 
     mutable QMutex mutex;
     /* @brief The status of the Job. */
@@ -114,7 +120,7 @@ Job::Job()
 
 Job::~Job()
 {
-    for (int index = 0; index < d->queuePolicies.size(); ++index ) {
+    for (int index = 0; index < d->queuePolicies.size(); ++index) {
         d->queuePolicies.at(index)->destructed(this);
     }
     delete d;
@@ -122,7 +128,7 @@ Job::~Job()
 
 void Job::execute(JobPointer self, Thread *th)
 {
-    Executor* executor = d->executor.loadAcquire();
+    Executor *executor = d->executor.loadAcquire();
     Q_ASSERT(executor); //may never be unset!
     Q_ASSERT(self);
     executor->begin(self, th);
@@ -132,11 +138,11 @@ void Job::execute(JobPointer self, Thread *th)
         if (self->status() == Status_Running) {
             self->setStatus(Status_Success);
         }
-    } catch(JobAborted&) {
+    } catch (JobAborted &) {
         self->setStatus(Status_Aborted);
-    } catch(JobFailed&) {
+    } catch (JobFailed &) {
         self->setStatus(Status_Failed);
-    } catch(...) {
+    } catch (...) {
         debug(0, "Uncaught exception in Job %p, aborting.", self.data());
         throw;
     }
@@ -159,7 +165,7 @@ Executor *Job::executor() const
     return d->executor.fetchAndAddOrdered(0);
 }
 
-int Job::priority () const
+int Job::priority() const
 {
     return 0;
 }
@@ -175,7 +181,7 @@ JobInterface::Status Job::status() const
     return static_cast<Status>(d->status.loadAcquire());
 }
 
-bool Job::success () const
+bool Job::success() const
 {
     return d->status.loadAcquire() == Status_Success;
 }
@@ -196,34 +202,34 @@ void Job::defaultEnd(JobPointer job, Thread *)
     freeQueuePolicyResources(job);
 }
 
-void Job::aboutToBeQueued(QueueAPI* api)
+void Job::aboutToBeQueued(QueueAPI *api)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
     aboutToBeQueued_locked(api);
 }
 
-void Job::aboutToBeQueued_locked (QueueAPI*)
+void Job::aboutToBeQueued_locked(QueueAPI *)
 {
 }
 
-void Job::aboutToBeDequeued(QueueAPI* api)
+void Job::aboutToBeDequeued(QueueAPI *api)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
     aboutToBeDequeued_locked(api);
 }
 
-void Job::aboutToBeDequeued_locked (QueueAPI*)
+void Job::aboutToBeDequeued_locked(QueueAPI *)
 {
 }
 
-void Job::assignQueuePolicy(QueuePolicy* policy)
+void Job::assignQueuePolicy(QueuePolicy *policy)
 {
     if (! d->queuePolicies.contains(policy)) {
         d->queuePolicies.append(policy);
     }
 }
 
-void Job::removeQueuePolicy(QueuePolicy* policy)
+void Job::removeQueuePolicy(QueuePolicy *policy)
 {
     int index = d->queuePolicies.indexOf(policy);
     if (index != -1) {
@@ -242,7 +248,7 @@ bool Job::isFinished() const
     return s == Status_Success || s == Status_Failed || s == Status_Aborted;
 }
 
-QMutex* Job::mutex() const
+QMutex *Job::mutex() const
 {
     return &d->mutex;
 }

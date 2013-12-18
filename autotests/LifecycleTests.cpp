@@ -5,9 +5,10 @@
 #include <JobPointer.h>
 #include <Job.h>
 
-class NotifyOnDeletejob : public ThreadWeaver::Job {
+class NotifyOnDeletejob : public ThreadWeaver::Job
+{
 public:
-    explicit NotifyOnDeletejob(bool& exists)
+    explicit NotifyOnDeletejob(bool &exists)
         : ThreadWeaver::Job()
         , m_exists(exists)
     {
@@ -19,19 +20,19 @@ public:
         m_exists = false;
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread*) {}
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) {}
 
 private:
-    bool& m_exists;
+    bool &m_exists;
 };
 
 class LifecycleTests : public QObject
 {
     Q_OBJECT
-    
+
 public:
     LifecycleTests();
-    
+
 private Q_SLOTS:
     void testJobAutoDeletionBasics();
     void testJobAutoDeletion();
@@ -65,7 +66,7 @@ void LifecycleTests::testJobAutoDeletion()
         ThreadWeaver::JobPointer job1(new NotifyOnDeletejob(job1Exists));
         QCOMPARE(job1Exists, true);
         int argc = 0;
-        QCoreApplication app(argc, (char**)0); Q_UNUSED(app);
+        QCoreApplication app(argc, (char **)0); Q_UNUSED(app);
         QVERIFY(ThreadWeaver::Weaver::instance());
         ThreadWeaver::Weaver::instance()->suspend();
         ThreadWeaver::Weaver::instance()->enqueue(job1);
@@ -79,7 +80,7 @@ void LifecycleTests::testJobAutoDeletion()
         QCOMPARE(job2Exists, false);
         QCOMPARE(job1Exists, true);
     }
-    QVERIFY(ThreadWeaver::Weaver::instance()==0);
+    QVERIFY(ThreadWeaver::Weaver::instance() == 0);
     QCOMPARE(job2Exists, false);
     QCOMPARE(job1Exists, false);
 }

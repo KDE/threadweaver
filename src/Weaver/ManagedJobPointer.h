@@ -5,9 +5,10 @@
 
 #include "JobInterface.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-inline void doNotDeleteJob(JobInterface*) {}
+inline void doNotDeleteJob(JobInterface *) {}
 
 template<typename T>
 class ManagedJobPointer : public QSharedPointer<T>

@@ -10,7 +10,8 @@
 
 #include "AppendCharacterJob.h"
 
-class InstanceCountingJobSequence : public JobSequence {
+class InstanceCountingJobSequence : public JobSequence
+{
 public:
     explicit InstanceCountingJobSequence()
         : JobSequence()
@@ -18,11 +19,13 @@ public:
         instances_.fetchAndAddAcquire(1);
     }
 
-    ~InstanceCountingJobSequence() {
+    ~InstanceCountingJobSequence()
+    {
         instances_.fetchAndAddAcquire(-1);
     }
 
-    static int instances() {
+    static int instances()
+    {
         return instances_.loadAcquire();
     }
 

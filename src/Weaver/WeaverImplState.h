@@ -36,7 +36,8 @@
 #include "State.h"
 #include "WeaverImpl.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Queue;
 
@@ -44,9 +45,9 @@ class Queue;
 class WeaverImplState : public State
 {
 public:
-    explicit WeaverImplState( Queue* weaver );
+    explicit WeaverImplState(Queue *weaver);
 
-    const State* state() const Q_DECL_OVERRIDE;
+    const State *state() const Q_DECL_OVERRIDE;
 
     /** Shut down the queue. */
     void shutDown() Q_DECL_OVERRIDE;
@@ -57,11 +58,11 @@ public:
     /** Returns the current number of threads in the inventory. */
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;
     /** Register an observer. */
-    void registerObserver(WeaverObserver* obs) Q_DECL_OVERRIDE;
+    void registerObserver(WeaverObserver *obs) Q_DECL_OVERRIDE;
     /** Enqueue a job. */
-    void enqueue(const QVector<JobPointer>& jobs) Q_DECL_OVERRIDE;
+    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
     /** Dequeue a job. */
-    bool dequeue(const JobPointer& job) Q_DECL_OVERRIDE;
+    bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
     /** Dequeue all jobs. */
     void dequeue() Q_DECL_OVERRIDE;
     /** Finish all queued jobs. */
@@ -77,12 +78,12 @@ public:
     /** Reschedule jobs to threads. */
     void reschedule() Q_DECL_OVERRIDE;
     /** Wait (by suspending the calling thread) until a job becomes available. */
-    void waitForAvailableJob(Thread *th ) Q_DECL_OVERRIDE;
+    void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
 
 protected:
     /** Provide correct return type for WeaverImpl states. */
-    WeaverImpl* weaver() Q_DECL_OVERRIDE;
-    const WeaverImpl* weaver() const Q_DECL_OVERRIDE;
+    WeaverImpl *weaver() Q_DECL_OVERRIDE;
+    const WeaverImpl *weaver() const Q_DECL_OVERRIDE;
 };
 
 }

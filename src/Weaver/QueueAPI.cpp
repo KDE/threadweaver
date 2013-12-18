@@ -1,6 +1,7 @@
 #include "QueueAPI.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 QueueAPI::QueueAPI(QObject *parent) :
     Queue(parent)

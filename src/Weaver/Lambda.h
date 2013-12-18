@@ -4,7 +4,8 @@
 #include "Job.h"
 #include "threadweaver_export.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 /** @brief Lambda is a template that takes any type on which operator() is available, and executes it in run(). */
 template <typename T>
@@ -16,7 +17,7 @@ public:
     {}
 
 protected:
-    void run(JobPointer, Thread*) Q_DECL_FINAL {
+    void run(JobPointer, Thread *) Q_DECL_FINAL {
         t();
     }
 

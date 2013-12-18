@@ -36,14 +36,15 @@
 #include "WeaverImplState.h"
 #include "WeaverImpl.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 /** In SuspendedState, jobs are queued, but will not be executed. All
  *  thread remains blocked.  */
 class SuspendedState : public WeaverImplState
 {
 public:
-    explicit SuspendedState( WeaverImpl *weaver);
+    explicit SuspendedState(WeaverImpl *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */

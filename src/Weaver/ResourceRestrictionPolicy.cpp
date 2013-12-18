@@ -36,12 +36,16 @@
 
 using namespace ThreadWeaver;
 
-class ResourceRestrictionPolicy::Private {
+class ResourceRestrictionPolicy::Private
+{
 public:
-    Private ( int theCap )
-        : cap ( theCap)
+    Private(int theCap)
+        : cap(theCap)
     {}
-    QMutex* mutex() { return &mutex_; }
+    QMutex *mutex()
+    {
+        return &mutex_;
+    }
 
     int cap;
     QList<JobPointer> customers;
@@ -61,7 +65,7 @@ ResourceRestrictionPolicy::~ResourceRestrictionPolicy()
 
 void ResourceRestrictionPolicy::setCap(int cap)
 {
-    QMutexLocker l (d->mutex());
+    QMutexLocker l(d->mutex());
     d->cap = cap;
 }
 
@@ -75,7 +79,7 @@ bool ResourceRestrictionPolicy::canRun(JobPointer job)
 {
     QMutexLocker l(d->mutex());
     if (d->customers.size() < d->cap) {
-        d->customers.append( job );
+        d->customers.append(job);
         return true;
     } else {
         return false;
@@ -84,11 +88,11 @@ bool ResourceRestrictionPolicy::canRun(JobPointer job)
 
 void ResourceRestrictionPolicy::free(JobPointer job)
 {
-    QMutexLocker l (d->mutex());
+    QMutexLocker l(d->mutex());
     int position = d->customers.indexOf(job);
 
     if (position != -1) {
-        debug(4, "ResourceRestrictionPolicy::free: job %p done.\n", (void*)job.data());
+        debug(4, "ResourceRestrictionPolicy::free: job %p done.\n", (void *)job.data());
         d->customers.removeAt(position);
     }
 }

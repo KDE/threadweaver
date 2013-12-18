@@ -1,6 +1,7 @@
 #include "Executor.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 Executor::~Executor()
 {

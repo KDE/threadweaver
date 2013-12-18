@@ -35,7 +35,8 @@
 #include "JobPointer.h"
 #include "JobInterface.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class State;
@@ -60,11 +61,12 @@ decorators. The member documentation is provided in the Weaver and
 WeaverImpl classes.
 */
 
-class THREADWEAVER_EXPORT WeaverInterface {
+class THREADWEAVER_EXPORT WeaverInterface
+{
 public:
     virtual ~WeaverInterface() {}
     /** Return the state of the weaver object. */
-    virtual const State* state() const = 0;
+    virtual const State *state() const = 0;
 
     /** Shut down the queue.
      * Tells all threads to exit, and changes to Destructed state.
@@ -73,13 +75,13 @@ public:
     virtual void shutDown() = 0;
 
     /** Set the maximum number of threads this Weaver object may start. */
-    virtual void setMaximumNumberOfThreads( int cap ) = 0;
+    virtual void setMaximumNumberOfThreads(int cap) = 0;
 
     /** Get the maximum number of threads this Weaver may start. */
     virtual int maximumNumberOfThreads() const = 0;
 
     /** Returns the current number of threads in the inventory. */
-    virtual int currentNumberOfThreads () const = 0;
+    virtual int currentNumberOfThreads() const = 0;
 
     /** Register an observer.
 
@@ -91,7 +93,7 @@ public:
 
     To unregister, simply delete the observer.
     */
-    virtual void registerObserver ( WeaverObserver* ) = 0;
+    virtual void registerObserver(WeaverObserver *) = 0;
 
     /** Queue a vector of jobs.
 
@@ -104,7 +106,7 @@ public:
     JobPointer is a shared pointer. This means the object pointed to will be deleted if this object
     is the last remaining reference to it. Keep a JobPointer to the job to avoid automatic deletion.
     */
-    virtual void enqueue(const QVector<JobPointer>& jobs) = 0;
+    virtual void enqueue(const QVector<JobPointer> &jobs) = 0;
 
     /** Remove a job from the queue.
      *
@@ -121,7 +123,7 @@ public:
      * @return true if the job was waiting and has been dequeued
      * @return false if the job was not found waiting in the queue
      */
-    virtual bool dequeue(const JobPointer& job) = 0;
+    virtual bool dequeue(const JobPointer &job) = 0;
 
     /** Remove all queued jobs.
      *
@@ -129,7 +131,7 @@ public:
      *
      * @see dequeue(JobInterface)
      */
-    virtual void dequeue () = 0;
+    virtual void dequeue() = 0;
     /** Finish all queued operations, then return.
 
     This method is used in imperative (not event driven) programs that
@@ -140,7 +142,7 @@ public:
     Warning: This will suspend your thread!
     Warning: If one of your jobs enters an infinite loop, this
     will never return! */
-    virtual void finish () = 0;
+    virtual void finish() = 0;
     /** Suspend job execution.
     When suspending, all threads are allowed to finish the
     currently assigned job but will not receive a new
@@ -150,24 +152,24 @@ public:
     If you call suspend() and there are no jobs left to
     be done, you will immediately receive the suspended()
     signal. */
-    virtual void suspend () = 0;
+    virtual void suspend() = 0;
     /** Resume job queueing.
     @see suspend
     */
-    virtual void resume () = 0;
+    virtual void resume() = 0;
     /** Is the queue empty?
     The queue is empty if no more jobs are queued. */
-    virtual bool isEmpty () const = 0;
+    virtual bool isEmpty() const = 0;
     /** Is the weaver idle?
     The weaver is idle if no jobs are queued and no jobs are processed
     by the threads. */
-    virtual bool isIdle () const = 0;
+    virtual bool isIdle() const = 0;
     /** Returns the number of pending jobs.
     This will return the number of queued jobs. Jobs that are
     currently being executed are not part of the queue. All jobs in
     the queue are waiting to be executed.
     */
-    virtual int queueLength () const = 0;
+    virtual int queueLength() const = 0;
 
     /** Request aborts of the currently executed jobs.
     It is important to understand that aborts are requested, but

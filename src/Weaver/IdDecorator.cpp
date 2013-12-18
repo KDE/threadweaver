@@ -4,14 +4,15 @@
 
 #include "IdDecorator.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 const int IdDecorator_AutoDelete = 1;
 
 // Pssst: IdDecorator uses the d pointer to hold decoratee. It also uses d2 as a bitfield to store the
 // autoDelete setting. The goal is not to require a dynamic allocation on creation.
 IdDecorator::IdDecorator(JobInterface *decoratee, bool autoDelete)
-    : d1(reinterpret_cast<Private1*>(decoratee))
+    : d1(reinterpret_cast<Private1 *>(decoratee))
     , d2(0)
 {
     setAutoDelete(autoDelete);
@@ -56,7 +57,7 @@ void IdDecorator::freeQueuePolicyResources(JobPointer j)
     job()->freeQueuePolicyResources(j);
 }
 
-void IdDecorator::removeQueuePolicy(QueuePolicy* policy)
+void IdDecorator::removeQueuePolicy(QueuePolicy *policy)
 {
     Q_ASSERT(d1);
     job()->removeQueuePolicy(policy);
@@ -68,7 +69,7 @@ QList<QueuePolicy *> IdDecorator::queuePolicies() const
     return job()->queuePolicies();
 }
 
-void IdDecorator::assignQueuePolicy(QueuePolicy* policy)
+void IdDecorator::assignQueuePolicy(QueuePolicy *policy)
 {
     Q_ASSERT(d1);
     job()->assignQueuePolicy(policy);
@@ -98,7 +99,7 @@ void IdDecorator::aboutToBeDequeued(QueueAPI *api)
     job()->aboutToBeDequeued(api);
 }
 
-void IdDecorator::aboutToBeDequeued_locked(QueueAPI* api)
+void IdDecorator::aboutToBeDequeued_locked(QueueAPI *api)
 {
     Q_ASSERT(d1);
     job()->aboutToBeDequeued_locked(api);
@@ -146,7 +147,7 @@ Executor *IdDecorator::setExecutor(Executor *executor)
     return job()->setExecutor(executor);
 }
 
-void IdDecorator::execute(ThreadWeaver::JobPointer self, ThreadWeaver::Thread* thread)
+void IdDecorator::execute(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread)
 {
     Q_ASSERT(d1);
     job()->execute(self, thread);
@@ -158,21 +159,21 @@ void IdDecorator::blockingExecute()
     job()->blockingExecute();
 }
 
-const ThreadWeaver::JobInterface* IdDecorator::job() const
+const ThreadWeaver::JobInterface *IdDecorator::job() const
 {
-    return reinterpret_cast<JobInterface*>(d1);
+    return reinterpret_cast<JobInterface *>(d1);
 }
 
 JobInterface *IdDecorator::job()
 {
-    return reinterpret_cast<JobInterface*>(d1);
+    return reinterpret_cast<JobInterface *>(d1);
 }
 
 void IdDecorator::setAutoDelete(bool onOff)
 {
 
     if (onOff) {
-        d2 = reinterpret_cast<IdDecorator::Private2*>(IdDecorator_AutoDelete);
+        d2 = reinterpret_cast<IdDecorator::Private2 *>(IdDecorator_AutoDelete);
     } else {
         d2 = 0;
     }
@@ -180,27 +181,27 @@ void IdDecorator::setAutoDelete(bool onOff)
 
 bool IdDecorator::autoDelete() const
 {
-    return d2 == reinterpret_cast<IdDecorator::Private2*>(IdDecorator_AutoDelete);
+    return d2 == reinterpret_cast<IdDecorator::Private2 *>(IdDecorator_AutoDelete);
 }
 
 const ThreadWeaver::JobCollection *IdDecorator::collection() const
 {
-   return dynamic_cast<const JobCollection*>(job());
+    return dynamic_cast<const JobCollection *>(job());
 }
 
 JobCollection *IdDecorator::collection()
 {
-    return dynamic_cast<JobCollection*>(job());
+    return dynamic_cast<JobCollection *>(job());
 }
 
 const JobSequence *IdDecorator::sequence() const
 {
-    return dynamic_cast<const JobSequence*>(job());
+    return dynamic_cast<const JobSequence *>(job());
 }
 
 JobSequence *IdDecorator::sequence()
 {
-    return dynamic_cast<JobSequence*>(job());
+    return dynamic_cast<JobSequence *>(job());
 }
 
 }

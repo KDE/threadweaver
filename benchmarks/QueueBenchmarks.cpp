@@ -12,34 +12,39 @@
 #include <JobSequence.h>
 #include <ThreadWeaver.h>
 
-class AccumulateJob : public ThreadWeaver::Job {
+class AccumulateJob : public ThreadWeaver::Job
+{
 public:
     explicit AccumulateJob()
         : m_count(0)
         , m_result(0)
     {
     }
-    AccumulateJob(const AccumulateJob& a)
+    AccumulateJob(const AccumulateJob &a)
         : ThreadWeaver::Job()
         , m_count(a.m_count)
         , m_result(a.m_result)
     {
     }
 
-    void setCount(quint64 count) {
+    void setCount(quint64 count)
+    {
         m_count = count;
     }
 
-    quint64 result() const {
+    quint64 result() const
+    {
         return m_result;
     }
 
-    void executeRun() {
+    void executeRun()
+    {
         run(ThreadWeaver::JobPointer(), 0);
     }
 
 protected:
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread*) {
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
+    {
         std::vector<quint64> numbers(m_count);
         std::generate(numbers.begin(), numbers.end(), []() -> quint64 { static quint64 i = 0; return i++; });
         m_result = std::accumulate(numbers.begin(), numbers.end(), 0);
@@ -53,10 +58,10 @@ private:
 class QueueBenchmarksTest : public QObject
 {
     Q_OBJECT
-    
+
 public:
     QueueBenchmarksTest();
-    
+
 private Q_SLOTS:
     void initTestCase();
     void cleanupTestCase();
@@ -97,11 +102,11 @@ void QueueBenchmarksTest::BaselineBenchmark()
     QFETCH(int, c);
     QFETCH(int, b);
     QFETCH(int, t);
-    const int n = c*b;
+    const int n = c * b;
     Q_UNUSED(t); // in this case
 
     QVector<AccumulateJob> jobs(n);
-    for(int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i) {
         jobs[i].setCount(m);
     }
 
@@ -109,13 +114,12 @@ void QueueBenchmarksTest::BaselineBenchmark()
     //BaselineAsJobsBenchmark does that. Compare BaselineAsJobsBenchmark and BaselineBenchmark to evaluate the overhead of executing
     //an operation in a job.
     QBENCHMARK {
-        for(int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             jobs[i].executeRun();
         }
     }
 }
-
-
 
 void QueueBenchmarksTest::BaselineBenchmark_data()
 {
@@ -128,16 +132,17 @@ void QueueBenchmarksTest::BaselineAsJobsBenchmark()
     QFETCH(int, c);
     QFETCH(int, b);
     QFETCH(int, t);
-    const int n = c*b;
+    const int n = c * b;
     Q_UNUSED(t); // in this case
 
     QVector<AccumulateJob> jobs(n);
-    for(int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i) {
         jobs[i].setCount(m);
     }
 
     QBENCHMARK {
-        for(int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i)
+        {
             jobs[i].blockingExecute();
         }
     }
@@ -154,13 +159,13 @@ void QueueBenchmarksTest::IndividualJobsBenchmark()
     QFETCH(int, c);
     QFETCH(int, b);
     QFETCH(int, t);
-    const int n = c*b;
+    const int n = c * b;
 
     ThreadWeaver::Weaver weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
     QVector<AccumulateJob> jobs(n);
-    for(int i = 0; i < n; ++i) {
+    for (int i = 0; i < n; ++i) {
         jobs[i].setCount(m);
         ThreadWeaver::enqueue_raw(&weaver, &jobs[i]);
     }
@@ -182,7 +187,7 @@ void QueueBenchmarksTest::CollectionsBenchmark()
     QFETCH(int, c);
     QFETCH(int, b);
     QFETCH(int, t);
-    const int n = c*b;
+    const int n = c * b;
 
     ThreadWeaver::Weaver weaver;
     weaver.setMaximumNumberOfThreads(t);
@@ -194,7 +199,7 @@ void QueueBenchmarksTest::CollectionsBenchmark()
     qDebug() << b << "blocks" << c << "operations, queueing...";
     //queue the jobs blockwise as collections
     for (int block = 0; block < b; ++block) {
-        ThreadWeaver::JobCollection* collection = new ThreadWeaver::JobCollection();
+        ThreadWeaver::JobCollection *collection = new ThreadWeaver::JobCollection();
         for (int operation = 0; operation < c; ++operation) {
             const int index = block * b + operation;
             jobs[index].setCount(m);
@@ -221,7 +226,7 @@ void QueueBenchmarksTest::SequencesBenchmark()
     QFETCH(int, c);
     QFETCH(int, b);
     QFETCH(int, t);
-    const int n = c*b;
+    const int n = c * b;
 
     ThreadWeaver::Weaver weaver;
     weaver.setMaximumNumberOfThreads(t);
@@ -231,7 +236,7 @@ void QueueBenchmarksTest::SequencesBenchmark()
     qDebug() << b << "blocks" << c << "operations, queueing...";
     //queue the jobs blockwise as collections
     for (int block = 0; block < b; ++block) {
-        ThreadWeaver::JobSequence* sequence = new ThreadWeaver::JobSequence();
+        ThreadWeaver::JobSequence *sequence = new ThreadWeaver::JobSequence();
         for (int operation = 0; operation < c; ++operation) {
             const int index = block * b + operation;
             jobs[index].setCount(m);
@@ -261,8 +266,8 @@ void QueueBenchmarksTest::defaultBenchmarkData(bool singleThreaded)
 
     const QList<int> threads = singleThreaded ? QList<int>() << 1 : QList<int>() << 1 << 2 << 4 << 8 << 16 << 32 << 64 << 128;
     const QList<int> ms = QList<int>() << 1 << 10 << 100 << 1000 << 10000 << 100000;
-    Q_FOREACH(int m, ms) {
-        Q_FOREACH(int t, threads) {
+    Q_FOREACH (int m, ms) {
+        Q_FOREACH (int t, threads) {
             const QString name = tr("%1 threads, %2 values").arg(t).arg(m);
             // newRow expects const char*, but then qstrdup's it in the QTestData constructor. Eeeew.
             QTest::newRow(qPrintable(name)) << m << 256 << 256 << t;

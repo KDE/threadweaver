@@ -35,7 +35,8 @@
 
 #include "WeaverImplState.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Queue;
 
@@ -47,14 +48,14 @@ class DestructedState : public WeaverImplState
 public:
     explicit DestructedState(Queue *weaver);
     void shutDown() Q_DECL_OVERRIDE;
-    WeaverImpl* weaver() Q_DECL_OVERRIDE;
-    const WeaverImpl* weaver() const Q_DECL_OVERRIDE;
+    WeaverImpl *weaver() Q_DECL_OVERRIDE;
+    const WeaverImpl *weaver() const Q_DECL_OVERRIDE;
     void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;
     void registerObserver(WeaverObserver *obs) Q_DECL_OVERRIDE;
-    void enqueue(const QVector<JobPointer>& job) Q_DECL_OVERRIDE;
-    bool dequeue(const JobPointer& job) Q_DECL_OVERRIDE;
+    void enqueue(const QVector<JobPointer> &job) Q_DECL_OVERRIDE;
+    bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
     void dequeue() Q_DECL_OVERRIDE;
     void finish() Q_DECL_OVERRIDE;
     bool isEmpty() const Q_DECL_OVERRIDE;
@@ -64,7 +65,7 @@ public:
     void suspend() Q_DECL_OVERRIDE;
     void resume() Q_DECL_OVERRIDE;
     JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
-    void waitForAvailableJob ( Thread *th ) Q_DECL_OVERRIDE;
+    void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
     StateId stateId() const Q_DECL_OVERRIDE;
 };
 

@@ -7,7 +7,10 @@
 
 #include <Weaver/JobPointer.h>
 
-namespace ThreadWeaver { class Job; }
+namespace ThreadWeaver
+{
+class Job;
+}
 
 using namespace ThreadWeaver;
 

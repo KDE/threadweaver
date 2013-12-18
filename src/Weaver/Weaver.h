@@ -35,7 +35,8 @@
 #include "Queue.h"
 #include "QueueStream.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class State;
@@ -68,9 +69,9 @@ class THREADWEAVER_EXPORT Weaver : public Queue
 {
     Q_OBJECT
 public:
-    explicit Weaver(QObject* parent = 0);
+    explicit Weaver(QObject *parent = 0);
 
-    explicit Weaver(Queue* implementation, QObject* parent = 0);
+    explicit Weaver(Queue *implementation, QObject *parent = 0);
 
     /** Destruct a Weaver object. */
     virtual ~Weaver();
@@ -78,14 +79,13 @@ public:
     /** Create a QueueStream to enqueue jobs into this queue. */
     QueueStream stream();
 
-    const State* state() const;
+    const State *state() const;
 
     void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;
 
-
-    void registerObserver ( WeaverObserver* );
+    void registerObserver(WeaverObserver *);
 
     /** Return the global Weaver instance.
         In some cases, a global Weaver object per application is
@@ -94,17 +94,17 @@ public:
         If instance is never called, a global Weaver object will not be
         created.
     */
-    static ThreadWeaver::Weaver* instance();
-    void enqueue(const QVector<JobPointer>& jobs) Q_DECL_OVERRIDE;
-    void enqueue(const JobPointer& job);
-    bool dequeue(const JobPointer&) Q_DECL_OVERRIDE;
+    static ThreadWeaver::Weaver *instance();
+    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
+    void enqueue(const JobPointer &job);
+    bool dequeue(const JobPointer &) Q_DECL_OVERRIDE;
     void dequeue() Q_DECL_OVERRIDE;
     void finish() Q_DECL_OVERRIDE;
     void suspend() Q_DECL_OVERRIDE;
     void resume() Q_DECL_OVERRIDE;
     bool isEmpty() const Q_DECL_OVERRIDE;
     bool isIdle() const Q_DECL_OVERRIDE;
-    int queueLength () const Q_DECL_OVERRIDE;
+    int queueLength() const Q_DECL_OVERRIDE;
     void requestAbort() Q_DECL_OVERRIDE;
     void reschedule() Q_DECL_OVERRIDE;
     void shutDown() Q_DECL_OVERRIDE;
@@ -112,13 +112,13 @@ public:
     /** @brief Interface for the global queue factory. */
     struct GlobalQueueFactory {
         virtual ~GlobalQueueFactory() {}
-        virtual Weaver* create(QObject* parent) = 0;
+        virtual Weaver *create(QObject *parent) = 0;
 
     };
-    static void setGlobalQueueFactory(GlobalQueueFactory* factory);
+    static void setGlobalQueueFactory(GlobalQueueFactory *factory);
 private:
     class Private;
-    Private* const d;
+    Private *const d;
 };
 
 }

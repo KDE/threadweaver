@@ -6,7 +6,8 @@
 #include "Job.h"
 #include "Executor.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Job;
 class Thread;
@@ -17,11 +18,11 @@ class ExecuteWrapper : public Executor
 {
 public:
     ExecuteWrapper();
-    Executor* wrap(Executor* previous);
-    Executor* unwrap(JobPointer job);
+    Executor *wrap(Executor *previous);
+    Executor *unwrap(JobPointer job);
     void begin(JobPointer job, Thread *) Q_DECL_OVERRIDE;
     void execute(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-    void executeWrapped(JobPointer job, Thread* thread);
+    void executeWrapped(JobPointer job, Thread *thread);
     void end(JobPointer job, Thread *) Q_DECL_OVERRIDE;
 
 private:

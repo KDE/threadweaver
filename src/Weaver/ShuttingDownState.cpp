@@ -28,10 +28,11 @@
 
 #include "ShuttingDownState.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 ShuttingDownState::ShuttingDownState(Queue *weaver)
-    : WeaverImplState (weaver)
+    : WeaverImplState(weaver)
 {
 }
 
@@ -49,14 +50,14 @@ void ShuttingDownState::resume()
     // ignored: when shutting down, we do not return from the suspended state
 }
 
-JobPointer ShuttingDownState::applyForWork(Thread*, bool wasBusy)
+JobPointer ShuttingDownState::applyForWork(Thread *, bool wasBusy)
 {
     Q_UNUSED(wasBusy) // except in Q_ASSERT
-    Q_ASSERT(wasBusy==false);
+    Q_ASSERT(wasBusy == false);
     return JobPointer();  // tell threads to exit
 }
 
-void ShuttingDownState::waitForAvailableJob ( Thread*)
+void ShuttingDownState::waitForAvailableJob(Thread *)
 {
     // immidiately return here
 }

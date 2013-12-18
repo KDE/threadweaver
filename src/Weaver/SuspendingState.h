@@ -36,7 +36,8 @@
 #include "WeaverImplState.h"
 #include "WeaverImpl.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 /** SuspendingState is the state after suspend() has been called, but
  *  before all threads finished executing the current job and blocked.
@@ -44,7 +45,7 @@ namespace ThreadWeaver {
 class SuspendingState : public WeaverImplState
 {
 public:
-    explicit SuspendingState( WeaverImpl *weaver);
+    explicit SuspendingState(WeaverImpl *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */

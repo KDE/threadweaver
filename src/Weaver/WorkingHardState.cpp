@@ -36,8 +36,8 @@ $Id: WorkingHardState.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "ThreadWeaver.h"
 #include "DebuggingAids.h"
 
-
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 void WorkingHardState::activated()
 {
@@ -45,7 +45,7 @@ void WorkingHardState::activated()
 }
 
 WorkingHardState::WorkingHardState(WeaverImpl *weaver)
-    : WeaverImplState (weaver)
+    : WeaverImplState(weaver)
 {
 }
 
@@ -59,7 +59,8 @@ void WorkingHardState::resume()
 }
 
 JobPointer WorkingHardState::applyForWork(Thread *th,  bool wasBusy)
-{   // beware: this code is executed in the applying thread!
+{
+    // beware: this code is executed in the applying thread!
     debug(2, "WorkingHardState::applyForWork: thread %i applies for work in %s state.\n", th->id(),
           qPrintable(weaver()->state()->stateName()));
     JobPointer next = weaver()->takeFirstAvailableJobOrSuspendOrWait(th, wasBusy, false, false);

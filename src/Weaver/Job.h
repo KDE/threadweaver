@@ -36,13 +36,13 @@ $Id: Job.h 32 2005-08-17 08:38:01Z mirko $
 class QMutex;
 class QWaitCondition;
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Thread;
 class QueuePolicy;
 class QueueAPI;
 class Executor;
-
 
 /** @brief A Job is a simple abstraction of an action that is to be executed in a thread context.
  *
@@ -75,7 +75,7 @@ public:
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object.
      */
-    virtual void execute(JobPointer job, Thread*) Q_DECL_OVERRIDE;
+    virtual void execute(JobPointer job, Thread *) Q_DECL_OVERRIDE;
 
     /** Perform the job synchroneously in the current thread. */
     void blockingExecute() Q_DECL_OVERRIDE;
@@ -85,10 +85,10 @@ public:
      * Returns the previously set executor. The executor can never be unset. If zero is passed in as the new executor, the Job
      * will internally reset to a default executor that only invokes run().
      */
-    Executor* setExecutor(Executor* executor) Q_DECL_OVERRIDE;
+    Executor *setExecutor(Executor *executor) Q_DECL_OVERRIDE;
 
     /** Returns the executor currently set on the Job. */
-    Executor* executor() const Q_DECL_OVERRIDE;
+    Executor *executor() const Q_DECL_OVERRIDE;
 
     /** The queueing priority of the job.
      * Jobs will be sorted by their queueing priority when enqueued. A higher queueing priority will place the job in front of all
@@ -172,17 +172,17 @@ public:
      * Queue Policies customize the queueing (running) behaviour of sets of jobs. Examples for queue policies are dependencies
      * and resource restrictions. Every queue policy object can only be assigned once to a job, multiple assignments will be
      * IGNORED. */
-    void assignQueuePolicy(QueuePolicy*) Q_DECL_OVERRIDE;
+    void assignQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
 
     /** Remove a queue policy from this job. */
-    void removeQueuePolicy(QueuePolicy*) Q_DECL_OVERRIDE;
+    void removeQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
 
     /** @brief Return the queue policies assigned to this Job. */
-    QList<QueuePolicy*> queuePolicies() const;
+    QList<QueuePolicy *> queuePolicies() const;
 
 private:
     class Private;
-    Private* d;
+    Private *d;
 
 protected:
     /** Free the queue policies acquired before this job has been executed. */
@@ -199,24 +199,24 @@ protected:
      * counted object handled by the queue. Using it as signal parameters will amongst other things prevent thejob from being
      * memory managed and deleted.
      */
-    virtual void run(JobPointer self, Thread* thread) = 0;
+    virtual void run(JobPointer self, Thread *thread) = 0;
 
     /** @brief Perform standard tasks before starting the execution of a job.
      *
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultBegin(JobPointer job, Thread* thread) Q_DECL_OVERRIDE;
+    void defaultBegin(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
 
     /** @brief Perform standard task after the execution of a job.
      *
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultEnd(JobPointer job, Thread* thread) Q_DECL_OVERRIDE;
+    void defaultEnd(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
 
     /** The mutex used to protect this job. */
-    QMutex* mutex() const Q_DECL_OVERRIDE;
+    QMutex *mutex() const Q_DECL_OVERRIDE;
 
 };
 

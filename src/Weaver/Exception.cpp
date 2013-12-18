@@ -1,8 +1,9 @@
 #include "Exception.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-Exception::Exception(const QString& message)
+Exception::Exception(const QString &message)
     : std::runtime_error(message.toStdString())
     , m_message(message)
 {
@@ -10,7 +11,8 @@ Exception::Exception(const QString& message)
 
 Exception::~Exception() throw() {}
 
-QString Exception::message() const {
+QString Exception::message() const
+{
     return m_message;
 }
 

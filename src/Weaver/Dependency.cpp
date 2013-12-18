@@ -2,9 +2,10 @@
 #include "JobInterface.h"
 #include "ManagedJobPointer.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-Dependency::Dependency(const JobPointer& dependent, const JobPointer& dependee)
+Dependency::Dependency(const JobPointer &dependent, const JobPointer &dependee)
     : m_dependent(dependent)
     , m_dependee(dependee)
 {
@@ -16,13 +17,13 @@ Dependency::Dependency(JobInterface *dependent, JobInterface *dependee)
 {
 }
 
-Dependency::Dependency(const JobPointer& dependent, JobInterface *dependee)
+Dependency::Dependency(const JobPointer &dependent, JobInterface *dependee)
     : m_dependent(dependent)
     , m_dependee(ManagedJobPointer<JobInterface>(dependee))
 {
 }
 
-Dependency::Dependency(JobInterface *dependent, const JobPointer& dependee)
+Dependency::Dependency(JobInterface *dependent, const JobPointer &dependee)
     : m_dependent(ManagedJobPointer<JobInterface>(dependent))
     , m_dependee(dependee)
 {

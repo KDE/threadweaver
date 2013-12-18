@@ -35,7 +35,8 @@
 
 #include "QueuePolicy.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class JobInterface;
 class Dependency;
@@ -59,7 +60,7 @@ public:
      *  @param jobB the job jobA depends on
      */
     void addDependency(JobPointer jobA, JobPointer jobB);
-    void addDependency(const Dependency& dep);
+    void addDependency(const Dependency &dep);
 
     /** @brief Remove a dependency.
      *  The dependency of jobA on jobB is removed. If no dependencies are left for jobA, canRun will return true.
@@ -69,7 +70,7 @@ public:
      *  @return true if dependency existed, false otherwise
      */
     bool removeDependency(JobPointer jobA, JobPointer jobB);
-    bool removeDependency(const Dependency& dep);
+    bool removeDependency(const Dependency &dep);
 
     /** @brief Resolve all dependencies for a job.
      *  This method is called after the Job has been finished, or when it is deleted without being executed (performed by the
@@ -81,7 +82,7 @@ public:
 //    /** @brief Retrieve a list of dependencies of this job. */
 //    QList<JobPointer> getDependencies(JobPointer) const;
 
-    static DependencyPolicy& instance();
+    static DependencyPolicy &instance();
 
     bool canRun(JobPointer) Q_DECL_OVERRIDE;
 
@@ -89,7 +90,7 @@ public:
 
     void release(JobPointer) Q_DECL_OVERRIDE;
 
-    void destructed(JobInterface* job) Q_DECL_OVERRIDE;
+    void destructed(JobInterface *job) Q_DECL_OVERRIDE;
 
 protected:
     /** @brief Query whether the job has an unresolved dependency.
@@ -97,11 +98,10 @@ protected:
      */
     bool hasUnresolvedDependencies(JobPointer) const;
 
-
 private:
     DependencyPolicy();
     class Private;
-    Private * const d;
+    Private *const d;
 };
 
 }

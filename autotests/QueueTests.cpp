@@ -31,8 +31,8 @@
 
 QMutex s_GlobalMutex;
 
-LowPriorityAppendCharacterJob::LowPriorityAppendCharacterJob (QChar c, QString* stringref)
-    : AppendCharacterJob (c, stringref)
+LowPriorityAppendCharacterJob::LowPriorityAppendCharacterJob(QChar c, QString *stringref)
+    : AppendCharacterJob(c, stringref)
 {}
 
 int LowPriorityAppendCharacterJob ::priority() const
@@ -40,8 +40,8 @@ int LowPriorityAppendCharacterJob ::priority() const
     return -1;
 }
 
-HighPriorityAppendCharacterJob::HighPriorityAppendCharacterJob (QChar c, QString* stringref)
-    : AppendCharacterJob (c, stringref)
+HighPriorityAppendCharacterJob::HighPriorityAppendCharacterJob(QChar c, QString *stringref)
+    : AppendCharacterJob(c, stringref)
 {}
 
 int HighPriorityAppendCharacterJob::priority() const
@@ -57,33 +57,34 @@ SecondThreadThatQueues::SecondThreadThatQueues()
 void SecondThreadThatQueues::run()
 {
     QString sequence;
-    AppendCharacterJob a( 'a', &sequence );
+    AppendCharacterJob a('a', &sequence);
 
     ThreadWeaver::enqueue_raw(&a);
     ThreadWeaver::Weaver::instance()->finish();
-    QCOMPARE( sequence, QString("a" ) );
+    QCOMPARE(sequence, QString("a"));
 }
 
-QueueTests::QueueTests( QObject* parent )
-    : QObject( parent )
-    , autoDeleteJob ( 0 )
+QueueTests::QueueTests(QObject *parent)
+    : QObject(parent)
+    , autoDeleteJob(0)
 {
 }
 
-void QueueTests::initTestCase ()
+void QueueTests::initTestCase()
 {
-    ThreadWeaver::setDebugLevel ( true,  1 );
+    ThreadWeaver::setDebugLevel(true,  1);
 }
 
-void QueueTests::SimpleQueuePrioritiesTest() {
+void QueueTests::SimpleQueuePrioritiesTest()
+{
     using namespace ThreadWeaver;
 
     Weaver weaver;
-    weaver.setMaximumNumberOfThreads ( 1 ); // just one thread
+    weaver.setMaximumNumberOfThreads(1);    // just one thread
     QString sequence;
-    LowPriorityAppendCharacterJob jobA ( QChar( 'a' ), &sequence );
-    AppendCharacterJob jobB ( QChar( 'b' ), &sequence );
-    HighPriorityAppendCharacterJob jobC ( QChar( 'c' ), &sequence );
+    LowPriorityAppendCharacterJob jobA(QChar('a'), &sequence);
+    AppendCharacterJob jobB(QChar('b'), &sequence);
+    HighPriorityAppendCharacterJob jobC(QChar('c'), &sequence);
 
     // queue low priority, then normal priority, then high priority
     // if priorities are processed correctly, the jobs will be executed in reverse order
@@ -97,14 +98,15 @@ void QueueTests::SimpleQueuePrioritiesTest() {
     weaver.resume();
     weaver.finish();
 
-    QCOMPARE ( sequence, QString ("cba" ) );
+    QCOMPARE(sequence, QString("cba"));
 }
 
 void QueueTests::WeaverInitializationTest()
-{ // this one mostly tests the sanity of the startup behaviour
+{
+    // this one mostly tests the sanity of the startup behaviour
     ThreadWeaver::Weaver weaver;
-    QCOMPARE (weaver.currentNumberOfThreads(), 0);
-    QVERIFY (weaver.isEmpty());
+    QCOMPARE(weaver.currentNumberOfThreads(), 0);
+    QVERIFY(weaver.isEmpty());
     QVERIFY(weaver.isIdle());
     QVERIFY(weaver.queueLength() == 0);
     weaver.finish();
@@ -116,13 +118,14 @@ void QueueTests::QueueFromSecondThreadTest()
     SecondThreadThatQueues thread;
     thread.start();
     thread.wait();
-    QVERIFY ( ThreadWeaver::Weaver::instance()->isIdle() );
+    QVERIFY(ThreadWeaver::Weaver::instance()->isIdle());
 }
 
 void QueueTests::deleteJob(ThreadWeaver::JobPointer job)
-{   // test that signals are properly emitted (asynchronously, that is):
-    QVERIFY( thread() == QThread::currentThread() );
-    QVERIFY( job == autoDeleteJob );
+{
+    // test that signals are properly emitted (asynchronously, that is):
+    QVERIFY(thread() == QThread::currentThread());
+    QVERIFY(job == autoDeleteJob);
     delete autoDeleteJob; autoDeleteJob = 0;
 }
 
@@ -143,13 +146,13 @@ void QueueTests::DeleteDoneJobsFromSequenceTest()
     Weaver::instance()->finish();
     QTest::qWait(100); // return to event queue to make sure signals are delivered
     // no need to delete a, that should be done in deleteJob
-    QVERIFY( autoDeleteJob == 0 );
+    QVERIFY(autoDeleteJob == 0);
 }
 
 void QueueTests::deleteCollection(ThreadWeaver::JobPointer collection)
 {
-    QVERIFY( thread() == QThread::currentThread() );
-    QVERIFY( collection == autoDeleteCollection );
+    QVERIFY(thread() == QThread::currentThread());
+    QVERIFY(collection == autoDeleteCollection);
     delete autoDeleteCollection; autoDeleteCollection = 0;
 }
 
@@ -161,8 +164,8 @@ void QueueTests::DeleteCollectionOnDoneTest()
     QVERIFY(connect(autoDeleteCollection, SIGNAL(done(ThreadWeaver::JobPointer)),
                     SLOT(deleteCollection(ThreadWeaver::JobPointer))));
 
-    AppendCharacterJob a( QChar( 'a' ), &sequence );
-    AppendCharacterJob b( QChar( 'b' ), &sequence );
+    AppendCharacterJob a(QChar('a'), &sequence);
+    AppendCharacterJob b(QChar('b'), &sequence);
     *autoDeleteCollection->collection() << a << b;
 
     enqueue_raw(autoDeleteCollection);
@@ -174,9 +177,9 @@ void QueueTests::DeleteCollectionOnDoneTest()
     // return to event queue to make sure signals are delivered
     QTest::qWait(10);
     // no need to delete a, that should be done in deleteJob
-    QVERIFY( sequence.length() == 2 );
-    QVERIFY( autoDeleteCollection == 0 );
+    QVERIFY(sequence.length() == 2);
+    QVERIFY(autoDeleteCollection == 0);
 }
 
-QTEST_MAIN ( QueueTests )
+QTEST_MAIN(QueueTests)
 

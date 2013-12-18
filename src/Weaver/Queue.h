@@ -31,7 +31,8 @@
 #include <QtCore/QObject>
 #include "WeaverInterface.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class Queue : public QObject, public WeaverInterface
 {
@@ -39,7 +40,7 @@ class Queue : public QObject, public WeaverInterface
 public:
     /** A Queue manages a queue of Jobs. */
     explicit Queue(QObject *parent = 0);
-    
+
 Q_SIGNALS:
     /** This signal is emitted when the Weaver has finished ALL currently
     queued jobs.
@@ -47,13 +48,13 @@ Q_SIGNALS:
     emitted a couple of times (what happens is that all already queued
     jobs have been processed while you still add new ones). This is
     not a bug, but the intended behaviour. */
-    void finished ();
+    void finished();
 
     /** Thread queueing has been suspended.
     When suspend is called with, all threads are
     allowed to finish their job. When the last thread
     finished, this signal is emitted. */
-    void suspended ();
+    void suspended();
 
     /** This signal is emitted when a job is finished.  In addition,
     the Job itself emits a done() signal just before the jobDone() signal
@@ -64,7 +65,7 @@ Q_SIGNALS:
     // FIXME (0.7) or remove all these, and add them to WeaverObserver
 
     /** The Weaver's state has changed. */
-    void stateChanged(ThreadWeaver::State*);
+    void stateChanged(ThreadWeaver::State *);
 };
 
 }

@@ -37,70 +37,70 @@
 #include "threadweaver_export.h"
 #include "JobPointer.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
-    class Job;
-    class WeaverImpl;
+class Job;
+class WeaverImpl;
 
-    /** The class Thread is used to represent the worker threads in
-        the weaver's inventory. It is not meant to be overloaded. */
-    class THREADWEAVER_EXPORT Thread : public QThread
-    {
-        Q_OBJECT
+/** The class Thread is used to represent the worker threads in
+    the weaver's inventory. It is not meant to be overloaded. */
+class THREADWEAVER_EXPORT Thread : public QThread
+{
+    Q_OBJECT
 
-    public:
-	/** Create a thread.
-	    These thread objects are only used inside the Weaver parent
-	    object.
+public:
+    /** Create a thread.
+        These thread objects are only used inside the Weaver parent
+        object.
 
             @param parent the parent WeaverImpl
         */
-        explicit Thread ( WeaverImpl *parent = 0 );
+    explicit Thread(WeaverImpl *parent = 0);
 
-	/** The destructor. */
-        ~Thread();
+    /** The destructor. */
+    ~Thread();
 
-        /** Overload to execute the assigned jobs.
-	    Whenever the thread is idle, it will ask its Weaver parent for a
-	    Job to do. The Weaver will either return a Job or a Nil
-	    pointer. When a Nil pointer is returned, it tells the thread to
-	    exit.
-	*/
-        void run() Q_DECL_OVERRIDE;
+    /** Overload to execute the assigned jobs.
+    Whenever the thread is idle, it will ask its Weaver parent for a
+    Job to do. The Weaver will either return a Job or a Nil
+    pointer. When a Nil pointer is returned, it tells the thread to
+    exit.
+    */
+    void run() Q_DECL_OVERRIDE;
 
-	/** Returns the thread id.
-	    This id marks the respective Thread object, and must
-	    therefore not be confused with, e.g., the pthread thread
-	    ID.
+    /** Returns the thread id.
+        This id marks the respective Thread object, and must
+        therefore not be confused with, e.g., the pthread thread
+        ID.
 
-	    Generally, the way threads are implemented is not
-	    specified. id() is the only way to uniquely identify a
-	    thread within ThreadWeaver.
-	    */
-	unsigned int id();
+        Generally, the way threads are implemented is not
+        specified. id() is the only way to uniquely identify a
+        thread within ThreadWeaver.
+        */
+    unsigned int id();
 
-        /** Request the abortion of the current job.
-            If there is no current job, this method will do nothing, but can
-            safely be called.
-            It forwards the request to the current Job.
-         */
-        void requestAbort();
+    /** Request the abortion of the current job.
+        If there is no current job, this method will do nothing, but can
+        safely be called.
+        It forwards the request to the current Job.
+     */
+    void requestAbort();
 
-    Q_SIGNALS:
-        /** The thread has been started. */
-        void started(ThreadWeaver::Thread*);
-        /** The thread started to process a job. */
-        void jobStarted(ThreadWeaver::JobPointer, ThreadWeaver::Thread*);
-        /** The thread finished to execute a job. */
-        void jobDone(ThreadWeaver::JobPointer);
+Q_SIGNALS:
+    /** The thread has been started. */
+    void started(ThreadWeaver::Thread *);
+    /** The thread started to process a job. */
+    void jobStarted(ThreadWeaver::JobPointer, ThreadWeaver::Thread *);
+    /** The thread finished to execute a job. */
+    void jobDone(ThreadWeaver::JobPointer);
 
-    private:
-        class Private;
-        Private * const d;
-    };
+private:
+    class Private;
+    Private *const d;
+};
 
 }
 
 #endif
-
 

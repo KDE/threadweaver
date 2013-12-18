@@ -34,7 +34,8 @@ $Id: Job.h 32 2005-08-17 08:38:01Z mirko $
 #include "JobPointer.h"
 #include "QueuePolicy.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 class JobInterface;
 
@@ -67,11 +68,11 @@ public:
     bool canRun(JobPointer) Q_DECL_OVERRIDE;
     void free(JobPointer) Q_DECL_OVERRIDE;
     void release(JobPointer) Q_DECL_OVERRIDE;
-    void destructed(JobInterface* job) Q_DECL_OVERRIDE;
+    void destructed(JobInterface *job) Q_DECL_OVERRIDE;
 
 private:
     class Private;
-    Private* const d;
+    Private *const d;
 };
 
 }

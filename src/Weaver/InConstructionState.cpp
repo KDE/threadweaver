@@ -31,7 +31,8 @@
 #include "WeaverImpl.h"
 #include "ThreadWeaver.h"
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 
 InConstructionState::InConstructionState(Queue *weaver)
     : WeaverImplState(weaver)
@@ -50,7 +51,7 @@ void InConstructionState::resume()
 
 JobPointer InConstructionState::applyForWork(Thread *th, bool wasBusy)
 {
-    Q_ASSERT(wasBusy==false);
+    Q_ASSERT(wasBusy == false);
     // As long as we are in the construction state, no jobs will be given
     // to the worker threads. The threads will be suspended. They will
     // return from the blocked state when jobs are queued. By then, we
