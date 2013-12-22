@@ -29,7 +29,7 @@
 #ifndef JOBSEQUENCE_H
 #define JOBSEQUENCE_H
 
-#include "JobCollection.h"
+#include "Collection.h"
 
 namespace ThreadWeaver
 {
@@ -41,7 +41,7 @@ namespace ThreadWeaver
  * Sequence provides a handy cleanup and unwind mechanism: the stop() slot. If it is called, the processing
  * of the sequence will stop, and all its remaining Jobs will be dequeued.
  * A Sequence is the first element of itself. */
-class THREADWEAVER_EXPORT Sequence : public JobCollection
+class THREADWEAVER_EXPORT Sequence : public Collection
 {
 public:
     explicit Sequence();

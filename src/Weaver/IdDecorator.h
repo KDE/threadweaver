@@ -9,7 +9,7 @@
 namespace ThreadWeaver
 {
 
-class JobCollection;
+class Collection;
 class Sequence;
 
 /** @brief IdDecorator decorates a job without changing it's behaviour.
@@ -28,12 +28,12 @@ public:
     void setAutoDelete(bool onOff);
     /** Will the decoratee be auto-deleted? */
     bool autoDelete() const;
-    /** Retrieve the decorated job as a JobCollection.
-     *  If the decorated Job is not a JobCollection, 0 is returned. */
-    const JobCollection *collection() const;
-    /** Retrieve the decorated job as a JobCollection.
-     *  If the decorated Job is not a JobCollection, 0 is returned. */
-    JobCollection *collection();
+    /** Retrieve the decorated job as a Collection.
+     *  If the decorated Job is not a Collection, 0 is returned. */
+    const Collection *collection() const;
+    /** Retrieve the decorated job as a Collection.
+     *  If the decorated Job is not a Collection, 0 is returned. */
+    Collection *collection();
     /** Retrieve the decorated job as a Sequence.
      *  If the decorated Job is not a Sequence, 0 is returned. */
     const Sequence *sequence() const;

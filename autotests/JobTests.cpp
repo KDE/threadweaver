@@ -13,7 +13,7 @@
 #include <ThreadWeaver.h>
 #include <Thread.h>
 #include <DebuggingAids.h>
-#include <JobCollection.h>
+#include <Collection.h>
 #include <ResourceRestrictionPolicy.h>
 #include <Dependency.h>
 #include <DependencyPolicy.h>
@@ -88,7 +88,7 @@ void JobTests::SimpleJobTest()
 void JobTests::SimpleJobCollectionTest()
 {
     QString sequence;
-    JobCollection jobCollection;
+    Collection jobCollection;
     jobCollection << new AppendCharacterJob(QChar('a'), &sequence)
                   << new AppendCharacterJob(QChar('b'), &sequence)
                   << new AppendCharacterJob(QChar('c'), &sequence);
@@ -106,7 +106,7 @@ void JobTests::SimpleJobCollectionTest()
 
 void JobTests::EmptyJobCollectionTest()
 {
-    JobCollection collection;
+    Collection collection;
 
     WaitForIdleAndFinished w(Weaver::instance());
     Q_ASSERT(Weaver::instance()->isIdle());
@@ -119,7 +119,7 @@ void JobTests::EmptyJobCollectionTest()
 void JobTests::CollectionQueueingTest()
 {
     QString output;
-    JobCollection jobCollection;
+    Collection jobCollection;
     jobCollection << new AppendCharacterJob(QChar('a'), &output)
                   << new AppendCharacterJob(QChar('b'), &output)
                   << new AppendCharacterJob(QChar('c'), &output);
@@ -141,7 +141,7 @@ using namespace ThreadWeaver;
 
 QString SequenceTemplate = "abcdefghijklmnopqrstuvwxyz";
 
-class GeneratingCollection : public JobCollection
+class GeneratingCollection : public Collection
 {
 public:
     void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
@@ -233,7 +233,7 @@ void JobTests::IncompleteCollectionTest()
     QString result;
     QObjectDecorator jobA(new AppendCharacterJob(QChar('a'), &result));
     AppendCharacterJob jobB(QChar('b'), &result); //jobB does not get added to the sequence and queued
-    QObjectDecorator col(new JobCollection());
+    QObjectDecorator col(new Collection());
     *col.collection() << jobA;
 
     WaitForIdleAndFinished w(Weaver::instance());
@@ -268,8 +268,8 @@ void JobTests::EmitStartedOnFirstElementTest()
 
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &result));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &result));
-    QObjectDecorator collection(new JobCollection());
-    JobCollection *decorated = dynamic_cast<JobCollection *>(collection.job());
+    QObjectDecorator collection(new Collection());
+    Collection *decorated = dynamic_cast<Collection *>(collection.job());
     QVERIFY(decorated != 0);
     decorated->addJob(jobA);
     decorated->addJob(jobB);
@@ -306,7 +306,7 @@ void JobTests::CollectionDependenciesTest()
     // set up a collection that depends on jobC which does not get queued
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &result));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &result));
-    QObjectDecorator col(new JobCollection());
+    QObjectDecorator col(new Collection());
     QSignalSpy collectionStartedSignalSpy(&col, SIGNAL(started(ThreadWeaver::JobPointer)));
     col.collection()->addJob(jobA);
     col.collection()->addJob(jobB);
@@ -345,7 +345,7 @@ void JobTests::QueueAndDequeueCollectionTest()
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
     JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
-    QSharedPointer<JobCollection> collection(new JobCollection());
+    QSharedPointer<Collection> collection(new Collection());
     collection->addJob(jobA);
     collection->addJob(jobB);
     collection->addJob(jobC);
@@ -439,21 +439,21 @@ void JobTests::RecursiveQueueAndDequeueCollectionTest()
     JobPointer jobH(new AppendCharacterJob(QChar('h'), &sequence));
     JobPointer jobI(new AppendCharacterJob(QChar('i'), &sequence));
     JobPointer jobJ(new AppendCharacterJob(QChar('j'), &sequence));
-    QSharedPointer<JobCollection> collection1(new JobCollection());
+    QSharedPointer<Collection> collection1(new Collection());
     collection1->addJob(jobA);
     collection1->addJob(jobB);
     collection1->addJob(jobC);
-    QSharedPointer<JobCollection> collection2(new JobCollection());
+    QSharedPointer<Collection> collection2(new Collection());
     collection2->addJob(jobD);
     collection2->addJob(jobE);
     collection2->addJob(jobF);
-    QSharedPointer<JobCollection> collection3(new JobCollection());
+    QSharedPointer<Collection> collection3(new Collection());
     collection3->addJob(jobG);
     collection3->addJob(jobH);
     collection3->addJob(jobI);
     collection3->addJob(jobJ);
     // sequence 4 will contain sequences 1, 2, and 3, in that order:
-    QSharedPointer<JobCollection> collection4(new JobCollection());
+    QSharedPointer<Collection> collection4(new Collection());
     collection4->addJob(collection1);
     collection4->addJob(collection2);
     collection4->addJob(collection3);
@@ -512,7 +512,7 @@ void JobTests::QueueAndDequeueAllCollectionTest()
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
     JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
-    QSharedPointer<JobCollection> collection(new JobCollection());
+    QSharedPointer<Collection> collection(new Collection());
     collection->addJob(jobA);
     collection->addJob(jobB);
     collection->addJob(jobC);
@@ -559,21 +559,21 @@ void JobTests::RecursiveQueueAndDequeueAllCollectionTest()
     JobPointer jobH(new AppendCharacterJob(QChar('h'), &sequence));
     JobPointer jobI(new AppendCharacterJob(QChar('i'), &sequence));
     JobPointer jobJ(new AppendCharacterJob(QChar('j'), &sequence));
-    QSharedPointer<JobCollection> collection1(new JobCollection());
+    QSharedPointer<Collection> collection1(new Collection());
     collection1->addJob(jobA);
     collection1->addJob(jobB);
     collection1->addJob(jobC);
-    QSharedPointer<JobCollection> collection2(new JobCollection());
+    QSharedPointer<Collection> collection2(new Collection());
     collection2->addJob(jobD);
     collection2->addJob(jobE);
     collection2->addJob(jobF);
-    QSharedPointer<JobCollection> collection3(new JobCollection());
+    QSharedPointer<Collection> collection3(new Collection());
     collection3->addJob(jobG);
     collection3->addJob(jobH);
     collection3->addJob(jobI);
     collection3->addJob(jobJ);
     // sequence 4 will contain sequences 1, 2, and 3, in that order:
-    QSharedPointer<JobCollection> collection4(new JobCollection());
+    QSharedPointer<Collection> collection4(new Collection());
     collection4->addJob(collection1);
     collection4->addJob(collection2);
     collection4->addJob(collection3);
@@ -747,7 +747,7 @@ void JobTests::ResourceRestrictionPolicyBasicsTest()
     AppendCharacterJob e('e', &sequence);
     AppendCharacterJob f('f', &sequence);
     AppendCharacterJob g('g', &sequence);
-    JobCollection collection;
+    Collection collection;
     collection << a << b << c << d << e << f << g;
     a.assignQueuePolicy(&restriction);
     b.assignQueuePolicy(&restriction);
@@ -782,7 +782,7 @@ void JobTests::JobSignalsAreEmittedAsynchronouslyTest()
     char bits[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g' };
     const int NumberOfBits = sizeof bits / sizeof bits[0];
     QString sequence;
-    QObjectDecorator collection(new JobCollection, this);
+    QObjectDecorator collection(new Collection, this);
 
     QVERIFY(connect(&collection, SIGNAL(started(ThreadWeaver::JobPointer)), SLOT(jobStarted(ThreadWeaver::JobPointer))));
     QVERIFY(connect(&collection, SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(jobDone(ThreadWeaver::JobPointer))));

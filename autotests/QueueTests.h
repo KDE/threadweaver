@@ -26,7 +26,7 @@ public:
 namespace ThreadWeaver
 {
 class Job;
-class JobCollection;
+class Collection;
 class QObjectDecorator;
 }
 

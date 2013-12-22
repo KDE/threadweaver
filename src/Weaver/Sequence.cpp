@@ -55,7 +55,7 @@ void Sequence::enqueueElements()
             DependencyPolicy::instance().addDependency(jobA, jobB);
         }
     }
-    JobCollection::enqueueElements();
+    Collection::enqueueElements();
 }
 
 void Sequence::elementFinished(JobPointer job, Thread *thread)
@@ -64,7 +64,7 @@ void Sequence::elementFinished(JobPointer job, Thread *thread)
 
     JobPointer s(self());
     Q_ASSERT(!s.isNull());
-    JobCollection::elementFinished(job, thread);
+    Collection::elementFinished(job, thread);
     if (!job->success()) {
         stop(job);
     }

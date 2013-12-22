@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-This file implements the JobCollection class.
+This file implements the Collection class.
 
 $ Author: Mirko Boehm $
 $ Copyright: (C) 2004-2013 Mirko Boehm $
@@ -24,7 +24,7 @@ http://creative-destruction.me $
    Boston, MA 02110-1301, USA.
 */
 
-#include "JobCollection.h"
+#include "Collection.h"
 
 #include "QueueAPI.h"
 #include "DebuggingAids.h"
@@ -49,7 +49,7 @@ public:
         : collection(0)
     {}
 
-    void setCollection(JobCollection *collection_)
+    void setCollection(Collection *collection_)
     {
         collection = collection_;
     }
@@ -73,7 +73,7 @@ public:
     }
 
 private:
-    ThreadWeaver::JobCollection *collection;
+    ThreadWeaver::Collection *collection;
 };
 
 class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
@@ -86,7 +86,7 @@ public:
     }
 };
 
-class JobCollection::Private
+class Collection::Private
 {
 public:
     Private()
@@ -117,7 +117,7 @@ public:
     bool selfIsExecuting;
 };
 
-JobCollection::JobCollection()
+Collection::Collection()
     : d(new Private)
 {
     d->selfExecuteWrapper.wrap(setExecutor(&d->selfExecuteWrapper));
@@ -126,7 +126,7 @@ JobCollection::JobCollection()
     wrapper->wrap(setExecutor(wrapper));
 }
 
-JobCollection::~JobCollection()
+Collection::~Collection()
 {
     {
         // dequeue all remaining jobs:
@@ -138,7 +138,7 @@ JobCollection::~JobCollection()
     delete d;
 }
 
-void JobCollection::addJob(JobPointer job)
+void Collection::addJob(JobPointer job)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
     REQUIRE(d->api == 0 || d->selfIsExecuting == true); // not queued yet or still running
@@ -150,19 +150,19 @@ void JobCollection::addJob(JobPointer job)
     d->elements.append(job);
 }
 
-void JobCollection::stop(JobPointer job)
+void Collection::stop(JobPointer job)
 {
     Q_UNUSED(job);
     QMutexLocker l(mutex()); Q_UNUSED(l);
     if (d->api != 0) {
-        debug(4, "JobCollection::stop: dequeueing %p.\n", (void *)this);
-        if (!d->api->dequeue(ManagedJobPointer<JobCollection>(this))) {
+        debug(4, "Collection::stop: dequeueing %p.\n", (void *)this);
+        if (!d->api->dequeue(ManagedJobPointer<Collection>(this))) {
             dequeueElements(false);
         }
     }
 }
 
-void JobCollection::aboutToBeQueued_locked(QueueAPI *api)
+void Collection::aboutToBeQueued_locked(QueueAPI *api)
 {
     Q_ASSERT(!mutex()->tryLock());
     Q_ASSERT(d->api == 0); // never queue twice
@@ -170,7 +170,7 @@ void JobCollection::aboutToBeQueued_locked(QueueAPI *api)
     Job::aboutToBeQueued_locked(api);
 }
 
-void JobCollection::aboutToBeDequeued_locked(QueueAPI *api)
+void Collection::aboutToBeDequeued_locked(QueueAPI *api)
 {
     Q_ASSERT(!mutex()->tryLock());
     Q_ASSERT(api && d->api == api);
@@ -179,7 +179,7 @@ void JobCollection::aboutToBeDequeued_locked(QueueAPI *api)
     Job::aboutToBeDequeued_locked(api);
 }
 
-void JobCollection::execute(JobPointer job, Thread *thread)
+void Collection::execute(JobPointer job, Thread *thread)
 {
     {
         QMutexLocker l(mutex()); Q_UNUSED(l);
@@ -191,19 +191,19 @@ void JobCollection::execute(JobPointer job, Thread *thread)
     Job::execute(job, thread);
 }
 
-void JobCollection::run(JobPointer, Thread *)
+void Collection::run(JobPointer, Thread *)
 {
     //empty
 }
 
-void JobCollection::enqueueElements()
+void Collection::enqueueElements()
 {
     Q_ASSERT(!mutex()->tryLock());
     d->jobCounter.fetchAndStoreOrdered(d->elements.count() + 1); //including self
     d->api->enqueue(d->elements);
 }
 
-void JobCollection::elementStarted(JobPointer job, Thread *thread)
+void Collection::elementStarted(JobPointer job, Thread *thread)
 {
     Q_UNUSED(job) // except in Q_ASSERT
 #ifndef NDEBUG // to avoid the mutex in release mode
@@ -217,7 +217,7 @@ void JobCollection::elementStarted(JobPointer job, Thread *thread)
     }
 }
 
-void JobCollection::elementFinished(JobPointer job, Thread *thread)
+void Collection::elementFinished(JobPointer job, Thread *thread)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
     Q_ASSERT(!d->self.isNull());
@@ -246,30 +246,30 @@ void JobCollection::elementFinished(JobPointer job, Thread *thread)
     }
 }
 
-JobPointer JobCollection::self() const
+JobPointer Collection::self() const
 {
     return d->self;
 }
 
-JobPointer JobCollection::jobAt(int i)
+JobPointer Collection::jobAt(int i)
 {
     Q_ASSERT(!mutex()->tryLock());
     Q_ASSERT(i >= 0 && i < d->elements.size());
     return d->elements.at(i);
 }
 
-int JobCollection::jobListLength() const
+int Collection::jobListLength() const
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
     return jobListLength_locked();
 }
 
-int JobCollection::jobListLength_locked() const
+int Collection::jobListLength_locked() const
 {
     return d->elements.size();
 }
 
-void JobCollection::finalCleanup()
+void Collection::finalCleanup()
 {
     Q_ASSERT(!self().isNull());
     Q_ASSERT(!mutex()->tryLock());
@@ -278,25 +278,25 @@ void JobCollection::finalCleanup()
     d->api = 0;
 }
 
-JobCollection &JobCollection::operator<<(JobInterface *job)
+Collection &Collection::operator<<(JobInterface *job)
 {
     addJob(make_job(job));
     return *this;
 }
 
-JobCollection &JobCollection::operator<<(const JobPointer &job)
+Collection &Collection::operator<<(const JobPointer &job)
 {
     addJob(job);
     return *this;
 }
 
-JobCollection &JobCollection::operator<<(JobInterface &job)
+Collection &Collection::operator<<(JobInterface &job)
 {
     addJob(make_job_raw(&job));
     return *this;
 }
 
-void JobCollection::dequeueElements(bool queueApiIsLocked)
+void Collection::dequeueElements(bool queueApiIsLocked)
 {
     // dequeue everything:
     Q_ASSERT(!mutex()->tryLock());
@@ -305,7 +305,7 @@ void JobCollection::dequeueElements(bool queueApiIsLocked)
     }
 
     for (int index = 0; index < d->elements.size(); ++index) {
-        debug(4, "JobCollection::dequeueElements: dequeueing %p.\n", (void *)d->elements.at(index).data());
+        debug(4, "Collection::dequeueElements: dequeueing %p.\n", (void *)d->elements.at(index).data());
         if (queueApiIsLocked) {
             d->api->dequeue_p(d->elements.at(index));
         } else {

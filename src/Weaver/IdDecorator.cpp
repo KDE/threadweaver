@@ -1,4 +1,4 @@
-#include <JobCollection.h>
+#include <Collection.h>
 #include <Sequence.h>
 #include <ManagedJobPointer.h>
 
@@ -184,14 +184,14 @@ bool IdDecorator::autoDelete() const
     return d2 == reinterpret_cast<IdDecorator::Private2 *>(IdDecorator_AutoDelete);
 }
 
-const ThreadWeaver::JobCollection *IdDecorator::collection() const
+const ThreadWeaver::Collection *IdDecorator::collection() const
 {
-    return dynamic_cast<const JobCollection *>(job());
+    return dynamic_cast<const Collection *>(job());
 }
 
-JobCollection *IdDecorator::collection()
+Collection *IdDecorator::collection()
 {
-    return dynamic_cast<JobCollection *>(job());
+    return dynamic_cast<Collection *>(job());
 }
 
 const Sequence *IdDecorator::sequence() const

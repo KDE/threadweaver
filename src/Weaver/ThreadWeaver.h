@@ -34,7 +34,7 @@
 #include "JobInterface.h"
 #include "JobPointer.h"
 #include "Job.h"
-#include "JobCollection.h"
+#include "Collection.h"
 #include "Sequence.h"
 #include "Queueing.h"
 

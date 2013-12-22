@@ -23,7 +23,7 @@ set(ThreadWeaver_LIB_SRCS
     SuspendedState.cpp
     ShuttingDownState.cpp
     DestructedState.cpp
-    JobCollection.cpp
+    Collection.cpp
     Sequence.cpp
     DependencyPolicy.cpp
     Dependency.cpp
@@ -63,7 +63,7 @@ install(FILES
     QObjectDecorator.h
     Lambda.h
     State.h
-    JobCollection.h
+    Collection.h
     Sequence.h
     Dependency.h
     DependencyPolicy.h

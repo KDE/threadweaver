@@ -4,7 +4,7 @@
 #include "JobPointer.h"
 #include "ManagedJobPointer.h"
 #include "JobInterface.h"
-#include "JobCollection.h"
+#include "Collection.h"
 #include "Lambda.h"
 #include "QObjectDecorator.h"
 #include "Weaver.h"

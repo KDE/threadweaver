@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file declares the JobCollection class.
+   This file declares the Collection class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2004-2013 Mirko Boehm $
@@ -38,23 +38,23 @@ namespace ThreadWeaver
 class Thread;
 class CollectionExecuteWrapper;
 
-/** A JobCollection is a vector of Jobs that will be queued together.
- * In a JobCollection, the order of execution of the elements is not specified.
+/** A Collection is a vector of Jobs that will be queued together.
+ * In a Collection, the order of execution of the elements is not specified.
  *
  * It is intended that the collection is set up first and then
  * queued. After queuing, no further jobs should be added to the collection.
  *
- * JobCollection emits a done(JobPointer) signal when all of the jobs in the collection
+ * Collection emits a done(JobPointer) signal when all of the jobs in the collection
  * have completed.
  */
-class THREADWEAVER_EXPORT JobCollection : public Job
+class THREADWEAVER_EXPORT Collection : public Job
 {
 public:
-    JobCollection();
-    ~JobCollection();
+    Collection();
+    ~Collection();
     /** Append a job to the collection.
      *
-     * To use JobCollection, create the Job objects first, add them to the collection, and then queue it. After
+     * To use Collection, create the Job objects first, add them to the collection, and then queue it. After
      * the collection has been queued, no further Jobs are supposed to be added.
      *
      * @note Once the job has been added, execute wrappers can no more be set on it */
@@ -70,11 +70,11 @@ public:
     int jobListLength() const;
 
     /** @brief Add the job to this collection by pointer. */
-    JobCollection &operator<<(ThreadWeaver::JobInterface *job);
+    Collection &operator<<(ThreadWeaver::JobInterface *job);
 
     /** @brief Add the job to this collection. */
-    JobCollection &operator<<(const ThreadWeaver::JobPointer &job);
-    JobCollection &operator<<(JobInterface &job);
+    Collection &operator<<(const ThreadWeaver::JobPointer &job);
+    Collection &operator<<(JobInterface &job);
 
 protected:
     /** Overload to queue the collection. */

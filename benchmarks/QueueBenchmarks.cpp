@@ -8,7 +8,7 @@
 
 #include <Queueing.h>
 #include <Job.h>
-#include <JobCollection.h>
+#include <Collection.h>
 #include <Sequence.h>
 #include <ThreadWeaver.h>
 
@@ -199,7 +199,7 @@ void QueueBenchmarksTest::CollectionsBenchmark()
     qDebug() << b << "blocks" << c << "operations, queueing...";
     //queue the jobs blockwise as collections
     for (int block = 0; block < b; ++block) {
-        ThreadWeaver::JobCollection *collection = new ThreadWeaver::JobCollection();
+        ThreadWeaver::Collection *collection = new ThreadWeaver::Collection();
         for (int operation = 0; operation < c; ++operation) {
             const int index = block * b + operation;
             jobs[index].setCount(m);

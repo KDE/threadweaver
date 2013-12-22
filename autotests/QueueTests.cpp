@@ -14,7 +14,7 @@
 #include <State.h>
 #include <QueuePolicy.h>
 #include <Sequence.h>
-#include <JobCollection.h>
+#include <Collection.h>
 #include <DebuggingAids.h>
 #include <DependencyPolicy.h>
 #include <ResourceRestrictionPolicy.h>
@@ -135,12 +135,12 @@ void QueueTests::DeleteDoneJobsFromSequenceTest()
     autoDeleteJob = new QObjectDecorator(new AppendCharacterJob(QChar('a'), &sequence));
     AppendCharacterJob b(QChar('b'), &sequence);
     AppendCharacterJob c(QChar('c'), &sequence);
-    JobCollection jobCollection;
-    jobCollection << make_job_raw(autoDeleteJob) << b << c;
+    Collection collection;
+    collection << make_job_raw(autoDeleteJob) << b << c;
     QVERIFY(autoDeleteJob != 0);
     QVERIFY(connect(autoDeleteJob, SIGNAL(done(ThreadWeaver::JobPointer)),
                     SLOT(deleteJob(ThreadWeaver::JobPointer))));
-    stream() << jobCollection;
+    stream() << collection;
     QTest::qWait(100); // return to event queue to make sure signals are delivered
     Weaver::instance()->finish();
     QTest::qWait(100); // return to event queue to make sure signals are delivered
@@ -159,7 +159,7 @@ void QueueTests::DeleteCollectionOnDoneTest()
 {
     using namespace ThreadWeaver;
     QString sequence;
-    autoDeleteCollection = new QObjectDecorator(new JobCollection);
+    autoDeleteCollection = new QObjectDecorator(new Collection);
     QVERIFY(connect(autoDeleteCollection, SIGNAL(done(ThreadWeaver::JobPointer)),
                     SLOT(deleteCollection(ThreadWeaver::JobPointer))));
 
