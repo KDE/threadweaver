@@ -1,6 +1,6 @@
 #include <QObjectDecorator.h>
 #include <JobCollection.h>
-#include <JobSequence.h>
+#include <Sequence.h>
 #include <ManagedJobPointer.h>
 
 namespace ThreadWeaver

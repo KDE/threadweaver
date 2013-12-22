@@ -10,7 +10,7 @@ namespace ThreadWeaver
 {
 
 class JobCollection;
-class JobSequence;
+class Sequence;
 
 class THREADWEAVER_EXPORT QObjectDecorator : public QObject, public IdDecorator
 {

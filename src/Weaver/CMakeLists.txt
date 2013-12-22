@@ -24,7 +24,7 @@ set(ThreadWeaver_LIB_SRCS
     ShuttingDownState.cpp
     DestructedState.cpp
     JobCollection.cpp
-    JobSequence.cpp
+    Sequence.cpp
     DependencyPolicy.cpp
     Dependency.cpp
     ResourceRestrictionPolicy.cpp
@@ -64,7 +64,7 @@ install(FILES
     Lambda.h
     State.h
     JobCollection.h
-    JobSequence.h
+    Sequence.h
     Dependency.h
     DependencyPolicy.h
     ResourceRestrictionPolicy.h

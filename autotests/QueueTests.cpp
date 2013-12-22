@@ -13,7 +13,7 @@
 #include <Job.h>
 #include <State.h>
 #include <QueuePolicy.h>
-#include <JobSequence.h>
+#include <Sequence.h>
 #include <JobCollection.h>
 #include <DebuggingAids.h>
 #include <DependencyPolicy.h>

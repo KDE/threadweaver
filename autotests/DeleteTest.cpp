@@ -4,22 +4,22 @@
 
 #include <JobPointer.h>
 #include <QObjectDecorator.h>
-#include <JobSequence.h>
+#include <Sequence.h>
 #include <ThreadWeaver.h>
 #include <DebuggingAids.h>
 
 #include "AppendCharacterJob.h"
 
-class InstanceCountingJobSequence : public JobSequence
+class InstanceCountingSequence : public Sequence
 {
 public:
-    explicit InstanceCountingJobSequence()
-        : JobSequence()
+    explicit InstanceCountingSequence()
+        : Sequence()
     {
         instances_.fetchAndAddAcquire(1);
     }
 
-    ~InstanceCountingJobSequence()
+    ~InstanceCountingSequence()
     {
         instances_.fetchAndAddAcquire(-1);
     }
@@ -33,7 +33,7 @@ private:
     static QAtomicInt instances_;
 };
 
-QAtomicInt InstanceCountingJobSequence::instances_;
+QAtomicInt InstanceCountingSequence::instances_;
 
 DeleteTest::DeleteTest()
 {
@@ -46,7 +46,7 @@ void DeleteTest::DeleteSequenceTest()
     const int NumberOfSequences = 100;
     ThreadWeaver::Weaver::instance()->suspend();
     for (int i = 0; i < NumberOfSequences; ++i) {
-        QJobPointer seq(new QObjectDecorator(new InstanceCountingJobSequence));
+        QJobPointer seq(new QObjectDecorator(new InstanceCountingSequence));
         seq->sequence()->addJob(JobPointer(new BusyJob));
         seq->sequence()->addJob(JobPointer(new BusyJob));
         QVERIFY(connect(seq.data(), SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(deleteSequence(ThreadWeaver::JobPointer))));
@@ -65,7 +65,7 @@ void DeleteTest::DeleteSequenceTest()
     // waiting for the next one or blocking because the queue is empty. If all threads have exited, no references to any jobs are
     // held anymore.
     ThreadWeaver::Weaver::instance()->shutDown();
-    QCOMPARE(InstanceCountingJobSequence::instances(), 0);
+    QCOMPARE(InstanceCountingSequence::instances(), 0);
 }
 
 void DeleteTest::deleteSequence(ThreadWeaver::JobPointer)

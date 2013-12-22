@@ -9,7 +9,7 @@
 #include <Queueing.h>
 #include <Job.h>
 #include <JobCollection.h>
-#include <JobSequence.h>
+#include <Sequence.h>
 #include <ThreadWeaver.h>
 
 class AccumulateJob : public ThreadWeaver::Job
@@ -236,7 +236,7 @@ void QueueBenchmarksTest::SequencesBenchmark()
     qDebug() << b << "blocks" << c << "operations, queueing...";
     //queue the jobs blockwise as collections
     for (int block = 0; block < b; ++block) {
-        ThreadWeaver::JobSequence *sequence = new ThreadWeaver::JobSequence();
+        ThreadWeaver::Sequence *sequence = new ThreadWeaver::Sequence();
         for (int operation = 0; operation < c; ++operation) {
             const int index = block * b + operation;
             jobs[index].setCount(m);

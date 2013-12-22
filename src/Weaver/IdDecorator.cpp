@@ -1,5 +1,5 @@
 #include <JobCollection.h>
-#include <JobSequence.h>
+#include <Sequence.h>
 #include <ManagedJobPointer.h>
 
 #include "IdDecorator.h"
@@ -194,14 +194,14 @@ JobCollection *IdDecorator::collection()
     return dynamic_cast<JobCollection *>(job());
 }
 
-const JobSequence *IdDecorator::sequence() const
+const Sequence *IdDecorator::sequence() const
 {
-    return dynamic_cast<const JobSequence *>(job());
+    return dynamic_cast<const Sequence *>(job());
 }
 
-JobSequence *IdDecorator::sequence()
+Sequence *IdDecorator::sequence()
 {
-    return dynamic_cast<JobSequence *>(job());
+    return dynamic_cast<Sequence *>(job());
 }
 
 }

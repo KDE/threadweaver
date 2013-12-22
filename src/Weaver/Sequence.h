@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file declares the JobSequence class.
+   This file declares the Sequence class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2004-2013 Mirko Boehm $
@@ -34,17 +34,17 @@
 namespace ThreadWeaver
 {
 
-/** A JobSequence is a vector of Jobs that will be executed in a sequence.
+/** @brief A Sequence is a vector of Jobs that will be executed in a sequence.
  *
  * It is implemented by automatically creating the necessary dependencies between the Jobs in the sequence.
  *
- * JobSequence provides a handy cleanup and unwind mechanism: the stop() slot. If it is called, the processing
+ * Sequence provides a handy cleanup and unwind mechanism: the stop() slot. If it is called, the processing
  * of the sequence will stop, and all its remaining Jobs will be dequeued.
- * A JobSequence is the first element of itself. */
-class THREADWEAVER_EXPORT JobSequence : public JobCollection
+ * A Sequence is the first element of itself. */
+class THREADWEAVER_EXPORT Sequence : public JobCollection
 {
 public:
-    explicit JobSequence();
+    explicit Sequence();
 
 protected:
     void elementFinished(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;

@@ -119,7 +119,7 @@ public:
      * Jobs that depend on the failed job will not be started.
      *
      * There is an important gotcha: When a Job object it deleted, it will always resolve its dependencies. If dependent jobs should
-     * not be executed after a failure, it is important to dequeue those before deleting the failed Job. A JobSequence may be
+     * not be executed after a failure, it is important to dequeue those before deleting the failed Job. A Sequence may be
      * helpful for that purpose.
      */
     bool success() const Q_DECL_OVERRIDE;

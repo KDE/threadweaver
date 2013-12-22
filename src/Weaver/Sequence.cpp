@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file implements the JobSequence class.
+   This file implements the Sequence class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2004-2013 Mirko Boehm $
@@ -26,7 +26,7 @@
    $Id: DebuggingAids.h 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "JobSequence.h"
+#include "Sequence.h"
 #include "ManagedJobPointer.h"
 #include "QueueAPI.h"
 #include "DebuggingAids.h"
@@ -35,12 +35,12 @@
 namespace ThreadWeaver
 {
 
-JobSequence::JobSequence()
+Sequence::Sequence()
     : d(0)
 {
 }
 
-void JobSequence::enqueueElements()
+void Sequence::enqueueElements()
 {
     Q_ASSERT(!mutex()->tryLock());
     const int jobs = jobListLength_locked();
@@ -58,7 +58,7 @@ void JobSequence::enqueueElements()
     JobCollection::enqueueElements();
 }
 
-void JobSequence::elementFinished(JobPointer job, Thread *thread)
+void Sequence::elementFinished(JobPointer job, Thread *thread)
 {
     REQUIRE(job != 0);
 

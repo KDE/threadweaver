@@ -10,7 +10,7 @@ namespace ThreadWeaver
 {
 
 class JobCollection;
-class JobSequence;
+class Sequence;
 
 /** @brief IdDecorator decorates a job without changing it's behaviour.
  *
@@ -34,12 +34,12 @@ public:
     /** Retrieve the decorated job as a JobCollection.
      *  If the decorated Job is not a JobCollection, 0 is returned. */
     JobCollection *collection();
-    /** Retrieve the decorated job as a JobSequence.
-     *  If the decorated Job is not a JobSequence, 0 is returned. */
-    const JobSequence *sequence() const;
-    /** Retrieve the decorated job as a JobSequence.
-     *  If the decorated Job is not a JobSequence, 0 is returned. */
-    JobSequence *sequence();
+    /** Retrieve the decorated job as a Sequence.
+     *  If the decorated Job is not a Sequence, 0 is returned. */
+    const Sequence *sequence() const;
+    /** Retrieve the decorated job as a Sequence.
+     *  If the decorated Job is not a Sequence, 0 is returned. */
+    Sequence *sequence();
 
     void execute(JobPointer job, Thread *) Q_DECL_OVERRIDE;
     void blockingExecute() Q_DECL_OVERRIDE;

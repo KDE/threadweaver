@@ -8,7 +8,7 @@
 
 #include <Queueing.h>
 #include <QueueStream.h>
-#include <JobSequence.h>
+#include <Sequence.h>
 #include <Lambda.h>
 #include <ThreadWeaver.h>
 #include <Thread.h>
@@ -154,7 +154,7 @@ public:
     QString sequence_;
 };
 
-class GeneratingSequence : public JobSequence
+class GeneratingSequence : public Sequence
 {
 public:
     void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
@@ -186,7 +186,7 @@ void JobTests::ShortJobSequenceTest()
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
     JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
-    QSharedPointer<JobSequence> jobSequence(new JobSequence());
+    QSharedPointer<Sequence> jobSequence(new Sequence());
     jobSequence->addJob(jobA);
     jobSequence->addJob(jobB);
     jobSequence->addJob(jobC);
@@ -202,7 +202,7 @@ void JobTests::ShortJobSequenceTest()
 void JobTests::EmptyJobSequenceTest()
 {
     using namespace ThreadWeaver;
-    QObjectDecorator sequence(new JobSequence());
+    QObjectDecorator sequence(new Sequence());
     WaitForIdleAndFinished w(Weaver::instance()); Q_UNUSED(w);
     Q_ASSERT(Weaver::instance()->isIdle());
     QSignalSpy doneSignalSpy(&sequence, SIGNAL(done(ThreadWeaver::JobPointer)));
@@ -364,7 +364,7 @@ void JobTests::QueueAndDequeueSequenceTest()
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
     JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
-    QSharedPointer<JobSequence> jobSequence(new JobSequence());
+    QSharedPointer<Sequence> jobSequence(new Sequence());
     jobSequence->addJob(jobA);
     jobSequence->addJob(jobB);
     jobSequence->addJob(jobC);
@@ -398,21 +398,21 @@ void JobTests::RecursiveSequenceTest()
     JobPointer jobH(new AppendCharacterJob(QChar('h'), &sequence));
     JobPointer jobI(new AppendCharacterJob(QChar('i'), &sequence));
     JobPointer jobJ(new AppendCharacterJob(QChar('j'), &sequence));
-    QSharedPointer<JobSequence> jobSequence1(new JobSequence());
+    QSharedPointer<Sequence> jobSequence1(new Sequence());
     jobSequence1->addJob(jobA);
     jobSequence1->addJob(jobB);
     jobSequence1->addJob(jobC);
-    QSharedPointer<JobSequence> jobSequence2(new JobSequence());
+    QSharedPointer<Sequence> jobSequence2(new Sequence());
     jobSequence2->addJob(jobD);
     jobSequence2->addJob(jobE);
     jobSequence2->addJob(jobF);
-    QSharedPointer<JobSequence> jobSequence3(new JobSequence());
+    QSharedPointer<Sequence> jobSequence3(new Sequence());
     jobSequence3->addJob(jobG);
     jobSequence3->addJob(jobH);
     jobSequence3->addJob(jobI);
     jobSequence3->addJob(jobJ);
     // sequence 4 will contain sequences 1, 2, and 3, in that order:
-    QSharedPointer<JobSequence> jobSequence4(new JobSequence());
+    QSharedPointer<Sequence> jobSequence4(new Sequence());
     jobSequence4->addJob(jobSequence1);
     jobSequence4->addJob(jobSequence2);
     jobSequence4->addJob(jobSequence3);
@@ -479,21 +479,21 @@ void JobTests::RecursiveQueueAndDequeueSequenceTest()
     JobPointer jobH(new AppendCharacterJob(QChar('h'), &sequence));
     JobPointer jobI(new AppendCharacterJob(QChar('i'), &sequence));
     JobPointer jobJ(new AppendCharacterJob(QChar('j'), &sequence));
-    QSharedPointer<JobSequence> jobSequence1(new JobSequence());
+    QSharedPointer<Sequence> jobSequence1(new Sequence());
     jobSequence1->addJob(jobA);
     jobSequence1->addJob(jobB);
     jobSequence1->addJob(jobC);
-    QSharedPointer<JobSequence> jobSequence2(new JobSequence());
+    QSharedPointer<Sequence> jobSequence2(new Sequence());
     jobSequence2->addJob(jobD);
     jobSequence2->addJob(jobE);
     jobSequence2->addJob(jobF);
-    QSharedPointer<JobSequence> jobSequence3(new JobSequence());
+    QSharedPointer<Sequence> jobSequence3(new Sequence());
     jobSequence3->addJob(jobG);
     jobSequence3->addJob(jobH);
     jobSequence3->addJob(jobI);
     jobSequence3->addJob(jobJ);
     // sequence 4 will contain sequences 1, 2, and 3, in that order:
-    QSharedPointer<JobSequence> jobSequence4(new JobSequence());
+    QSharedPointer<Sequence> jobSequence4(new Sequence());
     jobSequence4->addJob(jobSequence1);
     jobSequence4->addJob(jobSequence2);
     jobSequence4->addJob(jobSequence3);
@@ -533,7 +533,7 @@ void JobTests::QueueAndDequeueAllSequenceTest()
     JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
     JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
-    QSharedPointer<JobSequence> jobSequence(new JobSequence());
+    QSharedPointer<Sequence> jobSequence(new Sequence());
     jobSequence->addJob(jobA);
     jobSequence->addJob(jobB);
     jobSequence->addJob(jobC);
@@ -601,21 +601,21 @@ void JobTests::RecursiveQueueAndDequeueAllSequenceTest()
     JobPointer jobH(new AppendCharacterJob(QChar('h'), &sequence));
     JobPointer jobI(new AppendCharacterJob(QChar('i'), &sequence));
     JobPointer jobJ(new AppendCharacterJob(QChar('j'), &sequence));
-    QSharedPointer<JobSequence> jobSequence1(new JobSequence());
+    QSharedPointer<Sequence> jobSequence1(new Sequence());
     jobSequence1->addJob(jobA);
     jobSequence1->addJob(jobB);
     jobSequence1->addJob(jobC);
-    QSharedPointer<JobSequence> jobSequence2(new JobSequence());
+    QSharedPointer<Sequence> jobSequence2(new Sequence());
     jobSequence2->addJob(jobD);
     jobSequence2->addJob(jobE);
     jobSequence2->addJob(jobF);
-    QSharedPointer<JobSequence> jobSequence3(new JobSequence());
+    QSharedPointer<Sequence> jobSequence3(new Sequence());
     jobSequence3->addJob(jobG);
     jobSequence3->addJob(jobH);
     jobSequence3->addJob(jobI);
     jobSequence3->addJob(jobJ);
     // sequence 4 will contain sequences 1, 2, and 3, in that order:
-    QSharedPointer<JobSequence> jobSequence4(new JobSequence());
+    QSharedPointer<Sequence> jobSequence4(new Sequence());
     jobSequence4->addJob(jobSequence1);
     jobSequence4->addJob(jobSequence2);
     jobSequence4->addJob(jobSequence3);
@@ -638,7 +638,7 @@ void JobTests::MassiveJobSequenceTest()
     const char *Alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const int SizeOfAlphabet = strlen(Alphabet);
     AppendCharacterAndVerifyJob jobs[NoOfChars];
-    JobSequence jobSequence;
+    Sequence jobSequence;
     QString sequence;
     QString in;
 
@@ -669,12 +669,12 @@ void JobTests::SimpleRecursiveSequencesTest()
 {
     QString sequence;
     AppendCharacterJob jobB(QChar('b'), &sequence);
-    JobSequence jobSequence1;
+    Sequence jobSequence1;
     jobSequence1 << jobB;
 
     AppendCharacterJob jobC(QChar('c'), &sequence);
     AppendCharacterJob jobA(QChar('a'), &sequence);
-    JobSequence jobSequence2;
+    Sequence jobSequence2;
     jobSequence2 << jobA;
     jobSequence2 << jobSequence1;
     jobSequence2 << jobC;
@@ -698,14 +698,14 @@ void JobTests::SequenceOfSequencesTest()
     AppendCharacterJob jobH(QChar('h'), &sequence);
     AppendCharacterJob jobI(QChar('i'), &sequence);
     AppendCharacterJob jobJ(QChar('j'), &sequence);
-    JobSequence jobSequence1;
+    Sequence jobSequence1;
     jobSequence1 << jobA << jobB << jobC;
-    JobSequence jobSequence2;
+    Sequence jobSequence2;
     jobSequence2 << jobD << jobE << jobF;
-    JobSequence jobSequence3;
+    Sequence jobSequence3;
     jobSequence3 << jobG << jobH << jobI << jobJ;
     // sequence 4 will contain sequences 1, 2, and 3, in that order:
-    JobSequence jobSequence4;
+    Sequence jobSequence4;
     jobSequence4 << jobSequence1 << jobSequence2 << jobSequence3;
 
     WaitForIdleAndFinished w(Weaver::instance());
@@ -725,7 +725,7 @@ void JobTests::QueueAndStopTest()
     AppendCharacterJob e('e', &sequence);
     AppendCharacterJob f('f', &sequence);
     AppendCharacterJob g('g', &sequence);
-    JobSequence jobSequence;
+    Sequence jobSequence;
     jobSequence << a << b << c << d << e << f << g;
 
     WaitForIdleAndFinished w(Weaver::instance());
@@ -857,7 +857,7 @@ void JobTests::DequeueSuspendedSequenceTest()
 {
     using namespace ThreadWeaver;
 
-    JobSequence sequence;
+    Sequence sequence;
     Weaver weaver;
     weaver.suspend();
     enqueue_raw(&weaver, &sequence);
