@@ -4,7 +4,7 @@ namespace ThreadWeaver
 {
 
 QueueAPI::QueueAPI(QObject *parent) :
-    Queue(parent)
+    QueueSignals(parent)
 {
 }
 

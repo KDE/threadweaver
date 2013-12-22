@@ -46,7 +46,7 @@ class Queue;
 class ShuttingDownState : public WeaverImplState
 {
 public:
-    explicit ShuttingDownState(Queue *weaver);
+    explicit ShuttingDownState(QueueSignals *weaver);
 
     /** Shut down the queue. */
     void shutDown() Q_DECL_OVERRIDE;

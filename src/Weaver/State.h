@@ -33,7 +33,7 @@
 
 #include "WeaverInterface.h"
 #include "QueueInterface.h"
-#include "Queue.h"
+#include "QueueSignals.h"
 #include "threadweaver_export.h"
 
 namespace ThreadWeaver
@@ -76,7 +76,7 @@ class THREADWEAVER_EXPORT State : public WeaverInterface, public QueueInterface
 {
 public:
     /** Default constructor. */
-    explicit State(Queue *weaver);
+    explicit State(QueueSignals *weaver);
 
     /** Destructor. */
     virtual ~State();

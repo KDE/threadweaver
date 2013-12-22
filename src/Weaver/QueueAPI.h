@@ -1,7 +1,7 @@
 #ifndef QUEUEAPI_H
 #define QUEUEAPI_H
 
-#include "Queue.h"
+#include "QueueSignals.h"
 #include "QueueInterface.h"
 #include "State.h"
 #include "JobPointer.h"
@@ -9,7 +9,7 @@
 namespace ThreadWeaver
 {
 
-class QueueAPI : public Queue, public QueueInterface
+class QueueAPI : public QueueSignals, public QueueInterface
 {
     Q_OBJECT
 

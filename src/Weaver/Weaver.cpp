@@ -15,7 +15,7 @@ static Weaver::GlobalQueueFactory *globalQueueFactory;
 class Weaver::Private
 {
 public:
-    Private(Weaver *q, Queue *queue)
+    Private(Weaver *q, QueueSignals *queue)
         : implementation(queue)
     {
         Q_ASSERT_X(qApp != 0, Q_FUNC_INFO, "Cannot create global ThreadWeaver instance before QApplication!");
@@ -26,21 +26,21 @@ public:
         q->connect(implementation, SIGNAL(jobDone(ThreadWeaver::JobPointer)), SIGNAL(jobDone(ThreadWeaver::JobPointer)));
     }
 
-    Queue *implementation;
-    void init(Queue *implementation);
+    QueueSignals *implementation;
+    void init(QueueSignals *implementation);
 };
 
 /** @brief Construct a Weaver object. */
 Weaver::Weaver(QObject *parent)
-    : Queue(parent)
+    : QueueSignals(parent)
     , d(new Private(this, new WeaverImpl))
 {
 }
 
 /** @brief Construct a Weaver object, specifying the Weaver implementation to use.
   * The Weaver instance will take ownership of the implementation object and delete it when destructed. */
-Weaver::Weaver(Queue *implementation, QObject *parent)
-    : Queue(parent)
+Weaver::Weaver(QueueSignals *implementation, QObject *parent)
+    : QueueSignals(parent)
     , d(new Private(this, implementation))
 {
 }
@@ -94,7 +94,7 @@ public:
         , instance_(instance)
     {
         Q_ASSERT_X(app != 0, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
-        QObject *impl = instance.load()->findChild<Queue *>();
+        QObject *impl = instance.load()->findChild<QueueSignals*>();
         Q_ASSERT(impl);
         impl->setObjectName(QStringLiteral("GlobalQueue"));
         qAddPostRoutine(shutDownGlobalQueue);

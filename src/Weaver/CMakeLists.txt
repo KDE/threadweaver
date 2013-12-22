@@ -2,7 +2,7 @@
 SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  ${KDE_ENABLE_EXCEPTIONS}")
 
 set(ThreadWeaver_LIB_SRCS
-    Queue.cpp
+    QueueSignals.cpp
     QueueStream.cpp
     QueueAPI.cpp
     Exception.cpp
@@ -68,7 +68,7 @@ install(FILES
     Dependency.h
     DependencyPolicy.h
     ResourceRestrictionPolicy.h
-    Queue.h
+    QueueSignals.h
     QueueInterface.h
     QueuePolicy.h
     JobPointer.h

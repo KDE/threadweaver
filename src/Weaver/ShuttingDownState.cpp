@@ -31,7 +31,7 @@
 namespace ThreadWeaver
 {
 
-ShuttingDownState::ShuttingDownState(Queue *weaver)
+ShuttingDownState::ShuttingDownState(QueueSignals *weaver)
     : WeaverImplState(weaver)
 {
 }

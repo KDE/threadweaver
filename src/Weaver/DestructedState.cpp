@@ -31,7 +31,7 @@ $Id: DestructedState.cpp 30 2005-08-16 16:16:04Z mirko $
 namespace ThreadWeaver
 {
 
-DestructedState::DestructedState(Queue *)
+DestructedState::DestructedState(QueueSignals *)
     : WeaverImplState(0) // make sure we cannot use weaver, ever :-)
 {
 }

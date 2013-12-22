@@ -3,7 +3,7 @@
 
 #include <ThreadWeaver.h>
 #include <QueueAPI.h>
-#include <Queue.h>
+#include <QueueSignals.h>
 #include <Weaver.h>
 #include <WeaverImpl.h>
 #include <IdDecorator.h>

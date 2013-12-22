@@ -39,13 +39,13 @@
 namespace ThreadWeaver
 {
 
-class Queue;
+class QueueSignals;
 
 /** @brief Base class for all WeaverImpl states. */
 class WeaverImplState : public State
 {
 public:
-    explicit WeaverImplState(Queue *weaver);
+    explicit WeaverImplState(QueueSignals *weaver);
 
     const State *state() const Q_DECL_OVERRIDE;
 

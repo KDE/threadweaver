@@ -32,7 +32,7 @@
 
 #include <QtCore/QObject>
 
-#include "Queue.h"
+#include "QueueSignals.h"
 #include "QueueStream.h"
 
 namespace ThreadWeaver
@@ -64,13 +64,13 @@ class State;
 
     */
 // Note: All member documentation is in the WeaverInterface class.
-class THREADWEAVER_EXPORT Weaver : public Queue
+class THREADWEAVER_EXPORT Weaver : public QueueSignals
 {
     Q_OBJECT
 public:
     explicit Weaver(QObject *parent = 0);
 
-    explicit Weaver(Queue *implementation, QObject *parent = 0);
+    explicit Weaver(QueueSignals *implementation, QObject *parent = 0);
 
     /** Destruct a Weaver object. */
     virtual ~Weaver();

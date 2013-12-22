@@ -56,7 +56,7 @@ public:
     WeaverInterface *const weaver;
 };
 
-State::State(Queue *weaver)
+State::State(QueueSignals *weaver)
     : d(new Private(weaver))
 {
 }

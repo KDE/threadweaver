@@ -34,7 +34,7 @@
 namespace ThreadWeaver
 {
 
-InConstructionState::InConstructionState(Queue *weaver)
+InConstructionState::InConstructionState(QueueSignals *weaver)
     : WeaverImplState(weaver)
 {
 }

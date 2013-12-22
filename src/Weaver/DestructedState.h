@@ -38,7 +38,7 @@
 namespace ThreadWeaver
 {
 
-class Queue;
+class QueueSignals;
 
 /** DestructedState is only active after the thread have been destroyed by
  *  the destructor, but before superclass destructors have finished.
@@ -46,7 +46,7 @@ class Queue;
 class DestructedState : public WeaverImplState
 {
 public:
-    explicit DestructedState(Queue *weaver);
+    explicit DestructedState(QueueSignals *weaver);
     void shutDown() Q_DECL_OVERRIDE;
     WeaverImpl *weaver() Q_DECL_OVERRIDE;
     const WeaverImpl *weaver() const Q_DECL_OVERRIDE;

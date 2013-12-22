@@ -47,7 +47,7 @@ class Queue;
 class InConstructionState : public WeaverImplState
 {
 public:
-    explicit InConstructionState(Queue *weaver);
+    explicit InConstructionState(QueueSignals *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */
