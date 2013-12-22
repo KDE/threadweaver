@@ -74,11 +74,6 @@ int WeaverImplState::currentNumberOfThreads() const
     return weaver()->currentNumberOfThreads_p();
 }
 
-void WeaverImplState::registerObserver(WeaverObserver *obs)
-{
-    weaver()->registerObserver_p(obs);
-}
-
 void WeaverImplState::enqueue(const QVector<JobPointer> &jobs)
 {
     weaver()->enqueue_p(jobs);

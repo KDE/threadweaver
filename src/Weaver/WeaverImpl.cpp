@@ -40,7 +40,6 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "Thread.h"
 #include "ThreadWeaver.h"
 #include "DebuggingAids.h"
-#include "WeaverObserver.h"
 #include "SuspendedState.h"
 #include "SuspendingState.h"
 #include "DestructedState.h"
@@ -198,27 +197,6 @@ int WeaverImpl::currentNumberOfThreads_p() const
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return m_inventory.count();
-}
-
-void WeaverImpl::registerObserver(WeaverObserver *ext)
-{
-    QMutexLocker l(m_mutex); Q_UNUSED(l);
-    return state()->registerObserver(ext);
-}
-
-void WeaverImpl::registerObserver_p(WeaverObserver *ext)
-{
-    //FIXME test and fix, it is broken!
-    connect(this, SIGNAL(stateChanged(ThreadWeaver::State*)),
-            ext, SIGNAL(weaverStateChanged(ThreadWeaver::State*)));
-    connect(this,  SIGNAL(threadStarted(ThreadWeaver::Thread*)),
-            ext,  SIGNAL(threadStarted(ThreadWeaver::Thread*)));
-    connect(this,  SIGNAL(threadBusy(ThreadWeaver::Thread*,ThreadWeaver::Job*)),
-            ext,  SIGNAL(threadBusy(ThreadWeaver::Thread*,ThreadWeaver::Job*)));
-    connect(this,  SIGNAL(threadSuspended(ThreadWeaver::Thread*)),
-            ext,  SIGNAL(threadSuspended(ThreadWeaver::Thread*)));
-    connect(this,  SIGNAL(threadExited(ThreadWeaver::Thread*)),
-            ext,  SIGNAL(threadExited(ThreadWeaver::Thread*)));
 }
 
 void WeaverImpl::enqueue(const QVector<JobPointer> &jobs)

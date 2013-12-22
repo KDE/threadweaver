@@ -16,7 +16,6 @@
 #include <JobSequence.h>
 #include <JobCollection.h>
 #include <DebuggingAids.h>
-#include <WeaverObserver.h>
 #include <DependencyPolicy.h>
 #include <ResourceRestrictionPolicy.h>
 

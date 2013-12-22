@@ -4,7 +4,6 @@
 
 #include "Weaver.h"
 #include "WeaverImpl.h"
-#include "WeaverObserver.h"
 
 using namespace ThreadWeaver;
 
@@ -81,11 +80,6 @@ void Weaver::setGlobalQueueFactory(Weaver::GlobalQueueFactory *factory)
 const State *Weaver::state() const
 {
     return d->implementation->state();
-}
-
-void Weaver::registerObserver(WeaverObserver *ext)
-{
-    d->implementation->registerObserver(ext);
 }
 
 namespace

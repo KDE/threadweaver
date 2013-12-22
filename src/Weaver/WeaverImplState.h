@@ -57,8 +57,6 @@ public:
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
     /** Returns the current number of threads in the inventory. */
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;
-    /** Register an observer. */
-    void registerObserver(WeaverObserver *obs) Q_DECL_OVERRIDE;
     /** Enqueue a job. */
     void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
     /** Dequeue a job. */

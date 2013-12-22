@@ -64,10 +64,6 @@ int DestructedState::currentNumberOfThreads() const
     return 0;
 }
 
-void DestructedState::registerObserver(WeaverObserver *)
-{
-}
-
 void DestructedState::enqueue(const QVector<JobPointer> &)
 {
 }

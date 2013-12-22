@@ -48,7 +48,6 @@ namespace ThreadWeaver
 
 class Job;
 class Thread;
-class WeaverObserver;
 class WeaverImplState;
 class SuspendingState;
 
@@ -78,7 +77,6 @@ public:
 
     /** Set the object state. */
     void setState(StateId);
-    void registerObserver(WeaverObserver *) Q_DECL_OVERRIDE;
     void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
     bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
     void dequeue() Q_DECL_OVERRIDE;
@@ -140,7 +138,6 @@ public:
     void setMaximumNumberOfThreads_p(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads_p() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads_p() const Q_DECL_OVERRIDE;
-    void registerObserver_p(WeaverObserver *) Q_DECL_OVERRIDE;
     void enqueue_p(const QVector<JobPointer> &jobs);
     bool dequeue_p(JobPointer job) Q_DECL_OVERRIDE;
     void dequeue_p() Q_DECL_OVERRIDE;

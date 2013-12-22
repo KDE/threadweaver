@@ -22,7 +22,6 @@ public:
     virtual void setMaximumNumberOfThreads_p(int cap) = 0;
     virtual int maximumNumberOfThreads_p() const = 0;
     virtual int currentNumberOfThreads_p() const = 0;
-    virtual void registerObserver_p(WeaverObserver *) = 0;
     virtual bool dequeue_p(JobPointer) = 0;
     virtual void dequeue_p() = 0;
     virtual void finish_p() = 0;

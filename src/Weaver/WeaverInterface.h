@@ -83,18 +83,6 @@ public:
     /** Returns the current number of threads in the inventory. */
     virtual int currentNumberOfThreads() const = 0;
 
-    /** Register an observer.
-
-    Observers provides signals on different weaver events that are
-    otherwise only available through objects of different classes
-    (threads, jobs). Usually, access to the signals of those objects
-    is not provided through the weaver API. Use an observer to reveice
-    notice, for example, on thread activity.
-
-    To unregister, simply delete the observer.
-    */
-    virtual void registerObserver(WeaverObserver *) = 0;
-
     /** Queue a vector of jobs.
 
     It depends on the state if execution of the job will be attempted

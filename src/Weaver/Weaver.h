@@ -40,7 +40,6 @@ namespace ThreadWeaver
 
 class Job;
 class State;
-class WeaverObserver;
 
 /** The Weaver class provides the public implementation of the WeaverInterface.
 
@@ -84,8 +83,6 @@ public:
     void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;
-
-    void registerObserver(WeaverObserver *);
 
     /** Return the global Weaver instance.
         In some cases, a global Weaver object per application is
