@@ -25,8 +25,8 @@
 
 */
 
-#ifndef THREADWEAVER_QUEUE_H
-#define THREADWEAVER_QUEUE_H
+#ifndef THREADWEAVER_QUEUESIGNALS_H
+#define THREADWEAVER_QUEUESIGNALS_H
 
 #include <QtCore/QObject>
 #include "WeaverInterface.h"
@@ -73,4 +73,4 @@ Q_SIGNALS:
 
 }
 
-#endif // THREADWEAVER_QUEUE_H
+#endif // THREADWEAVER_QUEUESIGNALS_H

@@ -1,7 +1,7 @@
 #include <QVector>
 
 #include "QueueStream.h"
-#include "Weaver.h"
+#include "Queue.h"
 #include "Queueing.h"
 
 namespace ThreadWeaver
@@ -10,12 +10,12 @@ namespace ThreadWeaver
 class QueueStream::Private
 {
 public:
-    Private(Weaver *w) : weaver(w) {}
-    Weaver *weaver;
+    Private(Queue *w) : weaver(w) {}
+    Queue *weaver;
     QVector<JobPointer> jobs;
 };
 
-QueueStream::QueueStream(Weaver *queue)
+QueueStream::QueueStream(Queue *queue)
     : d(new Private(queue))
 {
     Q_ASSERT(queue);
@@ -63,7 +63,7 @@ QueueStream &QueueStream::operator<<(Job &job)
  *  Using this is synonymous to Weaver::instance()::stream(). */
 QueueStream stream()
 {
-    return QueueStream(Weaver::instance());
+    return QueueStream(Queue::instance());
 }
 
 }

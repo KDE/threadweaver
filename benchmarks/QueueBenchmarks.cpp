@@ -161,7 +161,7 @@ void QueueBenchmarksTest::IndividualJobsBenchmark()
     QFETCH(int, t);
     const int n = c * b;
 
-    ThreadWeaver::Weaver weaver;
+    ThreadWeaver::Queue weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
     QVector<AccumulateJob> jobs(n);
@@ -189,7 +189,7 @@ void QueueBenchmarksTest::CollectionsBenchmark()
     QFETCH(int, t);
     const int n = c * b;
 
-    ThreadWeaver::Weaver weaver;
+    ThreadWeaver::Queue weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
     QVector<AccumulateJob> jobs(n);
@@ -228,7 +228,7 @@ void QueueBenchmarksTest::SequencesBenchmark()
     QFETCH(int, t);
     const int n = c * b;
 
-    ThreadWeaver::Weaver weaver;
+    ThreadWeaver::Queue weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
     QVector<AccumulateJob> jobs(n);

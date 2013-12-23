@@ -67,20 +67,20 @@ void LifecycleTests::testJobAutoDeletion()
         QCOMPARE(job1Exists, true);
         int argc = 0;
         QCoreApplication app(argc, (char **)0); Q_UNUSED(app);
-        QVERIFY(ThreadWeaver::Weaver::instance());
-        ThreadWeaver::Weaver::instance()->suspend();
-        ThreadWeaver::Weaver::instance()->enqueue(job1);
-        ThreadWeaver::Weaver::instance()->enqueue(ThreadWeaver::JobPointer(new NotifyOnDeletejob(job2Exists)));
+        QVERIFY(ThreadWeaver::Queue::instance());
+        ThreadWeaver::Queue::instance()->suspend();
+        ThreadWeaver::Queue::instance()->enqueue(job1);
+        ThreadWeaver::Queue::instance()->enqueue(ThreadWeaver::JobPointer(new NotifyOnDeletejob(job2Exists)));
         QCOMPARE(job2Exists, true);
-        ThreadWeaver::Weaver::instance()->resume();
-        ThreadWeaver::Weaver::instance()->finish();
-        QVERIFY(ThreadWeaver::Weaver::instance()->isIdle());
-        ThreadWeaver::Weaver::instance()->suspend();
+        ThreadWeaver::Queue::instance()->resume();
+        ThreadWeaver::Queue::instance()->finish();
+        QVERIFY(ThreadWeaver::Queue::instance()->isIdle());
+        ThreadWeaver::Queue::instance()->suspend();
         QEXPECT_FAIL("", "TODO this *should* work!", Continue);
         QCOMPARE(job2Exists, false);
         QCOMPARE(job1Exists, true);
     }
-    QVERIFY(ThreadWeaver::Weaver::instance() == 0);
+    QVERIFY(ThreadWeaver::Queue::instance() == 0);
     QCOMPARE(job2Exists, false);
     QCOMPARE(job1Exists, false);
 }

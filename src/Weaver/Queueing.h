@@ -7,7 +7,7 @@
 #include "Collection.h"
 #include "Lambda.h"
 #include "QObjectDecorator.h"
-#include "Weaver.h"
+#include "Queue.h"
 
 namespace ThreadWeaver
 {
@@ -36,7 +36,7 @@ inline JobPointer make_job_raw(JobInterface *job)
 
 // enqueue any functor type to the specified queue:
 template<typename T>
-JobPointer enqueue(Weaver *weaver, T t)
+JobPointer enqueue(Queue *weaver, T t)
 {
     JobPointer ret = make_job(t);
     weaver->enqueue(ret);
@@ -44,7 +44,7 @@ JobPointer enqueue(Weaver *weaver, T t)
 }
 
 template<typename T>
-QSharedPointer<T>  enqueue(Weaver *weaver, T *t)
+QSharedPointer<T>  enqueue(Queue *weaver, T *t)
 {
     JobInterface *test = static_cast<JobInterface *>(t); Q_UNUSED(test);
     QSharedPointer<T> ret(make_job(t));
@@ -54,7 +54,7 @@ QSharedPointer<T>  enqueue(Weaver *weaver, T *t)
 
 // specialise for JobPointer:
 template<>
-inline JobPointer enqueue<JobPointer>(Weaver *weaver, JobPointer job)
+inline JobPointer enqueue<JobPointer>(Queue *weaver, JobPointer job)
 {
     weaver->enqueue(job);
     return job;
@@ -64,11 +64,11 @@ inline JobPointer enqueue<JobPointer>(Weaver *weaver, JobPointer job)
 template<typename T>
 JobPointer enqueue(T t)
 {
-    return enqueue(Weaver::instance(), t);
+    return enqueue(Queue::instance(), t);
 }
 
 // enqueue a raw pointer with no memory management
-inline JobPointer enqueue_raw(Weaver *weaver, JobInterface *job)
+inline JobPointer enqueue_raw(Queue *weaver, JobInterface *job)
 {
     return enqueue(weaver, make_job_raw(job));
 }
@@ -76,7 +76,7 @@ inline JobPointer enqueue_raw(Weaver *weaver, JobInterface *job)
 // overload to enqueue to the global pool
 inline JobPointer enqueue_raw(JobInterface *job)
 {
-    return enqueue(Weaver::instance(), make_job_raw(job));
+    return enqueue(Queue::instance(), make_job_raw(job));
 }
 
 }

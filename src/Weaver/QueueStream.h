@@ -7,14 +7,14 @@
 namespace ThreadWeaver
 {
 
-class Weaver;
+class Queue;
 class Job;
 
 /** @brief QueueStream implements a stream based API to access ThreadWeaver queues. */
 class THREADWEAVER_EXPORT QueueStream
 {
 public:
-    explicit QueueStream(Weaver *queue);
+    explicit QueueStream(Queue *queue);
     ~QueueStream();
     void add(const JobPointer &job);
     void flush();

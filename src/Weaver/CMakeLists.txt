@@ -6,7 +6,7 @@ set(ThreadWeaver_LIB_SRCS
     QueueStream.cpp
     QueueAPI.cpp
     Exception.cpp
-    Weaver.cpp
+    Queue.cpp
     WeaverImpl.cpp
     DebuggingAids.cpp
     Thread.cpp
@@ -54,7 +54,7 @@ install(FILES
     Queueing.h
     Exception.h
     WeaverInterface.h
-    Weaver.h
+    Queue.h
     DebuggingAids.h
     Thread.h
     JobInterface.h

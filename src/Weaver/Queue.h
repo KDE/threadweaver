@@ -27,8 +27,8 @@
 
 */
 
-#ifndef THREADWEAVER_WEAVER_H
-#define THREADWEAVER_WEAVER_H
+#ifndef THREADWEAVER_QUEUE_H
+#define THREADWEAVER_QUEUE_H
 
 #include <QtCore/QObject>
 
@@ -41,41 +41,27 @@ namespace ThreadWeaver
 class Job;
 class State;
 
-/** The Weaver class provides the public implementation of the WeaverInterface.
-
-        Weaver provides a static instance that can be used to perform jobs in
-        threads without managing a weaver object. The static instance will
-        only be created when it is first accessed. Also, Weaver objects will
-        create the threads only when the first jobs are queued. Therefore, the
-        creation of a Weaver object is a rather cheap operation.
-
-        The WeaverImpl class provides two parts of API - one for the threads
-        that are handled by it, and one for the ThreadWeaver users
-        (application developers). To separate those two different API parts,
-        Weaver only provides the interface supposed to be used by developers
-        of multithreaded applications.
-
-        Weaver creates and destroys WeaverImpl objects. It hides the
-        implementation details of the WeaverImpl class. It is strongly
-        discouraged to use the WeaverImpl class in programs, as its API will
-        be changed without notice.
-        Also, Weaver provides a factory method for this purpose that can be overloaded to create
-        derived WeaverImpl objects.
-
-    */
-// Note: All member documentation is in the WeaverInterface class.
-class THREADWEAVER_EXPORT Weaver : public QueueSignals
+/** @brief Queue implements a ThreadWeaver job queue.
+ *
+ * Queues process jobs enqueued in them by automatically assigning them to worker threads they manage.
+ * Applications using ThreadWeaver can make use of a global Queue which is instantiated on demand, or
+ * create multiple queues as needed. A job assigned to a queue will be processed by that specific queue.
+ *
+ * Worker threads are created by the queues as needed. To create a customized global queue,
+ * see GlobalQueueFactory.
+ *
+ * @see GlobalQueueFactory
+ * @see Queue::enqueue()
+ * @see Queue::instance()
+ */
+class THREADWEAVER_EXPORT Queue : public QueueSignals
 {
     Q_OBJECT
 public:
-    explicit Weaver(QObject *parent = 0);
+    explicit Queue(QObject *parent = 0);
+    explicit Queue(QueueSignals *implementation, QObject *parent = 0);
+    virtual ~Queue();
 
-    explicit Weaver(QueueSignals *implementation, QObject *parent = 0);
-
-    /** Destruct a Weaver object. */
-    virtual ~Weaver();
-
-    /** Create a QueueStream to enqueue jobs into this queue. */
     QueueStream stream();
 
     const State *state() const;
@@ -84,14 +70,7 @@ public:
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;
 
-    /** Return the global Weaver instance.
-        In some cases, a global Weaver object per application is
-        sufficient for the applications purpose. If this is the case,
-        query instance() to get a pointer to a global instance.
-        If instance is never called, a global Weaver object will not be
-        created.
-    */
-    static ThreadWeaver::Weaver *instance();
+    static ThreadWeaver::Queue *instance();
     void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
     void enqueue(const JobPointer &job);
     bool dequeue(const JobPointer &) Q_DECL_OVERRIDE;
@@ -109,7 +88,7 @@ public:
     /** @brief Interface for the global queue factory. */
     struct GlobalQueueFactory {
         virtual ~GlobalQueueFactory() {}
-        virtual Weaver *create(QObject *parent) = 0;
+        virtual Queue *create(QObject *parent) = 0;
 
     };
     static void setGlobalQueueFactory(GlobalQueueFactory *factory);
@@ -120,4 +99,4 @@ private:
 
 }
 
-#endif // THREADWEAVER_WEAVER_H
+#endif // THREADWEAVER_QUEUE_H

@@ -4,7 +4,7 @@
 #include <ThreadWeaver.h>
 #include <QueueAPI.h>
 #include <QueueSignals.h>
-#include <Weaver.h>
+#include <Queue.h>
 #include <WeaverImpl.h>
 #include <IdDecorator.h>
 
@@ -44,10 +44,10 @@ public:
     }
 };
 
-class CountingGlobalQueueFactory : public Weaver::GlobalQueueFactory
+class CountingGlobalQueueFactory : public Queue::GlobalQueueFactory
 {
-    Weaver *create(QObject *parent = 0) Q_DECL_OVERRIDE {
-        return new Weaver(new JobCountingWeaver, parent);
+    Queue *create(QObject *parent = 0) Q_DECL_OVERRIDE {
+        return new Queue(new JobCountingWeaver, parent);
     }
 };
 
@@ -61,7 +61,7 @@ private Q_SLOTS:
     {
         counter.storeRelease(0);
         QCoreApplication app(argc, (char **)0);
-        Weaver queue(new JobCountingWeaver(this));
+        Queue queue(new JobCountingWeaver(this));
         queue.enqueue(make_job([]() {}));  // nop
         queue.finish();
         QCOMPARE(counter.loadAcquire(), 2);
@@ -69,11 +69,11 @@ private Q_SLOTS:
 
     void testGlobalQueueFactory()
     {
-        Weaver::setGlobalQueueFactory(new CountingGlobalQueueFactory());
+        Queue::setGlobalQueueFactory(new CountingGlobalQueueFactory());
         QCoreApplication app(argc, (char **)0);
         counter.storeRelease(0);
-        Weaver::instance()->enqueue(make_job([]() {}));  // nop
-        Weaver::instance()->finish();
+        Queue::instance()->enqueue(make_job([]() {}));  // nop
+        Queue::instance()->finish();
         QCOMPARE(counter.loadAcquire(), 2);
     }
 };

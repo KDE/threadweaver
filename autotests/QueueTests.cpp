@@ -59,7 +59,7 @@ void SecondThreadThatQueues::run()
     AppendCharacterJob a('a', &sequence);
 
     ThreadWeaver::enqueue_raw(&a);
-    ThreadWeaver::Weaver::instance()->finish();
+    ThreadWeaver::Queue::instance()->finish();
     QCOMPARE(sequence, QString("a"));
 }
 
@@ -78,7 +78,7 @@ void QueueTests::SimpleQueuePrioritiesTest()
 {
     using namespace ThreadWeaver;
 
-    Weaver weaver;
+    Queue weaver;
     weaver.setMaximumNumberOfThreads(1);    // just one thread
     QString sequence;
     LowPriorityAppendCharacterJob jobA(QChar('a'), &sequence);
@@ -103,7 +103,7 @@ void QueueTests::SimpleQueuePrioritiesTest()
 void QueueTests::WeaverInitializationTest()
 {
     // this one mostly tests the sanity of the startup behaviour
-    ThreadWeaver::Weaver weaver;
+    ThreadWeaver::Queue weaver;
     QCOMPARE(weaver.currentNumberOfThreads(), 0);
     QVERIFY(weaver.isEmpty());
     QVERIFY(weaver.isIdle());
@@ -113,11 +113,11 @@ void QueueTests::WeaverInitializationTest()
 
 void QueueTests::QueueFromSecondThreadTest()
 {
-    ThreadWeaver::Weaver::instance(); //create global instance in the main thread
+    ThreadWeaver::Queue::instance(); //create global instance in the main thread
     SecondThreadThatQueues thread;
     thread.start();
     thread.wait();
-    QVERIFY(ThreadWeaver::Weaver::instance()->isIdle());
+    QVERIFY(ThreadWeaver::Queue::instance()->isIdle());
 }
 
 void QueueTests::deleteJob(ThreadWeaver::JobPointer job)
@@ -142,7 +142,7 @@ void QueueTests::DeleteDoneJobsFromSequenceTest()
                     SLOT(deleteJob(ThreadWeaver::JobPointer))));
     stream() << collection;
     QTest::qWait(100); // return to event queue to make sure signals are delivered
-    Weaver::instance()->finish();
+    Queue::instance()->finish();
     QTest::qWait(100); // return to event queue to make sure signals are delivered
     // no need to delete a, that should be done in deleteJob
     QVERIFY(autoDeleteJob == 0);
@@ -172,7 +172,7 @@ void QueueTests::DeleteCollectionOnDoneTest()
     // (otherwise, no slot calls would happen before the end of this function)
     // I assume the amount of time that we wait does not matter
     QTest::qWait(10);
-    Weaver::instance()->finish();
+    Queue::instance()->finish();
     // return to event queue to make sure signals are delivered
     QTest::qWait(10);
     // no need to delete a, that should be done in deleteJob

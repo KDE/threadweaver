@@ -2,20 +2,20 @@
 #include <QtCore/QMutex>
 #include <QtCore/QVector>
 
-#include "Weaver.h"
+#include "Queue.h"
 #include "WeaverImpl.h"
 
 using namespace ThreadWeaver;
 
 namespace
 {
-static Weaver::GlobalQueueFactory *globalQueueFactory;
+static Queue::GlobalQueueFactory *globalQueueFactory;
 }
 
-class Weaver::Private
+class Queue::Private
 {
 public:
-    Private(Weaver *q, QueueSignals *queue)
+    Private(Queue *q, QueueSignals *queue)
         : implementation(queue)
     {
         Q_ASSERT_X(qApp != 0, Q_FUNC_INFO, "Cannot create global ThreadWeaver instance before QApplication!");
@@ -30,22 +30,36 @@ public:
     void init(QueueSignals *implementation);
 };
 
-/** @brief Construct a Weaver object. */
-Weaver::Weaver(QObject *parent)
+/** @brief Construct a Queue. */
+Queue::Queue(QObject *parent)
     : QueueSignals(parent)
     , d(new Private(this, new WeaverImpl))
 {
 }
 
-/** @brief Construct a Weaver object, specifying the Weaver implementation to use.
-  * The Weaver instance will take ownership of the implementation object and delete it when destructed. */
-Weaver::Weaver(QueueSignals *implementation, QObject *parent)
+/** @brief Construct a Queue, specifying the QueueSignals implementation to use.
+ *
+ * The QueueSignals instance is usually a Weaver object, which may be customized for specific
+ * application needs. The Weaver instance will take ownership of the implementation object and
+ * deletes it when destructed.
+ * @see Weaver
+ * @see GlobalQueueFactory
+ */
+Queue::Queue(QueueSignals *implementation, QObject *parent)
     : QueueSignals(parent)
     , d(new Private(this, implementation))
 {
 }
 
-Weaver::~Weaver()
+/** @brief Destruct the Queue object.
+ *
+ * If the queue is not already in Destructed state, the destructor will call shutDown() to make sure
+ * enqueued jobs are completed and the queue is idle.
+ * The queue implementation will be destroyed.
+ * @see shutDown()
+ * @see ThreadWeaver::Destructed
+ */
+Queue::~Queue()
 {
     if (d->implementation->state()->stateId() != Destructed) {
         d->implementation->shutDown();
@@ -54,12 +68,13 @@ Weaver::~Weaver()
     delete d;
 }
 
-QueueStream Weaver::stream()
+/** @brief Create a QueueStream to enqueue jobs into this queue. */
+QueueStream Queue::stream()
 {
     return QueueStream(this);
 }
 
-void Weaver::shutDown()
+void Queue::shutDown()
 {
     d->implementation->shutDown();
 }
@@ -69,7 +84,7 @@ void Weaver::shutDown()
  * Once set, the global queue factory will be deleted when the global ThreadWeaver pool is deleted.
  * The factory object needs to be set before the global ThreadWeaver pool is instantiated. Call this
  * method before Q(Core)Application is constructed. */
-void Weaver::setGlobalQueueFactory(Weaver::GlobalQueueFactory *factory)
+void Queue::setGlobalQueueFactory(Queue::GlobalQueueFactory *factory)
 {
     if (globalQueueFactory) {
         delete globalQueueFactory;
@@ -77,7 +92,7 @@ void Weaver::setGlobalQueueFactory(Weaver::GlobalQueueFactory *factory)
     globalQueueFactory = factory;
 }
 
-const State *Weaver::state() const
+const State *Queue::state() const
 {
     return d->implementation->state();
 }
@@ -89,7 +104,7 @@ class StaticThreadWeaverInstanceGuard : public QObject
 {
     Q_OBJECT
 public:
-    explicit StaticThreadWeaverInstanceGuard(QAtomicPointer<Weaver> &instance, QCoreApplication *app)
+    explicit StaticThreadWeaverInstanceGuard(QAtomicPointer<Queue> &instance, QCoreApplication *app)
         : QObject(app)
         , instance_(instance)
     {
@@ -109,24 +124,29 @@ public:
 private:
     static void shutDownGlobalQueue()
     {
-        Weaver::instance()->shutDown();
-        Q_ASSERT(Weaver::instance()->state()->stateId() == Destructed);
+        Queue::instance()->shutDown();
+        Q_ASSERT(Queue::instance()->state()->stateId() == Destructed);
     }
 
-    QAtomicPointer<Weaver> &instance_;
+    QAtomicPointer<Queue> &instance_;
 };
 
 }
 
-/** @brief The application-global Weaver instance.
- * This  instance will only be created if this method is actually called in the lifetime of the application.
- * The method will create the Weaver instance on first call. The Q(Core)Application object must exist at that time.
- * The instance will be deleted when Q(Core)Application is destructed. After that, the instance() method returns zero. */
-Weaver *Weaver::instance()
+/** @brief Access the application-global Queue.
+ *
+ * In some cases, the global queue is sufficient for the applications purpose. The global queue will only be
+ * created if this method is actually called in the lifetime of the application.
+ *
+ * The Q(Core)Application object must exist when instance() is called for the first time.
+ * The global queue will be destroyed when Q(Core)Application is destructed. After that, the instance() method
+ * returns zero.
+ */
+Queue *Queue::instance()
 {
-    static QAtomicPointer<Weaver> s_instance(globalQueueFactory
+    static QAtomicPointer<Queue> s_instance(globalQueueFactory
             ? globalQueueFactory->create(qApp)
-            : new Weaver(qApp));
+            : new Queue(qApp));
     //Order is of importance here:
     //When s_instanceGuard is destructed (first, before s_instance), it sets the value of s_instance to zero. Next, qApp will delete
     //the object s_instance pointed to.
@@ -138,79 +158,79 @@ Weaver *Weaver::instance()
     return s_instance.loadAcquire();
 }
 
-void Weaver::enqueue(const QVector<JobPointer> &jobs)
+void Queue::enqueue(const QVector<JobPointer> &jobs)
 {
     d->implementation->enqueue(jobs);
 }
 
-void Weaver::enqueue(const JobPointer &job)
+void Queue::enqueue(const JobPointer &job)
 {
     enqueue(QVector<JobPointer>() << job);
 }
 
-bool Weaver::dequeue(const JobPointer &job)
+bool Queue::dequeue(const JobPointer &job)
 {
     return d->implementation->dequeue(job);
 }
 
-void Weaver::dequeue()
+void Queue::dequeue()
 {
     return d->implementation->dequeue();
 }
 
-void Weaver::finish()
+void Queue::finish()
 {
     return d->implementation->finish();
 }
 
-void Weaver::suspend()
+void Queue::suspend()
 {
     return d->implementation->suspend();
 }
 
-void Weaver::resume()
+void Queue::resume()
 {
     return d->implementation->resume();
 }
 
-bool Weaver::isEmpty() const
+bool Queue::isEmpty() const
 {
     return d->implementation->isEmpty();
 }
 
-bool Weaver::isIdle() const
+bool Queue::isIdle() const
 {
     return d->implementation->isIdle();
 }
 
-int Weaver::queueLength() const
+int Queue::queueLength() const
 {
     return d->implementation->queueLength();
 }
 
-void Weaver::setMaximumNumberOfThreads(int cap)
+void Queue::setMaximumNumberOfThreads(int cap)
 {
     d->implementation->setMaximumNumberOfThreads(cap);
 }
 
-int Weaver::currentNumberOfThreads() const
+int Queue::currentNumberOfThreads() const
 {
     return d->implementation->currentNumberOfThreads();
 }
 
-int Weaver::maximumNumberOfThreads() const
+int Queue::maximumNumberOfThreads() const
 {
     return d->implementation->maximumNumberOfThreads();
 }
 
-void Weaver::requestAbort()
+void Queue::requestAbort()
 {
     d->implementation->requestAbort();
 }
 
-void Weaver::reschedule()
+void Queue::reschedule()
 {
     d->implementation->reschedule();
 }
 
-#include "Weaver.moc"
+#include "Queue.moc"

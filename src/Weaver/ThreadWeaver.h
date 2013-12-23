@@ -29,7 +29,7 @@
 #ifndef THREADWEAVER_H
 #define THREADWEAVER_H
 
-#include "Weaver.h"
+#include "Queue.h"
 #include "Queueing.h"
 #include "JobInterface.h"
 #include "JobPointer.h"
