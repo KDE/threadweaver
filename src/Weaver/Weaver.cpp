@@ -96,7 +96,7 @@ public:
         Q_ASSERT_X(app != 0, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
         QObject *impl = instance.load()->findChild<Queue *>();
         Q_ASSERT(impl);
-        impl->setObjectName(tr("GlobalQueue"));
+        impl->setObjectName(QStringLiteral("GlobalQueue"));
         qAddPostRoutine(shutDownGlobalQueue);
     }
 
