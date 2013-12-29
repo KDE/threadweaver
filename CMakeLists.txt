@@ -19,7 +19,9 @@ include(FeatureSummary)
 include(ECMSetupVersion)
 
 # -- Maintained by scripty
-ecm_setup_version(5.0.0 VARIABLE_PREFIX THREADWEAVER
+set(KF5_VERSION "5.0.0")
+
+ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX THREADWEAVER
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/threadweaver_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ThreadWeaverConfigVersion.cmake")
 # --
