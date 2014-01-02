@@ -5,7 +5,7 @@
 #include <QtTest/QtTest>
 #include <QAtomicInt>
 
-#include <Weaver/JobPointer.h>
+#include <JobPointer.h>
 
 namespace ThreadWeaver
 {

@@ -2,7 +2,7 @@
 #define JOBTESTS_H
 
 #include <QtCore/QObject>
-#include <Weaver/JobPointer.h>
+#include <JobPointer.h>
 
 namespace ThreadWeaver
 {

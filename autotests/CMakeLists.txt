@@ -1,6 +1,11 @@
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 add_definitions(-fexceptions)
 
+include_directories(
+     ${CMAKE_CURRENT_SOURCE_DIR}/../src/Weaver/
+     ${CMAKE_CURRENT_BINARY_DIR}/../src/Weaver/
+)
+
 include(ECMMarkAsTest)
 
 ########### next target ###############
