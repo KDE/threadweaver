@@ -1,1 +1,78 @@
-add_subdirectory(Weaver)
+########### next target ###############
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  ${KDE_ENABLE_EXCEPTIONS}")
+
+set(ThreadWeaver_LIB_SRCS
+    QueueSignals.cpp
+    QueueStream.cpp
+    QueueAPI.cpp
+    Exception.cpp
+    Queue.cpp
+    Weaver.cpp
+    DebuggingAids.cpp
+    Thread.cpp
+    Job.cpp
+    IdDecorator.cpp
+    QObjectDecorator.cpp
+    Executor.cpp
+    ExecuteWrapper.cpp
+    State.cpp
+    WeaverImplState.cpp
+    InConstructionState.cpp
+    WorkingHardState.cpp
+    SuspendingState.cpp
+    SuspendedState.cpp
+    ShuttingDownState.cpp
+    DestructedState.cpp
+    Collection.cpp
+    Sequence.cpp
+    DependencyPolicy.cpp
+    Dependency.cpp
+    ResourceRestrictionPolicy.cpp
+)
+
+add_library(KF5ThreadWeaver ${ThreadWeaver_LIB_SRCS})
+generate_export_header(KF5ThreadWeaver BASE_NAME ThreadWeaver)
+add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
+target_link_libraries(KF5ThreadWeaver PUBLIC Qt5::Core)
+target_include_directories(KF5ThreadWeaver
+  PUBLIC
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>"
+  INTERFACE
+    "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/threadweaver>"
+)
+
+set_target_properties(KF5ThreadWeaver PROPERTIES
+    VERSION ${THREADWEAVER_VERSION_STRING}
+    SOVERSION ${THREADWEAVER_SOVERSION}
+    EXPORT_NAME ThreadWeaver
+)
+install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
+
+install(FILES
+    ThreadWeaver.h
+    QueueStream.h
+    Queueing.h
+    Exception.h
+    QueueInterface.h
+    Queue.h
+    DebuggingAids.h
+    Thread.h
+    JobInterface.h
+    Job.h
+    IdDecorator.h
+    QObjectDecorator.h
+    Lambda.h
+    State.h
+    Collection.h
+    Sequence.h
+    Dependency.h
+    DependencyPolicy.h
+    ResourceRestrictionPolicy.h
+    QueueSignals.h
+    QueueInterface.h
+    QueuePolicy.h
+    JobPointer.h
+    ManagedJobPointer.h
+    ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_export.h
+    DESTINATION ${INCLUDE_INSTALL_DIR}/threadweaver COMPONENT Devel
+)
