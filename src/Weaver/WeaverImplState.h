@@ -34,7 +34,7 @@
 #endif
 
 #include "State.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 namespace ThreadWeaver
 {
@@ -80,8 +80,8 @@ public:
 
 protected:
     /** Provide correct return type for WeaverImpl states. */
-    WeaverImpl *weaver() Q_DECL_OVERRIDE;
-    const WeaverImpl *weaver() const Q_DECL_OVERRIDE;
+    Weaver *weaver() Q_DECL_OVERRIDE;
+    const Weaver *weaver() const Q_DECL_OVERRIDE;
 };
 
 }

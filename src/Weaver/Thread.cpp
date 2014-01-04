@@ -36,7 +36,7 @@
 #include <QtCore/QCoreApplication>
 
 #include "ThreadWeaver.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 #include "Job.h"
 #include "DebuggingAids.h"
 
@@ -45,7 +45,7 @@ using namespace ThreadWeaver;
 class Thread::Private
 {
 public:
-    explicit Private(WeaverImpl *theParent)
+    explicit Private(Weaver *theParent)
         : parent(theParent)
         , id(makeId())
         , job(0)
@@ -53,7 +53,7 @@ public:
         Q_ASSERT(parent);
     }
 
-    WeaverImpl *parent;
+    Weaver *parent;
     const unsigned int id;
     JobPointer job;
     QMutex mutex;
@@ -65,7 +65,7 @@ public:
     }
 };
 
-Thread::Thread(WeaverImpl *parent)
+Thread::Thread(Weaver *parent)
     : QThread() // no parent, because the QObject hierarchy of this thread
     // does not have a parent (see QObject::pushToThread)
     , d(new Private(parent))

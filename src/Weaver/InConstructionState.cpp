@@ -28,7 +28,7 @@
 
 #include "InConstructionState.h"
 
-#include "WeaverImpl.h"
+#include "Weaver.h"
 #include "ThreadWeaver.h"
 
 namespace ThreadWeaver

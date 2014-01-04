@@ -41,7 +41,7 @@ namespace ThreadWeaver
 {
 
 class Job;
-class WeaverImpl;
+class Weaver;
 
 /** The class Thread is used to represent the worker threads in
     the weaver's inventory. It is not meant to be overloaded. */
@@ -54,9 +54,9 @@ public:
         These thread objects are only used inside the Weaver parent
         object.
 
-            @param parent the parent WeaverImpl
+            @param parent the parent Weaver
         */
-    explicit Thread(WeaverImpl *parent = 0);
+    explicit Thread(Weaver *parent = 0);
 
     /** The destructor. */
     ~Thread();

@@ -3,7 +3,7 @@
 #include <QtCore/QVector>
 
 #include "Queue.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 using namespace ThreadWeaver;
 
@@ -33,7 +33,7 @@ public:
 /** @brief Construct a Queue. */
 Queue::Queue(QObject *parent)
     : QueueSignals(parent)
-    , d(new Private(this, new WeaverImpl))
+    , d(new Private(this, new Weaver))
 {
 }
 

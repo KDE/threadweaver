@@ -34,7 +34,7 @@
 #endif
 
 #include "WeaverImplState.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 namespace ThreadWeaver
 {
@@ -44,7 +44,7 @@ namespace ThreadWeaver
 class SuspendedState : public WeaverImplState
 {
 public:
-    explicit SuspendedState(WeaverImpl *weaver);
+    explicit SuspendedState(Weaver *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */

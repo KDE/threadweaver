@@ -7,7 +7,7 @@ set(ThreadWeaver_LIB_SRCS
     QueueAPI.cpp
     Exception.cpp
     Queue.cpp
-    WeaverImpl.cpp
+    Weaver.cpp
     DebuggingAids.cpp
     Thread.cpp
     Job.cpp

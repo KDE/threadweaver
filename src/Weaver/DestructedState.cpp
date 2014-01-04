@@ -40,12 +40,12 @@ void DestructedState::shutDown()
 {
 }
 
-WeaverImpl *DestructedState::weaver()
+Weaver *DestructedState::weaver()
 {
     return 0;
 }
 
-const WeaverImpl *DestructedState::weaver() const
+const Weaver *DestructedState::weaver() const
 {
     return 0;
 }

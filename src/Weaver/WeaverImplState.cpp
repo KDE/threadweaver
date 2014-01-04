@@ -28,7 +28,7 @@
 
 #include "WeaverImplState.h"
 
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 namespace ThreadWeaver
 {
@@ -47,16 +47,16 @@ void WeaverImplState::shutDown()
     weaver()->shutDown_p();
 }
 
-WeaverImpl *WeaverImplState::weaver()
+Weaver *WeaverImplState::weaver()
 {
-    Q_ASSERT(dynamic_cast<WeaverImpl *>(State::weaver()));
-    return static_cast<WeaverImpl *>(State::weaver());
+    Q_ASSERT(dynamic_cast<Weaver *>(State::weaver()));
+    return static_cast<Weaver *>(State::weaver());
 }
 
-const WeaverImpl *WeaverImplState::weaver() const
+const Weaver *WeaverImplState::weaver() const
 {
-    Q_ASSERT(dynamic_cast<const WeaverImpl *>(State::weaver()));
-    return static_cast<const WeaverImpl *>(State::weaver());
+    Q_ASSERT(dynamic_cast<const Weaver *>(State::weaver()));
+    return static_cast<const Weaver *>(State::weaver());
 }
 
 void WeaverImplState::setMaximumNumberOfThreads(int cap)
@@ -116,7 +116,7 @@ void WeaverImplState::requestAbort()
 
 void WeaverImplState::reschedule()
 {
-    // Not implemented, performed directly in WeaverImpl::reschedule().
+    // Not implemented, performed directly in Weaver::reschedule().
 }
 
 void WeaverImplState::waitForAvailableJob(Thread *th)

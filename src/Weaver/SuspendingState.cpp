@@ -29,13 +29,13 @@
 #include "SuspendingState.h"
 
 #include "State.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 #include "ThreadWeaver.h"
 
 namespace ThreadWeaver
 {
 
-SuspendingState::SuspendingState(WeaverImpl *weaver)
+SuspendingState::SuspendingState(Weaver *weaver)
     : WeaverImplState(weaver)
 {
 }

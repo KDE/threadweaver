@@ -27,7 +27,7 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 
 */
 
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QObject>
@@ -50,7 +50,8 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 
 using namespace ThreadWeaver;
 
-WeaverImpl::WeaverImpl(QObject *parent)
+/** @brief Constructs a Weaver object. */
+Weaver::Weaver(QObject *parent)
     : QueueAPI(parent)
     , m_active(0)
     , m_inventoryMax(qMax(4, 2 * QThread::idealThreadCount()))
@@ -70,18 +71,23 @@ WeaverImpl::WeaverImpl(QObject *parent)
     setState_p(WorkingHard);
 }
 
-WeaverImpl::~WeaverImpl()
+/** @brief Destructs a Weaver object. */
+Weaver::~Weaver()
 {
-    Q_ASSERT_X(state()->stateId() == Destructed, Q_FUNC_INFO, "shutDown() method was not called before WeaverImpl destructor!");
+    Q_ASSERT_X(state()->stateId() == Destructed, Q_FUNC_INFO, "shutDown() method was not called before Weaver destructor!");
     delete m_mutex;
 }
 
-void WeaverImpl::shutDown()
+/** @brief Enter Destructed state.
+  *
+  * Once this method returns, it is save to delete this object.
+  */
+void Weaver::shutDown()
 {
     state()->shutDown();
 }
 
-void WeaverImpl::shutDown_p()
+void Weaver::shutDown_p()
 {
     // the constructor may only be called from the thread that owns this
     // object (everything else would be what we professionals call "insane")
@@ -130,13 +136,18 @@ void WeaverImpl::shutDown_p()
     setState(Destructed);    // Destructed ignores all calls into the queue API
 }
 
-void WeaverImpl::setState(StateId id)
+/** @brief Set the Weaver state.
+ * @see StateId
+ * @see WeaverImplState
+ * @see State
+ */
+void Weaver::setState(StateId id)
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     setState_p(id);
 }
 
-void WeaverImpl::setState_p(StateId id)
+void Weaver::setState_p(StateId id)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     State *newState = m_states[id].data();
@@ -151,17 +162,17 @@ void WeaverImpl::setState_p(StateId id)
     }
 }
 
-const State *WeaverImpl::state() const
+const State *Weaver::state() const
 {
     return m_state.loadAcquire();
 }
 
-State *WeaverImpl::state()
+State *Weaver::state()
 {
     return m_state.loadAcquire();
 }
 
-void WeaverImpl::setMaximumNumberOfThreads(int cap)
+void Weaver::setMaximumNumberOfThreads(int cap)
 {
     //FIXME really? Why not 0?
     Q_ASSERT_X(cap > 0, "Weaver Impl", "Thread inventory size has to be larger than zero.");
@@ -169,43 +180,43 @@ void WeaverImpl::setMaximumNumberOfThreads(int cap)
     state()->setMaximumNumberOfThreads(cap);
 }
 
-void WeaverImpl::setMaximumNumberOfThreads_p(int cap)
+void Weaver::setMaximumNumberOfThreads_p(int cap)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     m_inventoryMax = cap;
 }
 
-int WeaverImpl::maximumNumberOfThreads() const
+int Weaver::maximumNumberOfThreads() const
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->maximumNumberOfThreads();
 }
 
-int WeaverImpl::maximumNumberOfThreads_p() const
+int Weaver::maximumNumberOfThreads_p() const
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return m_inventoryMax;
 }
 
-int WeaverImpl::currentNumberOfThreads() const
+int Weaver::currentNumberOfThreads() const
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->currentNumberOfThreads();
 }
 
-int WeaverImpl::currentNumberOfThreads_p() const
+int Weaver::currentNumberOfThreads_p() const
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return m_inventory.count();
 }
 
-void WeaverImpl::enqueue(const QVector<JobPointer> &jobs)
+void Weaver::enqueue(const QVector<JobPointer> &jobs)
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     state()->enqueue(jobs);
 }
 
-void WeaverImpl::enqueue_p(const QVector<JobPointer> &jobs)
+void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     if (jobs.isEmpty()) {
@@ -233,13 +244,13 @@ void WeaverImpl::enqueue_p(const QVector<JobPointer> &jobs)
     }
 }
 
-bool WeaverImpl::dequeue(const JobPointer &job)
+bool Weaver::dequeue(const JobPointer &job)
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->dequeue(job);
 }
 
-bool WeaverImpl::dequeue_p(JobPointer job)
+bool Weaver::dequeue_p(JobPointer job)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     int position = m_assignments.indexOf(job);
@@ -260,13 +271,13 @@ bool WeaverImpl::dequeue_p(JobPointer job)
     }
 }
 
-void WeaverImpl::dequeue()
+void Weaver::dequeue()
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     state()->dequeue();
 }
 
-void WeaverImpl::dequeue_p()
+void Weaver::dequeue_p()
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     debug(3, "WeaverImpl::dequeue: dequeueing all jobs.\n");
@@ -277,13 +288,13 @@ void WeaverImpl::dequeue_p()
     ENSURE(m_assignments.isEmpty());
 }
 
-void WeaverImpl::finish()
+void Weaver::finish()
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     state()->finish();
 }
 
-void WeaverImpl::finish_p()
+void Weaver::finish_p()
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
 #ifdef QT_NO_DEBUG
@@ -302,78 +313,78 @@ void WeaverImpl::finish_p()
     debug(2, "WeaverImpl::finish: done.\n\n\n");
 }
 
-void WeaverImpl::suspend()
+void Weaver::suspend()
 {
     //FIXME?
     //QMutexLocker l(m_mutex); Q_UNUSED(l);
     state()->suspend();
 }
 
-void WeaverImpl::suspend_p()
+void Weaver::suspend_p()
 {
     //FIXME ?
 }
 
-void WeaverImpl::resume()
+void Weaver::resume()
 {
     //FIXME?
     //QMutexLocker l(m_mutex); Q_UNUSED(l);
     state()->resume();
 }
 
-void WeaverImpl::resume_p()
+void Weaver::resume_p()
 {
     //FIXME ?
 }
 
-bool WeaverImpl::isEmpty() const
+bool Weaver::isEmpty() const
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->isEmpty();
 }
 
-bool WeaverImpl::isEmpty_p() const
+bool Weaver::isEmpty_p() const
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return  m_assignments.isEmpty();
 }
 
-bool WeaverImpl::isIdle() const
+bool Weaver::isIdle() const
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->isIdle();
 }
 
-bool WeaverImpl::isIdle_p() const
+bool Weaver::isIdle_p() const
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return isEmpty_p() && m_active == 0;
 }
 
-int WeaverImpl::queueLength() const
+int Weaver::queueLength() const
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->queueLength();
 }
 
-int WeaverImpl::queueLength_p() const
+int Weaver::queueLength_p() const
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return m_assignments.count();
 }
 
-void WeaverImpl::requestAbort()
+void Weaver::requestAbort()
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     return state()->requestAbort();
 }
 
-void WeaverImpl::reschedule()
+void Weaver::reschedule()
 {
     m_jobAvailable.wakeAll();
 }
 
-void WeaverImpl::requestAbort_p()
+void Weaver::requestAbort_p()
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     for (int i = 0; i < m_inventory.size(); ++i) {
@@ -381,7 +392,19 @@ void WeaverImpl::requestAbort_p()
     }
 }
 
-void WeaverImpl::adjustInventory(int numberOfNewJobs)
+/** @brief Adjust the inventory size.
+ *
+ * Requires that the mutex is being held when called.
+ *
+ * This method creates threads on demand. Threads in the inventory
+ * are not created upon construction of the WeaverImpl object, but
+ * when jobs are queued. This avoids costly delays on the application
+ * startup time. Threads are created when the inventory size is under
+ * inventoryMin and new jobs are queued.
+ */
+//TODO add code to raise inventory size over inventoryMin
+//TODO add code to quit unnecessary threads
+void Weaver::adjustInventory(int numberOfNewJobs)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     //number of threads that can be created:
@@ -404,7 +427,15 @@ void WeaverImpl::adjustInventory(int numberOfNewJobs)
     }
 }
 
-bool WeaverImpl::canBeExecuted(JobPointer job)
+/** @brief Check with the assigned queue policies if the job can be executed.
+ *
+ * If it returns true, it expects that the job is executed right after that. The done() methods of the
+ * queue policies will be automatically called when the job is finished.
+ *
+ * If it returns false, all queue policy resources have been freed, and the method can be called again
+ * at a later time.
+ */
+bool Weaver::canBeExecuted(JobPointer job)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
 
@@ -438,17 +469,23 @@ bool WeaverImpl::canBeExecuted(JobPointer job)
     return success;
 }
 
-Thread *WeaverImpl::createThread()
+/** @brief Factory method to create the threads.
+ *
+ * Overload in adapted Weaver implementations.
+ */
+Thread *Weaver::createThread()
 {
     return new Thread(this);
 }
 
-void WeaverImpl::incActiveThreadCount()
+/** @brief Increment the count of active threads. */
+void Weaver::incActiveThreadCount()
 {
     adjustActiveThreadCount(1);
 }
 
-void WeaverImpl::decActiveThreadCount()
+/** brief Decrement the count of active threads. */
+void Weaver::decActiveThreadCount()
 {
     adjustActiveThreadCount(-1);
     // the done job could have freed another set of jobs, and we do not know how
@@ -456,7 +493,11 @@ void WeaverImpl::decActiveThreadCount()
     m_jobFinished.wakeAll();
 }
 
-void WeaverImpl::adjustActiveThreadCount(int diff)
+/** @brief Adjust active thread count.
+ *
+ * This is a helper function for incActiveThreadCount and decActiveThreadCount.
+ */
+void Weaver::adjustActiveThreadCount(int diff)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     m_active += diff;
@@ -469,19 +510,34 @@ void WeaverImpl::adjustActiveThreadCount(int diff)
     }
 }
 
-int WeaverImpl::activeThreadCount()
+/** @brief Returns the number of active threads.
+ *
+ * Threads are active if they process a job. Requires that the mutex is being held when called.
+ */
+int Weaver::activeThreadCount()
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     return m_active;
 }
 
-void WeaverImpl::threadEnteredRun(Thread *thread)
+/** @brief Called from a new thread when entering the run method. */
+void Weaver::threadEnteredRun(Thread *thread)
 {
     m_semaphore.release(1);
     emit threadStarted(thread);
 }
 
-JobPointer WeaverImpl::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy,
+/** @brief Take the first available job out of the queue and return it.
+ *
+ * The job will be removed from the queue (therefore, take). Only jobs that have no unresolved dependencies
+ * are considered available. If only jobs that depened on other unfinished jobs are in the queue, this method
+ * blocks on m_jobAvailable.
+ *
+ * This method will enter suspended state if the active thread count is now zero and
+ * suspendIfAllThreadsInactive is true.
+ * If justReturning is true, do not assign a new job, just process the completed previous one.
+ */
+JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy,
         bool suspendIfInactive, bool justReturning)
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
@@ -525,23 +581,37 @@ JobPointer WeaverImpl::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool thr
     return JobPointer();
 }
 
-JobPointer WeaverImpl::applyForWork(Thread *th, bool wasBusy)
+/** @brief Assign a job to the calling thread.
+ *
+ * This is supposed to be called from the Thread objects in the inventory. Do not call this method from
+ * your code.
+ * Returns 0 if the weaver is shutting down, telling the calling thread to finish and exit. If no jobs are
+ * available and shut down is not in progress, the calling thread is suspended until either condition is met.
+ * @param wasBusy True if the thread is returning from processing a job
+ */
+JobPointer Weaver::applyForWork(Thread *th, bool wasBusy)
 {
     return state()->applyForWork(th, wasBusy);
 }
 
-void WeaverImpl::waitForAvailableJob(Thread *th)
+/** @brief Wait for a job to become available. */
+void Weaver::waitForAvailableJob(Thread *th)
 {
     state()->waitForAvailableJob(th);
 }
 
-void WeaverImpl::blockThreadUntilJobsAreBeingAssigned(Thread *th)
+/** @brief Blocks the calling thread until jobs can be assigned. */
+void Weaver::blockThreadUntilJobsAreBeingAssigned(Thread *th)
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     blockThreadUntilJobsAreBeingAssigned_locked(th);
 }
 
-void WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
+/** @brief Blocks the calling thread until jobs can be assigned.
+ *
+ * The mutex must be held when calling this method.
+ */
+void Weaver::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
 {
     Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
     debug(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i blocked (%s state).\n",
@@ -552,7 +622,11 @@ void WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
           th->id(), qPrintable(state()->stateName()));
 }
 
-void WeaverImpl::dumpJobs()
+/** @brief Dump the current jobs to the console.
+ *
+ * Use at your own risk.
+ */
+void Weaver::dumpJobs()
 {
     QMutexLocker l(m_mutex); Q_UNUSED(l);
     debug(0, "WeaverImpl::dumpJobs: current jobs:\n");

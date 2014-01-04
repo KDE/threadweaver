@@ -32,7 +32,7 @@ $Id: WorkingHardState.cpp 30 2005-08-16 16:16:04Z mirko $
 
 #include "Job.h"
 #include "Thread.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 #include "ThreadWeaver.h"
 #include "DebuggingAids.h"
 
@@ -44,7 +44,7 @@ void WorkingHardState::activated()
     weaver()->reschedule();
 }
 
-WorkingHardState::WorkingHardState(WeaverImpl *weaver)
+WorkingHardState::WorkingHardState(Weaver *weaver)
     : WeaverImplState(weaver)
 {
 }

@@ -5,7 +5,7 @@
 #include <QueueAPI.h>
 #include <QueueSignals.h>
 #include <Queue.h>
-#include <WeaverImpl.h>
+#include <Weaver.h>
 #include <IdDecorator.h>
 
 using namespace ThreadWeaver;
@@ -28,11 +28,11 @@ public:
     JobPointer original_;
 };
 
-class JobCountingWeaver : public WeaverImpl
+class JobCountingWeaver : public Weaver
 {
     Q_OBJECT
 public:
-    explicit JobCountingWeaver(QObject *parent = 0) : WeaverImpl(parent) {}
+    explicit JobCountingWeaver(QObject *parent = 0) : Weaver(parent) {}
     void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE {
         QVector<JobPointer> decorated;
         std::transform(jobs.begin(), jobs.end(), std::back_inserter(decorated),
@@ -40,7 +40,7 @@ public:
         {
             return JobPointer(new CountingJobDecorator(job));
         });
-        WeaverImpl::enqueue(decorated);
+        Weaver::enqueue(decorated);
     }
 };
 

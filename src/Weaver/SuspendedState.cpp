@@ -29,12 +29,12 @@ $Id: SuspendedState.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "SuspendedState.h"
 
 #include "ThreadWeaver.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 namespace ThreadWeaver
 {
 
-SuspendedState::SuspendedState(WeaverImpl *weaver)
+SuspendedState::SuspendedState(Weaver *weaver)
     : WeaverImplState(weaver)
 {
 }

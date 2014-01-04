@@ -48,8 +48,8 @@ class DestructedState : public WeaverImplState
 public:
     explicit DestructedState(QueueSignals *weaver);
     void shutDown() Q_DECL_OVERRIDE;
-    WeaverImpl *weaver() Q_DECL_OVERRIDE;
-    const WeaverImpl *weaver() const Q_DECL_OVERRIDE;
+    Weaver *weaver() Q_DECL_OVERRIDE;
+    const Weaver *weaver() const Q_DECL_OVERRIDE;
     void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
     int currentNumberOfThreads() const Q_DECL_OVERRIDE;

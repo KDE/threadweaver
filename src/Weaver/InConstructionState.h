@@ -38,10 +38,10 @@
 namespace ThreadWeaver
 {
 
-class WeaverImpl;
+class Weaver;
 class Queue;
 
-/** InConstructionState handles the calls to the WeaverImpl
+/** InConstructionState handles the calls to the Weaver
         object until the constructor has finished.
     */
 class InConstructionState : public WeaverImplState

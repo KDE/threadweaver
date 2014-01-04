@@ -30,7 +30,7 @@
 #define WorkingHardState_H
 
 #include "WeaverImplState.h"
-#include "WeaverImpl.h"
+#include "Weaver.h"
 
 #ifndef THREADWEAVER_PRIVATE_API
 #define THREADWEAVER_PRIVATE_API
@@ -44,7 +44,7 @@ namespace ThreadWeaver
 class WorkingHardState : public WeaverImplState
 {
 public:
-    explicit WorkingHardState(WeaverImpl *weaver);
+    explicit WorkingHardState(Weaver *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */
