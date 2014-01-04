@@ -23,11 +23,6 @@
 #include <Thread.h>
 #include <QObjectDecorator.h>
 
-// always. ahm. no. never. never show your private parts in public.
-#ifdef THREADWEAVER_PRIVATE_API
-#error "PARTS OF THREADWEAVER'S PRIVATE API ARE INCLUDED IN PUBLIC HEADERS!"
-#endif
-
 QMutex s_GlobalMutex;
 
 LowPriorityAppendCharacterJob::LowPriorityAppendCharacterJob(QChar c, QString *stringref)

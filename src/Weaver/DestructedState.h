@@ -29,10 +29,6 @@
 #ifndef DestructedState_H
 #define DestructedState_H
 
-#ifndef THREADWEAVER_PRIVATE_API
-#define THREADWEAVER_PRIVATE_API
-#endif
-
 #include "WeaverImplState.h"
 
 namespace ThreadWeaver

@@ -29,10 +29,6 @@
 #ifndef STATEIMPLEMENTATION_H
 #define STATEIMPLEMENTATION_H
 
-#ifndef THREADWEAVER_PRIVATE_API
-#define THREADWEAVER_PRIVATE_API
-#endif
-
 #include "State.h"
 #include "Weaver.h"
 

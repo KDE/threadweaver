@@ -32,10 +32,6 @@
 #include "WeaverImplState.h"
 #include "Weaver.h"
 
-#ifndef THREADWEAVER_PRIVATE_API
-#define THREADWEAVER_PRIVATE_API
-#endif
-
 namespace ThreadWeaver
 {
 

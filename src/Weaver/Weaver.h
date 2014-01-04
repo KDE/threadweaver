@@ -36,10 +36,6 @@ $Id: WeaverImpl.h 32 2005-08-17 08:38:01Z mirko $
 #include <QSemaphore>
 #include <QVector>
 
-#ifndef THREADWEAVER_PRIVATE_API
-#define THREADWEAVER_PRIVATE_API
-#endif
-
 #include "State.h"
 #include "QueueAPI.h"
 
