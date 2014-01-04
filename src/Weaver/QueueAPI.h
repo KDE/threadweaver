@@ -2,14 +2,14 @@
 #define QUEUEAPI_H
 
 #include "QueueSignals.h"
-#include "QueueInterface.h"
+#include "WeaverInterface.h"
 #include "State.h"
 #include "JobPointer.h"
 
 namespace ThreadWeaver
 {
 
-class QueueAPI : public QueueSignals, public QueueInterface
+class QueueAPI : public QueueSignals, public WeaverInterface
 {
     Q_OBJECT
 

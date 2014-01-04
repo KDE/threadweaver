@@ -29,13 +29,13 @@
 #define THREADWEAVER_QUEUESIGNALS_H
 
 #include <QtCore/QObject>
-#include "WeaverInterface.h"
+#include "QueueInterface.h"
 
 namespace ThreadWeaver
 {
 
 /** @brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes. */
-class QueueSignals : public QObject, public WeaverInterface
+class QueueSignals : public QObject, public QueueInterface
 {
     Q_OBJECT
 public:

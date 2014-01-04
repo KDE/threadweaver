@@ -45,7 +45,7 @@ const char *StateNames[NoOfStates] = {
 class State::Private
 {
 public:
-    Private(WeaverInterface *theWeaver)
+    Private(QueueInterface *theWeaver)
         : weaver(theWeaver)
     {
         Q_ASSERT_X(sizeof StateNames / sizeof StateNames[0] == NoOfStates, "State::Private ctor",
@@ -53,7 +53,7 @@ public:
     }
 
     /** The Weaver we relate to. */
-    WeaverInterface *const weaver;
+    QueueInterface *const weaver;
 };
 
 State::State(QueueSignals *weaver)
@@ -75,12 +75,12 @@ void State::activated()
 {
 }
 
-WeaverInterface *State::weaver()
+QueueInterface *State::weaver()
 {
     return d->weaver;
 }
 
-const WeaverInterface *State::weaver() const
+const QueueInterface *State::weaver() const
 {
     return d->weaver;
 }

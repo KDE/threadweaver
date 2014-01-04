@@ -53,7 +53,7 @@ install(FILES
     QueueStream.h
     Queueing.h
     Exception.h
-    WeaverInterface.h
+    QueueInterface.h
     Queue.h
     DebuggingAids.h
     Thread.h

@@ -31,8 +31,8 @@
 
 #include <QString>
 
-#include "WeaverInterface.h"
 #include "QueueInterface.h"
+#include "WeaverInterface.h"
 #include "QueueSignals.h"
 #include "threadweaver_export.h"
 
@@ -41,7 +41,7 @@ namespace ThreadWeaver
 
 class Job;
 class Thread;
-class WeaverInterface;
+class QueueInterface;
 
 /** All weaver objects maintain a state of operation which can be
  *  queried by the application. See the threadweaver documentation on
@@ -72,7 +72,7 @@ enum StateId {
 };
 
 /** We use a State pattern to handle the system state in ThreadWeaver. */
-class THREADWEAVER_EXPORT State : public WeaverInterface, public QueueInterface
+class THREADWEAVER_EXPORT State : public QueueInterface, public WeaverInterface
 {
 public:
     /** Default constructor. */
@@ -95,8 +95,8 @@ public:
 
 protected:
     /** The Weaver interface this state handles. */
-    virtual WeaverInterface *weaver();
-    virtual const WeaverInterface *weaver() const;
+    virtual QueueInterface *weaver();
+    virtual const QueueInterface *weaver() const;
 
 private:
     class Private;
