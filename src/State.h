@@ -41,7 +41,6 @@ namespace ThreadWeaver
 
 class Job;
 class Thread;
-class QueueInterface;
 
 /** All weaver objects maintain a state of operation which can be
  *  queried by the application. See the threadweaver documentation on
