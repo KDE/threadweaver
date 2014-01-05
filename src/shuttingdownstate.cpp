@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file implements the ShuttingDownState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,41 +23,48 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
+   $Id: ShuttingDownState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
-
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "shuttingdownstate_p.h"
 
 namespace ThreadWeaver
 {
-class Job;
+
+ShuttingDownState::ShuttingDownState(QueueSignals *weaver)
+    : WeaverImplState(weaver)
+{
 }
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+void ShuttingDownState::shutDown()
 {
-    Q_OBJECT
-public:
-    DeleteTest();
+}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
+void ShuttingDownState::suspend()
+{
+    // ignored: when shutting down, we do not return to the suspended state
+}
 
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
+void ShuttingDownState::resume()
+{
+    // ignored: when shutting down, we do not return from the suspended state
+}
 
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+JobPointer ShuttingDownState::applyForWork(Thread *, bool wasBusy)
+{
+    Q_UNUSED(wasBusy) // except in Q_ASSERT
+    Q_ASSERT(wasBusy == false);
+    return JobPointer();  // tell threads to exit
+}
 
-private:
-    QAtomicInt m_finishCount;
-};
+void ShuttingDownState::waitForAvailableJob(Thread *)
+{
+    // immidiately return here
+}
 
-#endif
+StateId ShuttingDownState::stateId() const
+{
+    return ShuttingDown;
+}
+
+}

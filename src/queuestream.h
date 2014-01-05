@@ -1,9 +1,9 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file is part of ThreadWeaver, a KDE framework.
 
    $ Author: Mirko Boehm $
-   $ Copyright: (C) 2005-2013 Mirko Boehm $
+   $ Copyright: (C) 2013 Mirko Boehm $
    $ Contact: mirko@kde.org
          http://www.kde.org
          http://creative-destruction.me $
@@ -25,39 +25,39 @@
 
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef QUEUESTREAM_H
+#define QUEUESTREAM_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "jobinterface.h"
+#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
+
+class Queue;
 class Job;
-}
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+/** @brief QueueStream implements a stream based API to access ThreadWeaver queues. */
+class THREADWEAVER_EXPORT QueueStream
 {
-    Q_OBJECT
 public:
-    DeleteTest();
+    explicit QueueStream(Queue *queue);
+    ~QueueStream();
+    void add(const JobPointer &job);
+    void flush();
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+    QueueStream &operator<<(const JobPointer &job);
+    QueueStream &operator<<(JobInterface *job);
+    //FIXME try with QObjectDecorator (JobInterface&)
+    QueueStream &operator<<(Job &job);
 
 private:
-    QAtomicInt m_finishCount;
+    class Private;
+    Private *const d;
 };
 
-#endif
+QueueStream THREADWEAVER_EXPORT stream();
+
+}
+
+#endif // QUEUESTREAM_H

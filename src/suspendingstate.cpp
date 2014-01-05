@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file implements the SuspendingState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,41 +23,48 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
+   $Id: SuspendingState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#include "suspendingstate_p.h"
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "state.h"
+#include "weaver_p.h"
+#include "threadweaver.h"
 
 namespace ThreadWeaver
 {
-class Job;
+
+SuspendingState::SuspendingState(Weaver *weaver)
+    : WeaverImplState(weaver)
+{
 }
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+void SuspendingState::suspend()
 {
-    Q_OBJECT
-public:
-    DeleteTest();
+    // this request is not handled in Suspending state (we are already suspending...)
+}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
+void SuspendingState::resume()
+{
+    weaver()->setState(WorkingHard);
+}
 
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
+void SuspendingState::activated()
+{
+    weaver()->reschedule();
+}
 
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+JobPointer SuspendingState::applyForWork(Thread *th, bool wasBusy)
+{
+    weaver()->takeFirstAvailableJobOrSuspendOrWait(th, wasBusy, true, true);
+    weaver()->waitForAvailableJob(th);
+    return weaver()->applyForWork(th, false);
+}
 
-private:
-    QAtomicInt m_finishCount;
-};
+StateId SuspendingState::stateId() const
+{
+    return Suspending;
+}
 
-#endif
+}

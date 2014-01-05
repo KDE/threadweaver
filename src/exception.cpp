@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   Base class for exceptions in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,35 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "exception.h"
 
 namespace ThreadWeaver
 {
-class Job;
+
+Exception::Exception(const QString &message)
+    : std::runtime_error(message.toStdString())
+    , m_message(message)
+{
 }
 
-using namespace ThreadWeaver;
+Exception::~Exception() throw() {}
 
-class DeleteTest : public QObject
+QString Exception::message() const
 {
-    Q_OBJECT
-public:
-    DeleteTest();
+    return m_message;
+}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
+JobAborted::JobAborted(const QString &message)
+    : Exception(message)
+{
+}
 
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
+JobFailed::JobFailed(const QString &message)
+    : Exception(message)
+{
+}
 
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif
+}

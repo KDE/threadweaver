@@ -27,12 +27,11 @@
 #include <QString>
 #include <QtTest>
 
-#include <ThreadWeaver.h>
-#include <QueueAPI.h>
-#include <QueueSignals.h>
-#include <Queue.h>
-#include <Weaver.h>
-#include <IdDecorator.h>
+#include <ThreadWeaver/ThreadWeaver>
+#include <ThreadWeaver/QueueSignals>
+#include <ThreadWeaver/Queue>
+#include <weaver_p.h>
+#include <ThreadWeaver/IdDecorator>
 
 using namespace ThreadWeaver;
 QAtomicInt counter;

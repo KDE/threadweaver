@@ -1,9 +1,9 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file implements debugging aids for multithreaded applications.
 
    $ Author: Mirko Boehm $
-   $ Copyright: (C) 2005-2013 Mirko Boehm $
+   $ Copyright: (C) 2004-2013 Mirko Boehm $
    $ Contact: mirko@kde.org
          http://www.kde.org
          http://creative-destruction.me $
@@ -23,41 +23,17 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
+   $Id: DebuggingAids.cpp 20 2005-08-08 21:02:51Z mirko $
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#include "debuggingaids.h"
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
+#include <QtCore/QMutex>
 
-#include <ThreadWeaver/JobPointer>
+#include <threadweaver_export.h>
 
-namespace ThreadWeaver
-{
-class Job;
-}
-
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
-{
-    Q_OBJECT
-public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif
+/** A global mutex for the ThreadWeaver objects.
+    Generally, you should not use it in your own code. */
+THREADWEAVER_EXPORT QMutex ThreadWeaver::GlobalMutex;
+THREADWEAVER_EXPORT bool ThreadWeaver::Debug = true;
+THREADWEAVER_EXPORT int ThreadWeaver::DebugLevel = 01;

@@ -31,9 +31,9 @@
 #include <QtCore/QObject>
 #include <QtCore/QMutex>
 
-#include <JobPointer.h>
-#include <Job.h>
-#include <DebuggingAids.h>
+#include <ThreadWeaver/JobPointer>
+#include <ThreadWeaver/Job>
+#include <ThreadWeaver/DebuggingAids>
 
 // define in test binary:
 

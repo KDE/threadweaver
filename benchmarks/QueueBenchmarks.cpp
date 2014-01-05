@@ -32,11 +32,11 @@
 #include <QCoreApplication>
 #include <QList>
 
-#include <Queueing.h>
-#include <Job.h>
-#include <Collection.h>
-#include <Sequence.h>
-#include <ThreadWeaver.h>
+#include <ThreadWeaver/Queueing>
+#include <ThreadWeaver/Job>
+#include <ThreadWeaver/Collection>
+#include <ThreadWeaver/Sequence>
+#include <ThreadWeaver/ThreadWeaver>
 
 class AccumulateJob : public ThreadWeaver::Job
 {

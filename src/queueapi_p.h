@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   The detailed API for Weavers in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -25,39 +25,41 @@
 
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef QUEUEAPI_H
+#define QUEUEAPI_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "queuesignals.h"
+#include "weaverinterface_p.h"
+#include "state.h"
+#include "jobpointer.h"
 
 namespace ThreadWeaver
 {
-class Job;
-}
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+class QueueAPI : public QueueSignals, public WeaverInterface
 {
     Q_OBJECT
+
 public:
-    DeleteTest();
+    explicit QueueAPI(QObject *parent = 0);
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
+    virtual void shutDown_p() = 0;
+    virtual const State *state() const = 0;
+    virtual State *state() = 0;
+    virtual void setMaximumNumberOfThreads_p(int cap) = 0;
+    virtual int maximumNumberOfThreads_p() const = 0;
+    virtual int currentNumberOfThreads_p() const = 0;
+    virtual bool dequeue_p(JobPointer) = 0;
+    virtual void dequeue_p() = 0;
+    virtual void finish_p() = 0;
+    virtual void suspend_p() = 0;
+    virtual void resume_p() = 0;
+    virtual bool isEmpty_p() const = 0;
+    virtual bool isIdle_p() const = 0;
+    virtual int queueLength_p() const = 0;
+    virtual void requestAbort_p() = 0;
 };
 
-#endif
+}
+
+#endif // QUEUEAPI_H

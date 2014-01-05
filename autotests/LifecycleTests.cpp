@@ -27,9 +27,9 @@
 #include <QString>
 #include <QtTest>
 
-#include <ThreadWeaver.h>
-#include <JobPointer.h>
-#include <Job.h>
+#include <ThreadWeaver/ThreadWeaver>
+#include <ThreadWeaver/JobPointer>
+#include <ThreadWeaver/Job>
 
 class NotifyOnDeletejob : public ThreadWeaver::Job
 {

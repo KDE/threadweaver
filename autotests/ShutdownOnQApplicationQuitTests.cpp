@@ -27,7 +27,7 @@
 #include <QString>
 #include <QtTest>
 
-#include <ThreadWeaver.h>
+#include <ThreadWeaver/ThreadWeaver>
 
 // The tests checks if the global ThreadWeaver instance is properly
 // destroyed along with QCoreApplication. After that all the puppies

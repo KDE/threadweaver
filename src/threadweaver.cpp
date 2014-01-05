@@ -1,12 +1,12 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+This file implements the Weaver class.
 
-   $ Author: Mirko Boehm $
-   $ Copyright: (C) 2005-2013 Mirko Boehm $
-   $ Contact: mirko@kde.org
-         http://www.kde.org
-         http://creative-destruction.me $
+$ Author: Mirko Boehm $
+$ Copyright: (C) 2005-2013 Mirko Boehm $
+$ Contact: mirko@kde.org
+http://www.kde.org
+http://creative-destruction.me $
 
    This library is free software; you can redistribute it and/or
    modify it under the terms of the GNU Library General Public
@@ -25,39 +25,5 @@
 
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#include "threadweaver.h"
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
-
-namespace ThreadWeaver
-{
-class Job;
-}
-
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
-{
-    Q_OBJECT
-public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif

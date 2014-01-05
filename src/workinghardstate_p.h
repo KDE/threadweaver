@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file declares the WorkingHardState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,41 +23,36 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
+   $Id: WorkingHardState.h 32 2005-08-17 08:38:01Z mirko $
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef WorkingHardState_H
+#define WorkingHardState_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "weaverimplstate_p.h"
+#include "weaver_p.h"
 
 namespace ThreadWeaver
 {
-class Job;
-}
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+/* WorkingHardState handles the state dependent calls in the state where
+ * jobs are executed.  */
+class WorkingHardState : public WeaverImplState
 {
-    Q_OBJECT
 public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
+    explicit WorkingHardState(Weaver *weaver);
+    /** Suspend job processing. */
+    void suspend() Q_DECL_OVERRIDE;
+    /** Resume job processing. */
+    void resume() Q_DECL_OVERRIDE;
+    /** Assign a job to an idle thread. */
+    JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
+    /** Overload. */
+    void activated() Q_DECL_OVERRIDE;
+    /** reimpl */
+    StateId stateId() const Q_DECL_OVERRIDE;
 };
 
-#endif
+}
+
+#endif // WorkingHardIState_H

@@ -17,6 +17,7 @@ find_package(Qt5Test ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 include(FeatureSummary)
 
 include(ECMSetupVersion)
+include(ECMGenerateHeaders)
 
 # -- Maintained by scripty
 set(KF5_VERSION "5.0.0")

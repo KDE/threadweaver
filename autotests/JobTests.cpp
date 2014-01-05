@@ -32,19 +32,19 @@
 #include <QtTest/QtTest>
 #include <QSignalSpy>
 
-#include <Queueing.h>
-#include <QueueStream.h>
-#include <Sequence.h>
-#include <Lambda.h>
-#include <ThreadWeaver.h>
-#include <Thread.h>
-#include <DebuggingAids.h>
-#include <Collection.h>
-#include <ResourceRestrictionPolicy.h>
-#include <Dependency.h>
-#include <DependencyPolicy.h>
-#include <QObjectDecorator.h>
-#include <Exception.h>
+#include <ThreadWeaver/Queueing>
+#include <ThreadWeaver/QueueStream>
+#include <ThreadWeaver/Sequence>
+#include <ThreadWeaver/Lambda>
+#include <ThreadWeaver/ThreadWeaver>
+#include <ThreadWeaver/Thread>
+#include <ThreadWeaver/DebuggingAids>
+#include <ThreadWeaver/Collection>
+#include <ThreadWeaver/ResourceRestrictionPolicy>
+#include <ThreadWeaver/Dependency>
+#include <ThreadWeaver/DependencyPolicy>
+#include <ThreadWeaver/QObjectDecorator>
+#include <ThreadWeaver/Exception>
 
 #include "AppendCharacterJob.h"
 #include "AppendCharacterAndVerifyJob.h"

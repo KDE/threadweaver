@@ -29,11 +29,11 @@
 
 #include "DeleteTest.h"
 
-#include <JobPointer.h>
-#include <QObjectDecorator.h>
-#include <Sequence.h>
-#include <ThreadWeaver.h>
-#include <DebuggingAids.h>
+#include <ThreadWeaver/JobPointer>
+#include <ThreadWeaver/QObjectDecorator>
+#include <ThreadWeaver/Sequence>
+#include <ThreadWeaver/ThreadWeaver>
+#include <ThreadWeaver/DebuggingAids>
 
 #include "AppendCharacterJob.h"
 

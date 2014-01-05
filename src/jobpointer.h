@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   Shared pointer based jobs in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,12 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef THREADWEAVER_JOBPOINTER_H
+#define THREADWEAVER_JOBPOINTER_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
+// JobPointer is declared together with JobInterface
+#include "jobinterface.h"
 
-#include <ThreadWeaver/JobPointer>
-
-namespace ThreadWeaver
-{
-class Job;
-}
-
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
-{
-    Q_OBJECT
-public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif
+#endif // THREADWEAVER_JOBPOINTER_H

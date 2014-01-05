@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   Class to manipulate job execution in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,39 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef EXECUTEWRAPPER_H
+#define EXECUTEWRAPPER_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
+#include <QAtomicPointer>
 
-#include <ThreadWeaver/JobPointer>
+#include "job.h"
+#include "executor_p.h"
 
 namespace ThreadWeaver
 {
+
 class Job;
-}
+class Thread;
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+//FIXME Pimpl, make part of the API, document
+//Find a way to avoid new/delete operation, this is rather performance sensitive area
+class ExecuteWrapper : public Executor
 {
-    Q_OBJECT
 public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+    ExecuteWrapper();
+    Executor *wrap(Executor *previous);
+    Executor *unwrap(JobPointer job);
+    void begin(JobPointer job, Thread *) Q_DECL_OVERRIDE;
+    void execute(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
+    void executeWrapped(JobPointer job, Thread *thread);
+    void end(JobPointer job, Thread *) Q_DECL_OVERRIDE;
 
 private:
-    QAtomicInt m_finishCount;
+    QAtomicPointer<Executor> wrapped;
 };
 
-#endif
+}
+
+#endif // EXECUTEWRAPPER_H

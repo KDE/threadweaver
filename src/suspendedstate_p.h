@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file declares the SuspendedState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,41 +23,34 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
+   $Id: SuspendedState.h 32 2005-08-17 08:38:01Z mirko $
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef SuspendedState_H
+#define SuspendedState_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "weaverimplstate_p.h"
+#include "weaver_p.h"
 
 namespace ThreadWeaver
 {
-class Job;
-}
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+/** In SuspendedState, jobs are queued, but will not be executed. All
+ *  thread remains blocked.  */
+class SuspendedState : public WeaverImplState
 {
-    Q_OBJECT
 public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
+    explicit SuspendedState(Weaver *weaver);
+    /** Suspend job processing. */
+    void suspend() Q_DECL_OVERRIDE;
+    /** Resume job processing. */
+    void resume() Q_DECL_OVERRIDE;
+    /** Assign a job to an idle thread. */
+    JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
+    /** reimpl */
+    StateId stateId() const Q_DECL_OVERRIDE;
 };
 
-#endif
+}
+
+#endif // SuspendedState_H

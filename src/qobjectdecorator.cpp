@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   A decorator to make jobs into QObjects in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,44 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
-
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "qobjectdecorator.h"
+#include "collection.h"
+#include "sequence.h"
+#include "managedjobpointer.h"
 
 namespace ThreadWeaver
 {
-class Job;
+
+QObjectDecorator::QObjectDecorator(JobInterface *decoratee, QObject *parent)
+    : QObject(parent)
+    , IdDecorator(decoratee)
+{
 }
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+QObjectDecorator::QObjectDecorator(JobInterface *decoratee, bool autoDelete, QObject *parent)
+    : QObject(parent)
+    , IdDecorator(decoratee, autoDelete)
 {
-    Q_OBJECT
-public:
-    DeleteTest();
+}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
+void QObjectDecorator::defaultBegin(JobPointer self, Thread *thread)
+{
+    Q_ASSERT(job());
+    Q_EMIT started(self);
+    job()->defaultBegin(self, thread);
+}
 
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
+void QObjectDecorator::defaultEnd(JobPointer self, Thread *thread)
+{
+    Q_ASSERT(job());
+    job()->defaultEnd(self, thread);
+    if (!self->success()) {
+        Q_EMIT failed(self);
+    }
+    Q_EMIT done(self);
+}
 
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+}
 
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif

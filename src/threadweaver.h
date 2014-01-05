@@ -1,6 +1,8 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file implements the public interfaces of the Weaver and the Job class.
+   It should be the only include file necessary to use the ThreadWeaver
+   library.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -24,40 +26,16 @@
    Boston, MA 02110-1301, USA.
 
 */
+#ifndef THREADWEAVER_H
+#define THREADWEAVER_H
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#include "queue.h"
+#include "queueing.h"
+#include "jobinterface.h"
+#include "jobpointer.h"
+#include "job.h"
+#include "collection.h"
+#include "sequence.h"
+#include "queueing.h"
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
-
-namespace ThreadWeaver
-{
-class Job;
-}
-
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
-{
-    Q_OBJECT
-public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif
+#endif // THREADWEAVER_H

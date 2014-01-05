@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   Wrap functors in jobs in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,35 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef LAMBDA_H
+#define LAMBDA_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "job.h"
+#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
-class Job;
-}
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+/** @brief Lambda is a template that takes any type on which operator() is available, and executes it in run(). */
+template <typename T>
+class Lambda : public Job
 {
-    Q_OBJECT
 public:
-    DeleteTest();
+    explicit Lambda(T t_)
+        : t(t_)
+    {}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+protected:
+    void run(JobPointer, Thread *) Q_DECL_FINAL {
+        t();
+    }
 
 private:
-    QAtomicInt m_finishCount;
+    T t;
 };
 
-#endif
+}
+
+#endif // LAMBDA_H

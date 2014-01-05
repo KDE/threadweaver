@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   The detailed API for Weavers in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -25,39 +25,14 @@
 
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
-
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "queueapi_p.h"
 
 namespace ThreadWeaver
 {
-class Job;
+
+QueueAPI::QueueAPI(QObject *parent) :
+    QueueSignals(parent)
+{
 }
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
-{
-    Q_OBJECT
-public:
-    DeleteTest();
-
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif
+}

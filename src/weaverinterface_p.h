@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   This file declares the WeaverInterface class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -25,39 +25,32 @@
 
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef THREADWEAVER_QUEUEINTERFACE_H
+#define THREADWEAVER_QUEUEINTERFACE_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "jobpointer.h"
 
 namespace ThreadWeaver
 {
+
 class Job;
-}
+class Thread;
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+class THREADWEAVER_EXPORT WeaverInterface
 {
-    Q_OBJECT
 public:
-    DeleteTest();
+    virtual ~WeaverInterface() {}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
+    /** @brief Assign a job to an idle thread.
+     * @param th the thread to give a new Job to
+     * @param wasBusy true if a job was previously assigned to the calling thread
+     */
+    virtual JobPointer applyForWork(Thread *th, bool wasBusy) = 0;
 
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
-private:
-    QAtomicInt m_finishCount;
+    /** @brief Wait (by suspending the calling thread) until a job becomes available. */
+    virtual void waitForAvailableJob(Thread *th) = 0;
 };
 
-#endif
+}
+
+#endif // THREADWEAVER_QUEUEINTERFACE_H

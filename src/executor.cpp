@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   Class to manipulate job execution in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,34 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
-
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "executor_p.h"
 
 namespace ThreadWeaver
 {
-class Job;
+
+Executor::~Executor()
+{
 }
 
-using namespace ThreadWeaver;
-
-class DeleteTest : public QObject
+void Executor::defaultBegin(JobPointer job, Thread *thread)
 {
-    Q_OBJECT
-public:
-    DeleteTest();
+    job->defaultBegin(job, thread);
+}
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
+void Executor::defaultEnd(JobPointer job, Thread *thread)
+{
+    job->defaultEnd(job, thread);
+}
 
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
+void Executor::cleanup(JobPointer, Thread *)
+{
+}
 
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
+void Executor::run(JobPointer job, Thread *thread)
+{
+    job->run(job, thread);
+}
 
-private:
-    QAtomicInt m_finishCount;
-};
-
-#endif
+}

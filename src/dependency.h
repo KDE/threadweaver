@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file contains a testsuite for the memory management in ThreadWeaver.
+   A dependency between jobs.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -22,42 +22,33 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
 */
 
-#ifndef DELETETEST_H
-#define DELETETEST_H
+#ifndef DEPENDENCY_H
+#define DEPENDENCY_H
 
-#include <QtCore/QObject>
-#include <QtTest/QtTest>
-#include <QAtomicInt>
-
-#include <ThreadWeaver/JobPointer>
+#include "jobpointer.h"
 
 namespace ThreadWeaver
 {
-class Job;
-}
 
-using namespace ThreadWeaver;
+class JobInterface;
 
-class DeleteTest : public QObject
+class THREADWEAVER_EXPORT Dependency
 {
-    Q_OBJECT
 public:
-    DeleteTest();
+    explicit Dependency(const JobPointer &dependent, const JobPointer &dependee);
+    explicit Dependency(JobInterface *dependent, JobInterface *dependee);
+    explicit Dependency(const JobPointer &dependent, JobInterface *dependee);
+    explicit Dependency(JobInterface *dependent, const JobPointer &dependee);
 
-private Q_SLOTS:
-    void DeleteSequenceTest();
-
-public Q_SLOTS: // not a test!
-    void deleteSequence(ThreadWeaver::JobPointer job);
-
-Q_SIGNALS:
-    void deleteSequenceTestCompleted();
-
+    JobPointer dependent() const;
+    JobPointer dependee() const;
 private:
-    QAtomicInt m_finishCount;
+    const JobPointer m_dependent;
+    const JobPointer m_dependee;
 };
 
-#endif
+}
+
+#endif // DEPENDENCY_H

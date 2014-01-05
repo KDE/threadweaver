@@ -9,7 +9,7 @@
 
 #include "AppendCharacterJob.h"
 
-#include <Queueing.h>
+#include <ThreadWeaver/Queueing>
 /* -*- C++ -*-
 
    This file contains a testsuite for the queueing behaviour in ThreadWeaver.
@@ -37,18 +37,18 @@
 
 */
 
-#include <Job.h>
-#include <State.h>
-#include <QueuePolicy.h>
-#include <Sequence.h>
-#include <Collection.h>
-#include <DebuggingAids.h>
-#include <DependencyPolicy.h>
-#include <ResourceRestrictionPolicy.h>
+#include <ThreadWeaver/Job>
+#include <ThreadWeaver/State>
+#include <ThreadWeaver/QueuePolicy>
+#include <ThreadWeaver/Sequence>
+#include <ThreadWeaver/Collection>
+#include <ThreadWeaver/DebuggingAids>
+#include <ThreadWeaver/DependencyPolicy>
+#include <ThreadWeaver/ResourceRestrictionPolicy>
 
-#include <ThreadWeaver.h>
-#include <Thread.h>
-#include <QObjectDecorator.h>
+#include <ThreadWeaver/ThreadWeaver>
+#include <ThreadWeaver/Thread>
+#include <ThreadWeaver/QObjectDecorator>
 
 QMutex s_GlobalMutex;
 
