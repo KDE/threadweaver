@@ -1,8 +1,6 @@
 /* -*- C++ -*-
 
-   This file implements the public interfaces of the Weaver and the Job class.
-   It should be the only include file necessary to use the ThreadWeaver
-   library.
+   The Queue class in ThreadWeaver.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $

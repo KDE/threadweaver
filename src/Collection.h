@@ -22,8 +22,6 @@
    along with this library; see the file COPYING.LIB.  If not, write to
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
-
-   $Id: DebuggingAids.h 30 2005-08-16 16:16:04Z mirko $
 */
 
 #ifndef JOBCOLLECTION_H

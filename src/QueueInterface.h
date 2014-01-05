@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file declares the WeaverInterface class.
+   This file declares the QueueInterface class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
