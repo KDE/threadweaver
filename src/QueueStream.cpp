@@ -39,6 +39,7 @@ void QueueStream::flush()
     }
     Q_ASSERT(d->weaver);
     d->weaver->enqueue(d->jobs);
+    d->jobs.clear();
 }
 
 QueueStream &QueueStream::operator<<(const JobPointer &job)
