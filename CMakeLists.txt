@@ -15,6 +15,7 @@ set(REQUIRED_QT_VERSION 5.2.0)
 find_package(Qt5Test ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
 include(FeatureSummary)
+include(GenerateExportHeader)
 
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
