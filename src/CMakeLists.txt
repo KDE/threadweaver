@@ -78,5 +78,6 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ThreadWeaver DESTINATION ${INCLUDE
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_export.h
     ${ThreadWeaver_HEADERS}
+    weaverinterface_p.h
     DESTINATION ${INCLUDE_INSTALL_DIR}/ThreadWeaver/threadweaver COMPONENT Devel
 )
