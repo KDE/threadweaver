@@ -1,5 +1,4 @@
 ########### next target ###############
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}  ${KDE_ENABLE_EXCEPTIONS}")
 
 set(ThreadWeaver_LIB_SRCS
     queuesignals.cpp
@@ -36,6 +35,9 @@ add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 target_link_libraries(KF5ThreadWeaver PUBLIC Qt5::Core)
 target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>")
 target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/ThreadWeaver>")
+#FIXME: make this PUBLIC, so that it applies to anything that links against
+#       KF5::ThreadWeaver?
+kde_target_enable_exceptions(KF5ThreadWeaver PRIVATE)
 
 set_target_properties(KF5ThreadWeaver PROPERTIES
     VERSION ${THREADWEAVER_VERSION_STRING}
