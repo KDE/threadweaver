@@ -44,7 +44,7 @@ resolve.
 
 Threads are created on demand and do not exit until the containing weaver is
 deleted. Threads have an eager policy in trying to execute jobs out of the
-queue. The managing Weaver blocks them if no jobs are availabe.
+queue. The managing Weaver blocks them if no jobs are available.
 
 WeaverObservers are used to receive more informative events about the thread
 states and job execution. They can be used to provide progress or debugging
