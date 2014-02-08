@@ -46,6 +46,7 @@ public:
         , m_result(0)
     {
     }
+
     AccumulateJob(const AccumulateJob &a)
         : ThreadWeaver::Job()
         , m_count(a.m_count)
@@ -63,16 +64,11 @@ public:
         return m_result;
     }
 
-    void executeRun()
-    {
-        run(ThreadWeaver::JobPointer(), 0);
-    }
-
 protected:
     void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
     {
         std::vector<quint64> numbers(m_count);
-        std::generate(numbers.begin(), numbers.end(), []() -> quint64 { static quint64 i = 0; return i++; });
+        std::generate(numbers.begin(), numbers.end(), []() { static quint64 i = 0; return i++; });
         m_result = std::accumulate(numbers.begin(), numbers.end(), 0);
     }
 
@@ -140,9 +136,8 @@ void QueueBenchmarksTest::BaselineBenchmark()
     //BaselineAsJobsBenchmark does that. Compare BaselineAsJobsBenchmark and BaselineBenchmark to evaluate the overhead of executing
     //an operation in a job.
     QBENCHMARK {
-        for (int i = 0; i < n; ++i)
-        {
-            jobs[i].executeRun();
+        for(int i = 0; i < n; ++i) {
+            jobs[i].blockingExecute();
         }
     }
 }
