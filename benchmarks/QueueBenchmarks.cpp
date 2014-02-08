@@ -64,12 +64,17 @@ public:
         return m_result;
     }
 
-protected:
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
+    void payload()
     {
         std::vector<quint64> numbers(m_count);
         std::generate(numbers.begin(), numbers.end(), []() { static quint64 i = 0; return i++; });
         m_result = std::accumulate(numbers.begin(), numbers.end(), 0);
+    }
+
+protected:
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
+    {
+        payload();
     }
 
 private:
@@ -137,7 +142,7 @@ void QueueBenchmarksTest::BaselineBenchmark()
     //an operation in a job.
     QBENCHMARK {
         for(int i = 0; i < n; ++i) {
-            jobs[i].blockingExecute();
+            jobs[i].payload();
         }
     }
 }
