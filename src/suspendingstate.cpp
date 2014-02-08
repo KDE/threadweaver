@@ -29,7 +29,7 @@
 #include "suspendingstate_p.h"
 
 #include "state.h"
-#include "weaver_p.h"
+#include "weaver.h"
 #include "threadweaver.h"
 
 namespace ThreadWeaver

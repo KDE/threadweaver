@@ -27,7 +27,7 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 
 */
 
-#include "weaver_p.h"
+#include "weaver.h"
 
 #include <QtCore/QCoreApplication>
 #include <QtCore/QObject>

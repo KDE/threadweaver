@@ -30,7 +30,7 @@
 #include <QtCore/QVector>
 
 #include "queue.h"
-#include "weaver_p.h"
+#include "weaver.h"
 
 using namespace ThreadWeaver;
 

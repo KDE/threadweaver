@@ -30,7 +30,7 @@
 #define SuspendedState_H
 
 #include "weaverimplstate_p.h"
-#include "weaver_p.h"
+#include "weaver.h"
 
 namespace ThreadWeaver
 {

@@ -28,7 +28,7 @@
 
 #include "sequence.h"
 #include "managedjobpointer.h"
-#include "queueapi_p.h"
+#include "queueapi.h"
 #include "debuggingaids.h"
 #include "dependencypolicy.h"
 

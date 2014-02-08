@@ -29,7 +29,7 @@ $Id: SuspendedState.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "suspendedstate_p.h"
 
 #include "threadweaver.h"
-#include "weaver_p.h"
+#include "weaver.h"
 
 namespace ThreadWeaver
 {

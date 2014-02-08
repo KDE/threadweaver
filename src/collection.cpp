@@ -26,7 +26,7 @@ http://creative-destruction.me $
 
 #include "collection.h"
 
-#include "queueapi_p.h"
+#include "queueapi.h"
 #include "debuggingaids.h"
 #include "managedjobpointer.h"
 #include "queueing.h"

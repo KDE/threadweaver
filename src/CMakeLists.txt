@@ -48,6 +48,8 @@ install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${INSTALL_TARGETS_
 
 ecm_generate_headers(
     ThreadWeaver
+    Weaver
+    QueueAPI
     QueueStream
     Queueing
     Exception

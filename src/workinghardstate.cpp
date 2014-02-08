@@ -32,7 +32,7 @@ $Id: WorkingHardState.cpp 30 2005-08-16 16:16:04Z mirko $
 
 #include "job.h"
 #include "thread.h"
-#include "weaver_p.h"
+#include "weaver.h"
 #include "threadweaver.h"
 #include "debuggingaids.h"
 

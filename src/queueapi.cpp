@@ -25,7 +25,7 @@
 
 */
 
-#include "queueapi_p.h"
+#include "queueapi.h"
 
 namespace ThreadWeaver
 {

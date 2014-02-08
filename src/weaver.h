@@ -37,7 +37,7 @@ $Id: WeaverImpl.h 32 2005-08-17 08:38:01Z mirko $
 #include <QVector>
 
 #include "state.h"
-#include "queueapi_p.h"
+#include "queueapi.h"
 
 namespace ThreadWeaver
 {

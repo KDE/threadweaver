@@ -30,7 +30,7 @@
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/QueueSignals>
 #include <ThreadWeaver/Queue>
-#include <weaver_p.h>
+#include <weaver.h>
 #include <ThreadWeaver/IdDecorator>
 
 using namespace ThreadWeaver;

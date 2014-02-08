@@ -36,7 +36,7 @@
 #include <QtCore/QCoreApplication>
 
 #include "threadweaver.h"
-#include "weaver_p.h"
+#include "weaver.h"
 #include "job.h"
 #include "debuggingaids.h"
 

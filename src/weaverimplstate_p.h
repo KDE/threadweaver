@@ -30,7 +30,7 @@
 #define STATEIMPLEMENTATION_H
 
 #include "state.h"
-#include "weaver_p.h"
+#include "weaver.h"
 
 namespace ThreadWeaver
 {
