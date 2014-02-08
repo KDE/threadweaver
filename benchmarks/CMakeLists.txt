@@ -18,3 +18,4 @@ add_executable(ThreadWeaverQueueBenchmarks ${QueueBenchmarks_SRCS})
 # add_test(ThreadWeaverQueueBenchmarks ThreadWeaverQueueBenchmarks)
 
 target_link_libraries(ThreadWeaverQueueBenchmarks Qt5::Test KF5::ThreadWeaver)
+set_target_properties(ThreadWeaverQueueBenchmarks PROPERTIES MACOSX_BUNDLE FALSE)
