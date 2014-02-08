@@ -26,7 +26,7 @@
    $Id: SuspendingState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "suspendingstate_p.h"
+#include "suspendingstate.h"
 
 #include "state.h"
 #include "weaver.h"

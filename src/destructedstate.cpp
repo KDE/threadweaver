@@ -26,7 +26,7 @@ http://creative-destruction.me $
 $Id: DestructedState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "destructedstate_p.h"
+#include "destructedstate.h"
 
 namespace ThreadWeaver
 {

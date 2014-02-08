@@ -26,7 +26,7 @@ http://creative-destruction.me $
 $Id: SuspendedState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "suspendedstate_p.h"
+#include "suspendedstate.h"
 
 #include "threadweaver.h"
 #include "weaver.h"

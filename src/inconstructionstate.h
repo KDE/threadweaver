@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file declares the SuspendedState class.
+   This file declares the InConstructionState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,24 +23,27 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
-   $Id: SuspendedState.h 32 2005-08-17 08:38:01Z mirko $
+   $Id: InConstructionState.h 32 2005-08-17 08:38:01Z mirko $
 */
 
-#ifndef SuspendedState_H
-#define SuspendedState_H
+#ifndef InConstructionState_H
+#define InConstructionState_H
 
-#include "weaverimplstate_p.h"
-#include "weaver.h"
+#include "weaverimplstate.h"
 
 namespace ThreadWeaver
 {
 
-/** In SuspendedState, jobs are queued, but will not be executed. All
- *  thread remains blocked.  */
-class SuspendedState : public WeaverImplState
+class Weaver;
+class Queue;
+
+/** InConstructionState handles the calls to the Weaver
+        object until the constructor has finished.
+    */
+class InConstructionState : public WeaverImplState
 {
 public:
-    explicit SuspendedState(Weaver *weaver);
+    explicit InConstructionState(QueueSignals *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */
@@ -53,4 +56,4 @@ public:
 
 }
 
-#endif // SuspendedState_H
+#endif // InConstructionState_H

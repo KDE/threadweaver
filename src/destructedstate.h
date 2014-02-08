@@ -29,7 +29,7 @@
 #ifndef DestructedState_H
 #define DestructedState_H
 
-#include "weaverimplstate_p.h"
+#include "weaverimplstate.h"
 
 namespace ThreadWeaver
 {

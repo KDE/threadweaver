@@ -29,7 +29,7 @@
 #ifndef WorkingHardState_H
 #define WorkingHardState_H
 
-#include "weaverimplstate_p.h"
+#include "weaverimplstate.h"
 #include "weaver.h"
 
 namespace ThreadWeaver

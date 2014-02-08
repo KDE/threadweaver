@@ -26,7 +26,7 @@
    $Id: ShuttingDownState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "shuttingdownstate_p.h"
+#include "shuttingdownstate.h"
 
 namespace ThreadWeaver
 {

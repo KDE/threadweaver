@@ -29,7 +29,7 @@
 #define QUEUEAPI_H
 
 #include "queuesignals.h"
-#include "weaverinterface_p.h"
+#include "weaverinterface.h"
 #include "state.h"
 #include "jobpointer.h"
 

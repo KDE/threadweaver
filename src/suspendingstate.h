@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file declares the ShuttingDownState class.
+   This file declares the SuspendingState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,41 +23,37 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
-   $Id: ShuttingDownState.h 32 2005-08-17 08:38:01Z mirko $
+   $Id: SuspendingState.h 32 2005-08-17 08:38:01Z mirko $
 */
 
-#ifndef ShuttingDownState_H
-#define ShuttingDownState_H
+#ifndef SuspendingState_H
+#define SuspendingState_H
 
-#include "weaverimplstate_p.h"
+#include "weaverimplstate.h"
+#include "weaver.h"
 
 namespace ThreadWeaver
 {
 
-class Queue;
-
-/** ShuttingDownState is enabled when the Weaver destructor is entered. It
- *  prevents threads from still accessing queue management methods, and new jobs being queued.
+/** SuspendingState is the state after suspend() has been called, but
+ *  before all threads finished executing the current job and blocked.
  */
-class ShuttingDownState : public WeaverImplState
+class SuspendingState : public WeaverImplState
 {
 public:
-    explicit ShuttingDownState(QueueSignals *weaver);
-
-    /** Shut down the queue. */
-    void shutDown() Q_DECL_OVERRIDE;
+    explicit SuspendingState(Weaver *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */
     void resume() Q_DECL_OVERRIDE;
     /** Assign a job to an idle thread. */
-    JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
-    /** Wait (by suspending the calling thread) until a job becomes available. */
-    void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
+    JobPointer applyForWork(Thread *th,  bool wasBusy) Q_DECL_OVERRIDE;
+    /** Overload. */
+    void activated() Q_DECL_OVERRIDE;
     /** reimpl */
     StateId stateId() const Q_DECL_OVERRIDE;
 };
 
 }
 
-#endif // ShuttingDownState_H
+#endif // SuspendingState_H

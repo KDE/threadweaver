@@ -26,7 +26,7 @@ http://creative-destruction.me $
 $Id: WorkingHardState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "workinghardstate_p.h"
+#include "workinghardstate.h"
 
 #include <QtCore/QByteRef>
 

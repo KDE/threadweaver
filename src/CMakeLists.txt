@@ -49,6 +49,7 @@ install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${INSTALL_TARGETS_
 ecm_generate_headers(
     ThreadWeaver
     Weaver
+    WeaverInterface
     QueueAPI
     QueueStream
     Queueing
@@ -63,6 +64,13 @@ ecm_generate_headers(
     QObjectDecorator
     Lambda
     State
+    WeaverImplState
+    InConstructionState
+    WorkingHardState
+    SuspendingState
+    SuspendedState
+    ShuttingDownState
+    DestructedState
     Collection
     Sequence
     Dependency
@@ -82,7 +90,6 @@ install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ThreadWeaver DESTINATION ${INCLUDE
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_export.h
     ${ThreadWeaver_HEADERS}
-    weaverinterface_p.h
     DESTINATION ${INCLUDE_INSTALL_DIR}/ThreadWeaver/threadweaver COMPONENT Devel
 )
 

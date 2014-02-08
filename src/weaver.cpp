@@ -40,12 +40,12 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "thread.h"
 #include "threadweaver.h"
 #include "debuggingaids.h"
-#include "suspendedstate_p.h"
-#include "suspendingstate_p.h"
-#include "destructedstate_p.h"
-#include "workinghardstate_p.h"
-#include "shuttingdownstate_p.h"
-#include "inconstructionstate_p.h"
+#include "suspendedstate.h"
+#include "suspendingstate.h"
+#include "destructedstate.h"
+#include "workinghardstate.h"
+#include "shuttingdownstate.h"
+#include "inconstructionstate.h"
 #include "queuepolicy.h"
 
 using namespace ThreadWeaver;

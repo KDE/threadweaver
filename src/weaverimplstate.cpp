@@ -26,7 +26,7 @@
    $Id: InConstructionState.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include "weaverimplstate_p.h"
+#include "weaverimplstate.h"
 
 #include "weaver.h"
 

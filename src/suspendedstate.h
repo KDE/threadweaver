@@ -1,6 +1,6 @@
 /* -*- C++ -*-
 
-   This file declares the SuspendingState class.
+   This file declares the SuspendedState class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
@@ -23,37 +23,34 @@
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
-   $Id: SuspendingState.h 32 2005-08-17 08:38:01Z mirko $
+   $Id: SuspendedState.h 32 2005-08-17 08:38:01Z mirko $
 */
 
-#ifndef SuspendingState_H
-#define SuspendingState_H
+#ifndef SuspendedState_H
+#define SuspendedState_H
 
-#include "weaverimplstate_p.h"
+#include "weaverimplstate.h"
 #include "weaver.h"
 
 namespace ThreadWeaver
 {
 
-/** SuspendingState is the state after suspend() has been called, but
- *  before all threads finished executing the current job and blocked.
- */
-class SuspendingState : public WeaverImplState
+/** In SuspendedState, jobs are queued, but will not be executed. All
+ *  thread remains blocked.  */
+class SuspendedState : public WeaverImplState
 {
 public:
-    explicit SuspendingState(Weaver *weaver);
+    explicit SuspendedState(Weaver *weaver);
     /** Suspend job processing. */
     void suspend() Q_DECL_OVERRIDE;
     /** Resume job processing. */
     void resume() Q_DECL_OVERRIDE;
     /** Assign a job to an idle thread. */
-    JobPointer applyForWork(Thread *th,  bool wasBusy) Q_DECL_OVERRIDE;
-    /** Overload. */
-    void activated() Q_DECL_OVERRIDE;
+    JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
     /** reimpl */
     StateId stateId() const Q_DECL_OVERRIDE;
 };
 
 }
 
-#endif // SuspendingState_H
+#endif // SuspendedState_H

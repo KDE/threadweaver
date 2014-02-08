@@ -32,7 +32,7 @@
 #include <QString>
 
 #include "queueinterface.h"
-#include "weaverinterface_p.h"
+#include "weaverinterface.h"
 #include "queuesignals.h"
 #include "threadweaver_export.h"
 
