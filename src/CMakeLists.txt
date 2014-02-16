@@ -33,7 +33,7 @@ add_library(KF5ThreadWeaver ${ThreadWeaver_LIB_SRCS})
 generate_export_header(KF5ThreadWeaver BASE_NAME ThreadWeaver)
 add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 target_link_libraries(KF5ThreadWeaver PUBLIC Qt5::Core)
-target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>")
+target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}>")
 target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${INCLUDE_INSTALL_DIR}/ThreadWeaver>")
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 #       KF5::ThreadWeaver?
@@ -46,7 +46,8 @@ set_target_properties(KF5ThreadWeaver PROPERTIES
 )
 install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${INSTALL_TARGETS_DEFAULT_ARGS})
 
-ecm_generate_headers(
+ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
+  HEADER_NAMES
     ThreadWeaver
     Weaver
     WeaverInterface
@@ -81,11 +82,10 @@ ecm_generate_headers(
     JobPointer
     ManagedJobPointer
 
-    MODULE_NAME ThreadWeaver
     PREFIX ThreadWeaver
     REQUIRED_HEADERS ThreadWeaver_HEADERS
 )
-install(DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}/ThreadWeaver DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel)
+install(FILES ${ThreadWeaver_CamelCase_HEADERS} DESTINATION ${INCLUDE_INSTALL_DIR}/ThreadWeaver/ThreadWeaver COMPONENT Devel)
 
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_export.h
