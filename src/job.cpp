@@ -103,7 +103,7 @@ public:
     QAtomicPointer<Executor> executor;
 
     //FIXME What is the correct KDE frameworks no debug switch?
-#if not defined NDEBUG
+#if !defined(NDEBUG)
     /** DebugExecuteWrapper for logging of Job execution. */
     DebugExecuteWrapper debugExecuteWrapper;
 #endif
@@ -112,7 +112,7 @@ public:
 Job::Job()
     : d(new Private())
 {
-#if not defined NDEBUG
+#if !defined(NDEBUG)
     d->debugExecuteWrapper.wrap(setExecutor(&d->debugExecuteWrapper));
 #endif
     d->status.storeRelease(Status_New);
