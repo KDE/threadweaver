@@ -155,6 +155,7 @@ void Job::blockingExecute()
 {
     execute(ManagedJobPointer<Job>(this), 0);
 }
+
 Executor *Job::setExecutor(Executor *executor)
 {
     return d->executor.fetchAndStoreOrdered(executor == 0 ? &defaultExecutor : executor);

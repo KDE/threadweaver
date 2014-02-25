@@ -81,8 +81,8 @@ private Q_SLOTS:
     void JobsAreDestroyedAfterFinishTest();
     void JobExitStatusByExceptionTest();
     void JobManualExitStatusTest();
-    void QueueStreamLifecycletest();
-
+    void QueueStreamLifecycleTest();
+    void NestedGeneratingSequencesTest();
 public Q_SLOTS: // slots used during tests that are not test cases
     void jobStarted(ThreadWeaver::JobPointer);
     void jobDone(ThreadWeaver::JobPointer);

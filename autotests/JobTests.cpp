@@ -171,11 +171,9 @@ class GeneratingCollection : public Collection
 {
 public:
     void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
-        std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(),
-        [this](QChar it)
-        {
+        std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(), [this](QChar it) {
             *this << new AppendCharacterJob(it, &sequence_);
-        });
+        } );
     }
     QString sequence_;
 };
@@ -184,11 +182,9 @@ class GeneratingSequence : public Sequence
 {
 public:
     void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
-        std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(),
-        [this](QChar it)
-        {
+        std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(), [this](QChar it) {
             *this << new AppendCharacterJob(it, &sequence_);
-        });
+        } );
     }
     QString sequence_;
 };
@@ -1043,7 +1039,7 @@ void JobTests::JobManualExitStatusTest()
     QCOMPARE(successful.status(), Job::Status_Success);
 }
 
-void JobTests::QueueStreamLifecycletest()
+void JobTests::QueueStreamLifecycleTest()
 {
     QString sequence;
     using namespace ThreadWeaver;
@@ -1053,6 +1049,46 @@ void JobTests::QueueStreamLifecycletest()
              << make_job(new AppendCharacterJob('c', &sequence));
     Queue::instance()->finish();
     QCOMPARE(sequence.count(), 3);
+}
+
+class SynchronizedNumbers {
+public:
+    void append(int number) {
+        QMutexLocker l(&mutex_);
+        numbers_.append(number);
+    }
+
+    const QVector<int>& numbers() const { return numbers_; }
+private:
+    QVector<int> numbers_;
+    QMutex mutex_;
+};
+
+class GeneratingEnumerator : public ThreadWeaver::Sequence {
+public:
+    GeneratingEnumerator(SynchronizedNumbers* numbers, int start, int count) : start_(start), count_(count), numbers_(numbers) {}
+
+    void run(JobPointer, Thread*) {
+        numbers_->append(start_);
+        for(int index = start_ + 1; index < start_+count_; ++index) {
+            *this << new GeneratingEnumerator(numbers_, index, 1);
+        }
+    }
+
+private:
+    const int start_;
+    const int count_;
+    SynchronizedNumbers* numbers_;
+};
+
+void JobTests::NestedGeneratingSequencesTest() {
+    using namespace ThreadWeaver;
+    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+
+    SynchronizedNumbers numbers;
+    stream() << new GeneratingEnumerator(&numbers, 1, 100);
+    Queue::instance()->finish();
+    qDebug() << "erledigt";
 }
 
 QTEST_MAIN(JobTests)
