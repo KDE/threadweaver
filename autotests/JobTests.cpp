@@ -1063,19 +1063,34 @@ public:
         QMutexLocker l(&mutex_);
         return std::is_sorted(numbers_.cbegin(), numbers_.cend());
     }
+
+    void sortChunks(int chunkSize) {
+        QMutexLocker l(&mutex_);
+        Q_ASSERT(numbers_.count() % chunkSize == 0);
+        auto start = numbers_.begin();
+        while(start!=numbers_.end()) {
+            auto stop = start;
+            std::advance(stop, chunkSize);
+            std::sort(start, stop);
+            start = stop;
+        }
+    }
+
 private:
     QVector<int> numbers_;
     mutable QMutex mutex_;
 };
 
-class GeneratingEnumerator : public ThreadWeaver::Sequence {
+class GeneratingEnumeratorSequence : public ThreadWeaver::Sequence {
 public:
-    GeneratingEnumerator(SynchronizedNumbers* numbers, int start, int count) : start_(start), count_(count), numbers_(numbers) {}
+    GeneratingEnumeratorSequence(SynchronizedNumbers* numbers, int start, int count)
+        : start_(start), count_(count), numbers_(numbers)
+    {}
 
     void run(JobPointer, Thread*) {
         numbers_->append(start_);
         for(int index = start_ + 1; index < start_+count_; ++index) {
-            *this << new GeneratingEnumerator(numbers_, index, 1);
+            *this << new GeneratingEnumeratorSequence(numbers_, index, 1);
         }
     }
 
@@ -1085,16 +1100,58 @@ private:
     SynchronizedNumbers* numbers_;
 };
 
+class GeneratingEnumeratorCollection : public ThreadWeaver::Collection {
+public:
+    GeneratingEnumeratorCollection(SynchronizedNumbers* numbers, int start, int count)
+        : start_(start), count_(count), numbers_(numbers)
+    {}
+
+    void run(JobPointer, Thread*) {
+        numbers_->append(start_);
+        QVector<GeneratingEnumeratorCollection*> elements;
+        for(int index = start_ + 1; index < start_+count_; ++index) {
+            elements.append(new GeneratingEnumeratorCollection(numbers_, index, 1));
+        }
+        std::random_shuffle(elements.begin(), elements.end());
+        std::for_each(elements.begin(), elements.end(), [this](QVector<GeneratingEnumeratorCollection>::iterator it) {
+            *this << *it;
+        } );
+    }
+
+private:
+    const int start_;
+    const int count_;
+    SynchronizedNumbers* numbers_;
+};
+
+void JobTests::NestedGeneratingCollectionsTest()
+{
+    using namespace ThreadWeaver;
+    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+
+    SynchronizedNumbers numbers;
+    const int NumberOfSequences = 100;
+    const int ElementsPerSequence = 20;
+    Sequence sequence;
+    for(int index = 0; index < NumberOfSequences; ++index) {
+        sequence << new GeneratingEnumeratorCollection(&numbers, index * ElementsPerSequence, ElementsPerSequence);
+    }
+    stream() << sequence;
+    Queue::instance()->finish();
+    numbers.sortChunks(ElementsPerSequence);
+    QVERIFY(numbers.isSorted());
+}
+
 void JobTests::NestedGeneratingSequencesTest() {
     using namespace ThreadWeaver;
     WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
 
     SynchronizedNumbers numbers;
     const int NumberOfSequences = 100;
-    const int ElementsPerSequence = 100;
+    const int ElementsPerSequence = 20;
     Sequence sequence;
     for(int index = 0; index < NumberOfSequences; ++index) {
-        sequence << new GeneratingEnumerator(&numbers, index * ElementsPerSequence, ElementsPerSequence);
+        sequence << new GeneratingEnumeratorSequence(&numbers, index * ElementsPerSequence, ElementsPerSequence);
     }
     stream() << sequence;
     Queue::instance()->finish();
