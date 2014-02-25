@@ -27,6 +27,7 @@
 #include "JobTests.h"
 
 #include <cstdlib>
+#include <algorithm>
 
 #include <QtCore/QMutex>
 #include <QtTest/QtTest>
@@ -1058,10 +1059,13 @@ public:
         numbers_.append(number);
     }
 
-    const QVector<int>& numbers() const { return numbers_; }
+    bool isSorted() const {
+        QMutexLocker l(&mutex_);
+        return std::is_sorted(numbers_.cbegin(), numbers_.cend());
+    }
 private:
     QVector<int> numbers_;
-    QMutex mutex_;
+    mutable QMutex mutex_;
 };
 
 class GeneratingEnumerator : public ThreadWeaver::Sequence {
@@ -1086,9 +1090,16 @@ void JobTests::NestedGeneratingSequencesTest() {
     WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
 
     SynchronizedNumbers numbers;
-    stream() << new GeneratingEnumerator(&numbers, 1, 100);
+    const int NumberOfSequences = 100;
+    const int ElementsPerSequence = 100;
+    Sequence sequence;
+    for(int index = 0; index < NumberOfSequences; ++index) {
+        sequence << new GeneratingEnumerator(&numbers, index * ElementsPerSequence, ElementsPerSequence);
+    }
+    stream() << sequence;
     Queue::instance()->finish();
-    qDebug() << "erledigt";
+
+    QVERIFY(numbers.isSorted());
 }
 
 QTEST_MAIN(JobTests)
