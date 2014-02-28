@@ -1159,5 +1159,30 @@ void JobTests::NestedGeneratingSequencesTest() {
     QVERIFY(numbers.isSorted());
 }
 
+void JobTests::DeeperNestedGeneratingCollectionsTest()
+{
+    using namespace ThreadWeaver;
+    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    const int ElementsPerCollection = 20;
+    const int NumberOfBlocks = 20;
+    const int CollectionsPerBlock = 2;
+    SynchronizedNumbers numbers;
+    Sequence sequence;
+    for(int block=0; block < NumberOfBlocks; ++block) {
+        auto col = new Collection();
+        for(int collection = 0; collection < CollectionsPerBlock; ++collection) {
+            const int start = (block * NumberOfBlocks + collection) * ElementsPerCollection;
+            *col << new GeneratingEnumeratorCollection(&numbers, start, ElementsPerCollection);
+        }
+        sequence << col;
+    }
+    stream() << sequence;
+    Queue::instance()->finish();
+    numbers.sortChunks(NumberOfBlocks*ElementsPerCollection);
+    QVERIFY(numbers.isSorted());
+}
+
+
+
 QTEST_MAIN(JobTests)
 

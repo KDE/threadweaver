@@ -84,6 +84,8 @@ private Q_SLOTS:
     void QueueStreamLifecycleTest();
     void NestedGeneratingCollectionsTest();
     void NestedGeneratingSequencesTest();
+    void DeeperNestedGeneratingCollectionsTest();
+
 public Q_SLOTS: // slots used during tests that are not test cases
     void jobStarted(ThreadWeaver::JobPointer);
     void jobDone(ThreadWeaver::JobPointer);
