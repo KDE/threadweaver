@@ -100,6 +100,17 @@ public:
     {
     }
 
+    /** Dequeue all elements of the collection.
+     * Note: This will not dequeue the collection itself.
+     */
+    void dequeueElements(Collection* collection, bool queueApiIsLocked);
+
+    /** Perform the task usually done when one individual job is
+     * finished, but in our case only when the whole collection
+     * is finished or partly dequeued.
+     */
+    void finalCleanup(Collection* collection);
+
     /* The elements of the collection. */
     QVector<JobPointer> elements;
 
@@ -132,7 +143,7 @@ Collection::~Collection()
         // dequeue all remaining jobs:
         QMutexLocker l(mutex()); Q_UNUSED(l);
         if (d->api != 0) { // still queued
-            dequeueElements(false);
+            d->dequeueElements(this, false);
         }
     }
     delete d;
@@ -157,7 +168,7 @@ void Collection::stop(JobPointer job)
     if (d->api != 0) {
         debug(4, "Collection::stop: dequeueing %p.\n", (void *)this);
         if (!d->api->dequeue(ManagedJobPointer<Collection>(this))) {
-            dequeueElements(false);
+            d->dequeueElements(this, false);
         }
     }
 }
@@ -174,7 +185,7 @@ void Collection::aboutToBeDequeued_locked(QueueAPI *api)
 {
     Q_ASSERT(!mutex()->tryLock());
     Q_ASSERT(api && d->api == api);
-    dequeueElements(true);
+    d->dequeueElements(this, true);
     d->api = 0;
     Job::aboutToBeDequeued_locked(api);
 }
@@ -239,7 +250,7 @@ void Collection::elementFinished(JobPointer job, Thread *thread)
         // all elements can only be done if self has been executed:
         // there is a small chance that (this) has been dequeued in the
         // meantime, in this case, there is nothing left to clean up
-        finalCleanup();
+        d->finalCleanup(this);
         executor()->defaultEnd(d->self, thread);
         l.unlock();
         d->self.clear();
@@ -269,13 +280,13 @@ int Collection::jobListLength_locked() const
     return d->elements.size();
 }
 
-void Collection::finalCleanup()
+void Collection::Private::finalCleanup(Collection *collection)
 {
-    Q_ASSERT(!self().isNull());
-    Q_ASSERT(!mutex()->tryLock());
-    freeQueuePolicyResources(self());
-    setStatus(Status_Success);
-    d->api = 0;
+    Q_ASSERT(!self.isNull());
+//    Q_ASSERT(!mutex()->tryLock());
+    collection->freeQueuePolicyResources(self);
+    collection->setStatus(Status_Success);
+    api = 0;
 }
 
 Collection &Collection::operator<<(JobInterface *job)
@@ -296,29 +307,29 @@ Collection &Collection::operator<<(JobInterface &job)
     return *this;
 }
 
-void Collection::dequeueElements(bool queueApiIsLocked)
+void Collection::Private::dequeueElements(Collection* collection, bool queueApiIsLocked)
 {
     // dequeue everything:
-    Q_ASSERT(!mutex()->tryLock());
-    if (d->api == 0) {
+    Q_ASSERT(!collection->mutex()->tryLock());
+    if (api == 0) {
         return;    //not queued
     }
 
-    for (int index = 0; index < d->elements.size(); ++index) {
-        debug(4, "Collection::dequeueElements: dequeueing %p.\n", (void *)d->elements.at(index).data());
+    for (int index = 0; index < elements.size(); ++index) {
+        debug(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
         if (queueApiIsLocked) {
-            d->api->dequeue_p(d->elements.at(index));
+            api->dequeue_p(elements.at(index));
         } else {
-            d->api->dequeue(d->elements.at(index));
+            api->dequeue(elements.at(index));
         }
     }
 
-    const int jobCount = d->jobCounter.fetchAndStoreAcquire(0);
+    const int jobCount = jobCounter.fetchAndStoreAcquire(0);
     if (jobCount != 0) {
         // if jobCounter is not zero, then we where waiting for the
         // last job to finish before we would have freed our queue
         // policies. In this case we have to do it here:
-        finalCleanup();
+        finalCleanup(collection);
     }
 }
 

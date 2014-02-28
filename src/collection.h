@@ -89,18 +89,11 @@ protected:
      */
     virtual int jobListLength_locked() const;
 
-    /** Perform the task usually done when one individual job is
-     * finished, but in our case only when the whole collection
-     * is finished or partly dequeued.
-     */
-    void finalCleanup();
-
 protected:
     friend class CollectionExecuteWrapper;
     virtual void elementStarted(JobPointer job, Thread *thread);
     virtual void elementFinished(JobPointer job, Thread *thread);
 
-    //FIXME needed when using BlockExecutionPolicy?
     JobPointer self() const;
 
 protected:
@@ -115,11 +108,6 @@ protected:
     virtual void enqueueElements();
 
 private:
-    /** Dequeue all elements of the collection.
-     * Note: This will not dequeue the collection itself.
-     */
-    void dequeueElements(bool queueApiIsLocked);
-
     class Private;
     Private *const d;
 };
