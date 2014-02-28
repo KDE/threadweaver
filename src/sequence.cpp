@@ -27,6 +27,7 @@
 */
 
 #include "sequence.h"
+#include "sequence_p.h"
 #include "managedjobpointer.h"
 #include "queueapi.h"
 #include "debuggingaids.h"
@@ -36,7 +37,7 @@ namespace ThreadWeaver
 {
 
 Sequence::Sequence()
-    : d(0)
+    : Collection(new Sequence_Private())
 {
 }
 
@@ -56,6 +57,11 @@ void Sequence::enqueueElements()
         }
     }
     Collection::enqueueElements();
+}
+
+Sequence_Private *Sequence::d()
+{
+    return reinterpret_cast<Sequence_Private*>(Collection::d());
 }
 
 void Sequence::elementFinished(JobPointer job, Thread *thread)

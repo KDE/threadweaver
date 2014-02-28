@@ -23,7 +23,9 @@ set(ThreadWeaver_LIB_SRCS
     shuttingdownstate.cpp
     destructedstate.cpp
     collection.cpp
+    collection_p.cpp
     sequence.cpp
+    sequence_p.cpp
     dependencypolicy.cpp
     dependency.cpp
     resourcerestrictionpolicy.cpp

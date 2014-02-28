@@ -30,6 +30,7 @@ http://creative-destruction.me $
 #include "debuggingaids.h"
 #include "managedjobpointer.h"
 #include "queueing.h"
+#include "collection_p.h"
 
 #include <QtCore/QList>
 #include <QtCore/QObject>
@@ -76,62 +77,19 @@ private:
     ThreadWeaver::Collection *collection;
 };
 
-class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
-{
-public:
-    void begin(JobPointer, Thread *) Q_DECL_OVERRIDE {
-    }
-
-    void end(JobPointer, Thread *) Q_DECL_OVERRIDE {
-    }
-};
-
-class Collection::Private
-{
-public:
-    Private()
-        : api(0)
-        , jobCounter(0)
-        , selfIsExecuting(false)
-    {
-    }
-
-    ~Private()
-    {
-    }
-
-    /** Dequeue all elements of the collection.
-     * Note: This will not dequeue the collection itself.
-     */
-    void dequeueElements(Collection* collection, bool queueApiIsLocked);
-
-    /** Perform the task usually done when one individual job is
-     * finished, but in our case only when the whole collection
-     * is finished or partly dequeued.
-     */
-    void finalCleanup(Collection* collection);
-
-    /* The elements of the collection. */
-    QVector<JobPointer> elements;
-
-    /* The Weaver interface this collection is queued in. */
-    QueueAPI *api;
-
-    /* Counter for the finished jobs.
-       Set to the number of elements when started.
-       When zero, all elements are done.
-    */
-    QAtomicInt jobCounter;
-    QAtomicInt jobsStarted;
-    CollectionSelfExecuteWrapper selfExecuteWrapper;
-    JobPointer self;
-    bool selfIsExecuting;
-};
-
 Collection::Collection()
-    : d(new Private)
+    : d_(new Collection_Private)
 {
-    d->selfExecuteWrapper.wrap(setExecutor(&d->selfExecuteWrapper));
+    d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
+    CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
+    wrapper->setCollection(this);
+    wrapper->wrap(setExecutor(wrapper));
+}
+
+Collection::Collection(Collection_Private *d__)
+    : d_(d__)
+{
+    d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
     CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
     wrapper->setCollection(this);
     wrapper->wrap(setExecutor(wrapper));
@@ -142,33 +100,33 @@ Collection::~Collection()
     {
         // dequeue all remaining jobs:
         QMutexLocker l(mutex()); Q_UNUSED(l);
-        if (d->api != 0) { // still queued
-            d->dequeueElements(this, false);
+        if (d()->api != 0) { // still queued
+            d()->dequeueElements(this, false);
         }
     }
-    delete d;
+    delete d_;
 }
 
 void Collection::addJob(JobPointer job)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    REQUIRE(d->api == 0 || d->selfIsExecuting == true); // not queued yet or still running
+    REQUIRE(d()->api == 0 || d()->selfIsExecuting == true); // not queued yet or still running
     REQUIRE(job != 0);
 
     CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
     wrapper->setCollection(this);
     wrapper->wrap(job->setExecutor(wrapper));
-    d->elements.append(job);
+    d()->elements.append(job);
 }
 
 void Collection::stop(JobPointer job)
 {
     Q_UNUSED(job);
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    if (d->api != 0) {
+    if (d()->api != 0) {
         debug(4, "Collection::stop: dequeueing %p.\n", (void *)this);
-        if (!d->api->dequeue(ManagedJobPointer<Collection>(this))) {
-            d->dequeueElements(this, false);
+        if (!d()->api->dequeue(ManagedJobPointer<Collection>(this))) {
+            d()->dequeueElements(this, false);
         }
     }
 }
@@ -176,17 +134,17 @@ void Collection::stop(JobPointer job)
 void Collection::aboutToBeQueued_locked(QueueAPI *api)
 {
     Q_ASSERT(!mutex()->tryLock());
-    Q_ASSERT(d->api == 0); // never queue twice
-    d->api = api;
+    Q_ASSERT(d()->api == 0); // never queue twice
+    d()->api = api;
     Job::aboutToBeQueued_locked(api);
 }
 
 void Collection::aboutToBeDequeued_locked(QueueAPI *api)
 {
     Q_ASSERT(!mutex()->tryLock());
-    Q_ASSERT(api && d->api == api);
-    d->dequeueElements(this, true);
-    d->api = 0;
+    Q_ASSERT(api && d()->api == api);
+    d()->dequeueElements(this, true);
+    d()->api = 0;
     Job::aboutToBeDequeued_locked(api);
 }
 
@@ -194,10 +152,10 @@ void Collection::execute(JobPointer job, Thread *thread)
 {
     {
         QMutexLocker l(mutex()); Q_UNUSED(l);
-        Q_ASSERT(d->self.isNull());
-        Q_ASSERT(d->api != 0);
-        d->self = job;
-        d->selfIsExecuting = true; // reset in elementFinished
+        Q_ASSERT(d()->self.isNull());
+        Q_ASSERT(d()->api != 0);
+        d()->self = job;
+        d()->selfIsExecuting = true; // reset in elementFinished
     }
     Job::execute(job, thread);
 }
@@ -210,66 +168,62 @@ void Collection::run(JobPointer, Thread *)
 void Collection::enqueueElements()
 {
     Q_ASSERT(!mutex()->tryLock());
-    d->jobCounter.fetchAndStoreOrdered(d->elements.count() + 1); //including self
-    d->api->enqueue(d->elements);
+    d()->jobCounter.fetchAndStoreOrdered(d()->elements.count() + 1); //including self
+    d()->api->enqueue(d()->elements);
+}
+
+Collection_Private *Collection::d() const
+{
+    return d_;
 }
 
 void Collection::elementStarted(JobPointer job, Thread *thread)
 {
     Q_UNUSED(job) // except in Q_ASSERT
-#ifndef NDEBUG // to avoid the mutex in release mode
-    Q_ASSERT(!d->self.isNull());
-    QMutexLocker l(mutex()); Q_UNUSED(l);
-//    if (job.data() == d->self) {
-//        debug(true, 0, "I am decorated!\n");
-//    }
-//    Q_ASSERT(job.data() == d->self || std::find(d->elements.begin(), d->elements.end(), job) != d->elements.end());
-#endif
-    if (d->jobsStarted.fetchAndAddOrdered(1) == 0) {
+    Q_ASSERT(!d()->self.isNull());
+    if (d()->jobsStarted.fetchAndAddOrdered(1) == 0) {
         //emit started() signal on beginning of first job execution
-        executor()->defaultBegin(d->self, thread);
+        executor()->defaultBegin(d()->self, thread);
     }
 }
 
 void Collection::elementFinished(JobPointer job, Thread *thread)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    Q_ASSERT(!d->self.isNull());
+    Q_ASSERT(!d()->self.isNull());
     Q_UNUSED(job) // except in Q_ASSERT
-    //FIXME test this assert with a decorated collection!
-    // Q_ASSERT(job.data() == d->self || std::find(d->elements.begin(), d->elements.end(), job) != d->elements.end());
-    if (d->selfIsExecuting) {
+    if (d()->selfIsExecuting) {
         // the element that is finished is the collection itself
         // the collection is always executed first
         // queue the collection elements:
         enqueueElements();
-        d->selfIsExecuting = false;
+        d()->selfIsExecuting = false;
     }
-    const int jobsStarted = d->jobsStarted.loadAcquire();
+    const int jobsStarted = d()->jobsStarted.loadAcquire();
     Q_ASSERT(jobsStarted >= 0); Q_UNUSED(jobsStarted);
-    const int remainingJobs = d->jobCounter.fetchAndAddOrdered(-1) - 1;
+    const int remainingJobs = d()->jobCounter.fetchAndAddOrdered(-1) - 1;
     Q_ASSERT(remainingJobs >= 0);
     if (remainingJobs == 0) {
         // all elements can only be done if self has been executed:
         // there is a small chance that (this) has been dequeued in the
         // meantime, in this case, there is nothing left to clean up
-        d->finalCleanup(this);
-        executor()->defaultEnd(d->self, thread);
+        d()->finalCleanup(this);
+        executor()->defaultEnd(d()->self, thread);
         l.unlock();
-        d->self.clear();
+        d()->self.clear();
     }
 }
 
 JobPointer Collection::self() const
 {
-    return d->self;
+    return d()->self;
 }
 
 JobPointer Collection::jobAt(int i)
 {
     Q_ASSERT(!mutex()->tryLock());
-    Q_ASSERT(i >= 0 && i < d->elements.size());
-    return d->elements.at(i);
+    Q_ASSERT(i >= 0 && i < d()->elements.size());
+    return d()->elements.at(i);
 }
 
 int Collection::jobListLength() const
@@ -280,16 +234,7 @@ int Collection::jobListLength() const
 
 int Collection::jobListLength_locked() const
 {
-    return d->elements.size();
-}
-
-void Collection::Private::finalCleanup(Collection *collection)
-{
-    Q_ASSERT(!self.isNull());
-//    Q_ASSERT(!mutex()->tryLock());
-    collection->freeQueuePolicyResources(self);
-    collection->setStatus(Status_Success);
-    api = 0;
+    return d()->elements.size();
 }
 
 Collection &Collection::operator<<(JobInterface *job)
@@ -308,32 +253,6 @@ Collection &Collection::operator<<(JobInterface &job)
 {
     addJob(make_job_raw(&job));
     return *this;
-}
-
-void Collection::Private::dequeueElements(Collection* collection, bool queueApiIsLocked)
-{
-    // dequeue everything:
-    Q_ASSERT(!collection->mutex()->tryLock());
-    if (api == 0) {
-        return;    //not queued
-    }
-
-    for (int index = 0; index < elements.size(); ++index) {
-        debug(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
-        if (queueApiIsLocked) {
-            api->dequeue_p(elements.at(index));
-        } else {
-            api->dequeue(elements.at(index));
-        }
-    }
-
-    const int jobCount = jobCounter.fetchAndStoreAcquire(0);
-    if (jobCount != 0) {
-        // if jobCounter is not zero, then we where waiting for the
-        // last job to finish before we would have freed our queue
-        // policies. In this case we have to do it here:
-        finalCleanup(collection);
-    }
 }
 
 }

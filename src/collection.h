@@ -29,12 +29,15 @@
 
 #include "job.h"
 #include "jobpointer.h"
+#include "collection_p.h"
 
 namespace ThreadWeaver
 {
 
 class Thread;
 class CollectionExecuteWrapper;
+
+class Collection_Private;
 
 /** A Collection is a vector of Jobs that will be queued together.
  * In a Collection, the order of execution of the elements is not specified.
@@ -49,6 +52,7 @@ class THREADWEAVER_EXPORT Collection : public Job
 {
 public:
     Collection();
+    Collection(Collection_Private * d);
     ~Collection();
     /** Append a job to the collection.
      *
@@ -107,9 +111,10 @@ protected:
     /** @brief Enqueue the elements of the collection. */
     virtual void enqueueElements();
 
-private:
-    class Private;
-    Private *const d;
+protected:
+    friend class Collection_Private;
+    Collection_Private* d() const;
+    Collection_Private* const d_; //FIXME integrate with Job
 };
 
 }

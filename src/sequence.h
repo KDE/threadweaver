@@ -34,6 +34,8 @@
 namespace ThreadWeaver
 {
 
+class Sequence_Private;
+
 /** @brief A Sequence is a vector of Jobs that will be executed in a sequence.
  *
  * It is implemented by automatically creating the necessary dependencies between the Jobs in the sequence.
@@ -51,8 +53,7 @@ protected:
     void enqueueElements() Q_DECL_OVERRIDE;
 
 private:
-    class Private;
-    Private *const d;
+    Sequence_Private* d();
 };
 
 }
