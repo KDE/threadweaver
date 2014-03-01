@@ -49,36 +49,11 @@
 
 #include "AppendCharacterJob.h"
 #include "AppendCharacterAndVerifyJob.h"
+#include "WaitForIdleAndFinished.h"
 
 QMutex s_GlobalMutex;
 
 using namespace ThreadWeaver;
-
-//Ensure that after the object is created, the weaver is idle and resumed.
-//Upon destruction, ensure the weaver is idle and suspended.
-class WaitForIdleAndFinished
-{
-public:
-    explicit WaitForIdleAndFinished(Queue *weaver)
-        : weaver_(weaver)
-    {
-        Q_ASSERT(weaver);
-        weaver_->finish();
-        Q_ASSERT(weaver_->isIdle());
-        weaver_->resume();
-    }
-
-    ~WaitForIdleAndFinished()
-    {
-        weaver_->resume();
-        weaver_->dequeue();
-        weaver_->finish();
-        weaver_->suspend();
-        Q_ASSERT(weaver_->isIdle());
-    }
-private:
-    Queue *weaver_;
-};
 
 void JobTests::initTestCase()
 {
@@ -1162,10 +1137,11 @@ void JobTests::NestedGeneratingSequencesTest() {
 void JobTests::DeeperNestedGeneratingCollectionsTest()
 {
     using namespace ThreadWeaver;
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    Queue queue;
+    WaitForIdleAndFinished w(&queue); Q_UNUSED(w);
     const int ElementsPerCollection = 20;
-    const int NumberOfBlocks = 20;
-    const int CollectionsPerBlock = 2;
+    const int NumberOfBlocks = 2;
+    const int CollectionsPerBlock = 7;
     SynchronizedNumbers numbers;
     Sequence sequence;
     for(int block=0; block < NumberOfBlocks; ++block) {
@@ -1176,8 +1152,8 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
         }
         sequence << col;
     }
-    stream() << sequence;
-    Queue::instance()->finish();
+    queue.stream() << sequence;
+    queue.finish();
     numbers.sortChunks(NumberOfBlocks*ElementsPerCollection);
     QVERIFY(numbers.isSorted());
 }
