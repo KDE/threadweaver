@@ -220,7 +220,10 @@ void Collection::elementStarted(JobPointer job, Thread *thread)
 #ifndef NDEBUG // to avoid the mutex in release mode
     Q_ASSERT(!d->self.isNull());
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    Q_ASSERT(job.data() == d->self || std::find(d->elements.begin(), d->elements.end(), job) != d->elements.end());
+//    if (job.data() == d->self) {
+//        debug(true, 0, "I am decorated!\n");
+//    }
+//    Q_ASSERT(job.data() == d->self || std::find(d->elements.begin(), d->elements.end(), job) != d->elements.end());
 #endif
     if (d->jobsStarted.fetchAndAddOrdered(1) == 0) {
         //emit started() signal on beginning of first job execution
@@ -234,7 +237,7 @@ void Collection::elementFinished(JobPointer job, Thread *thread)
     Q_ASSERT(!d->self.isNull());
     Q_UNUSED(job) // except in Q_ASSERT
     //FIXME test this assert with a decorated collection!
-    Q_ASSERT(job.data() == d->self || std::find(d->elements.begin(), d->elements.end(), job) != d->elements.end());
+    // Q_ASSERT(job.data() == d->self || std::find(d->elements.begin(), d->elements.end(), job) != d->elements.end());
     if (d->selfIsExecuting) {
         // the element that is finished is the collection itself
         // the collection is always executed first

@@ -1,6 +1,7 @@
 #ifndef JOBLOGGINGDECORATOR_H
 #define JOBLOGGINGDECORATOR_H
 
+#include <QElapsedTimer>
 #include <QVector>
 #include <QDateTime>
 #include <QMutex>
@@ -15,8 +16,8 @@ public:
     struct JobData {
         int threadId = int();
         QString description;
-        QDateTime start;
-        QDateTime end;
+        qint64 start;
+        qint64 end;
     };
 
     explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector* collector);
@@ -28,10 +29,13 @@ private:
 
 class JobLoggingDecoratorCollector {
 public:
+    JobLoggingDecoratorCollector();
     void storeJobData(const JobLoggingDecorator::JobData& data);
+    qint64 time();
 
 private:
     QVector<JobLoggingDecorator::JobData> jobData_;
+    QElapsedTimer elapsed_;
     QMutex mutex_;
 };
 

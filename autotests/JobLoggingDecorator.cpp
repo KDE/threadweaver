@@ -13,20 +13,31 @@ JobLoggingDecorator::JobLoggingDecorator(const JobPointer &job, JobLoggingDecora
 
 void JobLoggingDecorator::run(JobPointer self, Thread *thread)
 {
-    data_.start = QDateTime::currentDateTime();
+    data_.start = collector_->time();
     if (thread) {
         data_.threadId = thread->id();
     } else {
         data_.threadId = -1;
     }
     IdDecorator::run(self, thread);
-    data_.end = QDateTime::currentDateTime();
+    data_.end = collector_->time();
     collector_->storeJobData(data_);
 }
 
+
+JobLoggingDecoratorCollector::JobLoggingDecoratorCollector()
+{
+    elapsed_.start();
+}
 
 void JobLoggingDecoratorCollector::storeJobData(const JobLoggingDecorator::JobData &data)
 {
     QMutexLocker m(&mutex_);
     jobData_.append(data);
 }
+
+qint64 JobLoggingDecoratorCollector::time()
+{
+    return elapsed_.elapsed();
+}
+
