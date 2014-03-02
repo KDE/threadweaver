@@ -28,6 +28,7 @@ void JobLoggingDecorator::run(JobPointer self, Thread *thread)
 JobLoggingDecoratorCollector::JobLoggingDecoratorCollector()
 {
     elapsed_.start();
+    start_ = QDateTime::currentDateTime();
 }
 
 void JobLoggingDecoratorCollector::storeJobData(const JobLoggingDecorator::JobData &data)

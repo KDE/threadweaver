@@ -36,6 +36,7 @@ public:
 private:
     QVector<JobLoggingDecorator::JobData> jobData_;
     QElapsedTimer elapsed_;
+    QDateTime start_;
     QMutex mutex_;
 };
 
