@@ -39,6 +39,6 @@ void JobLoggingDecoratorCollector::storeJobData(const JobLoggingDecorator::JobDa
 
 qint64 JobLoggingDecoratorCollector::time()
 {
-    return elapsed_.elapsed();
+    return elapsed_.nsecsElapsed();
 }
 
