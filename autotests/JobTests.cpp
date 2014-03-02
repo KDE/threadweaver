@@ -50,6 +50,7 @@
 #include "AppendCharacterJob.h"
 #include "AppendCharacterAndVerifyJob.h"
 #include "WaitForIdleAndFinished.h"
+#include "JobLoggingWeaver.h"
 
 QMutex s_GlobalMutex;
 
@@ -1137,7 +1138,8 @@ void JobTests::NestedGeneratingSequencesTest() {
 void JobTests::DeeperNestedGeneratingCollectionsTest()
 {
     using namespace ThreadWeaver;
-    Queue queue;
+    JobLoggingWeaver logger;
+    Queue queue(&logger);
     WaitForIdleAndFinished w(&queue); Q_UNUSED(w);
     const int ElementsPerCollection = 20;
     const int NumberOfBlocks = 2;

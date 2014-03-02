@@ -9,7 +9,7 @@
 
 class JobLoggingDecoratorCollector;
 
-class JobLoggingDecorator : public IdDecorator
+class JobLoggingDecorator : public ThreadWeaver::IdDecorator
 {
 public:
     struct JobData {
@@ -19,8 +19,8 @@ public:
         QDateTime end;
     };
 
-    explicit JobLoggingDecorator(const JobPointer &job, JobLoggingDecoratorCollector* collector);
-    void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
+    explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector* collector);
+    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) Q_DECL_OVERRIDE;
 private:
     JobData data_;
     JobLoggingDecoratorCollector* collector_;
@@ -28,10 +28,10 @@ private:
 
 class JobLoggingDecoratorCollector {
 public:
-    void storeJobData(const JobData& data);
+    void storeJobData(const JobLoggingDecorator::JobData& data);
 
 private:
-    QVector<JobLoggingDecorator> jobData_;
+    QVector<JobLoggingDecorator::JobData> jobData_;
     QMutex mutex_;
 };
 

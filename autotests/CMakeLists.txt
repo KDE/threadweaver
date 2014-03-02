@@ -7,7 +7,7 @@ include(ECMMarkAsTest)
 
 ########### next target ###############
 
-set(JobTests_SRCS JobTests.cpp AppendCharacterAndVerifyJob.cpp WaitForIdleAndFinished.cpp)
+set(JobTests_SRCS JobTests.cpp AppendCharacterAndVerifyJob.cpp WaitForIdleAndFinished.cpp JobLoggingWeaver.cpp JobLoggingDecorator.cpp)
 
 add_executable(ThreadWeaverJobTests ${JobTests_SRCS})
 add_test(ThreadWeaverJobTests ThreadWeaverJobTests)
