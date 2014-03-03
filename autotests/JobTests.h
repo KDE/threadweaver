@@ -51,6 +51,7 @@ private Q_SLOTS:
     void CollectionQueueingTest();
     void GeneratingCollectionTest();
     void ShortJobSequenceTest();
+    void ShortDecoratedJobSequenceTest();
     void EmptyJobSequenceTest();
     void GeneratingSequenceTest();
     void IncompleteCollectionTest();

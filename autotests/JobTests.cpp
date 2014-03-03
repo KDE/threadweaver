@@ -191,11 +191,38 @@ void JobTests::ShortJobSequenceTest()
     jobSequence->addJob(jobC);
 
     WaitForIdleAndFinished w(Queue::instance());
+    QVERIFY(DependencyPolicy::instance().isEmpty());
     Queue::instance()->enqueue(jobSequence);
     // Job::DumpJobDependencies();
     Queue::instance()->finish();
     QCOMPARE(sequence, QLatin1String("abc"));
     QVERIFY(Queue::instance()->isIdle());
+    QVERIFY(DependencyPolicy::instance().isEmpty());
+}
+
+void JobTests::ShortDecoratedJobSequenceTest()
+{
+    using namespace ThreadWeaver;
+    auto logger = new JobLoggingWeaver();
+    Queue queue(logger);
+
+    QString sequence;
+    JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
+    JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
+    JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
+    QSharedPointer<Sequence> jobSequence(new Sequence());
+    jobSequence->addJob(jobA);
+    jobSequence->addJob(jobB);
+    jobSequence->addJob(jobC);
+
+    WaitForIdleAndFinished w(&queue); Q_UNUSED(w);
+    QVERIFY(DependencyPolicy::instance().isEmpty());
+    queue.enqueue(jobSequence);
+    // Job::DumpJobDependencies();
+    queue.finish();
+    QCOMPARE(sequence, QLatin1String("abc"));
+    QVERIFY(queue.isIdle());
+    QVERIFY(DependencyPolicy::instance().isEmpty());
 }
 
 void JobTests::EmptyJobSequenceTest()
@@ -1139,14 +1166,13 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
 {
     return;
     using namespace ThreadWeaver;
-    JobLoggingWeaver logger;
-    Queue queue(&logger);
+    auto logger = new JobLoggingWeaver();
+    Queue queue(logger);
     WaitForIdleAndFinished w(&queue); Q_UNUSED(w);
     const int ElementsPerCollection = 20;
     const int NumberOfBlocks = 2;
-    const int CollectionsPerBlock = 7;
-    SynchronizedNumbers numbers;
-    Sequence sequence;
+    const int CollectionsPerBlock = 2;
+    SynchronizedNumbers numbers; Sequence sequence;
     for(int block=0; block < NumberOfBlocks; ++block) {
         auto col = new Collection();
         for(int collection = 0; collection < CollectionsPerBlock; ++collection) {
