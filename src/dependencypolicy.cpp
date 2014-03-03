@@ -83,7 +83,7 @@ void DependencyPolicy::addDependency(JobPointer jobA, JobPointer jobB)
     jobB->assignQueuePolicy(this);
     QMutexLocker l(d->mutex());
     d->dependencies().insert(jobA, jobB);
-
+    debug(2, "inserted dependency %p->%p.\n", jobA.data(), jobB.data());
     ENSURE(d->dependencies().contains(jobA));
 }
 
@@ -104,11 +104,12 @@ bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
         it.next();
         if (it.key() == jobA && it.value() == jobB) {
             it.remove();
+            debug(2, "removed dependency %p->%p.\n", jobA.data(), jobB.data());
             result = true;
             break;
         }
     }
-
+    debug(result == false, 2, "cannot remove dependency %p->%p, not found.\n", jobA.data(), jobB.data());
     ENSURE(! d->dependencies().keys(jobB).contains(jobA));
     return result;
 }
@@ -127,6 +128,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
         while (it.hasNext()) { // we remove all entries where jobs depend on *this* :
             it.next();
             if (it.value() == job) {
+                debug(0, "resolved dependencies for %p: %p->%p.\n", job.data(), it.key().data(), it.value().data());
                 it.remove();
             }
         }
@@ -155,6 +157,12 @@ bool DependencyPolicy::hasUnresolvedDependencies(JobPointer job) const
     REQUIRE(job != 0);
     QMutexLocker l(d->mutex());
     return d->dependencies().contains(job);
+}
+
+bool DependencyPolicy::isEmpty() const
+{
+    QMutexLocker l(d->mutex());
+    return d->dependencies().isEmpty();
 }
 
 DependencyPolicy &DependencyPolicy::instance()

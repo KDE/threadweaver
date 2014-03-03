@@ -92,6 +92,8 @@ public:
 
     void destructed(JobInterface *job) Q_DECL_OVERRIDE;
 
+    bool isEmpty() const;
+
 protected:
     /** @brief Query whether the job has an unresolved dependency.
      *  In case it does, the policy will return false from canRun().
