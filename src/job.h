@@ -64,6 +64,7 @@ class THREADWEAVER_EXPORT Job : public JobInterface
 public:
     /** Construct a Job. */
     Job();
+    Job(Private::Job_Private* d);
 
     /** Destructor. */
     virtual ~Job();
@@ -184,10 +185,11 @@ public:
 
 private:
     Private::Job_Private *d_;
+
+protected:
     Private::Job_Private* d();
     const Private::Job_Private* d() const;
 
-protected:
     /** Free the queue policies acquired before this job has been executed. */
     void freeQueuePolicyResources(JobPointer) Q_DECL_OVERRIDE;
 

@@ -37,7 +37,7 @@ namespace ThreadWeaver
 class Thread;
 class CollectionExecuteWrapper;
 
-class Collection_Private;
+namespace Private { class Collection_Private; }
 
 /** A Collection is a vector of Jobs that will be queued together.
  * In a Collection, the order of execution of the elements is not specified.
@@ -52,7 +52,7 @@ class THREADWEAVER_EXPORT Collection : public Job
 {
 public:
     Collection();
-    Collection(Collection_Private * d);
+    Collection(Private::Collection_Private * d);
     ~Collection();
     /** Append a job to the collection.
      *
@@ -113,8 +113,8 @@ protected:
 
 protected:
     friend class Collection_Private;
-    Collection_Private* d() const;
-    Collection_Private* const d_; //FIXME integrate with Job
+    Private::Collection_Private* d();
+    const Private::Collection_Private* d() const;
 };
 
 }

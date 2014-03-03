@@ -30,11 +30,14 @@ http://creative-destruction.me $
 #include <QVector>
 #include <QMutex>
 
+#include "job_p.h"
 #include "executewrapper_p.h"
 
 namespace ThreadWeaver {
 
 class Collection;
+
+namespace Private {
 
 class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
@@ -43,7 +46,7 @@ public:
     void end(JobPointer, Thread *) Q_DECL_OVERRIDE;
 };
 
-class Collection_Private
+class Collection_Private : public Job_Private
 {
 public:
     Collection_Private();
@@ -76,6 +79,8 @@ public:
     JobPointer self;
     bool selfIsExecuting;
 };
+
+}
 
 }
 

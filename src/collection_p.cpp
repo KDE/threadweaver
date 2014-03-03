@@ -31,6 +31,8 @@ http://creative-destruction.me $
 
 namespace ThreadWeaver {
 
+namespace Private {
+
 Collection_Private::Collection_Private()
     : api(0)
     , jobCounter(0)
@@ -83,4 +85,6 @@ void CollectionSelfExecuteWrapper::begin(JobPointer, Thread *) {
 void CollectionSelfExecuteWrapper::end(JobPointer, Thread *) {
 }
 
-} // namespace Collection
+}
+
+}

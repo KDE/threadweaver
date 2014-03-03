@@ -78,7 +78,7 @@ private:
 };
 
 Collection::Collection()
-    : d_(new Collection_Private)
+    : Job(new Private::Collection_Private)
 {
     d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
     CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
@@ -86,8 +86,8 @@ Collection::Collection()
     wrapper->wrap(setExecutor(wrapper));
 }
 
-Collection::Collection(Collection_Private *d__)
-    : d_(d__)
+Collection::Collection(Private::Collection_Private *d__)
+    : Job(d__)
 {
     d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
     CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
@@ -97,14 +97,11 @@ Collection::Collection(Collection_Private *d__)
 
 Collection::~Collection()
 {
-    {
-        // dequeue all remaining jobs:
-        QMutexLocker l(mutex()); Q_UNUSED(l);
-        if (d()->api != 0) { // still queued
-            d()->dequeueElements(this, false);
-        }
+    // dequeue all remaining jobs:
+    QMutexLocker l(mutex()); Q_UNUSED(l);
+    if (d()->api != 0) { // still queued
+        d()->dequeueElements(this, false);
     }
-    delete d_;
 }
 
 void Collection::addJob(JobPointer job)
@@ -172,9 +169,14 @@ void Collection::enqueueElements()
     d()->api->enqueue(d()->elements);
 }
 
-Collection_Private *Collection::d() const
+Private::Collection_Private *Collection::d()
 {
-    return d_;
+    return reinterpret_cast<Private::Collection_Private*>(Job::d());
+}
+
+const Private::Collection_Private *Collection::d() const
+{
+    return reinterpret_cast<const Private::Collection_Private*>(Job::d());
 }
 
 void Collection::elementStarted(JobPointer job, Thread *thread)

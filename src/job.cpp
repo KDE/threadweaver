@@ -53,7 +53,15 @@ Job::Job()
     d()->debugExecuteWrapper.wrap(setExecutor(&(d()->debugExecuteWrapper)));
 #endif
     d()->status.storeRelease(Status_New);
+}
 
+Job::Job(Private::Job_Private *d__)
+    : d_(d__)
+{
+#if !defined(NDEBUG)
+    d()->debugExecuteWrapper.wrap(setExecutor(&(d()->debugExecuteWrapper)));
+#endif
+    d()->status.storeRelease(Status_New);
 }
 
 Job::~Job()
