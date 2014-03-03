@@ -56,7 +56,7 @@ void Collection_Private::finalCleanup(Collection *collection)
 void Collection_Private::dequeueElements(Collection* collection, bool queueApiIsLocked)
 {
     // dequeue everything:
-    Q_ASSERT(!collection->mutex()->tryLock());
+    Q_ASSERT(!mutex.tryLock());
     if (api == 0) {
         return;    //not queued
     }

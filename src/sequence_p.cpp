@@ -28,8 +28,12 @@ http://creative-destruction.me $
 
 namespace ThreadWeaver {
 
+namespace Private {
+
 Sequence_Private::Sequence_Private()
 {
+}
+
 }
 
 }

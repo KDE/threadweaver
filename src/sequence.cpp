@@ -64,6 +64,11 @@ Sequence_Private *Sequence::d()
     return reinterpret_cast<Sequence_Private*>(Collection::d());
 }
 
+const Private::Sequence_Private *Sequence::d() const
+{
+    return reinterpret_cast<const Sequence_Private*>(Collection::d());
+}
+
 void Sequence::elementFinished(JobPointer job, Thread *thread)
 {
     REQUIRE(job != 0);

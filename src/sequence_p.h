@@ -32,11 +32,15 @@ http://creative-destruction.me $
 
 namespace ThreadWeaver {
 
+namespace Private {
+
 class Sequence_Private : public Collection_Private
 {
 public:
     Sequence_Private();
 };
+
+}
 
 }
 
