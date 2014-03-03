@@ -77,12 +77,6 @@ void IdDecorator::defaultEnd(JobPointer self, Thread *thread)
     job()->defaultEnd(self, thread);
 }
 
-void IdDecorator::freeQueuePolicyResources(JobPointer j)
-{
-    Q_ASSERT(d1);
-    job()->freeQueuePolicyResources(j);
-}
-
 void IdDecorator::removeQueuePolicy(QueuePolicy *policy)
 {
     Q_ASSERT(d1);

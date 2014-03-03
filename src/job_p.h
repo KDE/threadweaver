@@ -8,7 +8,7 @@ namespace ThreadWeaver {
 
 namespace Private {
 
-class DefaultExecutor : public ThreadWeaver::Executor
+class THREADWEAVER_EXPORT DefaultExecutor : public ThreadWeaver::Executor
 {
 public:
     void begin(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread);
@@ -28,8 +28,10 @@ class Job_Private
 {
 public:
     Job_Private();
+    virtual ~Job_Private();
 
-    ~Job_Private();
+    /** Free the queue policies acquired before this job has been executed. */
+    virtual void freeQueuePolicyResources(JobPointer);
 
     /* The list of QueuePolicies assigned to this Job. */
     QList<QueuePolicy *> queuePolicies;

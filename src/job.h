@@ -190,9 +190,6 @@ protected:
     Private::Job_Private* d();
     const Private::Job_Private* d() const;
 
-    /** Free the queue policies acquired before this job has been executed. */
-    void freeQueuePolicyResources(JobPointer) Q_DECL_OVERRIDE;
-
     friend class Executor;
     /** The method that actually performs the job.
      *

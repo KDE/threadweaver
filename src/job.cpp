@@ -133,20 +133,13 @@ bool Job::success() const
     return d()->status.loadAcquire() == Status_Success;
 }
 
-void Job::freeQueuePolicyResources(JobPointer job)
-{
-    for (int index = 0; index < d()->queuePolicies.size(); ++index) {
-        d()->queuePolicies.at(index)->free(job);
-    }
-}
-
 void Job::defaultBegin(JobPointer, Thread *)
 {
 }
 
 void Job::defaultEnd(JobPointer job, Thread *)
 {
-    freeQueuePolicyResources(job);
+    d()->freeQueuePolicyResources(job);
 }
 
 void Job::aboutToBeQueued(QueueAPI *api)

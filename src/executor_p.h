@@ -37,7 +37,7 @@ class Thread;
 
 //FIXME Pimpl, make part of the API, document
 //TODO can JobPointer references be used?
-class Executor
+class THREADWEAVER_EXPORT Executor
 {
 public:
     virtual ~Executor();

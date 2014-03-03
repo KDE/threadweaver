@@ -1,6 +1,7 @@
 #include "job_p.h"
 #include "executor_p.h"
 #include "debuggingaids.h"
+#include "queuepolicy.h"
 #include "thread.h"
 
 ThreadWeaver::Private::Job_Private::Job_Private()
@@ -12,6 +13,13 @@ ThreadWeaver::Private::Job_Private::Job_Private()
 
 ThreadWeaver::Private::Job_Private::~Job_Private()
 {}
+
+void ThreadWeaver::Private::Job_Private::freeQueuePolicyResources(JobPointer job)
+{
+    for (int index = 0; index < queuePolicies.size(); ++index) {
+        queuePolicies.at(index)->free(job);
+    }
+}
 
 
 void ThreadWeaver::Private::DebugExecuteWrapper::execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *th)

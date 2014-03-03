@@ -47,8 +47,8 @@ Collection_Private::~Collection_Private()
 void Collection_Private::finalCleanup(Collection *collection)
 {
     Q_ASSERT(!self.isNull());
-//    Q_ASSERT(!mutex()->tryLock());
-    collection->freeQueuePolicyResources(self);
+    Q_ASSERT(!mutex.tryLock());
+    freeQueuePolicyResources(self);
     collection->setStatus(Job::Status_Success);
     api = 0;
 }

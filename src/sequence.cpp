@@ -37,7 +37,7 @@ namespace ThreadWeaver
 {
 
 Sequence::Sequence()
-    : Collection(new Sequence_Private())
+    : Collection(new Private::Sequence_Private())
 {
 }
 
@@ -59,14 +59,14 @@ void Sequence::enqueueElements()
     Collection::enqueueElements();
 }
 
-Sequence_Private *Sequence::d()
+Private::Sequence_Private *Sequence::d()
 {
-    return reinterpret_cast<Sequence_Private*>(Collection::d());
+    return reinterpret_cast<Private::Sequence_Private*>(Collection::d());
 }
 
 const Private::Sequence_Private *Sequence::d() const
 {
-    return reinterpret_cast<const Sequence_Private*>(Collection::d());
+    return reinterpret_cast<const Private::Sequence_Private*>(Collection::d());
 }
 
 void Sequence::elementFinished(JobPointer job, Thread *thread)
