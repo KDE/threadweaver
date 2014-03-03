@@ -128,7 +128,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
         while (it.hasNext()) { // we remove all entries where jobs depend on *this* :
             it.next();
             if (it.value() == job) {
-                debug(0, "resolved dependencies for %p: %p->%p.\n", job.data(), it.key().data(), it.value().data());
+                debug(2, "resolved dependencies for %p: %p->%p.\n", job.data(), it.key().data(), it.value().data());
                 it.remove();
             }
         }
