@@ -39,6 +39,8 @@ class QWaitCondition;
 namespace ThreadWeaver
 {
 
+namespace Private { class Job_Private; }
+
 class Thread;
 class QueuePolicy;
 class QueueAPI;
@@ -181,8 +183,9 @@ public:
     QList<QueuePolicy *> queuePolicies() const;
 
 private:
-    class Private;
-    Private *d;
+    Private::Job_Private *d_;
+    Private::Job_Private* d();
+    const Private::Job_Private* d() const;
 
 protected:
     /** Free the queue policies acquired before this job has been executed. */

@@ -10,6 +10,7 @@ set(ThreadWeaver_LIB_SRCS
     debuggingaids.cpp
     thread.cpp
     job.cpp
+    job_p.cpp
     iddecorator.cpp
     qobjectdecorator.cpp
     executor.cpp
