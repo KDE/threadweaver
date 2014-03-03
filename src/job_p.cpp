@@ -21,3 +21,20 @@ void ThreadWeaver::Private::DebugExecuteWrapper::execute(ThreadWeaver::JobPointe
     executeWrapped(job, th);
     ThreadWeaver::debug(3, "Job::execute: finished execution of job in thread %i.\n", th ? th->id() : 0);
 }
+
+
+void ThreadWeaver::Private::DefaultExecutor::begin(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+{
+    defaultBegin(job, thread);
+}
+
+void ThreadWeaver::Private::DefaultExecutor::execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+{
+    run(job, thread);
+}
+
+void ThreadWeaver::Private::DefaultExecutor::end(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+{
+    defaultEnd(job, thread);
+}
+
