@@ -58,7 +58,7 @@ public:
     void begin(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
         ExecuteWrapper::begin(job, thread);
         Q_ASSERT(collection);
-        collection->elementStarted(job, thread);
+        collection->d()->elementStarted(collection, job, thread);
     }
 
     void end(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
@@ -170,16 +170,6 @@ Private::Collection_Private *Collection::d()
 const Private::Collection_Private *Collection::d() const
 {
     return reinterpret_cast<const Private::Collection_Private*>(Job::d());
-}
-
-void Collection::elementStarted(JobPointer job, Thread *thread)
-{
-    Q_UNUSED(job) // except in Q_ASSERT
-    Q_ASSERT(!d()->self.isNull());
-    if (d()->jobsStarted.fetchAndAddOrdered(1) == 0) {
-        //emit started() signal on beginning of first job execution
-        executor()->defaultBegin(d()->self, thread);
-    }
 }
 
 void Collection::elementFinished(JobPointer job, Thread *thread)

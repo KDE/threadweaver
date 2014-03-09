@@ -61,6 +61,16 @@ void Collection_Private::enqueueElements()
     api->enqueue(elements);
 }
 
+void Collection_Private::elementStarted(Collection *collection, JobPointer job, Thread *thread)
+{
+    Q_UNUSED(job) // except in Q_ASSERT
+    Q_ASSERT(!self.isNull());
+    if (jobsStarted.fetchAndAddOrdered(1) == 0) {
+        //emit started() signal on beginning of first job execution
+        collection->executor()->defaultBegin(self, thread);
+    }
+}
+
 void Collection_Private::prepareToEnqueueElements()
 {
     //empty in Collection

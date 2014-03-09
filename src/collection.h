@@ -94,9 +94,8 @@ protected:
     virtual int jobListLength_locked() const;
 
 protected:
+    //FIXME remove
     friend class CollectionExecuteWrapper;
-    //FIXME move to d
-    virtual void elementStarted(JobPointer job, Thread *thread);
     virtual void elementFinished(JobPointer job, Thread *thread);
     //FIXME move to d
     JobPointer self() const;

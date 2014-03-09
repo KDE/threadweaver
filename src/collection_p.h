@@ -66,6 +66,8 @@ public:
     /** @brief Enqueue the elements of the collection. */
     void enqueueElements();
 
+    void elementStarted(Collection* collection, JobPointer job, Thread *thread);
+
     /** @brief Prepare to enqueue the elements. */
     virtual void prepareToEnqueueElements();
 
