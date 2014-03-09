@@ -41,20 +41,17 @@ Sequence::Sequence()
 {
 }
 
+//FIXME move to d
+//FIXME add blocker when elements are added?
 void Sequence::enqueueElements()
 {
     Q_ASSERT(!mutex()->tryLock());
     const int jobs = jobListLength_locked();
-    if (jobs > 0) {
-        DependencyPolicy::instance().addDependency(jobAt(0), self());
-        // set up the dependencies:
-        for (int i = 1; i < jobs; ++i) {
-            JobPointer jobA = jobAt(i);
-            JobPointer jobB = jobAt(i - 1);
-            P_ASSERT(jobA != 0);
-            P_ASSERT(jobB != 0);
-            DependencyPolicy::instance().addDependency(jobA, jobB);
-        }
+    // probably incorrect:
+    d()->completed_.storeRelease(0);
+    // block the execution of the later jobs:
+    for (int i = 0; i < jobs; ++i) {
+        jobAt(i)->assignQueuePolicy(d()->blocker());
     }
     Collection::enqueueElements();
 }
@@ -80,8 +77,12 @@ void Sequence::elementFinished(JobPointer job, Thread *thread)
         stop(job);
     }
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    if (jobListLength_locked() > 0) {
-        DependencyPolicy::instance().removeDependency(jobAt(0), s);
+    const int next = d()->completed_.fetchAndAddAcquire(1);
+    const int count = elementCount();
+    if (count > 0) {
+        if (next < count) {
+            jobAt(next)->removeQueuePolicy(d()->blocker());
+        }
     }
 }
 

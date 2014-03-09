@@ -34,6 +34,28 @@ Sequence_Private::Sequence_Private()
 {
 }
 
+BlockerPolicy *Sequence_Private::blocker()
+{
+    return &blocker_;
+}
+
+void BlockerPolicy::destructed(JobInterface*)
+{
+}
+
+bool BlockerPolicy::canRun(JobPointer)
+{
+    return false;
+}
+
+void BlockerPolicy::free(JobPointer)
+{
+}
+
+void BlockerPolicy::release(JobPointer)
+{
+}
+
 }
 
 }

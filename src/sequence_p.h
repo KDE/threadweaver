@@ -27,17 +27,32 @@ http://creative-destruction.me $
 #ifndef SEQUENCE_P_H
 #define SEQUENCE_P_H
 
+#include <QAtomicInt>
+
 #include "sequence.h"
+#include "queuepolicy.h"
 #include "collection_p.h"
 
 namespace ThreadWeaver {
 
 namespace Private {
 
+class BlockerPolicy : public QueuePolicy {
+public:
+    bool canRun(JobPointer) Q_DECL_OVERRIDE;
+    void free(JobPointer) Q_DECL_OVERRIDE;
+    void release(JobPointer) Q_DECL_OVERRIDE;
+    void destructed(JobInterface *job) Q_DECL_OVERRIDE;
+};
+
 class Sequence_Private : public Collection_Private
 {
 public:
     Sequence_Private();
+    BlockerPolicy* blocker();
+
+    BlockerPolicy blocker_;
+    QAtomicInt completed_;
 };
 
 }

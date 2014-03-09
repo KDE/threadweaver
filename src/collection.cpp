@@ -228,6 +228,13 @@ JobPointer Collection::jobAt(int i)
     return d()->elements.at(i);
 }
 
+int Collection::elementCount() const
+{
+    QMutexLocker l(mutex()); Q_UNUSED(l);
+    return jobListLength_locked();
+}
+
+
 int Collection::jobListLength() const
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);

@@ -44,9 +44,6 @@ namespace Private { class Collection_Private; }
  *
  * It is intended that the collection is set up first and then
  * queued. After queuing, no further jobs should be added to the collection.
- *
- * Collection emits a done(JobPointer) signal when all of the jobs in the collection
- * have completed.
  */
 class THREADWEAVER_EXPORT Collection : public Job
 {
@@ -68,7 +65,10 @@ public:
     //FIXME remove job argument?
     void stop(ThreadWeaver::JobPointer job);
 
-    /** Return the number of jobs in the joblist. */
+    /** Return the number of elements in the collection. */
+    int elementCount() const;
+
+    /** @deprecated Use elementCount(). */
     int jobListLength() const;
 
     /** @brief Add the job to this collection by pointer. */
@@ -95,9 +95,10 @@ protected:
 
 protected:
     friend class CollectionExecuteWrapper;
+    //FIXME move to d
     virtual void elementStarted(JobPointer job, Thread *thread);
     virtual void elementFinished(JobPointer job, Thread *thread);
-
+    //FIXME move to d
     JobPointer self() const;
 
 protected:
