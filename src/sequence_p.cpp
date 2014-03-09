@@ -39,6 +39,18 @@ BlockerPolicy *Sequence_Private::blocker()
     return &blocker_;
 }
 
+void Sequence_Private::prepareToEnqueueElements()
+{
+    Q_ASSERT(!mutex.tryLock());
+    const int jobs = elements.count();
+    // probably incorrect:
+    completed_.storeRelease(0);
+    // block the execution of the later jobs:
+    for (int i = 0; i < jobs; ++i) {
+        elements.at(i)->assignQueuePolicy(blocker());
+    }
+}
+
 void BlockerPolicy::destructed(JobInterface*)
 {
 }

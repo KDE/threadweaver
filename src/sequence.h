@@ -51,7 +51,6 @@ public:
 
 protected:
     void elementFinished(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-    void enqueueElements() Q_DECL_OVERRIDE;
 
 private:
     Private::Sequence_Private* d();

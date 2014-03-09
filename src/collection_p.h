@@ -63,6 +63,12 @@ public:
      */
     void finalCleanup(Collection* collection);
 
+    /** @brief Enqueue the elements of the collection. */
+    void enqueueElements();
+
+    /** @brief Prepare to enqueue the elements. */
+    virtual void prepareToEnqueueElements();
+
     /* The elements of the collection. */
     QVector<JobPointer> elements;
 

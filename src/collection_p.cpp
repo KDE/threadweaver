@@ -53,6 +53,19 @@ void Collection_Private::finalCleanup(Collection *collection)
     api = 0;
 }
 
+void Collection_Private::enqueueElements()
+{
+    Q_ASSERT(!mutex.tryLock());
+    prepareToEnqueueElements();
+    jobCounter.fetchAndStoreOrdered(elements.count() + 1); //including self
+    api->enqueue(elements);
+}
+
+void Collection_Private::prepareToEnqueueElements()
+{
+    //empty in Collection
+}
+
 void Collection_Private::dequeueElements(Collection* collection, bool queueApiIsLocked)
 {
     // dequeue everything:

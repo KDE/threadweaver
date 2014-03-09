@@ -41,21 +41,6 @@ Sequence::Sequence()
 {
 }
 
-//FIXME move to d
-//FIXME add blocker when elements are added?
-void Sequence::enqueueElements()
-{
-    Q_ASSERT(!mutex()->tryLock());
-    const int jobs = jobListLength_locked();
-    // probably incorrect:
-    d()->completed_.storeRelease(0);
-    // block the execution of the later jobs:
-    for (int i = 0; i < jobs; ++i) {
-        jobAt(i)->assignQueuePolicy(d()->blocker());
-    }
-    Collection::enqueueElements();
-}
-
 Private::Sequence_Private *Sequence::d()
 {
     return reinterpret_cast<Private::Sequence_Private*>(Collection::d());
@@ -78,7 +63,7 @@ void Sequence::elementFinished(JobPointer job, Thread *thread)
     }
     QMutexLocker l(mutex()); Q_UNUSED(l);
     const int next = d()->completed_.fetchAndAddAcquire(1);
-    const int count = elementCount();
+    const int count = jobListLength_locked();
     if (count > 0) {
         if (next < count) {
             jobAt(next)->removeQueuePolicy(d()->blocker());

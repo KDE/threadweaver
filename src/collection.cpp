@@ -162,13 +162,6 @@ void Collection::run(JobPointer, Thread *)
     //empty
 }
 
-void Collection::enqueueElements()
-{
-    Q_ASSERT(!mutex()->tryLock());
-    d()->jobCounter.fetchAndStoreOrdered(d()->elements.count() + 1); //including self
-    d()->api->enqueue(d()->elements);
-}
-
 Private::Collection_Private *Collection::d()
 {
     return reinterpret_cast<Private::Collection_Private*>(Job::d());
@@ -198,7 +191,7 @@ void Collection::elementFinished(JobPointer job, Thread *thread)
         // the element that is finished is the collection itself
         // the collection is always executed first
         // queue the collection elements:
-        enqueueElements();
+        d()->enqueueElements();
         d()->selfIsExecuting = false;
     }
     const int jobsStarted = d()->jobsStarted.loadAcquire();

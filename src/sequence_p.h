@@ -50,6 +50,7 @@ class Sequence_Private : public Collection_Private
 public:
     Sequence_Private();
     BlockerPolicy* blocker();
+    void prepareToEnqueueElements() Q_DECL_OVERRIDE;
 
     BlockerPolicy blocker_;
     QAtomicInt completed_;
