@@ -51,7 +51,7 @@ public:
     Sequence_Private();
     BlockerPolicy* blocker();
     void prepareToEnqueueElements() Q_DECL_OVERRIDE;
-
+    void processCompletedElement(Collection* collection, JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
     BlockerPolicy blocker_;
     QAtomicInt completed_;
 };

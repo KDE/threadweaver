@@ -96,7 +96,6 @@ protected:
 protected:
     //FIXME remove
     friend class CollectionExecuteWrapper;
-    virtual void elementFinished(JobPointer job, Thread *thread);
     //FIXME move to d
     JobPointer self() const;
 

@@ -63,7 +63,7 @@ public:
 
     void end(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
         Q_ASSERT(collection);
-        collection->elementFinished(job, thread);
+        collection->d()->elementFinished(collection, job, thread);
         ExecuteWrapper::end(job, thread);
     }
 
@@ -170,33 +170,6 @@ Private::Collection_Private *Collection::d()
 const Private::Collection_Private *Collection::d() const
 {
     return reinterpret_cast<const Private::Collection_Private*>(Job::d());
-}
-
-void Collection::elementFinished(JobPointer job, Thread *thread)
-{
-    QMutexLocker l(mutex()); Q_UNUSED(l);
-    Q_ASSERT(!d()->self.isNull());
-    Q_UNUSED(job) // except in Q_ASSERT
-    if (d()->selfIsExecuting) {
-        // the element that is finished is the collection itself
-        // the collection is always executed first
-        // queue the collection elements:
-        d()->enqueueElements();
-        d()->selfIsExecuting = false;
-    }
-    const int jobsStarted = d()->jobsStarted.loadAcquire();
-    Q_ASSERT(jobsStarted >= 0); Q_UNUSED(jobsStarted);
-    const int remainingJobs = d()->jobCounter.fetchAndAddOrdered(-1) - 1;
-    Q_ASSERT(remainingJobs >= 0);
-    if (remainingJobs == 0) {
-        // all elements can only be done if self has been executed:
-        // there is a small chance that (this) has been dequeued in the
-        // meantime, in this case, there is nothing left to clean up
-        d()->finalCleanup(this);
-        executor()->defaultEnd(d()->self, thread);
-        l.unlock();
-        d()->self.clear();
-    }
 }
 
 JobPointer Collection::self() const

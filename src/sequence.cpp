@@ -51,25 +51,5 @@ const Private::Sequence_Private *Sequence::d() const
     return reinterpret_cast<const Private::Sequence_Private*>(Collection::d());
 }
 
-void Sequence::elementFinished(JobPointer job, Thread *thread)
-{
-    REQUIRE(job != 0);
-
-    JobPointer s(self());
-    Q_ASSERT(!s.isNull());
-    Collection::elementFinished(job, thread);
-    if (!job->success()) {
-        stop(job);
-    }
-    QMutexLocker l(mutex()); Q_UNUSED(l);
-    const int next = d()->completed_.fetchAndAddAcquire(1);
-    const int count = jobListLength_locked();
-    if (count > 0) {
-        if (next < count) {
-            jobAt(next)->removeQueuePolicy(d()->blocker());
-        }
-    }
-}
-
 }
 

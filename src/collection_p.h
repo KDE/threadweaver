@@ -67,9 +67,13 @@ public:
     void enqueueElements();
 
     void elementStarted(Collection* collection, JobPointer job, Thread *thread);
+    void elementFinished(Collection* collection, JobPointer job, Thread *thread);
 
     /** @brief Prepare to enqueue the elements. */
     virtual void prepareToEnqueueElements();
+
+    /** @brief Process a completed element. */
+    virtual void processCompletedElement(Collection* collection, JobPointer job, Thread *thread);
 
     /* The elements of the collection. */
     QVector<JobPointer> elements;

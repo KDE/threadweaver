@@ -51,6 +51,24 @@ void Sequence_Private::prepareToEnqueueElements()
     }
 }
 
+void Sequence_Private::processCompletedElement(Collection* collection, JobPointer job, Thread*)
+{
+    Q_ASSERT(!mutex.tryLock());
+    Q_ASSERT(job != 0);
+    Q_ASSERT(!self.isNull());
+    if (!job->success()) {
+        collection->stop(job);
+    }
+    const int next = completed_.fetchAndAddAcquire(1);
+    const int count = elements.count();
+    if (count > 0) {
+        if (next < count) {
+            elements.at(next)->removeQueuePolicy(blocker());
+        }
+    }
+
+}
+
 void BlockerPolicy::destructed(JobInterface*)
 {
 }

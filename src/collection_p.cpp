@@ -63,6 +63,7 @@ void Collection_Private::enqueueElements()
 
 void Collection_Private::elementStarted(Collection *collection, JobPointer job, Thread *thread)
 {
+    QMutexLocker l(&mutex); Q_UNUSED(l);
     Q_UNUSED(job) // except in Q_ASSERT
     Q_ASSERT(!self.isNull());
     if (jobsStarted.fetchAndAddOrdered(1) == 0) {
@@ -71,7 +72,40 @@ void Collection_Private::elementStarted(Collection *collection, JobPointer job, 
     }
 }
 
+void Collection_Private::elementFinished(Collection *collection, JobPointer job, Thread *thread)
+{
+    QMutexLocker l(&mutex); Q_UNUSED(l);
+    Q_ASSERT(!self.isNull());
+    Q_UNUSED(job) // except in Q_ASSERT
+    if (selfIsExecuting) {
+        // the element that is finished is the collection itself
+        // the collection is always executed first
+        // queue the collection elements:
+        enqueueElements();
+        selfIsExecuting = false;
+    }
+    const int started = jobsStarted.loadAcquire();
+    Q_ASSERT(started >= 0); Q_UNUSED(started);
+    const int remainingJobs = jobCounter.fetchAndAddOrdered(-1) - 1;
+    processCompletedElement(collection, job, thread);
+    Q_ASSERT(remainingJobs >= 0);
+    if (remainingJobs == 0) {
+        // all elements can only be done if self has been executed:
+        // there is a small chance that (this) has been dequeued in the
+        // meantime, in this case, there is nothing left to clean up
+        finalCleanup(collection);
+        collection->executor()->defaultEnd(self, thread);
+        l.unlock();
+        self.clear();
+    }
+}
+
 void Collection_Private::prepareToEnqueueElements()
+{
+    //empty in Collection
+}
+
+void Collection_Private::processCompletedElement(Collection*, JobPointer, Thread*)
 {
     //empty in Collection
 }

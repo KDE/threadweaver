@@ -49,9 +49,6 @@ class THREADWEAVER_EXPORT Sequence : public Collection
 public:
     explicit Sequence();
 
-protected:
-    void elementFinished(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-
 private:
     Private::Sequence_Private* d();
     const Private::Sequence_Private* d() const;
