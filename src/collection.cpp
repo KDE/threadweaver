@@ -172,11 +172,6 @@ const Private::Collection_Private *Collection::d() const
     return reinterpret_cast<const Private::Collection_Private*>(Job::d());
 }
 
-JobPointer Collection::self() const
-{
-    return d()->self;
-}
-
 JobPointer Collection::jobAt(int i)
 {
     Q_ASSERT(!mutex()->tryLock());

@@ -94,12 +94,6 @@ protected:
     virtual int jobListLength_locked() const;
 
 protected:
-    //FIXME remove
-    friend class CollectionExecuteWrapper;
-    //FIXME move to d
-    JobPointer self() const;
-
-protected:
     /** Overload the execute method. */
     void execute(JobPointer job, Thread *) Q_DECL_OVERRIDE;
 
@@ -108,6 +102,7 @@ protected:
     void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
 
 protected:
+    friend class CollectionExecuteWrapper; //needs to access d()
     friend class Collection_Private;
     Private::Collection_Private* d();
     const Private::Collection_Private* d() const;
