@@ -88,16 +88,21 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
     const int started = jobsStarted.loadAcquire();
     Q_ASSERT(started >= 0); Q_UNUSED(started);
     const int remainingJobs = jobCounter.fetchAndAddOrdered(-1) - 1;
+    debug(4, "Collection_Private::elementFinished: %i\n", remainingJobs);
     processCompletedElement(collection, job, thread);
-    Q_ASSERT(remainingJobs >= 0);
-    if (remainingJobs == 0) {
-        // all elements can only be done if self has been executed:
-        // there is a small chance that (this) has been dequeued in the
-        // meantime, in this case, there is nothing left to clean up
-        finalCleanup(collection);
-        selfExecuteWrapper.callEnd();
-        l.unlock();
-        self.clear();
+    if (remainingJobs <= -1) {
+        //its no use to count, the elements have been dequeued, now the threads call back that have been processing jobs in the meantime
+    } else {
+        Q_ASSERT(remainingJobs >= 0);
+        if (remainingJobs == 0) {
+            // all elements can only be done if self has been executed:
+            // there is a small chance that (this) has been dequeued in the
+            // meantime, in this case, there is nothing left to clean up
+            finalCleanup(collection);
+            selfExecuteWrapper.callEnd();
+            l.unlock();
+            self.clear();
+        }
     }
 }
 
@@ -132,15 +137,15 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
 
     for (int index = 0; index < elements.size(); ++index) {
         debug(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
-        aboutToDequeueElement(elements.at(index));
         if (queueApiIsLocked) {
             api->dequeue_p(elements.at(index));
         } else {
             api->dequeue(elements.at(index));
         }
+        elementDequeued(elements.at(index));
     }
 
-    const int jobCount = jobCounter.fetchAndStoreAcquire(0);
+    const int jobCount = jobCounter.fetchAndStoreAcquire(-1);
     if (jobCount != 0) {
         // if jobCounter is not zero, then we where waiting for the
         // last job to finish before we would have freed our queue

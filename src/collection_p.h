@@ -86,7 +86,7 @@ public:
     void stop_locked(Collection* collection);
 
     /** @brief Called before an element will be dequeued. */
-    virtual void aboutToDequeueElement(const JobPointer&) {}
+    virtual void elementDequeued(const JobPointer&) {}
 
     /* The elements of the collection. */
     QVector<JobPointer> elements;

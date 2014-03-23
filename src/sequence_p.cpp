@@ -76,7 +76,7 @@ void Sequence_Private::processCompletedElement(Collection* collection, JobPointe
 
 }
 
-void Sequence_Private::aboutToDequeueElement(const JobPointer &job)
+void Sequence_Private::elementDequeued(const JobPointer &job)
 {
     Q_ASSERT(!mutex.tryLock());
     QMutexLocker l(job->mutex());
