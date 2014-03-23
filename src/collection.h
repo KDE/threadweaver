@@ -1,4 +1,4 @@
-/* -*- C++ -*-
+﻿/* -*- C++ -*-
 
    This file declares the Collection class.
 
@@ -68,6 +68,7 @@ public:
     /** Return the number of elements in the collection. */
     int elementCount() const;
 
+    //FIXME remove
     /** @deprecated Use elementCount(). */
     int jobListLength() const;
 
@@ -88,6 +89,7 @@ protected:
     /** Return a ref-erence to the job in the job list at position i. */
     JobPointer jobAt(int i);
 
+    //FIXME remove
     /** Return the number of jobs in the joblist.
      *  Assumes that the mutex is being held.
      */

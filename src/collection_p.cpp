@@ -61,14 +61,14 @@ void Collection_Private::enqueueElements()
     api->enqueue(elements);
 }
 
-void Collection_Private::elementStarted(Collection *collection, JobPointer job, Thread *thread)
+void Collection_Private::elementStarted(Collection*, JobPointer job, Thread*)
 {
     QMutexLocker l(&mutex); Q_UNUSED(l);
     Q_UNUSED(job) // except in Q_ASSERT
     Q_ASSERT(!self.isNull());
     if (jobsStarted.fetchAndAddOrdered(1) == 0) {
         //emit started() signal on beginning of first job execution
-        collection->executor()->defaultBegin(self, thread);
+        selfExecuteWrapper.callBegin();
     }
 }
 
@@ -94,7 +94,7 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
         // there is a small chance that (this) has been dequeued in the
         // meantime, in this case, there is nothing left to clean up
         finalCleanup(collection);
-        collection->executor()->defaultEnd(self, thread);
+        selfExecuteWrapper.callEnd();
         l.unlock();
         self.clear();
     }
@@ -136,10 +136,26 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
     }
 }
 
-void CollectionSelfExecuteWrapper::begin(JobPointer, Thread *) {
+void CollectionSelfExecuteWrapper::begin(JobPointer job, Thread *thread)
+{
+    job_ = job;
+    thread_ = thread;
+
 }
 
-void CollectionSelfExecuteWrapper::end(JobPointer, Thread *) {
+void CollectionSelfExecuteWrapper::end(JobPointer job, Thread *thread)
+{
+    Q_ASSERT(job_ == job && thread_ == thread);
+}
+
+void CollectionSelfExecuteWrapper::callBegin()
+{
+    ExecuteWrapper::begin(job_, thread_);
+}
+
+void CollectionSelfExecuteWrapper::callEnd()
+{
+    ExecuteWrapper::end(job_, thread_);
 }
 
 }

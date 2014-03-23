@@ -44,6 +44,13 @@ class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 public:
     void begin(JobPointer, Thread *) Q_DECL_OVERRIDE;
     void end(JobPointer, Thread *) Q_DECL_OVERRIDE;
+
+    void callBegin();
+    void callEnd();
+
+private:
+    JobPointer job_;
+    Thread* thread_;
 };
 
 class Collection_Private : public Job_Private
@@ -66,7 +73,7 @@ public:
     /** @brief Enqueue the elements of the collection. */
     void enqueueElements();
 
-    void elementStarted(Collection* collection, JobPointer job, Thread *thread);
+    void elementStarted(Collection* collection, JobPointer, Thread *);
     void elementFinished(Collection* collection, JobPointer job, Thread *thread);
 
     /** @brief Prepare to enqueue the elements. */

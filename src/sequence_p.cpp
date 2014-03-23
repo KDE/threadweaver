@@ -25,6 +25,7 @@ http://creative-destruction.me $
 */
 
 #include "sequence_p.h"
+#include "debuggingaids.h"
 
 namespace ThreadWeaver {
 
@@ -47,6 +48,7 @@ void Sequence_Private::prepareToEnqueueElements()
     completed_.storeRelease(0);
     // block the execution of the later jobs:
     for (int i = 0; i < jobs; ++i) {
+        debug(4, "Sequence_Private::processCompletedElement: blocking %p\n", elements.at(i).data());
         elements.at(i)->assignQueuePolicy(blocker());
     }
 }
@@ -63,6 +65,7 @@ void Sequence_Private::processCompletedElement(Collection* collection, JobPointe
     const int count = elements.count();
     if (count > 0) {
         if (next < count) {
+            debug(4, "Sequence_Private::processCompletedElement: unblocking %p\n", elements.at(next).data());
             elements.at(next)->removeQueuePolicy(blocker());
         }
     }

@@ -56,15 +56,18 @@ public:
     }
 
     void begin(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
+        debug(4, "CollectionExecuteWrapper::begin: collection %p\n", collection);
         ExecuteWrapper::begin(job, thread);
         Q_ASSERT(collection);
         collection->d()->elementStarted(collection, job, thread);
+        ExecuteWrapper::begin(job, thread);
     }
 
     void end(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
+        debug(4, "CollectionExecuteWrapper::end: collection %p\n", collection);
         Q_ASSERT(collection);
-        collection->d()->elementFinished(collection, job, thread);
         ExecuteWrapper::end(job, thread);
+        collection->d()->elementFinished(collection, job, thread);
     }
 
     void cleanup(JobPointer job, Thread *) Q_DECL_OVERRIDE {
@@ -80,19 +83,11 @@ private:
 Collection::Collection()
     : Job(new Private::Collection_Private)
 {
-    d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
-    CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
-    wrapper->setCollection(this);
-    wrapper->wrap(setExecutor(wrapper));
 }
 
 Collection::Collection(Private::Collection_Private *d__)
     : Job(d__)
 {
-    d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
-    CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
-    wrapper->setCollection(this);
-    wrapper->wrap(setExecutor(wrapper));
 }
 
 Collection::~Collection()
@@ -133,6 +128,10 @@ void Collection::aboutToBeQueued_locked(QueueAPI *api)
     Q_ASSERT(!mutex()->tryLock());
     Q_ASSERT(d()->api == 0); // never queue twice
     d()->api = api;
+    d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
+    CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
+    wrapper->setCollection(this);
+    wrapper->wrap(setExecutor(wrapper));
     Job::aboutToBeQueued_locked(api);
 }
 
