@@ -774,13 +774,10 @@ void JobTests::ResourceRestrictionPolicyBasicsTest()
     AppendCharacterJob g('g', &sequence);
     Collection collection;
     collection << a << b << c << d << e << f << g;
-    a.assignQueuePolicy(&restriction);
-    b.assignQueuePolicy(&restriction);
-    c.assignQueuePolicy(&restriction);
-    d.assignQueuePolicy(&restriction);
-    e.assignQueuePolicy(&restriction);
-    f.assignQueuePolicy(&restriction);
-    g.assignQueuePolicy(&restriction);
+    Q_FOREACH(AppendCharacterJob* job, QList<AppendCharacterJob*>() << &a << &b << &c << &d << &e << &f << &g) {
+        QMutexLocker l(job->mutex());
+        job->assignQueuePolicy(&restriction);
+    }
 
     WaitForIdleAndFinished w(Queue::instance());
     stream() << collection;
