@@ -787,13 +787,11 @@ void JobTests::ResourceRestrictionPolicyBasicsTest()
 
 void JobTests::jobStarted(JobPointer)
 {
-    // qDebug() << "jobStarted";
     QVERIFY(thread() == QThread::currentThread());
 }
 
 void JobTests::jobDone(JobPointer)
 {
-    // qDebug() << "jobDone";
     QVERIFY(thread() == QThread::currentThread());
 }
 
