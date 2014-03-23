@@ -3,10 +3,6 @@ find_package(Qt5Test 5.2.0 REQUIRED NO_MODULE)
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 kde_enable_exceptions()
 
-include_directories(
-     ${CMAKE_CURRENT_BINARY_DIR}/../src/ThreadWeaver/
-)
-
 include(ECMMarkAsTest)
 
 ########### next target ###############
