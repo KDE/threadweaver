@@ -693,20 +693,19 @@ void JobTests::MassiveJobSequenceTest()
 
 void JobTests::SimpleRecursiveSequencesTest()
 {
+    using namespace ThreadWeaver;
     QString sequence;
-    AppendCharacterJob jobB(QChar('b'), &sequence);
-    Sequence jobSequence1;
-    jobSequence1 << jobB;
 
-    AppendCharacterJob jobC(QChar('c'), &sequence);
-    AppendCharacterJob jobA(QChar('a'), &sequence);
+    Sequence jobSequence1;
+    jobSequence1 << new AppendCharacterJob(QChar('b'), &sequence);
+
     Sequence jobSequence2;
-    jobSequence2 << jobA;
-    jobSequence2 << jobSequence1;
-    jobSequence2 << jobC;
+    jobSequence2 << new AppendCharacterJob(QChar('a'), &sequence)
+                 << jobSequence1
+                 << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
-    enqueue_raw(&jobSequence2);
+    stream() << jobSequence2;
     Queue::instance()->finish();
     QCOMPARE(sequence, QString("abc"));
 }
