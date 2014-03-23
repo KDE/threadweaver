@@ -164,6 +164,7 @@ void Job::aboutToBeDequeued_locked(QueueAPI *)
 
 void Job::assignQueuePolicy(QueuePolicy *policy)
 {
+    Q_ASSERT(!mutex()->tryLock());
     if (! d()->queuePolicies.contains(policy)) {
         d()->queuePolicies.append(policy);
     }
@@ -171,6 +172,7 @@ void Job::assignQueuePolicy(QueuePolicy *policy)
 
 void Job::removeQueuePolicy(QueuePolicy *policy)
 {
+    Q_ASSERT(!mutex()->tryLock());
     int index = d()->queuePolicies.indexOf(policy);
     if (index != -1) {
         d()->queuePolicies.removeAt(index);
@@ -179,6 +181,7 @@ void Job::removeQueuePolicy(QueuePolicy *policy)
 
 QList<QueuePolicy *> Job::queuePolicies() const
 {
+    Q_ASSERT(!mutex()->tryLock());
     return d()->queuePolicies;
 }
 

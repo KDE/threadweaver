@@ -28,7 +28,6 @@ http://creative-destruction.me $
 
 #include "queueapi.h"
 #include "debuggingaids.h"
-#include "managedjobpointer.h"
 #include "queueing.h"
 #include "collection_p.h"
 
@@ -115,12 +114,7 @@ void Collection::stop(JobPointer job)
 {
     Q_UNUSED(job);
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    if (d()->api != 0) {
-        debug(4, "Collection::stop: dequeueing %p.\n", (void *)this);
-        if (!d()->api->dequeue(ManagedJobPointer<Collection>(this))) {
-            d()->dequeueElements(this, false);
-        }
-    }
+    d()->stop_locked(this);
 }
 
 void Collection::aboutToBeQueued_locked(QueueAPI *api)

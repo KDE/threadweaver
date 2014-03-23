@@ -49,7 +49,9 @@ void Sequence_Private::prepareToEnqueueElements()
     // block the execution of the later jobs:
     for (int i = 0; i < jobs; ++i) {
         debug(4, "Sequence_Private::processCompletedElement: blocking %p\n", elements.at(i).data());
-        elements.at(i)->assignQueuePolicy(blocker());
+        JobPointer nextJob = elements.at(i);
+        QMutexLocker l(nextJob->mutex());
+        nextJob->assignQueuePolicy(blocker());
     }
 }
 
@@ -59,17 +61,26 @@ void Sequence_Private::processCompletedElement(Collection* collection, JobPointe
     Q_ASSERT(job != 0);
     Q_ASSERT(!self.isNull());
     if (!job->success()) {
-        collection->stop(job);
+        stop_locked(collection);
     }
     const int next = completed_.fetchAndAddAcquire(1);
     const int count = elements.count();
     if (count > 0) {
         if (next < count) {
             debug(4, "Sequence_Private::processCompletedElement: unblocking %p\n", elements.at(next).data());
-            elements.at(next)->removeQueuePolicy(blocker());
+            JobPointer nextJob = elements.at(next);
+            QMutexLocker l(nextJob->mutex());
+            nextJob->removeQueuePolicy(blocker());
         }
     }
 
+}
+
+void Sequence_Private::aboutToDequeueElement(const JobPointer &job)
+{
+    Q_ASSERT(!mutex.tryLock());
+    QMutexLocker l(job->mutex());
+    job->removeQueuePolicy(blocker());
 }
 
 void BlockerPolicy::destructed(JobInterface*)

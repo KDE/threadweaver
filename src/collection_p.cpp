@@ -24,6 +24,7 @@ http://creative-destruction.me $
    Boston, MA 02110-1301, USA.
 */
 
+#include "managedjobpointer.h"
 #include "debuggingaids.h"
 #include "queueapi.h"
 #include "collection_p.h"
@@ -110,6 +111,17 @@ void Collection_Private::processCompletedElement(Collection*, JobPointer, Thread
     //empty in Collection
 }
 
+void Collection_Private::stop_locked(Collection *collection)
+{
+    Q_ASSERT(!mutex.tryLock());
+    if (api != 0) {
+        debug(4, "Collection::stop: dequeueing %p.\n", collection);
+        if (!api->dequeue(ManagedJobPointer<Collection>(collection))) {
+            dequeueElements(collection, false);
+        }
+    }
+}
+
 void Collection_Private::dequeueElements(Collection* collection, bool queueApiIsLocked)
 {
     // dequeue everything:
@@ -120,6 +132,7 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
 
     for (int index = 0; index < elements.size(); ++index) {
         debug(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
+        aboutToDequeueElement(elements.at(index));
         if (queueApiIsLocked) {
             api->dequeue_p(elements.at(index));
         } else {

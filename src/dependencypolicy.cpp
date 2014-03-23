@@ -79,9 +79,11 @@ void DependencyPolicy::addDependency(JobPointer jobA, JobPointer jobB)
     // jobA depends on jobB
     REQUIRE(jobA != 0 && jobB != 0 && jobA != jobB);
 
+    QMutexLocker a(jobA->mutex());
+    QMutexLocker b(jobB->mutex());
+    QMutexLocker l(d->mutex());
     jobA->assignQueuePolicy(this);
     jobB->assignQueuePolicy(this);
-    QMutexLocker l(d->mutex());
     d->dependencies().insert(jobA, jobB);
     debug(2, "inserted dependency %p->%p.\n", jobA.data(), jobB.data());
     ENSURE(d->dependencies().contains(jobA));

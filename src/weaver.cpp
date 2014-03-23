@@ -443,6 +443,7 @@ bool Weaver::canBeExecuted(JobPointer job)
 
     bool success = true;
 
+    QMutexLocker l(job->mutex());
     QList<QueuePolicy *> policies = job->queuePolicies();
     if (!policies.isEmpty()) {
         debug(4, "WeaverImpl::canBeExecuted: acquiring permission from %i queue %s.\n",

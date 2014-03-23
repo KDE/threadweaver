@@ -82,6 +82,12 @@ public:
     /** @brief Process a completed element. */
     virtual void processCompletedElement(Collection* collection, JobPointer job, Thread *thread);
 
+    /** @brief Implement stop. */
+    void stop_locked(Collection* collection);
+
+    /** @brief Called before an element will be dequeued. */
+    virtual void aboutToDequeueElement(const JobPointer&) {}
+
     /* The elements of the collection. */
     QVector<JobPointer> elements;
 
