@@ -183,6 +183,9 @@ public:
     /** @brief Return the queue policies assigned to this Job. */
     QList<QueuePolicy *> queuePolicies() const;
 
+    /** The mutex used to protect this job. */
+    QMutex *mutex() const Q_DECL_OVERRIDE;
+
 private:
     Private::Job_Private *d_;
 
@@ -216,10 +219,6 @@ protected:
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
     void defaultEnd(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-
-    /** The mutex used to protect this job. */
-    QMutex *mutex() const Q_DECL_OVERRIDE;
-
 };
 
 }
