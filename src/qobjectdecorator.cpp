@@ -44,14 +44,14 @@ QObjectDecorator::QObjectDecorator(JobInterface *decoratee, bool autoDelete, QOb
 {
 }
 
-void QObjectDecorator::defaultBegin(JobPointer self, Thread *thread)
+void QObjectDecorator::defaultBegin(const JobPointer& self, Thread *thread)
 {
     Q_ASSERT(job());
     Q_EMIT started(self);
     job()->defaultBegin(self, thread);
 }
 
-void QObjectDecorator::defaultEnd(JobPointer self, Thread *thread)
+void QObjectDecorator::defaultEnd(const JobPointer& self, Thread *thread)
 {
     Q_ASSERT(job());
     job()->defaultEnd(self, thread);

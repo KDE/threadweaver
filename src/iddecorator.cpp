@@ -65,13 +65,13 @@ void IdDecorator::run(JobPointer self, Thread *thread)
     job()->run(self, thread);
 }
 
-void IdDecorator::defaultBegin(JobPointer self, Thread *thread)
+void IdDecorator::defaultBegin(const JobPointer& self, Thread *thread)
 {
     Q_ASSERT(d1);
     job()->defaultBegin(self, thread);
 }
 
-void IdDecorator::defaultEnd(JobPointer self, Thread *thread)
+void IdDecorator::defaultEnd(const JobPointer& self, Thread *thread)
 {
     Q_ASSERT(d1);
     job()->defaultEnd(self, thread);

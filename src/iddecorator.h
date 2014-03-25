@@ -87,8 +87,8 @@ public:
 
 protected:
     void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
-    void defaultBegin(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-    void defaultEnd(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
+    void defaultBegin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
+    void defaultEnd(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
 
     QMutex *mutex() const Q_DECL_OVERRIDE;
 

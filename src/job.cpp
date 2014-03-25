@@ -133,11 +133,11 @@ bool Job::success() const
     return d()->status.loadAcquire() == Status_Success;
 }
 
-void Job::defaultBegin(JobPointer, Thread *)
+void Job::defaultBegin(const JobPointer&, Thread *)
 {
 }
 
-void Job::defaultEnd(JobPointer job, Thread *)
+void Job::defaultEnd(const JobPointer& job, Thread *)
 {
     d()->freeQueuePolicyResources(job);
 }

@@ -211,14 +211,14 @@ protected:
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultBegin(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
+    void defaultBegin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
 
     /** @brief Perform standard task after the execution of a job.
      *
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultEnd(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
+    void defaultEnd(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
 };
 
 }
