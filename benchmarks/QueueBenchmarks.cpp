@@ -191,11 +191,13 @@ void QueueBenchmarksTest::IndividualJobsBenchmark()
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
     QVector<AccumulateJob> jobs(n);
-    for (int i = 0; i < n; ++i) {
-        jobs[i].setCount(m);
-        ThreadWeaver::enqueue_raw(&weaver, &jobs[i]);
+    {
+        ThreadWeaver::QueueStream stream(&weaver);
+        for (int i = 0; i < n; ++i) {
+            jobs[i].setCount(m);
+            stream << jobs[i];
+        }
     }
-
     QBENCHMARK_ONCE {
         weaver.resume();
         weaver.finish();
