@@ -174,6 +174,7 @@ void CollectionSelfExecuteWrapper::callBegin()
 void CollectionSelfExecuteWrapper::callEnd()
 {
     ExecuteWrapper::end(job_, thread_);
+    job_.clear();
 }
 
 }
