@@ -22,7 +22,7 @@ void ThreadWeaver::Private::Job_Private::freeQueuePolicyResources(JobPointer job
 }
 
 
-void ThreadWeaver::Private::DebugExecuteWrapper::execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *th)
+void ThreadWeaver::Private::DebugExecuteWrapper::execute(const JobPointer& job, ThreadWeaver::Thread *th)
 {
     Q_ASSERT_X(job, Q_FUNC_INFO, "job may not be zero!");
     TWDEBUG(3, "DefaultExecuteWrapper::execute: executing job %p in thread %i.\n", job.data(), th ? th->id() : 0);
@@ -31,17 +31,17 @@ void ThreadWeaver::Private::DebugExecuteWrapper::execute(ThreadWeaver::JobPointe
 }
 
 
-void ThreadWeaver::Private::DefaultExecutor::begin(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+void ThreadWeaver::Private::DefaultExecutor::begin(const JobPointer &job, Thread *thread)
 {
     defaultBegin(job, thread);
 }
 
-void ThreadWeaver::Private::DefaultExecutor::execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+void ThreadWeaver::Private::DefaultExecutor::execute(const JobPointer& job, Thread *thread)
 {
     run(job, thread);
 }
 
-void ThreadWeaver::Private::DefaultExecutor::end(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread)
+void ThreadWeaver::Private::DefaultExecutor::end(const JobPointer& job, Thread *thread)
 {
     defaultEnd(job, thread);
 }

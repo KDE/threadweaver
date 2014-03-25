@@ -42,8 +42,8 @@ namespace Private {
 class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
 public:
-    void begin(JobPointer, Thread *) Q_DECL_OVERRIDE;
-    void end(JobPointer, Thread *) Q_DECL_OVERRIDE;
+    void begin(const JobPointer&, Thread *) Q_DECL_OVERRIDE;
+    void end(const JobPointer&, Thread *) Q_DECL_OVERRIDE;
 
     void callBegin();
     void callEnd();

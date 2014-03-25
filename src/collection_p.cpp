@@ -154,14 +154,14 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
     }
 }
 
-void CollectionSelfExecuteWrapper::begin(JobPointer job, Thread *thread)
+void CollectionSelfExecuteWrapper::begin(const JobPointer &job, Thread *thread)
 {
     job_ = job;
     thread_ = thread;
 
 }
 
-void CollectionSelfExecuteWrapper::end(JobPointer job, Thread *thread)
+void CollectionSelfExecuteWrapper::end(const JobPointer &job, Thread *thread)
 {
     Q_ASSERT(job_ == job && thread_ == thread);
     Q_UNUSED(job); Q_UNUSED(thread); //except in assert

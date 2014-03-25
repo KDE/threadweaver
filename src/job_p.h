@@ -11,9 +11,9 @@ namespace Private {
 class THREADWEAVER_EXPORT DefaultExecutor : public ThreadWeaver::Executor
 {
 public:
-    void begin(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread);
-    void execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread) Q_DECL_OVERRIDE;
-    void end(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread);
+    void begin(const JobPointer& job, Thread *thread);
+    void execute(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
+    void end(const JobPointer& job, Thread *thread);
 };
 
 static DefaultExecutor defaultExecutor;
@@ -21,7 +21,7 @@ static DefaultExecutor defaultExecutor;
 class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
 public:
-    void execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *th) Q_DECL_OVERRIDE;
+    void execute(const JobPointer &job, ThreadWeaver::Thread *th) Q_DECL_OVERRIDE;
 };
 
 class Job_Private

@@ -45,11 +45,11 @@ class ExecuteWrapper : public Executor
 public:
     ExecuteWrapper();
     Executor *wrap(Executor *previous);
-    Executor *unwrap(JobPointer job);
-    void begin(JobPointer job, Thread *) Q_DECL_OVERRIDE;
-    void execute(JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-    void executeWrapped(JobPointer job, Thread *thread);
-    void end(JobPointer job, Thread *) Q_DECL_OVERRIDE;
+    Executor *unwrap(const JobPointer& job);
+    void begin(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
+    void executeWrapped(const JobPointer& job, Thread *thread);
+    void end(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
 
 private:
     QAtomicPointer<Executor> wrapped;
