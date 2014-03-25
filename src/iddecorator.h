@@ -67,7 +67,7 @@ public:
      *  If the decorated Job is not a Sequence, 0 is returned. */
     Sequence *sequence();
 
-    void execute(JobPointer job, Thread *) Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
     void blockingExecute() Q_DECL_OVERRIDE;
     Executor *setExecutor(Executor *executor) Q_DECL_OVERRIDE;
     Executor *executor() const Q_DECL_OVERRIDE;

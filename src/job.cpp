@@ -72,7 +72,7 @@ Job::~Job()
     delete d_;
 }
 
-void Job::execute(JobPointer self, Thread *th)
+void Job::execute(const JobPointer& self, Thread *th)
 {
     Executor *executor = d()->executor.loadAcquire();
     Q_ASSERT(executor); //may never be unset!

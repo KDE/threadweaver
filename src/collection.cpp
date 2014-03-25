@@ -138,7 +138,7 @@ void Collection::aboutToBeDequeued_locked(QueueAPI *api)
     Job::aboutToBeDequeued_locked(api);
 }
 
-void Collection::execute(JobPointer job, Thread *thread)
+void Collection::execute(const JobPointer& job, Thread *thread)
 {
     {
         QMutexLocker l(mutex()); Q_UNUSED(l);

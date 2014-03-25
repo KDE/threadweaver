@@ -60,7 +60,7 @@ public:
     };
 
     virtual ~JobInterface() {}
-    virtual void execute(JobPointer job, Thread *) = 0;
+    virtual void execute(const JobPointer& job, Thread *) = 0;
     virtual void blockingExecute() = 0;
     virtual Executor *setExecutor(Executor *executor) = 0;
     virtual Executor *executor() const = 0;

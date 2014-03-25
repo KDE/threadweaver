@@ -97,7 +97,7 @@ protected:
 
 protected:
     /** Overload the execute method. */
-    void execute(JobPointer job, Thread *) Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
 
     /** Overload run().
      * We have to. */
