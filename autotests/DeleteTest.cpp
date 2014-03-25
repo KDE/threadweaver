@@ -117,6 +117,34 @@ DeleteTest::DeleteTest()
     ThreadWeaver::setDebugLevel(true, 1);
 }
 
+void DeleteTest::DeleteJobsTest()
+{
+    const int NumberOfJobs = 100;
+    ThreadWeaver::Queue queue;
+//    queue.setMaximumNumberOfThreads(1);
+    QCOMPARE(InstanceCountingBusyJob::instances(), 0);
+    {   // just to be sure instance counting works:
+        InstanceCountingBusyJob job;
+        QCOMPARE(InstanceCountingBusyJob::instances(), 1);
+    }
+    QCOMPARE(InstanceCountingBusyJob::instances(), 0);
+    queue.suspend();
+    for (int i = 0; i < NumberOfJobs; ++i) {
+        queue.stream() << new InstanceCountingBusyJob;
+    }
+    queue.resume();
+    queue.finish();
+    // The used Weaver instance needs to be shut down. The threads may still hold a reference to the previous job while
+    // waiting for the next one or blocking because the queue is empty. If all threads have exited, no references to any jobs are
+    // held anymore.
+    queue.shutDown();
+    debug(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
+    QCOMPARE(InstanceCountingBusyJob::instances(), NumberOfJobs); // held by signals about the job being started and finished
+    qApp->processEvents();
+    debug(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
+    QCOMPARE(InstanceCountingBusyJob::instances(), 0);
+}
+
 void DeleteTest::DeleteCollectionTest()
 {
     const int NumberOfCollections = 100;

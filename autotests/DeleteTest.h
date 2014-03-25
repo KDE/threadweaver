@@ -48,6 +48,7 @@ public:
     DeleteTest();
 
 private Q_SLOTS:
+    void DeleteJobsTest();
     void DeleteCollectionTest();
     void DeleteSequenceTest();
 
