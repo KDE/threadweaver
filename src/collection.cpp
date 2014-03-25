@@ -55,7 +55,7 @@ public:
     }
 
     void begin(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
-        debug(4, "CollectionExecuteWrapper::begin: collection %p\n", collection);
+        TWDEBUG(4, "CollectionExecuteWrapper::begin: collection %p\n", collection);
         ExecuteWrapper::begin(job, thread);
         Q_ASSERT(collection);
         collection->d()->elementStarted(collection, job, thread);
@@ -63,7 +63,7 @@ public:
     }
 
     void end(JobPointer job, Thread *thread) Q_DECL_OVERRIDE {
-        debug(4, "CollectionExecuteWrapper::end: collection %p\n", collection);
+        TWDEBUG(4, "CollectionExecuteWrapper::end: collection %p\n", collection);
         Q_ASSERT(collection);
         ExecuteWrapper::end(job, thread);
         collection->d()->elementFinished(collection, job, thread);

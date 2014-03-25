@@ -93,11 +93,11 @@ void Thread::run()
     d->parent->threadEnteredRun(this);
 
     emit started(this);
-    debug(3, "Thread::run [%u]: running.\n", id());
+    TWDEBUG(3, "Thread::run [%u]: running.\n", id());
 
     bool wasBusy = false;
     while (true) {
-        debug(3, "Thread::run [%u]: trying to execute the next job.\n", id());
+        TWDEBUG(3, "Thread::run [%u]: trying to execute the next job.\n", id());
 
         // the assignment is intentional: newJob needs to go out of scope at the end of the if statement
         if (JobPointer newJob = d->parent->applyForWork(this, wasBusy)) {
@@ -116,7 +116,7 @@ void Thread::run()
         QMutexLocker l(&d->mutex); Q_UNUSED(l);
         d->job.clear();
     }
-    debug(3, "Thread::run [%u]: exiting.\n", id());
+    TWDEBUG(3, "Thread::run [%u]: exiting.\n", id());
 }
 
 void Thread::requestAbort()

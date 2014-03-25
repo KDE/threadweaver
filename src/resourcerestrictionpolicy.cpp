@@ -92,7 +92,7 @@ void ResourceRestrictionPolicy::free(JobPointer job)
     int position = d->customers.indexOf(job);
 
     if (position != -1) {
-        debug(4, "ResourceRestrictionPolicy::free: job %p done.\n", (void *)job.data());
+        TWDEBUG(4, "ResourceRestrictionPolicy::free: job %p done.\n", (void *)job.data());
         d->customers.removeAt(position);
     }
 }

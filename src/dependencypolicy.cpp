@@ -85,7 +85,7 @@ void DependencyPolicy::addDependency(JobPointer jobA, JobPointer jobB)
     jobA->assignQueuePolicy(this);
     jobB->assignQueuePolicy(this);
     d->dependencies().insert(jobA, jobB);
-    debug(2, "inserted dependency %p->%p.\n", jobA.data(), jobB.data());
+    TWDEBUG(2, "inserted dependency %p->%p.\n", jobA.data(), jobB.data());
     ENSURE(d->dependencies().contains(jobA));
 }
 
@@ -106,12 +106,12 @@ bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
         it.next();
         if (it.key() == jobA && it.value() == jobB) {
             it.remove();
-            debug(2, "removed dependency %p->%p.\n", jobA.data(), jobB.data());
+            TWDEBUG(2, "removed dependency %p->%p.\n", jobA.data(), jobB.data());
             result = true;
             break;
         }
     }
-    debug(result == false, 2, "cannot remove dependency %p->%p, not found.\n", jobA.data(), jobB.data());
+    TWDEBUG(result == false, 2, "cannot remove dependency %p->%p, not found.\n", jobA.data(), jobB.data());
     ENSURE(! d->dependencies().keys(jobB).contains(jobA));
     return result;
 }
@@ -130,7 +130,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
         while (it.hasNext()) { // we remove all entries where jobs depend on *this* :
             it.next();
             if (it.value() == job) {
-                debug(2, "resolved dependencies for %p: %p->%p.\n", job.data(), it.key().data(), it.value().data());
+                TWDEBUG(2, "resolved dependencies for %p: %p->%p.\n", job.data(), it.key().data(), it.value().data());
                 it.remove();
             }
         }
@@ -185,9 +185,9 @@ void DependencyPolicy::free(JobPointer job)
     REQUIRE(job->status() > Job::Status_Running);
     if (job->success()) {
         resolveDependencies(job);
-        debug(3, "DependencyPolicy::free: dependencies resolved for job %p.\n", (void *)job.data());
+        TWDEBUG(3, "DependencyPolicy::free: dependencies resolved for job %p.\n", (void *)job.data());
     } else {
-        debug(3, "DependencyPolicy::free: not resolving dependencies for %p (execution not successful).\n",
+        TWDEBUG(3, "DependencyPolicy::free: not resolving dependencies for %p (execution not successful).\n",
               (void *)job.data());
     }
     ENSURE((!hasUnresolvedDependencies(job) && job->success()) || !job->success());

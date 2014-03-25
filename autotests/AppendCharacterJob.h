@@ -59,8 +59,8 @@ public:
         QMutexLocker locker(&s_GlobalMutex);
         m_stringref->append(m_c);
         using namespace ThreadWeaver;
-        debug(3, "AppendCharacterJob::run: %c appended, result is %s.\n",
-              m_c.toLatin1(), qPrintable(*m_stringref));
+        TWDEBUG(3, "AppendCharacterJob::run: %c appended, result is %s.\n",
+                m_c.toLatin1(), qPrintable(*m_stringref));
     }
 
     QChar character() const
@@ -100,19 +100,19 @@ public:
         : ThreadWeaver::Job()
     {
         using namespace ThreadWeaver;
-        debug(3, "BusyJob ctor\n");
+        TWDEBUG(3, "BusyJob ctor\n");
     }
 
     ~BusyJob()
     {
         using namespace ThreadWeaver;
-        debug(3, "~BusyJob\n");
+        TWDEBUG(3, "~BusyJob\n");
     }
 
     void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
     {
         using namespace ThreadWeaver;
-        debug(3, "BusyJob: entered run()\n");
+        TWDEBUG(3, "BusyJob: entered run()\n");
         for (int i = 0; i < 100; ++i) {
             int k = (i << 3) + (i >> 4);
             Q_UNUSED(k);

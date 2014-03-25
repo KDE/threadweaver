@@ -310,7 +310,7 @@ void JobTests::EmitStartedOnFirstElementTest()
             break;
         }
         QTest::qWait(1);
-        debug(2, "JobTests::EmitStartedOnFirstElementTest: waiting (%i)\n", i);
+        TWDEBUG(2, "JobTests::EmitStartedOnFirstElementTest: waiting (%i)\n", i);
         qApp->processEvents();
     }
     QCOMPARE(collectionStartedSignalSpy.count(), 1);

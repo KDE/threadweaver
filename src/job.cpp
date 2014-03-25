@@ -89,7 +89,7 @@ void Job::execute(JobPointer self, Thread *th)
     } catch (JobFailed &) {
         self->setStatus(Status_Failed);
     } catch (...) {
-        debug(0, "Uncaught exception in Job %p, aborting.", self.data());
+        TWDEBUG(0, "Uncaught exception in Job %p, aborting.", self.data());
         throw;
     }
     Q_ASSERT(self->status() > Status_Running);

@@ -88,7 +88,7 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
     const int started = jobsStarted.loadAcquire();
     Q_ASSERT(started >= 0); Q_UNUSED(started);
     const int remainingJobs = jobCounter.fetchAndAddOrdered(-1) - 1;
-    debug(4, "Collection_Private::elementFinished: %i\n", remainingJobs);
+    TWDEBUG(4, "Collection_Private::elementFinished: %i\n", remainingJobs);
     processCompletedElement(collection, job, thread);
     if (remainingJobs <= -1) {
         //its no use to count, the elements have been dequeued, now the threads call back that have been processing jobs in the meantime
@@ -120,7 +120,7 @@ void Collection_Private::stop_locked(Collection *collection)
 {
     Q_ASSERT(!mutex.tryLock());
     if (api != 0) {
-        debug(4, "Collection::stop: dequeueing %p.\n", collection);
+        TWDEBUG(4, "Collection::stop: dequeueing %p.\n", collection);
         if (!api->dequeue(ManagedJobPointer<Collection>(collection))) {
             dequeueElements(collection, false);
         }
@@ -136,7 +136,7 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
     }
 
     for (int index = 0; index < elements.size(); ++index) {
-        debug(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
+        TWDEBUG(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
         if (queueApiIsLocked) {
             api->dequeue_p(elements.at(index));
         } else {
@@ -164,6 +164,7 @@ void CollectionSelfExecuteWrapper::begin(JobPointer job, Thread *thread)
 void CollectionSelfExecuteWrapper::end(JobPointer job, Thread *thread)
 {
     Q_ASSERT(job_ == job && thread_ == thread);
+    Q_UNUSED(job); Q_UNUSED(thread); //except in assert
 }
 
 void CollectionSelfExecuteWrapper::callBegin()

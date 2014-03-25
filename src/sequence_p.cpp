@@ -48,7 +48,7 @@ void Sequence_Private::prepareToEnqueueElements()
     completed_.storeRelease(0);
     // block the execution of the later jobs:
     for (int i = 0; i < jobs; ++i) {
-        debug(4, "Sequence_Private::processCompletedElement: blocking %p\n", elements.at(i).data());
+        TWDEBUG(4, "Sequence_Private::processCompletedElement: blocking %p\n", elements.at(i).data());
         JobPointer nextJob = elements.at(i);
         QMutexLocker l(nextJob->mutex());
         nextJob->assignQueuePolicy(blocker());
@@ -67,7 +67,7 @@ void Sequence_Private::processCompletedElement(Collection* collection, JobPointe
     const int count = elements.count();
     if (count > 0) {
         if (next < count) {
-            debug(4, "Sequence_Private::processCompletedElement: unblocking %p\n", elements.at(next).data());
+            TWDEBUG(4, "Sequence_Private::processCompletedElement: unblocking %p\n", elements.at(next).data());
             JobPointer nextJob = elements.at(next);
             QMutexLocker l(nextJob->mutex());
             nextJob->removeQueuePolicy(blocker());

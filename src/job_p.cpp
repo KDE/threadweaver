@@ -25,9 +25,9 @@ void ThreadWeaver::Private::Job_Private::freeQueuePolicyResources(JobPointer job
 void ThreadWeaver::Private::DebugExecuteWrapper::execute(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *th)
 {
     Q_ASSERT_X(job, Q_FUNC_INFO, "job may not be zero!");
-    ThreadWeaver::debug(3, "DefaultExecuteWrapper::execute: executing job %p in thread %i.\n", job.data(), th ? th->id() : 0);
+    TWDEBUG(3, "DefaultExecuteWrapper::execute: executing job %p in thread %i.\n", job.data(), th ? th->id() : 0);
     executeWrapped(job, th);
-    ThreadWeaver::debug(3, "Job::execute: finished execution of job in thread %i.\n", th ? th->id() : 0);
+    TWDEBUG(3, "Job::execute: finished execution of job in thread %i.\n", th ? th->id() : 0);
 }
 
 

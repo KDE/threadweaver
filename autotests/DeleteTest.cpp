@@ -138,10 +138,10 @@ void DeleteTest::DeleteJobsTest()
     // waiting for the next one or blocking because the queue is empty. If all threads have exited, no references to any jobs are
     // held anymore.
     queue.shutDown();
-    debug(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
+    TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
     QCOMPARE(InstanceCountingBusyJob::instances(), NumberOfJobs); // held by signals about the job being started and finished
     qApp->processEvents();
-    debug(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
+    TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
 }
 
@@ -172,12 +172,12 @@ void DeleteTest::DeleteCollectionTest()
     // held anymore.
     queue.shutDown();
 
-    debug(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
+    TWDEBUG(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
           InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
     QCOMPARE(InstanceCountingCollection::instances(), NumberOfCollections); // held by signals about the job being started and finished
     qApp->processEvents();
-    debug(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
-          InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
+    TWDEBUG(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
+            InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
     //these are held in temp:
     QCOMPARE(InstanceCountingBusyJob::instances(), NumberOfJobs);
     QCOMPARE(InstanceCountingCollection::instances(), 1);
@@ -222,10 +222,10 @@ void DeleteTest::DeleteDecoratedCollectionTest()
     // held anymore.
     queue.shutDown();
 
-    debug(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingCollection::instances());
+    TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingCollection::instances());
     QCOMPARE(InstanceCountingCollection::instances(), 1); //held in temp
     temp.clear();
-    debug(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingCollection::instances());
+    TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingCollection::instances());
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
     QCOMPARE(InstanceCountingCollection::instances(), 0);
 }

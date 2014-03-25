@@ -58,7 +58,7 @@ extern THREADWEAVER_EXPORT QMutex GlobalMutex;
 /** Set the debug log level.
 @see debug
 */
-extern inline void setDebugLevel(bool debug, int level);
+extern inline void setDebugLevel(bool TWDEBUG, int level);
 
 /** This method prints a text message on the screen, if debugging is
 enabled. Otherwise, it does nothing. The message is thread safe,
@@ -75,14 +75,14 @@ Debug is true.
     the platform.
 Use setDebugLevel () to integrate adapt debug () to your platform.
 */
-inline void debug(int severity, const char *cformat, ...)
+inline void TWDEBUG(int severity, const char *cformat, ...)
 #ifdef __GNUC__
 __attribute__((format(printf, 2, 3)))
 #endif
 ;
 
 /** Prints the message to the console if condition is true. */
-inline void debug(bool condition, int severity, const char *cformat, ...)
+inline void TWDEBUG(bool condition, int severity, const char *cformat, ...)
 #ifdef __GNUC__
 __attribute__((format(printf, 3, 4)))
 #endif
@@ -109,7 +109,11 @@ inline void setDebugLevel(bool debug, int level)
 }
 
 #ifndef QT_NO_DEBUG
-inline void debug(int severity, const char *cformat, ...)
+
+//#error Get out!
+
+#define TWDEBUG(...) ThreadWeaver::threadweaver_debug(__VA_ARGS__)
+inline void threadweaver_debug(int severity, const char *cformat, ...)
 {
     if (Debug == true && (severity <= DebugLevel || severity == 0)) {
         QString text;
@@ -121,7 +125,7 @@ inline void debug(int severity, const char *cformat, ...)
     }
 }
 
-inline void debug(bool condition, int severity, const char *cformat, ...)
+inline void threadweaver_debug(bool condition, int severity, const char *cformat, ...)
 {
     if (condition && Debug == true && (severity <= DebugLevel || severity == 0)) {
         QString text;
@@ -133,8 +137,7 @@ inline void debug(bool condition, int severity, const char *cformat, ...)
     }
 }
 #else
-inline void debug(int, const char *, ...) {}
-inline void debug(bool, int, const char *, ...) {}
+#define TWDEBUG(...)
 #endif
 
 inline bool invariant()
