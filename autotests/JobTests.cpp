@@ -174,7 +174,7 @@ void JobTests::GeneratingCollectionTest()
 
     GeneratingCollection collection;
     WaitForIdleAndFinished w(Queue::instance());
-    stream() << make_job_raw(&collection);
+    stream() << collection;
     Queue::instance()->finish();
     QCOMPARE(collection.sequence_.count(), SequenceTemplate.length());
 }
@@ -182,18 +182,15 @@ void JobTests::GeneratingCollectionTest()
 void JobTests::ShortJobSequenceTest()
 {
     QString sequence;
-    JobPointer jobA(new AppendCharacterJob(QChar('a'), &sequence));
-    JobPointer jobB(new AppendCharacterJob(QChar('b'), &sequence));
-    JobPointer jobC(new AppendCharacterJob(QChar('c'), &sequence));
-    QSharedPointer<Sequence> jobSequence(new Sequence());
-    jobSequence->addJob(jobA);
-    jobSequence->addJob(jobB);
-    jobSequence->addJob(jobC);
+    Sequence jobSequence;
+    jobSequence << new AppendCharacterJob(QChar('a'), &sequence)
+                << new AppendCharacterJob(QChar('b'), &sequence)
+                << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
     QVERIFY(DependencyPolicy::instance().isEmpty());
-    Queue::instance()->enqueue(jobSequence);
-    // Job::DumpJobDependencies();
+    stream() << jobSequence;
+
     Queue::instance()->finish();
     QCOMPARE(sequence, QLatin1String("abc"));
     QVERIFY(Queue::instance()->isIdle());
