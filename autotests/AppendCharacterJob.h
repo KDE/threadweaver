@@ -99,17 +99,20 @@ public:
     BusyJob()
         : ThreadWeaver::Job()
     {
+        using namespace ThreadWeaver;
+        debug(3, "BusyJob ctor\n");
     }
 
     ~BusyJob()
     {
-//        using namespace ThreadWeaver;
-//        debug(0, "~BusyJob\n");
+        using namespace ThreadWeaver;
+        debug(3, "~BusyJob\n");
     }
 
     void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *)
     {
-//        debug(0, "BusyJob: entered run()\n");
+        using namespace ThreadWeaver;
+        debug(3, "BusyJob: entered run()\n");
         for (int i = 0; i < 100; ++i) {
             int k = (i << 3) + (i >> 4);
             Q_UNUSED(k);
