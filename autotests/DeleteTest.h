@@ -48,13 +48,16 @@ public:
     DeleteTest();
 
 private Q_SLOTS:
+    void DeleteCollectionTest();
     void DeleteSequenceTest();
 
 public Q_SLOTS: // not a test!
     void deleteSequence(ThreadWeaver::JobPointer job);
+    void deleteCollection(ThreadWeaver::JobPointer job);
 
 Q_SIGNALS:
     void deleteSequenceTestCompleted();
+    void deleteCollectionTestCompleted();
 
 private:
     QAtomicInt m_finishCount;
