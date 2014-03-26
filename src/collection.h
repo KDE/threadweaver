@@ -29,7 +29,6 @@
 
 #include "job.h"
 #include "jobpointer.h"
-#include "collection_p.h"
 
 namespace ThreadWeaver
 {

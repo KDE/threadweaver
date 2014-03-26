@@ -30,7 +30,6 @@
 #define JOBSEQUENCE_H
 
 #include "collection.h"
-#include "sequence_p.h"
 
 namespace ThreadWeaver
 {
