@@ -48,7 +48,7 @@ class THREADWEAVER_EXPORT Collection : public Job
 {
 public:
     Collection();
-    Collection(Private::Collection_Private * d);
+    Collection(ThreadWeaver::Private::Collection_Private * d);
     ~Collection();
     /** Append a job to the collection.
      *
@@ -105,8 +105,8 @@ protected:
 protected:
     friend class CollectionExecuteWrapper; //needs to access d()
     friend class Collection_Private;
-    Private::Collection_Private* d();
-    const Private::Collection_Private* d() const;
+    ThreadWeaver::Private::Collection_Private* d();
+    const ThreadWeaver::Private::Collection_Private* d() const;
 };
 
 }
