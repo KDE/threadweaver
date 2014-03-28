@@ -21,6 +21,8 @@ public:
     Weaver_Private();
     ~Weaver_Private();
 
+    void dumpJobs();
+
     bool canBeExecuted(JobPointer);
     /** The thread inventory. */
     QList<Thread *> m_inventory;

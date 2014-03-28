@@ -582,19 +582,3 @@ void Weaver::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
     TWDEBUG(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i resumed  (%s state).\n",
           th->id(), qPrintable(state()->stateName()));
 }
-
-/** @brief Dump the current jobs to the console.
- *
- * Use at your own risk.
- */
-void Weaver::dumpJobs()
-{
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
-    TWDEBUG(0, "WeaverImpl::dumpJobs: current jobs:\n");
-    for (int index = 0; index < d()->m_assignments.size(); ++index) {
-        TWDEBUG(0, "--> %4i: %p (priority %i, can be executed: %s)\n", index, (void *)d()->m_assignments.at(index).data(),
-              d()->m_assignments.at(index)->priority(),
-              d()->canBeExecuted(d()->m_assignments.at(index)) ? "yes" : "no");
-    }
-}
-

@@ -88,8 +88,6 @@ public:
     void requestAbort() Q_DECL_OVERRIDE;
     void reschedule() Q_DECL_OVERRIDE;
 
-    void dumpJobs();
-
     //FIXME: rename _p to _locked:
     friend class WeaverImplState;
     friend class SuspendingState;

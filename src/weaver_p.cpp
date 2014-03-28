@@ -29,6 +29,21 @@ Weaver_Private::~Weaver_Private()
     delete m_mutex;
 }
 
+/** @brief Dump the current jobs to the console.
+ *
+ * Use at your own risk.
+ */
+void Weaver_Private::dumpJobs()
+{
+    QMutexLocker l(m_mutex); Q_UNUSED(l);
+    TWDEBUG(0, "WeaverImpl::dumpJobs: current jobs:\n");
+    for (int index = 0; index < m_assignments.size(); ++index) {
+        TWDEBUG(0, "--> %4i: %p (priority %i, can be executed: %s)\n", index, (void *)m_assignments.at(index).data(),
+                m_assignments.at(index)->priority(),
+                canBeExecuted(m_assignments.at(index)) ? "yes" : "no");
+    }
+}
+
 /** @brief Check with the assigned queue policies if the job can be executed.
  *
  * If it returns true, it expects that the job is executed right after that. The done() methods of the
