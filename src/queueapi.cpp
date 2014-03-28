@@ -30,9 +30,15 @@
 namespace ThreadWeaver
 {
 
-QueueAPI::QueueAPI(QObject *parent) :
-    QueueSignals(parent)
+QueueAPI::QueueAPI(QObject *parent)
+    : QueueSignals(parent)
 {
+}
+
+QueueAPI::QueueAPI(Private::QueueSignals_Private *d, QObject *parent)
+    : QueueSignals(d, parent)
+{
+
 }
 
 }

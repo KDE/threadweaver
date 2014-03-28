@@ -50,6 +50,7 @@ public:
     Collection();
     Collection(ThreadWeaver::Private::Collection_Private * d);
     ~Collection();
+
     /** Append a job to the collection.
      *
      * To use Collection, create the Job objects first, add them to the collection, and then queue it. After

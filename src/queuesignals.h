@@ -34,12 +34,16 @@
 namespace ThreadWeaver
 {
 
+namespace Private { class QueueSignals_Private; }
+
 /** @brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes. */
 class QueueSignals : public QObject, public QueueInterface
 {
     Q_OBJECT
 public:
     explicit QueueSignals(QObject *parent = 0);
+    explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = 0);
+    virtual ~QueueSignals();
 
 Q_SIGNALS:
     /** @brief Emitted when the Queue has completed all jobs currently queued.
@@ -63,6 +67,12 @@ Q_SIGNALS:
 
     /** @brief Emitted when the processing state of the Queue has changed. */
     void stateChanged(ThreadWeaver::State*);
+
+protected:
+    ThreadWeaver::Private::QueueSignals_Private* d();
+    const ThreadWeaver::Private::QueueSignals_Private* d() const;
+private:
+    ThreadWeaver::Private::QueueSignals_Private* m_d;
 };
 
 }

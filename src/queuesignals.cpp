@@ -30,10 +30,39 @@
 namespace ThreadWeaver
 {
 
+namespace Private {
+
+class QueueSignals_Private {};
+
+}
+
 /** @brief Construct a QueueSignals object, passing the QObject parent. */
 QueueSignals::QueueSignals(QObject *parent)
     : QObject(parent)
+    , m_d(0)
 {
+}
+
+QueueSignals::QueueSignals(Private::QueueSignals_Private *d, QObject *parent)
+    : QObject(parent)
+    , m_d(d)
+{
+}
+
+QueueSignals::~QueueSignals()
+{
+    delete m_d;
+    m_d = 0;
+}
+
+Private::QueueSignals_Private *QueueSignals::d()
+{
+    return m_d;
+}
+
+const Private::QueueSignals_Private *QueueSignals::d() const
+{
+    return m_d;
 }
 
 }

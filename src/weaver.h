@@ -29,23 +29,18 @@ $Id: WeaverImpl.h 32 2005-08-17 08:38:01Z mirko $
 #define WeaverImpl_H
 
 #include <QtCore/QObject>
-#include <QtCore/QWaitCondition>
-#include <QSharedPointer>
-#include <QAtomicPointer>
-#include <QAtomicInt>
-#include <QSemaphore>
-#include <QVector>
-
-#include "state.h"
 #include "queueapi.h"
 
 namespace ThreadWeaver
 {
 
+class State;
 class Job;
 class Thread;
 class WeaverImplState;
 class SuspendingState;
+
+namespace Private { class Weaver_Private; }
 
 /** @brief A Weaver manages worker threads.
  *
@@ -127,32 +122,8 @@ protected:
     void adjustInventory(int noOfNewJobs);
 
 private:
-    bool canBeExecuted(JobPointer);
-    /** The thread inventory. */
-    QList<Thread *> m_inventory;
-    /** The job queue. */
-    QList<JobPointer> m_assignments;
-    /** The number of jobs that are assigned to the worker threads, but not finished. */
-    int m_active;
-    /** The maximum number of worker threads. */
-    int m_inventoryMax;
-    /** Wait condition all idle or done threads wait for. */
-    QWaitCondition m_jobAvailable;
-    /** Wait for a job to finish. */
-    QWaitCondition m_jobFinished;
-    /** Mutex to serialize operations. */
-    QMutex *m_mutex;
-    /** Semaphore to ensure thread startup is in sequence. */
-    QSemaphore m_semaphore;
-    /** Before shutdown can proceed to close the running threads, it needs to ensure that all of them
-     *  entered the run method. */
-    QAtomicInt m_createdThreads;
-    /** The state of the art.
-    * @see StateId
-    */
-    QAtomicPointer<State> m_state;
-    /** The state objects. */
-    QSharedPointer<State> m_states[NoOfStates];
+    ThreadWeaver::Private::Weaver_Private* d();
+    const ThreadWeaver::Private::Weaver_Private* d() const;
 };
 
 } // namespace ThreadWeaver

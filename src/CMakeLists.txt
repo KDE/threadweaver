@@ -2,11 +2,13 @@
 
 set(ThreadWeaver_LIB_SRCS
     queuesignals.cpp
+    queuesignals_p.cpp
     queuestream.cpp
     queueapi.cpp
     exception.cpp
     queue.cpp
     weaver.cpp
+    weaver_p.cpp
     debuggingaids.cpp
     thread.cpp
     job.cpp

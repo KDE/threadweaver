@@ -42,6 +42,7 @@ class QueueAPI : public QueueSignals, public WeaverInterface
 
 public:
     explicit QueueAPI(QObject *parent = 0);
+    explicit QueueAPI(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = 0);
 
     virtual void shutDown_p() = 0;
     virtual const State *state() const = 0;
