@@ -23,8 +23,8 @@ http://creative-destruction.me $
    the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
    Boston, MA 02110-1301, USA.
 
-$Id: WeaverImpl.h 32 2005-08-17 08:38:01Z mirko $
 */
+
 #ifndef WeaverImpl_H
 #define WeaverImpl_H
 
