@@ -1,8 +1,6 @@
 /* -*- C++ -*-
 
-   This file implements the Thread class.
-
-   Thread is not a part of the public interface of the ThreadWeaver library.
+   This file is part of ThreadWeaver. It implements the Thread class.
 
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2004-2013 Mirko Boehm $
@@ -71,8 +69,8 @@ Thread::Thread(Weaver *parent)
     , d(new Private(parent))
 {
     const QString queueName = parent->objectName().isEmpty()
-                              ? QString::fromLatin1("Queue(0x%1)").arg(quintptr(parent), 0, 16, QChar::fromLatin1('0'))
-                              : parent->objectName();
+            ? QString::fromLatin1("Queue(0x%1)").arg(quintptr(parent), 0, 16, QChar::fromLatin1('0'))
+            : parent->objectName();
     setObjectName(QString::fromLatin1("%1[%2]").arg(queueName).arg(QString::number(id()), 2, QChar::fromLatin1('0')));
 }
 
@@ -81,7 +79,7 @@ Thread::~Thread()
     delete d;
 }
 
-unsigned int Thread::id()
+unsigned int Thread::id() const
 {
     return d->id; //id is const
 }
