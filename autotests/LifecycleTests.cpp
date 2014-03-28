@@ -102,7 +102,6 @@ void LifecycleTests::testJobAutoDeletion()
         ThreadWeaver::Queue::instance()->finish();
         QVERIFY(ThreadWeaver::Queue::instance()->isIdle());
         ThreadWeaver::Queue::instance()->suspend();
-        QEXPECT_FAIL("", "TODO this *should* work!", Continue);
         QCOMPARE(job2Exists, false);
         QCOMPARE(job1Exists, true);
     }

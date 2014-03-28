@@ -120,8 +120,6 @@ Q_SIGNALS:
     void threadExited(ThreadWeaver::Thread *);
     /** @brief A thread has been suspended. */
     void threadSuspended(ThreadWeaver::Thread *);
-    /** @brief The thread is busy executing job j. */
-    void threadBusy(ThreadWeaver::JobPointer, ThreadWeaver::Thread *);
 
 protected:
     void adjustActiveThreadCount(int diff);

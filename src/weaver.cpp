@@ -415,10 +415,6 @@ void Weaver::adjustInventory(int numberOfNewJobs)
             Thread *th = createThread();
             th->moveToThread(th);   // be sane from the start
             m_inventory.append(th);
-            connect(th, SIGNAL(jobStarted(ThreadWeaver::JobPointer,ThreadWeaver::Thread*)),
-                    SIGNAL(threadBusy(ThreadWeaver::JobPointer,ThreadWeaver::Thread*)));
-            connect(th, SIGNAL(jobDone(ThreadWeaver::JobPointer)),
-                    SIGNAL(jobDone(ThreadWeaver::JobPointer)));
             th->start();
             m_createdThreads.ref();
             TWDEBUG(2, "WeaverImpl::adjustInventory: thread created, "

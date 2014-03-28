@@ -80,12 +80,9 @@ public:
     void requestAbort();
 
 Q_SIGNALS:
+    //FIXME needed?
     /** The thread has been started. */
     void started(ThreadWeaver::Thread *);
-    /** The thread started to process a job. */
-    void jobStarted(ThreadWeaver::JobPointer, ThreadWeaver::Thread *);
-    /** The thread finished to execute a job. */
-    void jobDone(ThreadWeaver::JobPointer);
 
 private:
     class Private;

@@ -106,11 +106,7 @@ void Thread::run()
         }
 
         wasBusy = true;
-
-        emit jobStarted(d->job, this);
         d->job->execute(d->job, this);
-        emit jobDone(d->job);
-
         QMutexLocker l(&d->mutex); Q_UNUSED(l);
         d->job.clear();
     }

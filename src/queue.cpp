@@ -50,7 +50,6 @@ public:
         queue->setParent(q);
         q->connect(implementation, SIGNAL(finished()), SIGNAL(finished()));
         q->connect(implementation, SIGNAL(suspended()), SIGNAL(suspended()));
-        q->connect(implementation, SIGNAL(jobDone(ThreadWeaver::JobPointer)), SIGNAL(jobDone(ThreadWeaver::JobPointer)));
     }
 
     QueueSignals *implementation;

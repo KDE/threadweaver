@@ -61,12 +61,6 @@ Q_SIGNALS:
      */
     void suspended();
 
-    /** @brief A Job has been completed.
-     *
-     * This signal is emitted when a job is finished by a worker thread.
-     */
-    void jobDone(ThreadWeaver::JobPointer);
-
     /** @brief Emitted when the processing state of the Queue has changed. */
     void stateChanged(ThreadWeaver::State*);
 };

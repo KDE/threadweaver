@@ -139,7 +139,8 @@ void DeleteTest::DeleteJobsTest()
     // held anymore.
     queue.shutDown();
     TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
-    QCOMPARE(InstanceCountingBusyJob::instances(), NumberOfJobs); // held by signals about the job being started and finished
+    // QCOMPARE(InstanceCountingBusyJob::instances(), NumberOfJobs); // held by signals about the job being started and finished
+    QCOMPARE(InstanceCountingBusyJob::instances(), 0); // zero, since threads are not sending the jobStarted/jobDone signals anymore
     qApp->processEvents();
     TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingBusyJob::instances());
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
@@ -174,7 +175,10 @@ void DeleteTest::DeleteCollectionTest()
 
     TWDEBUG(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
           InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
-    QCOMPARE(InstanceCountingCollection::instances(), NumberOfCollections); // held by signals about the job being started and finished
+    // held by signals about the job being started and finished:
+    //QCOMPARE(InstanceCountingCollection::instances(), NumberOfCollections);
+    // one, since threads are not sending the jobStarted/jobDone signals anymore:
+    QCOMPARE(InstanceCountingCollection::instances(), 1);
     qApp->processEvents();
     TWDEBUG(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
             InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
