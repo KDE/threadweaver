@@ -25,30 +25,30 @@ public:
 
     bool canBeExecuted(JobPointer);
     /** The thread inventory. */
-    QList<Thread *> m_inventory;
+    QList<Thread *> inventory;
     /** The job queue. */
-    QList<JobPointer> m_assignments;
+    QList<JobPointer> assignments;
     /** The number of jobs that are assigned to the worker threads, but not finished. */
-    int m_active;
+    int active;
     /** The maximum number of worker threads. */
-    int m_inventoryMax;
+    int inventoryMax;
     /** Wait condition all idle or done threads wait for. */
-    QWaitCondition m_jobAvailable;
+    QWaitCondition jobAvailable;
     /** Wait for a job to finish. */
-    QWaitCondition m_jobFinished;
+    QWaitCondition jobFinished;
     /** Mutex to serialize operations. */
-    QMutex *m_mutex;
+    QMutex *mutex;
     /** Semaphore to ensure thread startup is in sequence. */
-    QSemaphore m_semaphore;
+    QSemaphore semaphore;
     /** Before shutdown can proceed to close the running threads, it needs to ensure that all of them
      *  entered the run method. */
-    QAtomicInt m_createdThreads;
+    QAtomicInt createdThreads;
     /** The state of the art.
     * @see StateId
     */
-    QAtomicPointer<State> m_state;
+    QAtomicPointer<State> state;
     /** The state objects. */
-    QSharedPointer<State> m_states[NoOfStates];
+    QSharedPointer<State> states[NoOfStates];
 };
 
 }

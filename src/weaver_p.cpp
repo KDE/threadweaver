@@ -16,9 +16,9 @@ namespace Private {
 
 Weaver_Private::Weaver_Private()
     : QueueSignals_Private()
-    , m_active(0)
-    , m_inventoryMax(qMax(4, 2 * QThread::idealThreadCount()))
-    , m_mutex(new QMutex(QMutex::NonRecursive))
+    , active(0)
+    , inventoryMax(qMax(4, 2 * QThread::idealThreadCount()))
+    , mutex(new QMutex(QMutex::NonRecursive))
 
 {
 }
@@ -26,7 +26,7 @@ Weaver_Private::Weaver_Private()
 Weaver_Private::~Weaver_Private()
 {
     //FIXME no need for dynamic allocation
-    delete m_mutex;
+    delete mutex;
 }
 
 /** @brief Dump the current jobs to the console.
@@ -35,12 +35,12 @@ Weaver_Private::~Weaver_Private()
  */
 void Weaver_Private::dumpJobs()
 {
-    QMutexLocker l(m_mutex); Q_UNUSED(l);
+    QMutexLocker l(mutex); Q_UNUSED(l);
     TWDEBUG(0, "WeaverImpl::dumpJobs: current jobs:\n");
-    for (int index = 0; index < m_assignments.size(); ++index) {
-        TWDEBUG(0, "--> %4i: %p (priority %i, can be executed: %s)\n", index, (void *)m_assignments.at(index).data(),
-                m_assignments.at(index)->priority(),
-                canBeExecuted(m_assignments.at(index)) ? "yes" : "no");
+    for (int index = 0; index < assignments.size(); ++index) {
+        TWDEBUG(0, "--> %4i: %p (priority %i, can be executed: %s)\n", index, (void *)assignments.at(index).data(),
+                assignments.at(index)->priority(),
+                canBeExecuted(assignments.at(index)) ? "yes" : "no");
     }
 }
 
@@ -54,7 +54,7 @@ void Weaver_Private::dumpJobs()
  */
 bool Weaver_Private::canBeExecuted(JobPointer job)
 {
-    Q_ASSERT(!m_mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!mutex->tryLock()); //mutex has to be held when this method is called
 
     QList<QueuePolicy *> acquired;
 

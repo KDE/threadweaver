@@ -56,15 +56,15 @@ Weaver::Weaver(QObject *parent)
     : QueueAPI(new Private::Weaver_Private(), parent)
 {
     qRegisterMetaType<ThreadWeaver::JobPointer>("ThreadWeaver::JobPointer");
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     // initialize state objects:
-    d()->m_states[InConstruction] = QSharedPointer<State>(new InConstructionState(this));
+    d()->states[InConstruction] = QSharedPointer<State>(new InConstructionState(this));
     setState_p(InConstruction);
-    d()->m_states[WorkingHard] = QSharedPointer<State>(new WorkingHardState(this));
-    d()->m_states[Suspending] = QSharedPointer<State>(new SuspendingState(this));
-    d()->m_states[Suspended] = QSharedPointer<State>(new SuspendedState(this));
-    d()->m_states[ShuttingDown] = QSharedPointer<State>(new ShuttingDownState(this));
-    d()->m_states[Destructed] = QSharedPointer<State>(new DestructedState(this));
+    d()->states[WorkingHard] = QSharedPointer<State>(new WorkingHardState(this));
+    d()->states[Suspending] = QSharedPointer<State>(new SuspendingState(this));
+    d()->states[Suspended] = QSharedPointer<State>(new SuspendedState(this));
+    d()->states[ShuttingDown] = QSharedPointer<State>(new ShuttingDownState(this));
+    d()->states[Destructed] = QSharedPointer<State>(new DestructedState(this));
 
     setState_p(WorkingHard);
 }
@@ -91,12 +91,12 @@ void Weaver::shutDown_p()
 
     REQUIRE(QThread::currentThread() == thread());
     TWDEBUG(3, "WeaverImpl::shutDown: destroying inventory.\n");
-    d()->m_semaphore.acquire(d()->m_createdThreads.loadAcquire());
+    d()->semaphore.acquire(d()->createdThreads.loadAcquire());
     finish();
     suspend();
     setState(ShuttingDown);
     reschedule();
-    d()->m_jobFinished.wakeAll();
+    d()->jobFinished.wakeAll();
 
     // problem: Some threads might not be asleep yet, just finding
     // out if a job is available. Those threads will suspend
@@ -108,11 +108,11 @@ void Weaver::shutDown_p()
     for (;;) {
         Thread *th = 0;
         {
-            QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
-            if (d()->m_inventory.isEmpty()) {
+            QMutexLocker l(d()->mutex); Q_UNUSED(l);
+            if (d()->inventory.isEmpty()) {
                 break;
             }
-            th = d()->m_inventory.takeFirst();
+            th = d()->inventory.takeFirst();
         }
         if (!th->isFinished()) {
             for (;;) {
@@ -128,7 +128,7 @@ void Weaver::shutDown_p()
         emit(threadExited(th));
         delete th;
     }
-    Q_ASSERT(d()->m_inventory.isEmpty());
+    Q_ASSERT(d()->inventory.isEmpty());
     TWDEBUG(3, "WeaverImpl::shutDown: done\n");
     setState(Destructed);    // Destructed ignores all calls into the queue API
 }
@@ -140,15 +140,15 @@ void Weaver::shutDown_p()
  */
 void Weaver::setState(StateId id)
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     setState_p(id);
 }
 
 void Weaver::setState_p(StateId id)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    State *newState = d()->m_states[id].data();
-    State *previous = d()->m_state.fetchAndStoreOrdered(newState);
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    State *newState = d()->states[id].data();
+    State *previous = d()->state.fetchAndStoreOrdered(newState);
     if (previous == 0 || previous->stateId() != id) {
         newState->activated();
         TWDEBUG(2, "WeaverImpl::setState: state changed to \"%s\".\n", newState->stateName().toLatin1().constData());
@@ -161,61 +161,61 @@ void Weaver::setState_p(StateId id)
 
 const State *Weaver::state() const
 {
-    return d()->m_state.loadAcquire();
+    return d()->state.loadAcquire();
 }
 
 State *Weaver::state()
 {
-    return d()->m_state.loadAcquire();
+    return d()->state.loadAcquire();
 }
 
 void Weaver::setMaximumNumberOfThreads(int cap)
 {
     //FIXME really? Why not 0?
     Q_ASSERT_X(cap > 0, "Weaver Impl", "Thread inventory size has to be larger than zero.");
-    QMutexLocker l(d()->m_mutex);  Q_UNUSED(l);
+    QMutexLocker l(d()->mutex);  Q_UNUSED(l);
     state()->setMaximumNumberOfThreads(cap);
 }
 
 void Weaver::setMaximumNumberOfThreads_p(int cap)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    d()->m_inventoryMax = cap;
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    d()->inventoryMax = cap;
 }
 
 int Weaver::maximumNumberOfThreads() const
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->maximumNumberOfThreads();
 }
 
 int Weaver::maximumNumberOfThreads_p() const
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    return d()->m_inventoryMax;
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    return d()->inventoryMax;
 }
 
 int Weaver::currentNumberOfThreads() const
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->currentNumberOfThreads();
 }
 
 int Weaver::currentNumberOfThreads_p() const
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    return d()->m_inventory.count();
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    return d()->inventory.count();
 }
 
 void Weaver::enqueue(const QVector<JobPointer> &jobs)
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     state()->enqueue(jobs);
 }
 
 void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
     if (jobs.isEmpty()) {
         return;
     }
@@ -226,14 +226,14 @@ void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
             TWDEBUG(3, "WeaverImpl::enqueue: queueing job %p.\n", (void *)job.data());
             job->aboutToBeQueued(this);
             // find position for insertion:
-            int i = d()->m_assignments.size();
+            int i = d()->assignments.size();
             if (i > 0) {
-                while (i > 0 && d()->m_assignments.at(i - 1)->priority() < job->priority()) {
+                while (i > 0 && d()->assignments.at(i - 1)->priority() < job->priority()) {
                     --i;
                 }
-                d()->m_assignments.insert(i, job);
+                d()->assignments.insert(i, job);
             } else {
-                d()->m_assignments.append(job);
+                d()->assignments.append(job);
             }
             job->setStatus(Job::Status_Queued);
             reschedule();
@@ -243,24 +243,24 @@ void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
 
 bool Weaver::dequeue(const JobPointer &job)
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->dequeue(job);
 }
 
 bool Weaver::dequeue_p(JobPointer job)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    int position = d()->m_assignments.indexOf(job);
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    int position = d()->assignments.indexOf(job);
     if (position != -1) {
         job->aboutToBeDequeued(this);
-        int newPosition = d()->m_assignments.indexOf(job);
-        JobPointer job = d()->m_assignments.takeAt(newPosition);
+        int newPosition = d()->assignments.indexOf(job);
+        JobPointer job = d()->assignments.takeAt(newPosition);
         job->setStatus(Job::Status_New);
-        Q_ASSERT(!d()->m_assignments.contains(job));
+        Q_ASSERT(!d()->assignments.contains(job));
         TWDEBUG(3, "WeaverImpl::dequeue: job %p dequeued, %i jobs left.\n", (void *)job.data(), queueLength_p());
         // from the queues point of view, a job is just as finished if it gets dequeued:
-        d()->m_jobFinished.wakeAll();
-        Q_ASSERT(!d()->m_assignments.contains(job));
+        d()->jobFinished.wakeAll();
+        Q_ASSERT(!d()->assignments.contains(job));
         return true;
     } else {
         TWDEBUG(3, "WeaverImpl::dequeue: job %p not found in queue.\n", (void *)job.data());
@@ -270,30 +270,30 @@ bool Weaver::dequeue_p(JobPointer job)
 
 void Weaver::dequeue()
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     state()->dequeue();
 }
 
 void Weaver::dequeue_p()
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
     TWDEBUG(3, "WeaverImpl::dequeue: dequeueing all jobs.\n");
-    for (int index = 0; index < d()->m_assignments.size(); ++index) {
-        d()->m_assignments.at(index)->aboutToBeDequeued(this);
+    for (int index = 0; index < d()->assignments.size(); ++index) {
+        d()->assignments.at(index)->aboutToBeDequeued(this);
     }
-    d()->m_assignments.clear();
-    ENSURE(d()->m_assignments.isEmpty());
+    d()->assignments.clear();
+    ENSURE(d()->assignments.isEmpty());
 }
 
 void Weaver::finish()
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     state()->finish();
 }
 
 void Weaver::finish_p()
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
 #ifdef QT_NO_DEBUG
     const int MaxWaitMilliSeconds = 50;
 #else
@@ -302,7 +302,7 @@ void Weaver::finish_p()
     while (!isIdle_p()) {
         Q_ASSERT_X(state()->stateId() == WorkingHard, Q_FUNC_INFO, qPrintable(state()->stateName()));
         TWDEBUG(2, "WeaverImpl::finish: not done, waiting.\n");
-        if (d()->m_jobFinished.wait(d()->m_mutex, MaxWaitMilliSeconds) == false) {
+        if (d()->jobFinished.wait(d()->mutex, MaxWaitMilliSeconds) == false) {
             TWDEBUG(2, "WeaverImpl::finish: wait timed out, %i jobs left, waking threads.\n", queueLength_p());
             reschedule();
         }
@@ -336,56 +336,56 @@ void Weaver::resume_p()
 
 bool Weaver::isEmpty() const
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->isEmpty();
 }
 
 bool Weaver::isEmpty_p() const
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    return  d()->m_assignments.isEmpty();
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    return  d()->assignments.isEmpty();
 }
 
 bool Weaver::isIdle() const
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->isIdle();
 }
 
 bool Weaver::isIdle_p() const
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    return isEmpty_p() && d()->m_active == 0;
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    return isEmpty_p() && d()->active == 0;
 }
 
 int Weaver::queueLength() const
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->queueLength();
 }
 
 int Weaver::queueLength_p() const
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    return d()->m_assignments.count();
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    return d()->assignments.count();
 }
 
 void Weaver::requestAbort()
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     return state()->requestAbort();
 }
 
 void Weaver::reschedule()
 {
-    d()->m_jobAvailable.wakeAll();
+    d()->jobAvailable.wakeAll();
 }
 
 void Weaver::requestAbort_p()
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    for (int i = 0; i <d()-> m_inventory.size(); ++i) {
-        d()->m_inventory[i]->requestAbort();
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    for (int i = 0; i <d()-> inventory.size(); ++i) {
+        d()->inventory[i]->requestAbort();
     }
 }
 
@@ -403,17 +403,17 @@ void Weaver::requestAbort_p()
 //TODO add code to quit unnecessary threads
 void Weaver::adjustInventory(int numberOfNewJobs)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
     //number of threads that can be created:
-    const int reserve = d()->m_inventoryMax - d()->m_inventory.count();
+    const int reserve = d()->inventoryMax - d()->inventory.count();
 
     if (reserve > 0) {
         for (int i = 0; i < qMin(reserve, numberOfNewJobs); ++i) {
             Thread *th = createThread();
             th->moveToThread(th);   // be sane from the start
-            d()->m_inventory.append(th);
+            d()->inventory.append(th);
             th->start();
-            d()->m_createdThreads.ref();
+            d()->createdThreads.ref();
             TWDEBUG(2, "WeaverImpl::adjustInventory: thread created, "
                   "%i threads in inventory.\n", currentNumberOfThreads_p());
         }
@@ -451,7 +451,7 @@ void Weaver::decActiveThreadCount()
     adjustActiveThreadCount(-1);
     // the done job could have freed another set of jobs, and we do not know how
     // many - therefore we need to wake all threads:
-    d()->m_jobFinished.wakeAll();
+    d()->jobFinished.wakeAll();
 }
 
 /** @brief Adjust active thread count.
@@ -460,12 +460,12 @@ void Weaver::decActiveThreadCount()
  */
 void Weaver::adjustActiveThreadCount(int diff)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    d()->m_active += diff;
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    d()->active += diff;
     TWDEBUG(4, "WeaverImpl::adjustActiveThreadCount: %i active threads (%i jobs"
-          " in queue).\n", d()->m_active,  queueLength_p());
+          " in queue).\n", d()->active,  queueLength_p());
 
-    if (d()->m_assignments.isEmpty() && d()->m_active == 0) {
+    if (d()->assignments.isEmpty() && d()->active == 0) {
         P_ASSERT(diff < 0);    // cannot reach zero otherwise
         emit(finished());
     }
@@ -477,14 +477,14 @@ void Weaver::adjustActiveThreadCount(int diff)
  */
 int Weaver::activeThreadCount()
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
-    return d()->m_active;
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    return d()->active;
 }
 
 /** @brief Called from a new thread when entering the run method. */
 void Weaver::threadEnteredRun(Thread *thread)
 {
-    d()->m_semaphore.release(1);
+    d()->semaphore.release(1);
     emit threadStarted(thread);
 }
 
@@ -501,8 +501,8 @@ void Weaver::threadEnteredRun(Thread *thread)
 JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy,
         bool suspendIfInactive, bool justReturning)
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
-    Q_ASSERT(threadWasBusy == false || (threadWasBusy == true && d()->m_active > 0));
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
+    Q_ASSERT(threadWasBusy == false || (threadWasBusy == true && d()->active > 0));
     TWDEBUG(3, "WeaverImpl::takeFirstAvailableJobOrWait: trying to assign new job to thread %i (%s state).\n",
           th->id(), qPrintable(state()->stateName()));
     TWDEBUG(5, "WeaverImpl::takeFirstAvailableJobOrWait: %i active threads, was busy: %s, suspend: %s, assign new job: %s.\n",
@@ -511,9 +511,9 @@ JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadW
         // cleanup and send events:
         decActiveThreadCount();
     }
-    Q_ASSERT(d()->m_active >= 0);
+    Q_ASSERT(d()->active >= 0);
 
-    if (suspendIfInactive && d()->m_active == 0 && state()->stateId() == Suspending) {
+    if (suspendIfInactive && d()->active == 0 && state()->stateId() == Suspending) {
         setState_p(Suspended);
         return JobPointer();
     }
@@ -523,11 +523,11 @@ JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadW
     }
 
     JobPointer next;
-    for (int index = 0; index < d()->m_assignments.size(); ++index) {
-        const JobPointer &candidate = d()->m_assignments.at(index);
+    for (int index = 0; index < d()->assignments.size(); ++index) {
+        const JobPointer &candidate = d()->assignments.at(index);
         if (d()->canBeExecuted(candidate)) {
             next = candidate;
-            d()->m_assignments.removeAt(index);
+            d()->assignments.removeAt(index);
             break;
         }
     }
@@ -564,7 +564,7 @@ void Weaver::waitForAvailableJob(Thread *th)
 /** @brief Blocks the calling thread until jobs can be assigned. */
 void Weaver::blockThreadUntilJobsAreBeingAssigned(Thread *th)
 {
-    QMutexLocker l(d()->m_mutex); Q_UNUSED(l);
+    QMutexLocker l(d()->mutex); Q_UNUSED(l);
     blockThreadUntilJobsAreBeingAssigned_locked(th);
 }
 
@@ -574,11 +574,11 @@ void Weaver::blockThreadUntilJobsAreBeingAssigned(Thread *th)
  */
 void Weaver::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
 {
-    Q_ASSERT(!d()->m_mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
     TWDEBUG(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i blocked (%s state).\n",
           th->id(), qPrintable(state()->stateName()));
     emit threadSuspended(th);
-    d()->m_jobAvailable.wait(d()->m_mutex);
+    d()->jobAvailable.wait(d()->mutex);
     TWDEBUG(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i resumed  (%s state).\n",
           th->id(), qPrintable(state()->stateName()));
 }
