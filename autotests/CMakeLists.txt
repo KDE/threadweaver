@@ -18,6 +18,17 @@ set_target_properties(ThreadWeaverJobTests PROPERTIES MACOSX_BUNDLE FALSE)
 
 ########### next target ###############
 
+set(SequencesTests_SRCS SequencesTests.cpp WaitForIdleAndFinished.cpp)
+
+add_executable(ThreadWeaverSequencesTests ${SequencesTests_SRCS})
+add_test(ThreadWeaverSequencesTests ThreadWeaverSequencesTests)
+ecm_mark_as_test(ThreadWeaverSequencesTests)
+
+target_link_libraries(ThreadWeaverSequencesTests Qt5::Test KF5::ThreadWeaver)
+set_target_properties(ThreadWeaverSequencesTests PROPERTIES MACOSX_BUNDLE FALSE)
+
+########### next target ###############
+
 set(QueueTests_SRCS QueueTests.cpp)
 
 add_executable(ThreadWeaverQueueTests ${QueueTests_SRCS})
