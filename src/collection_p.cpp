@@ -75,6 +75,14 @@ void Collection_Private::elementStarted(Collection*, JobPointer job, Thread*)
     }
 }
 
+namespace {
+struct MutexUnlocker {
+    QMutexLocker* locker;
+    MutexUnlocker(QMutexLocker* l) : locker(l) { locker->unlock(); }
+    ~MutexUnlocker() { locker->relock(); }
+};
+}
+
 void Collection_Private::elementFinished(Collection *collection, JobPointer job, Thread *thread)
 {
     QMutexLocker l(&mutex); Q_UNUSED(l);
@@ -101,8 +109,10 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
             // there is a small chance that (this) has been dequeued in the
             // meantime, in this case, there is nothing left to clean up
             finalCleanup(collection);
-            selfExecuteWrapper.callEnd();
-            l.unlock();
+            {
+                MutexUnlocker u(&l); Q_UNUSED(u);
+                selfExecuteWrapper.callEnd();
+            }
             self.clear();
         }
     }
