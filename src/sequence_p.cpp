@@ -62,6 +62,7 @@ void Sequence_Private::processCompletedElement(Collection* collection, JobPointe
     Q_ASSERT(!self.isNull());
     if (!job->success()) {
         stop_locked(collection);
+        collection->setStatus(job->status());
     }
     const int next = completed_.fetchAndAddAcquire(1);
     const int count = elements.count();

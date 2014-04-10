@@ -50,7 +50,9 @@ void Collection_Private::finalCleanup(Collection *collection)
     Q_ASSERT(!self.isNull());
     Q_ASSERT(!mutex.tryLock());
     freeQueuePolicyResources(self);
-    collection->setStatus(Job::Status_Success);
+    if (collection->status() < Job::Status_Success) {
+        collection->setStatus(Job::Status_Success);
+    }
     api = 0;
 }
 
@@ -87,9 +89,9 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
     }
     const int started = jobsStarted.loadAcquire();
     Q_ASSERT(started >= 0); Q_UNUSED(started);
+    processCompletedElement(collection, job, thread);
     const int remainingJobs = jobCounter.fetchAndAddOrdered(-1) - 1;
     TWDEBUG(4, "Collection_Private::elementFinished: %i\n", remainingJobs);
-    processCompletedElement(collection, job, thread);
     if (remainingJobs <= -1) {
         //its no use to count, the elements have been dequeued, now the threads call back that have been processing jobs in the meantime
     } else {
@@ -136,20 +138,27 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
     }
 
     for (int index = 0; index < elements.size(); ++index) {
-        TWDEBUG(4, "Collection::Private::dequeueElements: dequeueing %p.\n", (void *)elements.at(index).data());
+        bool result;
         if (queueApiIsLocked) {
-            api->dequeue_p(elements.at(index));
+            result = api->dequeue_p(elements.at(index));
         } else {
-            api->dequeue(elements.at(index));
+            result = api->dequeue(elements.at(index));
         }
+        if (result) {
+            jobCounter.fetchAndAddOrdered(-1);
+        }
+        TWDEBUG(0, "Collection::Private::dequeueElements: dequeueing %p (%s, %i jobs left).\n",
+                (void *)elements.at(index).data(),
+                result ? "found" : "not found",
+                jobCounter.loadAcquire());
+//        if (jobCounter.loadAcquire() == 1) {
+//            // last job
+//            TWDEBUG(0, "Break here");
+//        }
         elementDequeued(elements.at(index));
     }
 
-    const int jobCount = jobCounter.fetchAndStoreAcquire(-1);
-    if (jobCount != 0) {
-        // if jobCounter is not zero, then we where waiting for the
-        // last job to finish before we would have freed our queue
-        // policies. In this case we have to do it here:
+    if (jobCounter.loadAcquire() == 1) {
         finalCleanup(collection);
     }
 }

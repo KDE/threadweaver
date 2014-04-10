@@ -41,7 +41,7 @@ QMutex s_GlobalMutex;
 
 SequencesTests::SequencesTests()
 {
-    setDebugLevel(true, 2);
+    setDebugLevel(true, 1);
 }
 
 void SequencesTests::RecursiveStopTest()
