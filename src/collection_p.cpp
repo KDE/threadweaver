@@ -157,14 +157,10 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
         if (result) {
             jobCounter.fetchAndAddOrdered(-1);
         }
-        TWDEBUG(0, "Collection::Private::dequeueElements: dequeueing %p (%s, %i jobs left).\n",
+        TWDEBUG(3, "Collection::Private::dequeueElements: dequeueing %p (%s, %i jobs left).\n",
                 (void *)elements.at(index).data(),
                 result ? "found" : "not found",
                 jobCounter.loadAcquire());
-//        if (jobCounter.loadAcquire() == 1) {
-//            // last job
-//            TWDEBUG(0, "Break here");
-//        }
         elementDequeued(elements.at(index));
     }
 
