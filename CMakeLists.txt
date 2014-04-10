@@ -20,6 +20,10 @@ include(GenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 
+IF(THREADWEAVER_USE_GNU_CXX11)
+    ADD_DEFINITIONS(-std=c++11)
+ENDIF()
+
 # -- Maintained by scripty
 set(KF5_VERSION "4.98.0")
 
