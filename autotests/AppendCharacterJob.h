@@ -87,9 +87,10 @@ public:
     {
     }
 
-    bool success() const
+    void run(ThreadWeaver::JobPointer job, ThreadWeaver::Thread* thread)
     {
-        return false;
+        AppendCharacterJob::run(job, thread);
+        setStatus(Job::Status_Failed);
     }
 };
 
