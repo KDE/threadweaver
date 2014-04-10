@@ -31,6 +31,7 @@
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/DebuggingAids>
 
+#include "JobLoggingWeaver.h"
 #include "WaitForIdleAndFinished.h"
 #include "AppendCharacterJob.h"
 #include "SequencesTests.h"
@@ -46,8 +47,10 @@ SequencesTests::SequencesTests()
 
 void SequencesTests::RecursiveStopTest()
 {
-    QSKIP("Broken in current master, won't finish", SkipAll);
-    WAITFORIDLEANDFINISHED(Queue::instance());
+    //    auto logger = new JobLoggingWeaver();
+    //    Queue queue(logger);
+    Queue queue;
+    WAITFORIDLEANDFINISHED(&queue);
     QString result;
     Sequence innerSequence;
     innerSequence << new AppendCharacterJob('b', &result)
@@ -59,8 +62,8 @@ void SequencesTests::RecursiveStopTest()
                   << innerSequence
                   << new AppendCharacterJob('e', &result);
 
-    stream() << outerSequence;
-    Queue::instance()->finish();
+    queue.stream() << outerSequence;
+    queue.finish();
     QCOMPARE(result, QString::fromLatin1("abc"));
 }
 
