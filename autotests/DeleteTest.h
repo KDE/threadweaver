@@ -49,6 +49,7 @@ public:
 
 private Q_SLOTS:
     void DeleteJobsTest();
+    void MutexLockingAssertsTest();
     void DeleteCollectionTest();
     void DeleteDecoratedCollectionTest();
     void DeleteSequenceTest();

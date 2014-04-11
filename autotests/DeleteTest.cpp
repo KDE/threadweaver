@@ -146,6 +146,16 @@ void DeleteTest::DeleteJobsTest()
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
 }
 
+void DeleteTest::MutexLockingAssertsTest()
+{
+    QMutex mutex;
+    MUTEX_ASSERT_UNLOCKED(&mutex);
+    mutex.lock();
+    MUTEX_ASSERT_LOCKED(&mutex);
+    mutex.unlock();
+    MUTEX_ASSERT_UNLOCKED(&mutex);
+}
+
 void DeleteTest::DeleteCollectionTest()
 {
     const int NumberOfCollections = 100;

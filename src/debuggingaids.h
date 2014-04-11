@@ -110,8 +110,6 @@ inline void setDebugLevel(bool debug, int level)
 
 #ifndef QT_NO_DEBUG
 
-//#error Get out!
-
 #define TWDEBUG(...) ThreadWeaver::threadweaver_debug(__VA_ARGS__)
 inline void threadweaver_debug(int severity, const char *cformat, ...)
 {
@@ -138,6 +136,18 @@ inline void threadweaver_debug(bool condition, int severity, const char *cformat
 }
 #else
 #define TWDEBUG(...)
+#endif
+
+// Macros to ensure that mutexes are locked or unlocked:
+void THREADWEAVER_EXPORT mutexAssertUnlocked(QMutex* mutex, const char* where);
+void THREADWEAVER_EXPORT mutexAssertLocked(QMutex* mutex, const char* where);
+
+#ifndef QT_NO_DEBUG
+#define MUTEX_ASSERT_UNLOCKED(x) mutexAssertUnlocked(x, Q_FUNC_INFO)
+#define MUTEX_ASSERT_LOCKED(x) mutexAssertLocked(x, Q_FUNC_INFO)
+#else
+#define MUTEX_ASSERT_UNLOCKED(x)
+#define MUTEX_ASSERT_LOCKED(x)
 #endif
 
 inline bool invariant()
