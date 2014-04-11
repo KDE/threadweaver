@@ -107,8 +107,14 @@ void Thread::run()
 
         wasBusy = true;
         d->job->execute(d->job, this);
-        QMutexLocker l(&d->mutex); Q_UNUSED(l);
-        d->job.clear();
+        JobPointer oldJob;
+        {   // When finally destroying the last reference to d->job, do not hold the mutex.
+            // It may trigger destruction of the job, which can execute arbitrary code.
+            QMutexLocker l(&d->mutex); Q_UNUSED(l);
+            oldJob = d->job;
+            d->job.clear();
+        }
+        oldJob.clear();
     }
     TWDEBUG(3, "Thread::run [%u]: exiting.\n", id());
 }

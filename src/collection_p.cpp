@@ -85,6 +85,7 @@ struct MutexUnlocker {
 
 void Collection_Private::elementFinished(Collection *collection, JobPointer job, Thread *thread)
 {
+    JobPointer saveYourSelf = self; Q_UNUSED(saveYourSelf);
     QMutexLocker l(&mutex); Q_UNUSED(l);
     Q_ASSERT(!self.isNull());
     Q_UNUSED(job) // except in Q_ASSERT

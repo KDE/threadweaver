@@ -91,6 +91,7 @@ Collection::Collection(Private::Collection_Private *d__)
 
 Collection::~Collection()
 {
+    MUTEX_ASSERT_UNLOCKED(mutex());
     // dequeue all remaining jobs:
     QMutexLocker l(mutex()); Q_UNUSED(l);
     if (d()->api != 0) { // still queued
