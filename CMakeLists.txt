@@ -48,7 +48,7 @@ ecm_configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5ThreadWeaverCo
                               )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_version.h
-        DESTINATION ${INCLUDE_INSTALL_DIR} COMPONENT Devel )
+        DESTINATION ${KF5_INCLUDE_INSTALL_DIR} COMPONENT Devel )
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/KF5ThreadWeaverConfig.cmake"
