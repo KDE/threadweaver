@@ -41,10 +41,11 @@ class JobLoggingDecorator : public ThreadWeaver::IdDecorator
 {
 public:
     struct JobData {
-        int threadId = int();
+        int threadId;
         QString description;
         qint64 start;
         qint64 end;
+        JobData(): threadId(0) {}
     };
 
     explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector* collector);

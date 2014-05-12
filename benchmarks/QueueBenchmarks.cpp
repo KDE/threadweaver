@@ -67,7 +67,7 @@ public:
     void payload()
     {
         std::vector<quint64> numbers(m_count);
-        std::generate(numbers.begin(), numbers.end(), []() { static quint64 i = 0; return i++; });
+        std::generate(numbers.begin(), numbers.end(), []() -> quint64 { static quint64 i = 0; return i++; });
         m_result = std::accumulate(numbers.begin(), numbers.end(), 0);
     }
 
