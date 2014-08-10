@@ -83,14 +83,13 @@ public:
     bool isFinished() const Q_DECL_OVERRIDE;
     void assignQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
     void removeQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
-    QList<QueuePolicy *> queuePolicies() const Q_DECL_OVERRIDE;
+    QList<QueuePolicy *> queuePolicies() const Q_DECL_OVERRIDE;    
+    QMutex *mutex() const Q_DECL_OVERRIDE;
 
 protected:
     void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
     void defaultBegin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
     void defaultEnd(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
-
-    QMutex *mutex() const Q_DECL_OVERRIDE;
 
 private:
     class Private1;
