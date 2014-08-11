@@ -36,6 +36,7 @@ ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX THREADWEAVER
 add_subdirectory(src)
 add_subdirectory(autotests)
 add_subdirectory(benchmarks)
+add_subdirectory(examples/HelloWorld)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KF5ThreadWeaver")
