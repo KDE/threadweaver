@@ -11,8 +11,10 @@ project(HelloWorld)
 # Tell CMake we will be using C++ 11:
 set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
 
-# Find and link the ThreadWeaver framework:
-find_package(KF5ThreadWeaver ${KF5_VERSION} REQUIRED)
+if (NOT TARGET KF5ThreadWeaver)
+  # Find the ThreadWeaver framework when we compiling this example stand-alone
+  find_package(KF5ThreadWeaver ${KF5_VERSION} REQUIRED)
+endif()
 
 # Add the HelloWorld executable and link the ThreadWeaver library to it
 add_executable(ThreadWeaver_HelloWorld HelloWorld.cpp)
