@@ -50,9 +50,13 @@ int main(int argc, char** argv)
     QDebugJob j1("Hello");
     QDebugJob j2("World!");
     JobPointer j3(new QDebugJob("This is..."));    
+    Job* j4 = new QDebugJob("ThreadWeaver!");
     // Queue the Job using the default Queue stream:
-    stream() << j1 << j2 << j3 << new QDebugJob("ThreadWeaver!");
-    // Wait for finish(), because job is destroyed before the global queue:
+    stream() << j1 << j2 // local variables
+	     << j3 // a shared pointer
+	     << j4; // a raw pointer
+    // Wait for finish(), because job is destroyed before 
+    // the global queue:
     Queue::instance()->finish();
 }
 //@@snippet_end

@@ -17,7 +17,7 @@ over to the queue stream, and no reference to it is kept by
 `main()`. This approach is often called "fire-and-forget jobs". 
 The queue will process the job and forget about it when it
 has been completed. It will then definitely get deleted automatically,
-even though the programmer does not necessarily know when exactly. It
+even though the programmer does not necessarily know exactly when. It
 could happen (and in the case of ThreadWeaver jobs commonly does)
 deeply in the bowels of Qt event handling when the last event holding
 a reference to the job gets destroyed. The gist of it is that from the
@@ -60,4 +60,36 @@ object when the reference count reaches zero. A `JobPointer` is simply
 a shared pointer. A raw pointer will be considered a new object and
 automatically wrapped in a shared pointer and deleted when it goes out
 of scope. Before executing the program, think about what you expect
-the program to print. 
+it to print. 
+
+~~~~
+World!
+This is...
+Hello
+ThreadWeaver!
+~~~~
+
+Four jobs are being queued all at the same time, that is when the
+`stream()` statement closes. Assuming there is more than one worker
+thread, the order of execution of the jobs is undefined. The string
+will be printed in arbitrary order. In case this comes as a surprise,
+it is important to keep in mind that by default, there is no relation
+between jobs that defines their execution order. This behaviour is in
+line with how thread pools normally work. In ThreadWeaver, there are
+ways to influence the order of execution by declaring dependencies
+between them or aggregating multiple jobs into collections or
+sequences. More on that later. 
+
+Before the end of `main()`, the application will block and wait for
+the queue to finish all jobs. This was unnecessary in the first
+HelloWorld example, so why is it necessary here? As explained there,
+the global queue will be destroyed when the `QCoreApplication` object
+is destroyed. If `main()` would exit before j1 and j2 have been
+executed, it's local variables would be destroyed. In the destructor
+of `QCoreApplication` the queue would wait to finish all jobs, and try
+to execute j1 and j2, which have already been destructed. Mayhem would
+ensue. When using local variables as jobs, make sure that they have
+been completed before destroying them. The `finish()` method of the
+queue guarantees that it no more holds references to any jobs that hav
+ebeen executed.
+
