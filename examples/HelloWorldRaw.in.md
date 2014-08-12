@@ -90,6 +90,6 @@ of `QCoreApplication` the queue would wait to finish all jobs, and try
 to execute j1 and j2, which have already been destructed. Mayhem would
 ensue. When using local variables as jobs, make sure that they have
 been completed before destroying them. The `finish()` method of the
-queue guarantees that it no more holds references to any jobs that hav
-ebeen executed.
+queue guarantees that it no more holds references to any jobs that
+have been executed.
 
