@@ -24,15 +24,36 @@
    Boston, MA 02110-1301, USA.
 */
 
-//@@snippet_begin(sample-helloworld)
 #include <QtCore>
 #include <ThreadWeaver/ThreadWeaver>
 
+using namespace ThreadWeaver;
+
+//@@snippet_begin(sample-helloworldraw-class)
+class QDebugJob : public Job {
+public:
+    QDebugJob(const char* message) : m_message(message) {}
+protected:
+    void run(JobPointer, Thread*) {
+        qDebug() << m_message;
+    }
+private:
+    const char* m_message;
+};
+//@@snippet_end
+
+//@@snippet_begin(sample-helloworldraw-main)
 int main(int argc, char** argv)
 {
     QCoreApplication app(argc, argv);
-
-    using namespace ThreadWeaver;
-    stream() << make_job( []() { qDebug() << "Hello World!"; } );
+    // Allocate jobs as local variables:
+    QDebugJob j1("Hello World!");
+    QDebugJob j2("This is ThreadWeaver!");
+    QDebugJob j3("I am talking to you!");
+    QDebugJob j4("Four sentences at a time!");
+    // Queue the Job using the default Queue stream:
+    stream() << j1 << j2 << j3 << j4;
+    // Wait for finish(), because job is destroyed before the global queue:
+    Queue::instance()->finish();
 }
 //@@snippet_end
