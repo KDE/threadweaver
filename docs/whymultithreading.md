@@ -15,10 +15,9 @@ Event driven programs especially bear the issue of latency, which is
 more important for the user's impression of application performance than
 other factors. But the responsiveness of the user interface relies
 mainly on the ability of the application to process events, an ability
-that is much limited in case the application is executing processing
+that is much limited if the application is executing processing
 power expensive, lengthy operations. This leads, for example, to delayed
-or sluggish processing of necessary paint events. Even if this does not
-at all influence the total time necessary to perform the operation the
+or sluggish processing of necessary paint events. Even if this does not influence the total time necessary to perform the operation the
 user requested, is is annoying and not state of the art.
 
 There are different approaches to solve this issue. The crudest one
@@ -26,8 +25,8 @@ may be to process single or multiple events while performing a lengthy
 operation, which may or may not work sufficiently, but is at least sure
 to ruin all efforts of Separation of Concerns. Concerns can simply not
 be separated if the developer has to intermingle instructions with event
-handling where he does not even know about the kind of events that are
-processed.
+handling where the kind of events that are
+processed are not known in advance.
 
 Another approach is to use event-controlled asynchronous
 operations. This is sufficient in most cases, but still causes a number
@@ -40,8 +39,8 @@ suspended. The I/O subsystem may be so busy that transfering 2 kByte may
 take a couple of seconds.
 
 Processing events in objects that are executed in other threads is
-another approach. It has it's own issues that come with parallel
-programming, but it makes sure the main event loop returns as soon as
+another approach. There are other issues that come with parallel
+programming, but it does ensure the main event loop returns as soon as
 possible. Usually this approach is combined with a state pattern to
 synchronize the GUI with the threaded event processing.
 
@@ -52,8 +51,8 @@ ThreadWeaver library provides the means to implement multithreaded job
 oriented solutions.
 
 To create performant applications, the application designers have to
-leverage the functionality provided by the hardware platform as good as
-possible. While code optimizations only lead to so much improvement,
+leverage the functionality provided by the hardware platform as much as
+possible. While code optimizations only lead to slight improvement,
 application performance is usually determined by network and I/O
 throughput. The CPU time needed is usually negligible. At the same time,
 the different hardware subsystems usually are independent in modern
@@ -66,7 +65,7 @@ actually use the possibilities modern hardware provides, which is very
 hard to achieve in a single thread.
 
 Another very important issue is application processing
-flow. Especially GUI applications to not follow the traditional
+flow. Especially GUI applications do not follow the traditional
 imperative programming pattern. Execution flow is more network-like,
 with chunks of code that depend on others to finish processing before
 they can touch their data. Tools to represent those
@@ -82,14 +81,14 @@ performance and scalability in different real-life scenarios.
 
 The more tasks are handled in parallel, the more memory is
 necessary. There is a permanent CPU - memory tradeoff which limits the
-number of parallel operations to the extend where memory that needs to
+number of parallel operations to the extent where memory that needs to
 be swapped in and out slows down the operations. Therefore memory usage
 needs to be equalized to allow the processors to operate without being
 slowed down. This means parallel operations need to be scheduled to a
 limit to balance CPU and memory usage. ThreadWeaver provides the means
-for that.
+to do that.
 
-In general, ThreadWeaver tries to make to task of creating
+In general, ThreadWeaver tries to make the task of creating
 multithreaded, performant applications as simple as
 possible. Programmers should be relieved of synchronization, execution
 dependendancy and load balancing issues as much as possible. The API
