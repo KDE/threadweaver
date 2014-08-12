@@ -32,7 +32,7 @@ using namespace ThreadWeaver;
 //@@snippet_begin(sample-helloworldraw-class)
 class QDebugJob : public Job {
 public:
-    QDebugJob(const char* message) : m_message(message) {}
+    QDebugJob(const char* message = 0) : m_message(message) {}
 protected:
     void run(JobPointer, Thread*) {
         qDebug() << m_message;
@@ -47,10 +47,10 @@ int main(int argc, char** argv)
 {
     QCoreApplication app(argc, argv);
     // Allocate jobs as local variables:
-    QDebugJob j1("Hello World!");
-    QDebugJob j2("This is ThreadWeaver!");
-    QDebugJob j3("I am talking to you!");
-    QDebugJob j4("Four sentences at a time!");
+    QDebugJob j1("Hello");
+    QDebugJob j2("World!");
+    QDebugJob j3("This is...");
+    JobPointer j4(new QDebugJob("ThreadWeaver!"));
     // Queue the Job using the default Queue stream:
     stream() << j1 << j2 << j3 << j4;
     // Wait for finish(), because job is destroyed before the global queue:
