@@ -49,10 +49,9 @@ int main(int argc, char** argv)
     // Allocate jobs as local variables:
     QDebugJob j1("Hello");
     QDebugJob j2("World!");
-    QDebugJob j3("This is...");
-    JobPointer j4(new QDebugJob("ThreadWeaver!"));
+    JobPointer j3(new QDebugJob("This is..."));    
     // Queue the Job using the default Queue stream:
-    stream() << j1 << j2 << j3 << j4;
+    stream() << j1 << j2 << j3 << new QDebugJob("ThreadWeaver!");
     // Wait for finish(), because job is destroyed before the global queue:
     Queue::instance()->finish();
 }

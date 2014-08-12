@@ -1,4 +1,4 @@
-# Hello World! with queueing multiple jobs
+## Hello World! with queueing multiple jobs
 
 The first example showed nothing that would have required multiple
 threads to print _Hello World!_, and also did not mention anything
@@ -18,7 +18,7 @@ over to the queue stream, and no reference to it is kept by
 The queue will process the job and forget about it when it
 has been completed. It will then definitely get deleted automatically,
 even though the programmer does not necessarily know when exactly. It
-could happen (and in the case of ThreadWeaver jobs) commonly does
+could happen (and in the case of ThreadWeaver jobs commonly does)
 deeply in the bowels of Qt event handling when the last event holding
 a reference to the job gets destroyed. The gist of it is that from the
 programmers point of view, it is not necessary to keep a reference to
@@ -45,3 +45,19 @@ else that waddles and quacks like a job, before being queued. How this
 works will be explained later, what is important to keep in mind for
 now is not to assume to always find `this` in the queue. 
 
+@@snippet(HelloWorldRaw/HelloWorldRaw.cpp,sample-helloworldraw-main,cpp)
+
+This time, in the `main()` function, four jobs in total will be
+allocated. Two of them as local variables (j1 and j2), one (j3)
+dynamically and saved in a `JobPointer`, and one allocated with new
+directly when queueing into the `stream()`.
+All of them are then queued up for execution in one single
+command. Wait, what? Right. Local variables, job pointers and raw
+pointers are queued the same way and may be mixed and matched using
+the stream operators. When a local variable is queued, a special
+shared pointer will be used to hold it which does not delete the
+object when the reference count reaches zero. A `JobPointer` is simply
+a shared pointer. A raw pointer will be considered a new object and
+automatically wrapped in a shared pointer and deleted when it goes out
+of scope. Before executing the program, think about what you expect
+the program to print. 
