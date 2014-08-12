@@ -55,8 +55,8 @@ int main(int argc, char** argv)
     stream() << j1 << j2 // local variables
 	     << j3 // a shared pointer
 	     << j4; // a raw pointer
-    // Wait for finish(), because job is destroyed before 
-    // the global queue:
+    // Wait for finish(), because job is destroyed
+    // before the global queue:
     Queue::instance()->finish();
 }
 //@@snippet_end

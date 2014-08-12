@@ -49,8 +49,8 @@ now is not to assume to always find `this` in the queue.
 
 This time, in the `main()` function, four jobs in total will be
 allocated. Two of them as local variables (j1 and j2), one (j3)
-dynamically and saved in a `JobPointer`, and one allocated with new
-directly when queueing into the `stream()`.
+dynamically and saved in a `JobPointer`, and finally j4 allocated on
+the heap with `new`. 
 All of them are then queued up for execution in one single
 command. Wait, what? Right. Local variables, job pointers and raw
 pointers are queued the same way and may be mixed and matched using
@@ -59,8 +59,13 @@ shared pointer will be used to hold it which does not delete the
 object when the reference count reaches zero. A `JobPointer` is simply
 a shared pointer. A raw pointer will be considered a new object and
 automatically wrapped in a shared pointer and deleted when it goes out
-of scope. Before executing the program, think about what you expect
-it to print. 
+of scope. Even though three different kinds of objects are handed over
+to the stream, in all three cases the programmer does not need to put
+special consideration into memory management and the object life
+cycles. 
+
+Now before executing the program, think about what you expect it to
+print. 
 
 ~~~~
 World!
@@ -81,15 +86,15 @@ between them or aggregating multiple jobs into collections or
 sequences. More on that later. 
 
 Before the end of `main()`, the application will block and wait for
-the queue to finish all jobs. This was unnecessary in the first
+the queue to finish all jobs. This was not needed in the first
 HelloWorld example, so why is it necessary here? As explained there,
 the global queue will be destroyed when the `QCoreApplication` object
 is destroyed. If `main()` would exit before j1 and j2 have been
-executed, it's local variables would be destroyed. In the destructor
-of `QCoreApplication` the queue would wait to finish all jobs, and try
-to execute j1 and j2, which have already been destructed. Mayhem would
-ensue. When using local variables as jobs, make sure that they have
-been completed before destroying them. The `finish()` method of the
-queue guarantees that it no more holds references to any jobs that
-have been executed.
+executed, it's local variables including j1 and j2 would be
+destroyed. In the destructor of `QCoreApplication` the queue would
+wait to finish all jobs, and try to execute j1 and j2, which have
+already been destructed. Mayhem would ensue. When using local
+variables as jobs, make sure that they have been completed before
+destroying them. The `finish()` method of the queue guarantees that it
+no more holds references to any jobs that have been executed.
 
