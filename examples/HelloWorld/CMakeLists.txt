@@ -19,7 +19,8 @@ endif()
 ##@@snippet_begin(adding_tw_3)
 # Define the project name
 project(HelloWorld)
-# Add the HelloWorld executable and link the ThreadWeaver library to it
+# Add the HelloWorld executable and link the ThreadWeaver
+# library to it
 add_executable(ThreadWeaver_HelloWorld HelloWorld.cpp)
 target_link_libraries(ThreadWeaver_HelloWorld KF5::ThreadWeaver)
 ##@@snippet_end
