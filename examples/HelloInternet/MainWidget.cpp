@@ -27,9 +27,9 @@ void MainWidget::resizeEvent(QResizeEvent *)
     m_image->setGeometry(0, 0, width(), height());
     m_caption->move(0, 0);
     m_caption->setFixedWidth(width());
-    m_caption->setFixedHeight(2 * m_caption->sizeHint().height());
+    m_caption->setFixedHeight(qMax(m_caption->sizeHint().height(), height()/3));
     m_status->setFixedWidth(width());
-    m_status->setFixedHeight(m_status->sizeHint().height());
+    m_status->setFixedHeight(qMax(m_status->sizeHint().height(), height()/9));
     m_status->move(0, height()-m_status->height());
 }
 
