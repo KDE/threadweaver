@@ -68,9 +68,3 @@ The Job class in the ThreadWeaver library itself contains such a helper class
 that can be used as a reference for this approach.
 
 
-## Links
-
-- Home page: <https://projects.kde.org/projects/frameworks/threadweaver>
-- Mailing list: <https://mail.kde.org/mailman/listinfo/kde-frameworks-devel>
-- IRC channel: \#kde-devel on Freenode
-- Git repository: <https://projects.kde.org/projects/frameworks/threadweaver/repository>
