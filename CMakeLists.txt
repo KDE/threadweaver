@@ -38,6 +38,7 @@ add_subdirectory(autotests)
 add_subdirectory(benchmarks)
 add_subdirectory(examples/HelloWorld)
 add_subdirectory(examples/HelloWorldRaw)
+add_subdirectory(examples/HelloInternet)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${CMAKECONFIG_INSTALL_PREFIX}/KF5ThreadWeaver")

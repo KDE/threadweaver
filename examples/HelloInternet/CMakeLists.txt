@@ -1,0 +1,19 @@
+# Project name
+project(HelloInternet)
+find_package(Qt5 COMPONENTS Core Network Xml Widgets REQUIRED)
+# Find includes in corresponding build directories
+set(CMAKE_INCLUDE_CURRENT_DIR ON)
+# Instruct CMake to run moc automatically when needed
+set(CMAKE_AUTOMOC ON)
+QT5_ADD_RESOURCES(helloInternet_RESOURCES_RCC HelloInternetResources.qrc)
+# Add the SequenceDemo executable and link the ThreadWeaver framework:
+add_executable(ThreadWeaver_HelloInternet
+    main.cpp
+    MainWidget.cpp
+    ${helloInternet_RESOURCES_RCC}
+)
+
+qt5_use_modules(ThreadWeaver_HelloInternet Core Network Xml Widgets)
+qt5_wrap_ui(ui_MainWidget.h MainWidget.ui)
+target_link_libraries(ThreadWeaver_HelloInternet KF5::ThreadWeaver)
+
