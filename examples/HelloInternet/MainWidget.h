@@ -3,6 +3,7 @@
 
 #include <QWidget>
 #include <QLabel>
+#include <QImage>
 
 class MainWidget : public QWidget
 {
@@ -14,6 +15,11 @@ public:
 
 protected:
     void resizeEvent(QResizeEvent *);
+
+public Q_SLOTS:
+    void setImage(QImage image);
+    void setCaption(QString text);
+    void setStatus(QString text);
 
 private:
     QLabel* m_image;

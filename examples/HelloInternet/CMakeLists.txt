@@ -10,6 +10,7 @@ QT5_ADD_RESOURCES(helloInternet_RESOURCES_RCC HelloInternetResources.qrc)
 add_executable(ThreadWeaver_HelloInternet
     main.cpp
     MainWidget.cpp
+    ViewController.cpp
     ${helloInternet_RESOURCES_RCC}
 )
 
