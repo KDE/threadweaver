@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QUrl>
+#include <QByteArray>
 
 class MainWidget;
 
@@ -21,6 +22,9 @@ Q_SIGNALS:
 private:
     void loadPlaceholderFromResource();
     void loadPostFromTumblr();
+    void loadImageFromTumblr();
+
+    QByteArray download(const QUrl& url);
 
     QUrl m_imageUrl;
 };

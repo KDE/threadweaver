@@ -12,7 +12,8 @@ MainWidget::MainWidget(QWidget *parent)
     setFixedSize(800, 450);
     //set style sheet for the text labels:
     m_caption->setContentsMargins(9, 9, 9, 9);
-    m_caption->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 200); font: 14pt \"Serif\";"));
+    m_caption->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
+    m_caption->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 200); font: italic 18pt \"Sans Serif\";"));
     m_status->setContentsMargins(9, 9, 9, 9);
     m_status->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 200); font: 10pt \"Sans Serif\";"));
 }
@@ -26,6 +27,7 @@ void MainWidget::resizeEvent(QResizeEvent *)
     m_image->setGeometry(0, 0, width(), height());
     m_caption->move(0, 0);
     m_caption->setFixedWidth(width());
+    m_caption->setFixedHeight(2 * m_caption->sizeHint().height());
     m_status->setFixedWidth(width());
     m_status->setFixedHeight(m_status->sizeHint().height());
     m_status->move(0, height()-m_status->height());
