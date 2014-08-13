@@ -17,6 +17,8 @@ Q_SIGNALS:
     void setCaption(QString text);
     void setStatus(QString text);
 
+private:
+    void loadPlaceholderFromResource();
 };
 
 #endif // VIEWCONTROLLER_H
