@@ -2,6 +2,7 @@
 #define VIEWCONTROLLER_H
 
 #include <QObject>
+#include <QUrl>
 
 class MainWidget;
 
@@ -19,6 +20,9 @@ Q_SIGNALS:
 
 private:
     void loadPlaceholderFromResource();
+    void loadPostFromTumblr();
+
+    QUrl m_imageUrl;
 };
 
 #endif // VIEWCONTROLLER_H

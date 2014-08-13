@@ -1,3 +1,4 @@
+#include <QThread>
 #include <QPixmap>
 
 #include "MainWidget.h"
@@ -32,6 +33,7 @@ void MainWidget::resizeEvent(QResizeEvent *)
 
 void MainWidget::setImage(QImage image)
 {
+    Q_ASSERT(thread() == QThread::currentThread());
     m_image->setPixmap(QPixmap::fromImage(image));
 }
 
