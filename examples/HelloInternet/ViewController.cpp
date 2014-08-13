@@ -17,6 +17,8 @@
 
 ViewController::ViewController(MainWidget *mainwidget)
     : QObject() // no parent
+    , m_apiPostUrl(QStringLiteral("http://fickedinger.tumblr.com/api/read?post=94635924143&num=1"))
+    , m_fullPostUrl(QStringLiteral("http://fickedinger.tumblr.com/post/94635924143/hello-developers-have-fun-using-the-kde"))
 {
     connect(this, SIGNAL(setImage(QImage)), mainwidget, SLOT(setImage(QImage)));
     connect(this, SIGNAL(setCaption(QString)), mainwidget, SLOT(setCaption(QString)));
@@ -49,8 +51,7 @@ void ViewController::loadPlaceholderFromResource()
 
 void ViewController::loadPostFromTumblr()
 {
-    const QUrl url(QStringLiteral
-                   ("http://fickedinger.tumblr.com/api/read?post=94635924143&num=1"));
+    const QUrl url(m_apiPostUrl);
 
     auto const data = download(url);
     emit setStatus(tr("Post downloaded..."));
@@ -86,7 +87,7 @@ void ViewController::loadImageFromTumblr()
     const QImage image=QImage::fromData(data);
     if (!image.isNull()) {
         emit setImage(image);
-        emit setStatus(tr("Download complete."));
+        emit setStatus(tr("Download complete (see %1).").arg(m_fullPostUrl));
     } else {
         throw ThreadWeaver::JobFailed(tr("Image format error!"));
     }

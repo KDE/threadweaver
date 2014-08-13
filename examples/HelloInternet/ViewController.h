@@ -27,6 +27,8 @@ private:
     QByteArray download(const QUrl& url);
 
     QUrl m_imageUrl;
+    const QString m_apiPostUrl;
+    const QString m_fullPostUrl;
 };
 
 #endif // VIEWCONTROLLER_H
