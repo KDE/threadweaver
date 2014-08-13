@@ -3,11 +3,13 @@
 #include "MainWidget.h"
 #include "ViewController.h"
 
+//@@snippet_begin(hellointernet-main)
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
     MainWidget w;
-    w.show();
     ViewController v(&w);
+    w.show();
     a.exec();
 }
+//@@snippet_end

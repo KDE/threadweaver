@@ -10,7 +10,6 @@
 
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/Exception>
-//#include <threadweaver/DebuggingAids.h>
 
 #include "ViewController.h"
 #include "MainWidget.h"
@@ -19,12 +18,15 @@ ViewController::ViewController(MainWidget *mainwidget)
     : QObject() // no parent
     , m_apiPostUrl(QStringLiteral("http://fickedinger.tumblr.com/api/read?post=94635924143&num=1"))
     , m_fullPostUrl(QStringLiteral("http://fickedinger.tumblr.com/post/94635924143/hello-developers-have-fun-using-the-kde"))
+//@@snippet_begin(hellointernet-sequence)
 {
-    connect(this, SIGNAL(setImage(QImage)), mainwidget, SLOT(setImage(QImage)));
-    connect(this, SIGNAL(setCaption(QString)), mainwidget, SLOT(setCaption(QString)));
-    connect(this, SIGNAL(setStatus(QString)), mainwidget, SLOT(setStatus(QString)));
+    connect(this, SIGNAL(setImage(QImage)), 
+	    mainwidget, SLOT(setImage(QImage)));
+    connect(this, SIGNAL(setCaption(QString)), 
+	    mainwidget, SLOT(setCaption(QString)));
+    connect(this, SIGNAL(setStatus(QString)),
+	    mainwidget, SLOT(setStatus(QString)));
 
-    //ThreadWeaver::setDebugLevel(true, 3);
     using namespace ThreadWeaver;
     auto s = new Sequence;
     *s << make_job( [=]() { loadPlaceholderFromResource(); } )
@@ -32,19 +34,23 @@ ViewController::ViewController(MainWidget *mainwidget)
        << make_job( [=]() { loadImageFromTumblr(); } );
     stream() << s;
 }
+//@@snippet_end
 
 ViewController::~ViewController()
 {
     ThreadWeaver::Queue::instance()->finish();
 }
 
+//@@snippet_begin(hellointernet-loadresource)
 void ViewController::loadPlaceholderFromResource()
 {
     QThread::msleep(500);
     showResourceImage("IMG_20140813_004131.png");
     emit setStatus(tr("Downloading post..."));
 }
+//@@snippet_end
 
+//@@snippet_begin(hellointernet-loadpost)
 void ViewController::loadPostFromTumblr()
 {
     const QUrl url(m_apiPostUrl);
@@ -54,7 +60,7 @@ void ViewController::loadPostFromTumblr()
 
     QDomDocument doc;
     if (!doc.setContent(data)) {
-        return;
+        error(tr("Post format not recognized!"));
     }
 
     auto textOfFirst = [&doc](const char* name) {
@@ -78,6 +84,7 @@ void ViewController::loadPostFromTumblr()
     emit setStatus(tr("Downloading image..."));
     QThread::msleep(500);
 }
+//@@snippet_end
 
 void ViewController::loadImageFromTumblr()
 {
@@ -111,6 +118,7 @@ QByteArray ViewController::download(const QUrl &url)
     }
 }
 
+//@@snippet_begin(hellointernet-error)
 void ViewController::error(const QString &message)
 {
     showResourceImage("IMG_20140813_004131-colors-cubed.png");
@@ -118,6 +126,7 @@ void ViewController::error(const QString &message)
     emit setStatus(tr("%1").arg(message));
     throw ThreadWeaver::JobFailed(message);
 }
+//@@snippet_end
 
 void ViewController::showResourceImage(const char* file)
 {
