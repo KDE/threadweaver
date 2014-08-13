@@ -11,10 +11,10 @@ MainWidget::MainWidget(QWidget *parent)
 {
     setFixedSize(800, 450);
     //set style sheet for the text labels:
-    m_caption->setContentsMargins(9, 9, 9, 9);
+    m_caption->setContentsMargins(18, 9, 9, 9);
     m_caption->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_caption->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 200); font: italic 18pt \"Sans Serif\";"));
-    m_status->setContentsMargins(9, 9, 9, 9);
+    m_status->setContentsMargins(18, 9, 9, 9);
     m_status->setStyleSheet(QStringLiteral("background-color: rgba(255, 255, 255, 200); font: 10pt \"Sans Serif\";"));
 }
 

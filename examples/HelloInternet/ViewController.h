@@ -25,6 +25,8 @@ private:
     void loadImageFromTumblr();
 
     QByteArray download(const QUrl& url);
+    void error(const QString& message);
+    void showResourceImage(const char* file);
 
     QUrl m_imageUrl;
     const QString m_apiPostUrl;

@@ -26,11 +26,11 @@ ViewController::ViewController(MainWidget *mainwidget)
 
     //ThreadWeaver::setDebugLevel(true, 3);
     using namespace ThreadWeaver;
-    auto sequence = new Sequence;
-    *sequence << make_job( [=]() { loadPlaceholderFromResource(); } )
-              << make_job( [=]() { loadPostFromTumblr(); } )
-              << make_job( [=]() { loadImageFromTumblr(); } );
-    stream() << sequence;
+    auto s = new Sequence;
+    *s << make_job( [=]() { loadPlaceholderFromResource(); } )
+       << make_job( [=]() { loadPostFromTumblr(); } )
+       << make_job( [=]() { loadImageFromTumblr(); } );
+    stream() << s;
 }
 
 ViewController::~ViewController()
@@ -40,12 +40,8 @@ ViewController::~ViewController()
 
 void ViewController::loadPlaceholderFromResource()
 {
-    QThread::msleep(1000);
-    auto const path = QStringLiteral("://resources/IMG_20140813_004131.png");
-    Q_ASSERT(QFile::exists(path));
-    const QImage i(path);
-    Q_ASSERT(!i.isNull());
-    emit setImage(i);
+    QThread::msleep(500);
+    showResourceImage("IMG_20140813_004131.png");
     emit setStatus(tr("Downloading post..."));
 }
 
@@ -61,23 +57,26 @@ void ViewController::loadPostFromTumblr()
         return;
     }
 
-    auto textOfFirst = [&doc](const QString& name) {
-        auto elements = doc.elementsByTagName(name);
+    auto textOfFirst = [&doc](const char* name) {
+        auto const s = QString::fromLatin1(name);
+        auto elements = doc.elementsByTagName(s);
         if (elements.isEmpty()) return QString();
         return elements.at(0).toElement().text();
     };
 
-    auto const caption = textOfFirst(QStringLiteral("photo-caption"));
+    auto const caption = textOfFirst("photo-caption");
     if (caption.isEmpty()) {
-        throw ThreadWeaver::JobFailed(tr("Post does not contain a caption!"));
+        error(tr("Post does not contain a caption!"));
     }
     emit setCaption(caption);
-    auto const imageUrl = textOfFirst(QStringLiteral("photo-url"));
+    auto const imageUrl = textOfFirst("photo-url");
     if (imageUrl.isEmpty()) {
-        throw ThreadWeaver::JobFailed(tr("Post does not contain an image!"));
+        error(tr("Post does not contain an image!"));
     }
     m_imageUrl = QUrl(imageUrl);
+    showResourceImage("IMG_20140813_004131-colors-cubed.png");
     emit setStatus(tr("Downloading image..."));
+    QThread::msleep(500);
 }
 
 void ViewController::loadImageFromTumblr()
@@ -87,9 +86,10 @@ void ViewController::loadImageFromTumblr()
     const QImage image=QImage::fromData(data);
     if (!image.isNull()) {
         emit setImage(image);
-        emit setStatus(tr("Download complete (see %1).").arg(m_fullPostUrl));
+        emit setStatus(tr("Download complete (see %1).")
+                       .arg(m_fullPostUrl));
     } else {
-        throw ThreadWeaver::JobFailed(tr("Image format error!"));
+        error(tr("Image format error!"));
     }
 }
 
@@ -97,13 +97,34 @@ QByteArray ViewController::download(const QUrl &url)
 {
     QNetworkAccessManager manager;
     QEventLoop loop;
-    QObject::connect(&manager, SIGNAL(finished(QNetworkReply*)), &loop, SLOT(quit()));
+    QObject::connect(&manager, SIGNAL(finished(QNetworkReply*)),
+                     &loop, SLOT(quit()));
     auto reply = manager.get(QNetworkRequest(url));
     loop.exec();
     if (reply->error() == QNetworkReply::NoError) {
         const QByteArray data = reply->readAll();
         return data;
     } else {
-        throw ThreadWeaver::JobFailed(tr("Unable to download data for \"%1\"!").arg(url.toString()));
+        error(tr("Unable to download data for \"%1\"!").
+              arg(url.toString()));
+        return QByteArray();
     }
+}
+
+void ViewController::error(const QString &message)
+{
+    showResourceImage("IMG_20140813_004131-colors-cubed.png");
+    emit setCaption(tr("Error"));
+    emit setStatus(tr("%1").arg(message));
+    throw ThreadWeaver::JobFailed(message);
+}
+
+void ViewController::showResourceImage(const char* file)
+{
+    const QString path(QStringLiteral("://resources/%1")
+                       .arg(QString::fromLatin1(file)));
+    Q_ASSERT(QFile::exists(path));
+    const QImage i(path);
+    Q_ASSERT(!i.isNull());
+    emit setImage(i);
 }
