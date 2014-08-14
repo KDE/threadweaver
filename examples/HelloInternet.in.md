@@ -138,4 +138,6 @@ between the sequential operations, how to submit data and status
 information back to the user interface, and how to signal error
 conditions from job execution.
 
+![Hello Internet](screenshots/HelloInternet.png "The HelloInternet example, after downloading the post")
+
 [^4]: See `examples/HelloInternet` in the ThreadWeaver repository.
