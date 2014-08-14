@@ -2,15 +2,15 @@
 
 The first example showed nothing that would have required multiple
 threads to print _Hello World!_, and also did not mention anything
-about when jobs get deleted. Object life span is of course one of the
-crucial questions when programming in C++. So of what type is the
+about at what time jobs get deleted. Object life span is of course a
+crucial questions when programming in C++. So of what type is the 
 value that is returned by `make_job` in the first example? 
 
 The returned object is of type `JobPointer`, which is a
 `QSharedPointer` to `Job`. When `make_job` is executed, it allocates a
 `Job` that will later execute the C++ lambda function, and then embeds
 it into a shared pointer. Shared pointers count references to the
-object pointer they are representing, and delete the object when the
+object pointer they represent, and delete the object when the
 last reference to it is destroyed. In a way, they are single-object
 garbage collectors. In the example, the new job is immediately handed
 over to the queue stream, and no reference to it is kept by
@@ -35,22 +35,23 @@ could implement a custom job class.
 
 The `QDebugJob` class simply prints a message to `qDebug()` when it is
 executed. To implement such a custom job class, it is inherited from
-`Job`. By overloading the `run()` method, the "payload", the operation
-performed by the job, is being defined. The parameters to the run
-method are the job as the queue sees it, and the thread that is
-executing the job. The first parameter may be surprising. The reason
-that there may be a difference between the job that the queue sees and
-`this` is that jobs may be decorated, that means wrapped in something
-else that waddles and quacks like a job, before being queued. How this
-works will be explained later, what is important to keep in mind for
-now is not to assume to always find `this` in the queue. 
+`ThreadWeaver::Job`. By overloading the `run()` method, the "payload",
+the operation performed by the job, is being defined. The parameters
+to the run method are the job as the queue sees it, and the thread
+that is executing the job. The first parameter may be surprising. The
+reason that there may be a difference between the job that the queue
+sees and `this` is that jobs may be decorated, that means wrapped in
+something else that waddles and quacks like a job, before being
+queued. How this works will be explained later, what is important to
+keep in mind for now is not to assume to always find `this` in the
+queue.
 
 @@snippet(HelloWorldRaw/HelloWorldRaw.cpp,sample-helloworldraw-main,cpp)
 
 This time, in the `main()` function, four jobs in total will be
 allocated. Two of them as local variables (j1 and j2), one (j3)
-dynamically and saved in a `JobPointer`, and finally j4 allocated on
-the heap with `new`. 
+dynamically and saved in a `JobPointer`, and finally j4 is allocated
+on the heap with `new`. 
 All of them are then queued up for execution in one single
 command. Wait, what? Right. Local variables, job pointers and raw
 pointers are queued the same way and may be mixed and matched using
@@ -64,8 +65,8 @@ to the stream, in all three cases the programmer does not need to put
 special consideration into memory management and the object life
 cycles. 
 
-Now before executing the program, think about what you expect it to
-print. 
+Now before executing the program, pause for a minute and think about
+what you expect it to print. 
 
 ~~~~
 World!
@@ -76,7 +77,7 @@ ThreadWeaver!
 
 Four jobs are being queued all at the same time, that is when the
 `stream()` statement closes. Assuming there is more than one worker
-thread, the order of execution of the jobs is undefined. The string
+thread, the order of execution of the jobs is undefined. The strings
 will be printed in arbitrary order. In case this comes as a surprise,
 it is important to keep in mind that by default, there is no relation
 between jobs that defines their execution order. This behaviour is in
