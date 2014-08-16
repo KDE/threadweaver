@@ -16,7 +16,7 @@
 
 ViewController::ViewController(MainWidget *mainwidget)
     : QObject() // no parent
-    , m_apiPostUrl(QStringLiteral("http://fickedinger.tumblr.com/api/read?post=94635924143&num=1"))
+    , m_apiPostUrl(QStringLiteral("http://fickedinger.tumblr.com/api/read?id=94635924143"))
     , m_fullPostUrl(QStringLiteral("http://fickedinger.tumblr.com/post/94635924143/hello-developers-have-fun-using-the-kde"))
 //@@snippet_begin(hellointernet-sequence)
 {
