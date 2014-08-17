@@ -55,7 +55,7 @@ be done in order, not in parallel.
 The important aspect is to do as little as possible in the
 constructor, considering that it is called from the main
 thread. Creating jobs and queueing them is not expensive however, so
-the constructor focuses on that.
+the constructor focuses on that and then returns.
 
 @@snippet(HelloInternet/ViewController.cpp,hellointernet-sequence,cpp)
 
@@ -78,10 +78,11 @@ controller submits new captions, statuses and images to the main
 widget. It would be a mistake to simply call member functions of the
 main widget from the methods of `ViewController`, since these are
 executed from a worker thread. The controller submits update by using
-Qt signals that are connected to respective slots in the main
+Qt signals that are connected to corresponding slots in the main
 widget. The parameters of the signals are passed by value, not by
 reference or pointers, making use of the implicit sharing built into
-Qt to avoid copying. 
+Qt to avoid copying. This approach relies on the fact that the
+reference counting of Qt's implicit-sharing mechanism is thread safe. 
 
 @@snippet(HelloInternet/ViewController.cpp,hellointernet-loadresource,cpp)
 
@@ -93,8 +94,8 @@ already appear to the user, with a blank background. It then emits a
 signal to make the main widget show a status message that indicates
 the program is downloading the post. 
 
-The method is being called by a worker thread, not the main
-thread. When the signal is emitted, Qt notices that sender and
+The method is called from the worker thread that executes the job, not
+the main thread. When the signal is emitted, Qt notices that sender and
 receiver are not in the same thread at the time, and sends the signal
 asynchroneously. The receiver will not be called from the thread
 executing `loadPlaceholderFromResource()`, instead it will be invoked
@@ -108,9 +109,9 @@ job of the sequence will be unlocked. This causes the method
 `loadPostFromTumblr()` to be executed by a worker thread. This method
 illustrates the convenience built into Qt to process data present in
 Open Standard formats (XML, in this case), even though this won't be
-discussed here in detail. If processing that data turns out to be
+discussed here in detail.[^5] If processing the data turns out to be
 expensive, the user interface will not be blocked by it, since it
-won't be performed by the main thread.
+is not performed by the main thread.
 
 @@snippet(HelloInternet/ViewController.cpp,hellointernet-loadpost,cpp)
 
@@ -129,15 +130,22 @@ executing the current job. The worker thread sets the status of
 the job to a failed state. Specific to sequences (because only
 sequences know the order of the execution of their elements), this
 will cause the sequence to abort the execution of it's remaining
-elements.
+elements. Raising the exception will abort the processing of the job,
+but not terminate the worker thread. Leaking any other type of
+exception than `ThreadWeaver::Exception` from the `run()` method of a
+job is considered a runtime error. The exception will not be caught by
+the worker thread, and the application will terminate. 
 
-The example isslustrates the steps necessary to perform concurrent
-operations in a certain order. It also illustrates how a specialized
+The example illustrates the steps necessary to perform concurrent
+operations in a certain order. It also shows how a specialized
 object (`ViewController`, in this case) can handle the data shared
 between the sequential operations, how to submit data and status
 information back to the user interface, and how to signal error
 conditions from job execution.
 
-![Hello Internet](screenshots/HelloInternet.png "The HelloInternet example, after downloading the post")
+![Hello Internet](screenshots/HelloInternet.png "The HelloInternet
+ example, after downloading the post") 
 
 [^4]: See `examples/HelloInternet` in the ThreadWeaver repository.
+[^5]: The example uses the
+[Tumblr API version 1](https://www.tumblr.com/docs/en/api/v1). 
