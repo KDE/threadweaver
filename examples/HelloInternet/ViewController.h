@@ -6,6 +6,7 @@
 #include <QByteArray>
 
 class MainWidget;
+class QDomDocument;
 
 class ViewController : public QObject
 {
@@ -27,10 +28,11 @@ private:
     QByteArray download(const QUrl& url);
     void error(const QString& message);
     void showResourceImage(const char* file);
+    QString attributeTextFor(const QDomDocument& doc, const char* tag, const char* attribute);
 
     QUrl m_imageUrl;
     const QString m_apiPostUrl;
-    const QString m_fullPostUrl;
+    QString m_fullPostUrl;
 };
 
 #endif // VIEWCONTROLLER_H

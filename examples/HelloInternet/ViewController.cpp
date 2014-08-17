@@ -17,7 +17,6 @@
 ViewController::ViewController(MainWidget *mainwidget)
     : QObject() // no parent
     , m_apiPostUrl(QStringLiteral("http://fickedinger.tumblr.com/api/read?id=94635924143"))
-    , m_fullPostUrl(QStringLiteral("http://fickedinger.tumblr.com/post/94635924143/hello-developers-have-fun-using-the-kde"))
 //@@snippet_begin(hellointernet-sequence)
 {
     connect(this, SIGNAL(setImage(QImage)), 
@@ -79,6 +78,11 @@ void ViewController::loadPostFromTumblr()
     if (imageUrl.isEmpty()) {
         error(tr("Post does not contain an image!"));
     }
+
+    m_fullPostUrl = attributeTextFor(doc, "post", "url-with-slug");
+    if (m_fullPostUrl.isEmpty()) {
+        error(tr("Response does not contain URL with slug!"));
+    }
     m_imageUrl = QUrl(imageUrl);
     showResourceImage("IMG_20140813_004131-colors-cubed.png");
     emit setStatus(tr("Downloading image..."));
@@ -136,4 +140,14 @@ void ViewController::showResourceImage(const char* file)
     const QImage i(path);
     Q_ASSERT(!i.isNull());
     emit setImage(i);
+}
+
+QString ViewController::attributeTextFor(const QDomDocument &doc, const char *tag, const char *attribute)
+{
+    auto const tagString = QString::fromLatin1(tag);
+    auto const attributeString = QString::fromLatin1(attribute);
+    auto elements = doc.elementsByTagName(tagString);
+    if (elements.isEmpty()) return QString();
+    const QString content = elements.at(0).toElement().attribute(attributeString);
+    return content;
 }
