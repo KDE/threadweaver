@@ -13,6 +13,7 @@ include(KDECMakeSettings)
 
 set(REQUIRED_QT_VERSION 5.2.0)
 find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
+find_package(Qt5Widgets ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
 include(FeatureSummary)
 include(GenerateExportHeader)
