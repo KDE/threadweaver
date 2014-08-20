@@ -7,6 +7,8 @@
 
 #include "Progress.h"
 
+class Model;
+
 /** @brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
 class Image
 {
@@ -22,7 +24,7 @@ public:
         Step_NumberOfSteps = Step_SaveImage
     };
 
-    Image(const QString inputFileName = QString(), const QString outputFileName = QString());
+    Image(const QString inputFileName = QString(), const QString outputFileName = QString(), Model* model = 0);
     Progress progress() const;
     const QString inputFileName() const;
     const QString outputFileName() const;
@@ -33,6 +35,8 @@ public:
     void saveThumbNail();
 
 private:
+    void announceProgress();
+
     QString m_inputFileName;
     QString m_outputFileName;
     QAtomicInt m_progress;
@@ -40,6 +44,7 @@ private:
     QByteArray m_imageData;
     QImage m_image;
     QImage m_thumbnail;
+    Model* m_model;
 };
 
 #endif // IMAGE_H

@@ -60,7 +60,6 @@ private Q_SLOTS:
                 Model model;
                 model.prepareConversions(files, temp.path());
                 QVERIFY(model.computeThumbNailsBlockingConcurrent());
-                qDebug() << "Overall progress:" << model.progress().first << "/" << model.progress().second;
             }
         }
     }

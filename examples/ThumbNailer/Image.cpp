@@ -4,10 +4,12 @@
 #include <ThreadWeaver/Exception>
 
 #include "Image.h"
+#include "Model.h"
 
-Image::Image(const QString inputFileName, const QString outputFileName)
+Image::Image(const QString inputFileName, const QString outputFileName, Model *model)
     : m_inputFileName(inputFileName)
     , m_outputFileName(outputFileName)
+    , m_model(model)
 {
 }
 
@@ -34,6 +36,7 @@ void Image::loadFile()
     }
     m_imageData = file.readAll();
     m_progress.storeRelease(1);
+    announceProgress();
 }
 
 void Image::loadImage()
@@ -42,12 +45,14 @@ void Image::loadImage()
         throw ThreadWeaver::Exception(tr("Unable to parse image data!"));
     }
     m_progress.storeRelease(2);
+    announceProgress();
 }
 
 void Image::computeThumbNail()
 {
     m_thumbnail = m_image.scaled(160, 100,  Qt::KeepAspectRatioByExpanding);
     m_progress.storeRelease(3);
+    announceProgress();
 }
 
 void Image::saveThumbNail()
@@ -56,4 +61,10 @@ void Image::saveThumbNail()
         throw ThreadWeaver::Exception(tr("Unable to save output file!"));
     }
     m_progress.storeRelease(4);
+    announceProgress();
+}
+
+void Image::announceProgress()
+{
+    if (m_model) m_model->progressChanged();
 }

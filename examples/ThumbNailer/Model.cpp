@@ -23,8 +23,8 @@ void Model::prepareConversions(const QFileInfoList &filenames, const QString &ou
     Q_ASSERT(m_images.isEmpty());
     m_images.resize(filenames.size());
     auto initializeImage = [=] (const QFileInfo& file) {
-        return Image(file.absoluteFilePath(),
-                     QFileInfo(outputDirectory, file.fileName()).absoluteFilePath());
+        auto const out = QFileInfo(outputDirectory, file.fileName()).absoluteFilePath();
+        return Image(file.absoluteFilePath(), out, this);
     };
     transform(filenames.begin(), filenames.end(), m_images.begin(), initializeImage);
 }
@@ -77,5 +77,12 @@ Progress Model::progress() const
     auto const soFar = accumulate(m_images.begin(), m_images.end(),
                                   Progress(), sumItUp);
     return soFar;
+}
+
+void Model::progressChanged()
+{
+    //NI (will be used once this becomes a list model
+    auto const p = progress();
+    qDebug() << Q_FUNC_INFO << p.first << "/" << p.second;
 }
 

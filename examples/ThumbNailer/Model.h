@@ -19,6 +19,7 @@ public:
     bool computeThumbNailsBlockingInLoop();
     bool computeThumbNailsBlockingConcurrent();
     Progress progress() const;
+    void progressChanged();
 
 Q_SIGNALS:
     void completed();
