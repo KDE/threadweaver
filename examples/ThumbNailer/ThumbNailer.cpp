@@ -25,12 +25,64 @@
 */
 
 #include <QtCore>
+#include <QtTest/QTest>
+#include <QFileInfoList>
+
 #include <ThreadWeaver/ThreadWeaver>
+
+#include <Model.h>
 
 using namespace ThreadWeaver;
 
+class Benchmark : public QObject
+{
+    Q_OBJECT
+private Q_SLOTS:
+    void processThumbNailsAsBenchmarkInLoop() {
+        const QFileInfoList files = images();
+        {   // create a block to avoid adding the time needed to remove the temporary
+            // directory from the file system to the measured time:
+            QTemporaryDir temp;
+            QBENCHMARK {
+                Model model;
+                model.prepareConversions(files, temp.path());
+                QVERIFY(model.computeThumbNailsBlockingInLoop());
+            }
+        }
+    }
+
+    void processThumbNailsAsBenchmarkWithThreadWeaver() {
+        const QFileInfoList files = images();
+        {   // create a block to avoid adding the time needed to remove the temporary
+            // directory from the file system to the measured time:
+            QTemporaryDir temp;
+            QBENCHMARK {
+                Model model;
+                model.prepareConversions(files, temp.path());
+                QVERIFY(model.computeThumbNailsBlockingConcurrent());
+            }
+        }
+    }
+
+private:
+    const QFileInfoList images() {
+        const QDir dir = QDir(QLatin1String("/usr/share/backgrounds"));
+        return dir.entryInfoList(QStringList() << QLatin1String("*.jpg"));
+    }
+};
+
 int main(int argc, char** argv)
 {
-    QCoreApplication app(argc, argv);
-    Queue::instance()->finish();
+    if (true) {
+        // benchmark mode
+        QApplication app(argc, argv);
+        Benchmark benchmark;
+        return QTest::qExec(&benchmark, argc, argv);
+    } else {
+        // demo mode
+        QCoreApplication app(argc, argv);
+        Queue::instance()->finish();
+    }
 }
+
+#include "ThumbNailer.moc"

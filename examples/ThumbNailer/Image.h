@@ -1,27 +1,39 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <QObject>
 #include <QImage>
+#include <QAtomicInt>
+#include <QCoreApplication>
 
 /** @brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
-class Image : public QObject
+class Image
 {
-    Q_OBJECT
+    Q_DECLARE_TR_FUNCTIONS(Image)
+
 public:
-    Image(const QString inputFileName, const QString outputFileName, QObject* parent = 0);
+    enum Steps {
+        Step_NotStarted,
+        Step_LoadFile,
+        Step_LoadImage,
+        Step_ComputeThumbNail,
+        Step_SaveImage,
+        Step_NumberOfSteps = Step_SaveImage
+    };
+
+    Image(const QString inputFileName = QString(), const QString outputFileName = QString());
+    QPair<int, int> progress() const;
+    const QString inputFileName() const;
+    const QString outputFileName() const;
 
     void loadFile();
     void loadImage();
     void computeThumbNail();
-    void saveThumbnail();
-
-Q_SIGNALS:
-    void progress(int current, int total);
+    void saveThumbNail();
 
 private:
-    const QString m_inputFileName;
-    const QString m_outputFileName;
+    QString m_inputFileName;
+    QString m_outputFileName;
+    QAtomicInt m_progress;
 
     QByteArray m_imageData;
     QImage m_image;

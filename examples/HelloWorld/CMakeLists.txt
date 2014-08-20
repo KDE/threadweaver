@@ -6,9 +6,6 @@ cmake_minimum_required(VERSION 2.8.12)
 find_package(ECM 1.1.0 REQUIRED NO_MODULE)
 ##@@snippet_end
 
-# Tell CMake we will be using C++ 11:
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
-
 if (NOT TARGET KF5ThreadWeaver)
   # Find the ThreadWeaver framework when we compiling this example stand-alone
 ##@@snippet_begin(adding_tw_2)
