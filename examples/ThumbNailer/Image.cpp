@@ -11,7 +11,7 @@ Image::Image(const QString inputFileName, const QString outputFileName)
 {
 }
 
-QPair<int, int> Image::progress() const
+Progress Image::progress() const
 {
     return qMakePair(m_progress, Step_NumberOfSteps);
 }

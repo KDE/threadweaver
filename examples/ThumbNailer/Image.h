@@ -5,6 +5,8 @@
 #include <QAtomicInt>
 #include <QCoreApplication>
 
+#include "Progress.h"
+
 /** @brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
 class Image
 {
@@ -21,7 +23,7 @@ public:
     };
 
     Image(const QString inputFileName = QString(), const QString outputFileName = QString());
-    QPair<int, int> progress() const;
+    Progress progress() const;
     const QString inputFileName() const;
     const QString outputFileName() const;
 

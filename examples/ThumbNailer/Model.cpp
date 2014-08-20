@@ -11,6 +11,8 @@
 
 #include "Model.h"
 
+using namespace std;
+
 Model::Model(QObject *parent) :
     QObject(parent)
 {
@@ -18,7 +20,6 @@ Model::Model(QObject *parent) :
 
 void Model::prepareConversions(const QFileInfoList &filenames, const QString &outputDirectory)
 {
-    using namespace std;
     Q_ASSERT(m_images.isEmpty());
     m_images.resize(filenames.size());
     auto initializeImage = [=] (const QFileInfo& file) {
@@ -64,5 +65,17 @@ bool Model::computeThumbNailsBlockingConcurrent()
         if (image.progress().first != Image::Step_NumberOfSteps) return false;
     }
     return true;
+}
+
+Progress Model::progress() const
+{
+    auto sumItUp = [](const Progress& sum, const Image& image) {
+        auto const values = image.progress();
+        return qMakePair(sum.first + values.first,
+                         sum.second + values.second);
+    };
+    auto const soFar = accumulate(m_images.begin(), m_images.end(),
+                                  Progress(), sumItUp);
+    return soFar;
 }
 
