@@ -24,14 +24,20 @@
    Boston, MA 02110-1301, USA.
 */
 
+#include <iostream>
+
 #include <QtCore>
 #include <QtTest/QTest>
 #include <QFileInfoList>
+#include <QApplication>
+#include <QCommandLineParser>
+#include <QCommandLineOption>
 
 #include <ThreadWeaver/ThreadWeaver>
 
 #include <Model.h>
 
+using namespace std;
 using namespace ThreadWeaver;
 
 class Benchmark : public QObject
@@ -73,16 +79,28 @@ private:
 
 int main(int argc, char** argv)
 {
-    if (true) {
-        // benchmark mode
-        QApplication app(argc, argv);
+    QApplication app(argc, argv);
+    QCommandLineParser parser;
+    parser.setApplicationDescription(app.translate("main", "ThreadWeaver ThumbNailer Example"));
+    parser.addHelpOption();
+    parser.addPositionalArgument(QLatin1String("mode"), QLatin1String("Benchmark or demo mode"));
+    parser.process(app);
+    const QStringList positionals = parser.positionalArguments();
+    const QString mode = positionals.isEmpty() ? QLatin1String("demo") : positionals[0];
+    if (mode == QLatin1String("benchmark")) {
         Benchmark benchmark;
-        return QTest::qExec(&benchmark, argc, argv);
-    } else {
+        const QStringList arguments = app.arguments().mid(1); // remove mode selection
+        return QTest::qExec(&benchmark, arguments);
+    } else if (mode == QLatin1String("demo")){
         // demo mode
-        QCoreApplication app(argc, argv);
+        qDebug() << "NI: demo mode";
         Queue::instance()->finish();
+    } else {
+        wcerr << "Unknown mode " << mode.toStdWString() << endl << endl;
+        parser.showHelp();
+        Q_UNREACHABLE();
     }
+    return 0;
 }
 
 #include "ThumbNailer.moc"
