@@ -1,4 +1,5 @@
-#include <algorithm>
+#include <algorithm> //for transform
+#include <numeric>   //for accumulate
 
 #include <QtDebug>
 #include <QStringList>
