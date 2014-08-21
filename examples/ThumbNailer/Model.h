@@ -15,7 +15,8 @@ public:
 
     explicit Model(QObject *parent = 0);
 
-    void prepareConversionsForBenchmark(const QFileInfoList& filenames, const QString& outputDirectory);
+    void clear();
+    void prepareConversions(const QFileInfoList& filenames, const QString& outputDirectory);
     bool computeThumbNailsBlockingInLoop();
     bool computeThumbNailsBlockingConcurrent();
 

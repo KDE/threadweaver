@@ -13,13 +13,20 @@
 #include "Model.h"
 
 using namespace std;
+using namespace ThreadWeaver;
 
 Model::Model(QObject *parent) :
     QObject(parent)
 {
 }
 
-void Model::prepareConversionsForBenchmark(const QFileInfoList &filenames, const QString &outputDirectory)
+void Model::clear()
+{
+    m_images.clear();
+    //FIXME modelReset();
+}
+
+void Model::prepareConversions(const QFileInfoList &filenames, const QString &outputDirectory)
 {
     Q_ASSERT(m_images.isEmpty());
     m_images.resize(filenames.size());
@@ -49,7 +56,6 @@ bool Model::computeThumbNailsBlockingInLoop()
 
 bool Model::computeThumbNailsBlockingConcurrent()
 {
-    using namespace ThreadWeaver;
     auto queue = stream();
     for(Image& image : m_images) {
         auto sequence = new Sequence();
@@ -70,7 +76,20 @@ bool Model::computeThumbNailsBlockingConcurrent()
 
 void Model::queueUpConversion(const QStringList &files, const QString &outputDirectory)
 {
-    //NI
+    QFileInfoList fileInfos;
+    transform(files.begin(), files.end(), back_inserter(fileInfos),
+              [](const QString& file) { return QFileInfo(file); } );
+    prepareConversions(fileInfos, outputDirectory);
+    //FIXME duplicated code
+    auto queue = stream();
+    for(Image& image : m_images) {
+        auto sequence = new Sequence();
+        *sequence << make_job( [&image]() { image.loadFile(); } );
+        *sequence << make_job( [&image]() { image.loadImage(); } );
+        *sequence << make_job( [&image]() { image.computeThumbNail(); } );
+        *sequence << make_job( [&image]() { image.saveThumbNail(); } );
+        queue << sequence;
+    }
 }
 
 Progress Model::progress() const

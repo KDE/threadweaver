@@ -16,7 +16,7 @@ void Benchmark::processThumbNailsAsBenchmarkInLoop() {
         QTemporaryDir temp;
         QBENCHMARK {
             Model model;
-            model.prepareConversionsForBenchmark(files, temp.path());
+            model.prepareConversions(files, temp.path());
             QVERIFY(model.computeThumbNailsBlockingInLoop());
         }
     }
@@ -29,7 +29,7 @@ void Benchmark::processThumbNailsAsBenchmarkWithThreadWeaver() {
         QTemporaryDir temp;
         QBENCHMARK {
             Model model;
-            model.prepareConversionsForBenchmark(files, temp.path());
+            model.prepareConversions(files, temp.path());
             QVERIFY(model.computeThumbNailsBlockingConcurrent());
         }
     }

@@ -42,6 +42,7 @@ void MainWindow::slotOpenFiles()
     if (m_outputDirectory.isNull()) {
         slotSelectOutputDirectory();
     }
+    m_model.clear();
     m_model.queueUpConversion(files, m_outputDirectory);
 }
 
