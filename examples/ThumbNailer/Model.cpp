@@ -11,6 +11,7 @@
 #include <ThreadWeaver/Exception>
 
 #include "Model.h"
+#include "PriorityDecorator.h"
 
 using namespace std;
 using namespace ThreadWeaver;
@@ -88,11 +89,16 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
     //FIXME duplicated code
     auto queue = stream();
     for(Image& image : m_images) {
+        auto loadFile = [&image]() { image.loadFile(); };
+        auto loadImage = [&image]() { image.loadImage(); };
+        auto computeThumbNail = [&image]() { image.computeThumbNail(); };
+        auto saveThumbNail = [&image]() { image.saveThumbNail(); };
         auto sequence = new Sequence();
-        *sequence << make_job( [&image]() { image.loadFile(); } );
-        *sequence << make_job( [&image]() { image.loadImage(); } );
-        *sequence << make_job( [&image]() { image.computeThumbNail(); } );
-        *sequence << make_job( [&image]() { image.saveThumbNail(); } );
+
+        *sequence << new PriorityDecorator(Image::Step_LoadFile, new Lambda<decltype(loadFile)>(loadFile))
+                  << new PriorityDecorator(Image::Step_LoadImage, new Lambda<decltype(loadImage)>(loadImage))
+                  << new PriorityDecorator(Image::Step_ComputeThumbNail, new Lambda<decltype(computeThumbNail)>(computeThumbNail))
+                  << new PriorityDecorator(Image::Step_SaveThumbNail, new Lambda<decltype(saveThumbNail)>(saveThumbNail));
         queue << sequence;
     }
 }
@@ -129,13 +135,14 @@ QVariant Model::data(const QModelIndex &index, int role) const
 {
     if (!index.isValid()) return QVariant();
     if (index.row() < 0 || index.row() >= rowCount()) return QVariant();
+    const Image& image = m_images.at(index.row());
     if (role == Qt::DisplayRole) {
-        return m_images.at(index.row()).description();
+        return image.description();
     } else if (role == Role_SortRole) {
-        if (m_images.at(index.row()).progress().first == Image::Step_NotStarted) {
-            return Image::Step_NumberOfSteps;
+        if (image.progress().first == Image::Step_NotStarted) {
+            return Image::Step_NumberOfSteps + 1;
         } else {
-            return m_images.at(index.row()).progress().first;
+            return image.progress().first;
         }
     }
     return QVariant();

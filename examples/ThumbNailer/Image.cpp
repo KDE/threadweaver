@@ -74,7 +74,7 @@ void Image::computeThumbNail()
 void Image::saveThumbNail()
 {
     if (!m_thumbnail.save(m_outputFileName)) {
-        error(Step_SaveImage, tr("Unable to save output file!"));
+        error(Step_SaveThumbNail, tr("Unable to save output file!"));
     }
     m_progress.storeRelease(4);
     announceProgress();
