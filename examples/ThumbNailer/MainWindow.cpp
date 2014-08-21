@@ -1,11 +1,15 @@
 #include <QFileDialog>
 #include <QApplication>
 #include <QCloseEvent>
-
+#include <QSettings>
+#include <QVariant>
+#include <QString>
 #include <ThreadWeaver/ThreadWeaver>
 
 #include "MainWindow.h"
 #include "ui_MainWindow.h"
+
+const QString MainWindow::Setting_OpenLocation = QLatin1String("OpenFilesLocation");
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -38,11 +42,16 @@ void MainWindow::slotProgress(int step, int total)
 
 void MainWindow::slotOpenFiles()
 {
-    auto const files = QFileDialog::getOpenFileNames(this, tr("Select images to convert"));
+    QSettings settings;
+    const QString previousLocation = settings.value(Setting_OpenLocation, QDir::homePath()).toString();
+    auto const files = QFileDialog::getOpenFileNames(this, tr("Select images to convert"), previousLocation);
+    if (files.isEmpty()) return;
     if (m_outputDirectory.isNull()) {
         slotSelectOutputDirectory();
     }
     m_model.clear();
+    const QFileInfo fi(files.at(0));
+    settings.setValue(Setting_OpenLocation, fi.absolutePath());
     m_model.queueUpConversion(files, m_outputDirectory);
 }
 

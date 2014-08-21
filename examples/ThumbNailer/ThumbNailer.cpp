@@ -41,6 +41,8 @@ using namespace std;
 int main(int argc, char** argv)
 {
     QApplication app(argc, argv);
+    app.setApplicationName(QLatin1String("ThumbNailer"));
+    app.setOrganizationDomain(QLatin1String("kde.org"));
     QCommandLineParser parser;
     parser.setApplicationDescription(app.translate("main", "ThreadWeaver ThumbNailer Example"));
     parser.addHelpOption();

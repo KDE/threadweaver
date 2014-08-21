@@ -32,6 +32,7 @@ private:
     Ui::MainWindow *ui;
     QString m_outputDirectory;
     Model m_model;
+    static const QString Setting_OpenLocation;
 };
 
 #endif // MAINWINDOW_H
