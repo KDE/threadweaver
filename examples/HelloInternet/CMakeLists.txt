@@ -16,6 +16,5 @@ add_executable(ThreadWeaver_HelloInternet
 
 kde_enable_exceptions()
 qt5_use_modules(ThreadWeaver_HelloInternet Core Network Xml Widgets)
-qt5_wrap_ui(ui_MainWidget.h MainWidget.ui)
 target_link_libraries(ThreadWeaver_HelloInternet KF5::ThreadWeaver)
 
