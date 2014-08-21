@@ -42,9 +42,7 @@ void Image::loadFile()
 {
     QFile file(m_inputFileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        m_failedStep.store(Step_LoadFile);
-        m_progress.storeRelease(Step_Complete);
-        throw ThreadWeaver::JobFailed(tr("Unable to load input file!"));
+        error(Step_LoadFile, tr("Unable to load input file!"));
     }
     m_imageData = file.readAll();
     m_progress.storeRelease(1);
@@ -54,9 +52,7 @@ void Image::loadFile()
 void Image::loadImage()
 {
     if (!m_image.loadFromData(m_imageData)) {
-        m_failedStep.store(Step_LoadImage);
-        m_progress.storeRelease(Step_Complete);
-        throw ThreadWeaver::JobFailed(tr("Unable to parse image data!"));
+        error(Step_LoadImage, tr("Unable to parse image data!"));
     }
     m_imageData.clear();
     m_progress.storeRelease(2);
@@ -67,9 +63,7 @@ void Image::computeThumbNail()
 {
     m_thumbnail = m_image.scaled(160, 100,  Qt::KeepAspectRatioByExpanding);
     if (m_thumbnail.isNull()) {
-        m_failedStep.store(Step_ComputeThumbNail);
-        m_progress.storeRelease(Step_Complete);
-        throw ThreadWeaver::JobFailed(tr("Unable to compute thumbnail!"));
+        error(Step_ComputeThumbNail, tr("Unable to compute thumbnail!"));
     }
 
     m_image = QImage();
@@ -80,9 +74,7 @@ void Image::computeThumbNail()
 void Image::saveThumbNail()
 {
     if (!m_thumbnail.save(m_outputFileName)) {
-        m_failedStep.store(Step_SaveImage);
-        m_progress.storeRelease(Step_Complete);
-        throw ThreadWeaver::JobFailed(tr("Unable to save output file!"));
+        error(Step_SaveImage, tr("Unable to save output file!"));
     }
     m_progress.storeRelease(4);
     announceProgress();
@@ -94,4 +86,11 @@ void Image::announceProgress()
         m_model->progressChanged();
         m_model->elementChanged(m_id);
     }
+}
+
+void Image::error(Image::Steps step, const QString &message)
+{
+    m_failedStep.store(step);
+    m_progress.storeRelease(Step_Complete);
+    throw ThreadWeaver::JobFailed(message);
 }

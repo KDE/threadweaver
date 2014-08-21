@@ -40,6 +40,7 @@ public:
 
 private:
     void announceProgress();
+    void error(Steps step, const QString& message);
 
     QString m_inputFileName;
     QString m_outputFileName;
