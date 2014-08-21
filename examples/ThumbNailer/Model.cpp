@@ -19,7 +19,7 @@ Model::Model(QObject *parent) :
 {
 }
 
-void Model::prepareConversions(const QFileInfoList &filenames, const QString &outputDirectory)
+void Model::prepareConversionsForBenchmark(const QFileInfoList &filenames, const QString &outputDirectory)
 {
     Q_ASSERT(m_images.isEmpty());
     m_images.resize(filenames.size());
@@ -66,6 +66,11 @@ bool Model::computeThumbNailsBlockingConcurrent()
         if (image.progress().first != Image::Step_NumberOfSteps) return false;
     }
     return true;
+}
+
+void Model::queueUpConversion(const QStringList &files, const QString &outputDirectory)
+{
+    //NI
 }
 
 Progress Model::progress() const

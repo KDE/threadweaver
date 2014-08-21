@@ -15,9 +15,11 @@ public:
 
     explicit Model(QObject *parent = 0);
 
-    void prepareConversions(const QFileInfoList& filenames, const QString& outputDirectory);
+    void prepareConversionsForBenchmark(const QFileInfoList& filenames, const QString& outputDirectory);
     bool computeThumbNailsBlockingInLoop();
     bool computeThumbNailsBlockingConcurrent();
+
+    void queueUpConversion(const QStringList& files, const QString& outputDirectory);
     Progress progress() const;
     void progressChanged();
 
