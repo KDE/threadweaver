@@ -10,6 +10,7 @@
 #include "ui_MainWindow.h"
 
 const QString MainWindow::Setting_OpenLocation = QLatin1String("OpenFilesLocation");
+const QString MainWindow::Setting_OutputLocation = QLatin1String("OutputLocation");
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -20,6 +21,11 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
     connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
+
+    m_outputDirectory = QSettings().value(Setting_OutputLocation).toString();
+    if (!m_outputDirectory.isEmpty()) {
+        ui->outputDirectory->setText(m_outputDirectory);
+    }
 }
 
 MainWindow::~MainWindow()
@@ -57,9 +63,12 @@ void MainWindow::slotOpenFiles()
 
 void MainWindow::slotSelectOutputDirectory()
 {
+    QSettings settings;
+    const QString previousLocation = settings.value(Setting_OutputLocation, QDir::homePath()).toString();
     auto directory = QFileDialog::getExistingDirectory(this, tr("Select output directory..."));
     if (directory.isNull()) return;
     m_outputDirectory = directory;
+    settings.setValue(Setting_OutputLocation, directory);
     ui->outputDirectory->setText(directory);
 }
 

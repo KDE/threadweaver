@@ -66,7 +66,6 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen_Files"/>
-    <addaction name="actionOpen_Directory"/>
     <addaction name="separator"/>
     <addaction name="actionQuit"/>
    </widget>
@@ -83,30 +82,18 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionOpen_Files"/>
-   <addaction name="actionOpen_Directory"/>
    <addaction name="separator"/>
    <addaction name="actionQuit"/>
   </widget>
   <action name="actionOpen_Files">
    <property name="text">
-    <string>Open Files</string>
+    <string>Select Files</string>
    </property>
    <property name="toolTip">
     <string>Select a set of files to be converted to thumbnails</string>
    </property>
    <property name="shortcut">
     <string>Ctrl+O</string>
-   </property>
-  </action>
-  <action name="actionOpen_Directory">
-   <property name="text">
-    <string>Open Directory</string>
-   </property>
-   <property name="toolTip">
-    <string>Select a directory to convert all image files in that directory</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+D</string>
    </property>
   </action>
   <action name="actionQuit">

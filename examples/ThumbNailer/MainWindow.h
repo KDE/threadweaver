@@ -33,6 +33,7 @@ private:
     QString m_outputDirectory;
     Model m_model;
     static const QString Setting_OpenLocation;
+    static const QString Setting_OutputLocation;
 };
 
 #endif // MAINWINDOW_H
