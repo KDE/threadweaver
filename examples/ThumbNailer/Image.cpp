@@ -1,3 +1,4 @@
+#include <QtDebug>
 #include <QFile>
 
 #include <ThreadWeaver/ThreadWeaver>
@@ -6,16 +7,25 @@
 #include "Image.h"
 #include "Model.h"
 
-Image::Image(const QString inputFileName, const QString outputFileName, Model *model)
+Image::Image(const QString inputFileName, const QString outputFileName, Model *model, int id)
     : m_inputFileName(inputFileName)
     , m_outputFileName(outputFileName)
     , m_model(model)
+    , m_id(id)
 {
 }
 
 Progress Image::progress() const
 {
     return qMakePair(m_progress, Step_NumberOfSteps);
+}
+
+QString Image::description() const
+{
+    const QString result = tr("[%1]: %2")
+            .arg(m_progress.loadAcquire())
+            .arg(inputFileName());
+    return result;
 }
 
 const QString Image::inputFileName() const
@@ -80,5 +90,9 @@ void Image::saveThumbNail()
 
 void Image::announceProgress()
 {
-    if (m_model) m_model->progressChanged();
+    if (m_model) {
+        qDebug() << "Changed:" << m_id << m_progress.loadAcquire();
+        m_model->progressChanged();
+        m_model->elementChanged(m_id);
+    }
 }

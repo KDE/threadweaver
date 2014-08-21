@@ -17,6 +17,7 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+    ui->listView->setModel(&m_model);
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));

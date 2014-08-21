@@ -15,26 +15,31 @@
 using namespace std;
 using namespace ThreadWeaver;
 
-Model::Model(QObject *parent) :
-    QObject(parent)
+Model::Model(QObject *parent)
+    : QAbstractListModel(parent)
 {
+    connect(this, SIGNAL(signalElementChanged(int)), this, SLOT(slotElementChanged(int)));
 }
 
 void Model::clear()
 {
+    beginResetModel();
     m_images.clear();
-    //FIXME modelReset();
+    endResetModel();
 }
 
 void Model::prepareConversions(const QFileInfoList &filenames, const QString &outputDirectory)
 {
+    beginResetModel();
     Q_ASSERT(m_images.isEmpty());
     m_images.resize(filenames.size());
-    auto initializeImage = [=] (const QFileInfo& file) {
+    int counter = 0;
+    auto initializeImage = [=, &counter] (const QFileInfo& file) {
         auto const out = QFileInfo(outputDirectory, file.fileName()).absoluteFilePath();
-        return Image(file.absoluteFilePath(), out, this);
+        return Image(file.absoluteFilePath(), out, this, counter++);
     };
     transform(filenames.begin(), filenames.end(), m_images.begin(), initializeImage);
+    endResetModel();
 }
 
 bool Model::computeThumbNailsBlockingInLoop()
@@ -108,5 +113,38 @@ void Model::progressChanged()
 {
     auto const p = progress();
     emit progress(p.first, p.second);
+}
+
+void Model::elementChanged(int id)
+{
+    signalElementChanged(id);
+}
+
+int Model::rowCount(const QModelIndex &parent) const
+{
+    return m_images.size();
+}
+
+QVariant Model::data(const QModelIndex &index, int role) const
+{
+    if (!index.isValid()) return QVariant();
+    if (index.row() < 0 || index.row() >= rowCount()) return QVariant();
+    if (role == Qt::DisplayRole) {
+        return m_images.at(index.row()).description();
+    }
+    return QVariant();
+}
+
+QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
+{
+    return QVariant();
+}
+
+void Model::slotElementChanged(int id)
+{
+    if (id >= 0 && id < m_images.count()) {
+        auto const i = index(id, 0);
+        emit dataChanged(i, i);
+    }
 }
 

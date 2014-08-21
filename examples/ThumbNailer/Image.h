@@ -25,8 +25,10 @@ public:
         Step_Complete = Step_SaveImage
     };
 
-    Image(const QString inputFileName = QString(), const QString outputFileName = QString(), Model* model = 0);
+    Image(const QString inputFileName = QString(), const QString outputFileName = QString(),
+          Model* model = 0, int id = 0);
     Progress progress() const;
+    QString description() const;
 
     const QString inputFileName() const;
     const QString outputFileName() const;
@@ -48,6 +50,7 @@ private:
     QImage m_image;
     QImage m_thumbnail;
     Model* m_model;
+    int m_id;
 };
 
 #endif // IMAGE_H
