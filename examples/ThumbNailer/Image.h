@@ -21,11 +21,13 @@ public:
         Step_LoadImage,
         Step_ComputeThumbNail,
         Step_SaveImage,
-        Step_NumberOfSteps = Step_SaveImage
+        Step_NumberOfSteps = Step_SaveImage,
+        Step_Complete = Step_SaveImage
     };
 
     Image(const QString inputFileName = QString(), const QString outputFileName = QString(), Model* model = 0);
     Progress progress() const;
+
     const QString inputFileName() const;
     const QString outputFileName() const;
 
@@ -40,6 +42,7 @@ private:
     QString m_inputFileName;
     QString m_outputFileName;
     QAtomicInt m_progress;
+    QAtomicInt m_failedStep;
 
     QByteArray m_imageData;
     QImage m_image;
