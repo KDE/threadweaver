@@ -131,6 +131,12 @@ QVariant Model::data(const QModelIndex &index, int role) const
     if (index.row() < 0 || index.row() >= rowCount()) return QVariant();
     if (role == Qt::DisplayRole) {
         return m_images.at(index.row()).description();
+    } else if (role == Role_SortRole) {
+        if (m_images.at(index.row()).progress().first == Image::Step_NotStarted) {
+            return Image::Step_NumberOfSteps;
+        } else {
+            return m_images.at(index.row()).progress().first;
+        }
     }
     return QVariant();
 }

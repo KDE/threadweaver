@@ -4,9 +4,13 @@
 #include <QSettings>
 #include <QVariant>
 #include <QString>
+#include <QSortFilterProxyModel>
+
 #include <ThreadWeaver/ThreadWeaver>
 
 #include "MainWindow.h"
+#include "Model.h"
+
 #include "ui_MainWindow.h"
 
 const QString MainWindow::Setting_OpenLocation = QLatin1String("OpenFilesLocation");
@@ -15,9 +19,14 @@ const QString MainWindow::Setting_OutputLocation = QLatin1String("OutputLocation
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
+    , m_filter(new QSortFilterProxyModel(this))
 {
     ui->setupUi(this);
-    ui->listView->setModel(&m_model);
+    m_filter->setSortRole(Model::Role_SortRole);
+    m_filter->setSourceModel(&m_model);
+    m_filter->setDynamicSortFilter(true);
+    m_filter->sort(0, Qt::AscendingOrder);
+    ui->listView->setModel(m_filter);
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));

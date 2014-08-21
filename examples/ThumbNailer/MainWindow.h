@@ -5,6 +5,8 @@
 
 #include "Model.h"
 
+class QSortFilterProxyModel;
+
 namespace Ui {
 class MainWindow;
 }
@@ -32,6 +34,8 @@ private:
     Ui::MainWindow *ui;
     QString m_outputDirectory;
     Model m_model;
+    QSortFilterProxyModel* m_filter;
+
     static const QString Setting_OpenLocation;
     static const QString Setting_OutputLocation;
 };

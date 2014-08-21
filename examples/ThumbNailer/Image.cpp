@@ -91,7 +91,6 @@ void Image::saveThumbNail()
 void Image::announceProgress()
 {
     if (m_model) {
-        qDebug() << "Changed:" << m_id << m_progress.loadAcquire();
         m_model->progressChanged();
         m_model->elementChanged(m_id);
     }
