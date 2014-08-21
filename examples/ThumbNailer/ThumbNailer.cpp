@@ -26,56 +26,17 @@
 
 #include <iostream>
 
-#include <QtCore>
 #include <QtTest/QTest>
 #include <QFileInfoList>
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QCommandLineOption>
 
-#include <ThreadWeaver/ThreadWeaver>
-
-#include <Model.h>
+#include "Model.h"
+#include "MainWindow.h"
+#include "Benchmark.h"
 
 using namespace std;
-using namespace ThreadWeaver;
-
-class Benchmark : public QObject
-{
-    Q_OBJECT
-private Q_SLOTS:
-    void processThumbNailsAsBenchmarkInLoop() {
-        const QFileInfoList files = images();
-        {   // create a block to avoid adding the time needed to remove the temporary
-            // directory from the file system to the measured time:
-            QTemporaryDir temp;
-            QBENCHMARK {
-                Model model;
-                model.prepareConversions(files, temp.path());
-                QVERIFY(model.computeThumbNailsBlockingInLoop());
-            }
-        }
-    }
-
-    void processThumbNailsAsBenchmarkWithThreadWeaver() {
-        const QFileInfoList files = images();
-        {   // create a block to avoid adding the time needed to remove the temporary
-            // directory from the file system to the measured time:
-            QTemporaryDir temp;
-            QBENCHMARK {
-                Model model;
-                model.prepareConversions(files, temp.path());
-                QVERIFY(model.computeThumbNailsBlockingConcurrent());
-            }
-        }
-    }
-
-private:
-    const QFileInfoList images() {
-        const QDir dir = QDir(QLatin1String("/usr/share/backgrounds"));
-        return dir.entryInfoList(QStringList() << QLatin1String("*.jpg"));
-    }
-};
 
 int main(int argc, char** argv)
 {
@@ -93,8 +54,9 @@ int main(int argc, char** argv)
         return QTest::qExec(&benchmark, arguments);
     } else if (mode == QLatin1String("demo")){
         // demo mode
-        qDebug() << "NI: demo mode";
-        Queue::instance()->finish();
+        MainWindow mainWindow;
+        mainWindow.show();
+        return app.exec();
     } else {
         wcerr << "Unknown mode " << mode.toStdWString() << endl << endl;
         parser.showHelp();

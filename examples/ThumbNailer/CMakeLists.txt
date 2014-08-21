@@ -9,6 +9,7 @@ add_executable(ThreadWeaver_ThumbNailer
     Image.cpp
     Model.cpp
     MainWindow.cpp
+    Benchmark.cpp
     ${UI_FILES}
 )
 qt5_use_modules(ThreadWeaver_ThumbNailer Core Widgets Test)
