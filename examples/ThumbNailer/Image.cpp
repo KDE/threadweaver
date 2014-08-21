@@ -32,7 +32,7 @@ void Image::loadFile()
 {
     QFile file(m_inputFileName);
     if (!file.open(QIODevice::ReadOnly)) {
-        throw ThreadWeaver::Exception(tr("Unable to load input file!"));
+        throw ThreadWeaver::JobFailed(tr("Unable to load input file!"));
     }
     m_imageData = file.readAll();
     m_progress.storeRelease(1);
@@ -42,8 +42,9 @@ void Image::loadFile()
 void Image::loadImage()
 {
     if (!m_image.loadFromData(m_imageData)) {
-        throw ThreadWeaver::Exception(tr("Unable to parse image data!"));
+        throw ThreadWeaver::JobFailed(tr("Unable to parse image data!"));
     }
+    m_imageData.clear();
     m_progress.storeRelease(2);
     announceProgress();
 }
@@ -51,6 +52,7 @@ void Image::loadImage()
 void Image::computeThumbNail()
 {
     m_thumbnail = m_image.scaled(160, 100,  Qt::KeepAspectRatioByExpanding);
+    m_image = QImage();
     m_progress.storeRelease(3);
     announceProgress();
 }
@@ -58,7 +60,7 @@ void Image::computeThumbNail()
 void Image::saveThumbNail()
 {
     if (!m_thumbnail.save(m_outputFileName)) {
-        throw ThreadWeaver::Exception(tr("Unable to save output file!"));
+        throw ThreadWeaver::JobFailed(tr("Unable to save output file!"));
     }
     m_progress.storeRelease(4);
     announceProgress();
