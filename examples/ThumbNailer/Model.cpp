@@ -87,8 +87,7 @@ Progress Model::progress() const
 
 void Model::progressChanged()
 {
-    //NI (will be used once this becomes a list model
     auto const p = progress();
-    qDebug() << Q_FUNC_INFO << p.first << "/" << p.second;
+    emit progress(p.first, p.second);
 }
 

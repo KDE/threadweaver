@@ -15,6 +15,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
+    connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
 }
 
 MainWindow::~MainWindow()
@@ -26,6 +27,13 @@ void MainWindow::closeEvent(QCloseEvent *event)
 {
     event->ignore();
     slotQuit();
+}
+
+void MainWindow::slotProgress(int step, int total)
+{
+    ui->progressBar->setMinimum(0);
+    ui->progressBar->setMaximum(total);
+    ui->progressBar->setValue(step);
 }
 
 void MainWindow::slotOpenFiles()

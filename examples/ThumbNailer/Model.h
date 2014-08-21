@@ -25,6 +25,7 @@ public:
 
 Q_SIGNALS:
     void completed();
+    void progress(int, int);
 
 private:
     QVector<Image> m_images;

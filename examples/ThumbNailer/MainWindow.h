@@ -20,6 +20,9 @@ public:
 protected:
     void closeEvent(QCloseEvent*);
 
+public Q_SLOTS:
+    void slotProgress(int step, int total);
+
 private Q_SLOTS:
     void slotOpenFiles();
     void slotSelectOutputDirectory();
