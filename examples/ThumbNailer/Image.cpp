@@ -33,6 +33,10 @@
 #include "Image.h"
 #include "Model.h"
 
+const int Image::ThumbHeight = 75;
+const int Image::ThumbWidth = 120;
+QReadWriteLock Image::Lock;
+
 Image::Image(const QString inputFileName, const QString outputFileName, Model *model, int id)
     : m_inputFileName(inputFileName)
     , m_outputFileName(outputFileName)
@@ -64,6 +68,12 @@ const QString Image::outputFileName() const
     return m_outputFileName;
 }
 
+QImage Image::thumbNail() const
+{
+    QReadLocker r(&Lock);
+    return m_thumbnail;
+}
+
 void Image::loadFile()
 {
     QFile file(m_inputFileName);
@@ -87,9 +97,13 @@ void Image::loadImage()
 
 void Image::computeThumbNail()
 {
-    m_thumbnail = m_image.scaled(160, 100,  Qt::KeepAspectRatioByExpanding);
-    if (m_thumbnail.isNull()) {
+    QImage thumb = m_image.scaled(ThumbWidth, ThumbHeight,  Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+    if (thumb.isNull()) {
         error(Step_ComputeThumbNail, tr("Unable to compute thumbnail!"));
+    }
+    {   // thumb is implicitly shared, no copy:
+        QWriteLocker l(&Lock);
+        m_thumbnail = thumb;
     }
 
     m_image = QImage();
@@ -99,7 +113,12 @@ void Image::computeThumbNail()
 
 void Image::saveThumbNail()
 {
-    if (!m_thumbnail.save(m_outputFileName)) {
+    QImage thumb;
+    {
+        QReadLocker r(&Lock);
+        thumb = m_thumbnail;
+    }
+    if (!thumb.save(m_outputFileName)) {
         error(Step_SaveThumbNail, tr("Unable to save output file!"));
     }
     m_progress.storeRelease(4);

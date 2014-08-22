@@ -26,8 +26,6 @@ class ItemDelegate : public QItemDelegate
 public:
     ItemDelegate(QObject* parent = 0);
     static const int FrameWidth;
-    static const int ThumbHeight;
-    static const int ThumbWidth;
     static const int TextMargin;
     static const int Margin;
 private:

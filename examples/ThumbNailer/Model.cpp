@@ -171,7 +171,7 @@ QVariant Model::data(const QModelIndex &index, int role) const
             return image.progress().first;
         }
     } else if (role == Role_ImageRole) {
-        return QVariant::fromValue(image);
+        return QVariant::fromValue(&image);
     }
     return QVariant();
 }

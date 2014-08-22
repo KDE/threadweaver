@@ -30,6 +30,7 @@
 #include <QImage>
 #include <QAtomicInt>
 #include <QCoreApplication>
+#include <QReadWriteLock>
 
 #include "Progress.h"
 
@@ -58,12 +59,15 @@ public:
 
     const QString inputFileName() const;
     const QString outputFileName() const;
+    QImage thumbNail() const;
 
     void loadFile();
     void loadImage();
     void computeThumbNail();
     void saveThumbNail();
 
+    static const int ThumbHeight;
+    static const int ThumbWidth;
 private:
     void announceProgress();
     void error(Steps step, const QString& message);
@@ -78,6 +82,11 @@ private:
     QImage m_thumbnail;
     Model* m_model;
     int m_id;
+
+    static QReadWriteLock Lock;
 };
+
+Q_DECLARE_METATYPE(Image)
+Q_DECLARE_METATYPE(const Image*)
 
 #endif // IMAGE_H

@@ -36,6 +36,7 @@
 
 #include "MainWindow.h"
 #include "Model.h"
+#include "ItemDelegate.h"
 
 #include "ui_MainWindow.h"
 
@@ -53,6 +54,7 @@ MainWindow::MainWindow(QWidget *parent)
     m_filter->setDynamicSortFilter(true);
     m_filter->sort(0, Qt::AscendingOrder);
     ui->listView->setModel(m_filter);
+    ui->listView->setItemDelegate(new ItemDelegate(this));
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
