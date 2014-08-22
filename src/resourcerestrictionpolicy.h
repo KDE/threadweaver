@@ -47,7 +47,7 @@ class JobInterface;
  *  shared between the affected jobs. All jobs that share a resurce restriction policy have to acquire
  *  permission from the policy before they can run. In this way, resource restrictions can be compared to
  *  semaphores, only that they require no locking at the thread level.
- *  The SMIV example uses a resource restriction to limit the number of images files that are loaded from
+ *  The  example uses a resource restriction to limit the number of images files that are loaded from
  *  the disk at the same time.
  */
 
