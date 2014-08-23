@@ -57,10 +57,12 @@ MainWindow::MainWindow(QWidget *parent)
     m_filter->sort(0, Qt::AscendingOrder);
     ui->listView->setModel(m_filter);
     ui->listView->setItemDelegate(new ItemDelegate(this));
+    ui->fileLoaderCap->setValue(m_model.fileLoaderCap());
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
     connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
+    connect(ui->fileLoaderCap, SIGNAL(valueChanged(int)), SLOT(slotFileLoaderCapChanged()));
 
     QSettings settings;
     m_outputDirectory = settings.value(Setting_OutputLocation).toString();
@@ -114,6 +116,13 @@ void MainWindow::slotSelectOutputDirectory()
     m_outputDirectory = directory;
     settings.setValue(Setting_OutputLocation, directory);
     ui->outputDirectory->setText(directory);
+}
+
+void MainWindow::slotFileLoaderCapChanged()
+{
+    const int value = ui->fileLoaderCap->value();
+    Q_ASSERT(value > 0 && value <= 1000); // limits set in UI file
+    m_model.setFileLoaderCap(value);
 }
 
 void MainWindow::slotQuit()

@@ -32,9 +32,11 @@
 #include <QDir>
 #include <QFileInfo>
 #include <QFileInfoList>
+#include <QMutexLocker>
 
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/Exception>
+#include <ThreadWeaver/DebuggingAids>
 
 #include "Model.h"
 #include "PriorityDecorator.h"
@@ -44,8 +46,21 @@ using namespace ThreadWeaver;
 
 Model::Model(QObject *parent)
     : QAbstractListModel(parent)
+    , m_fileLoaderRestriction(4)
 {
+    ThreadWeaver::setDebugLevel(true, 0);
     connect(this, SIGNAL(signalElementChanged(int)), this, SLOT(slotElementChanged(int)));
+}
+
+int Model::fileLoaderCap() const
+{
+    return m_fileLoaderRestriction.cap();
+}
+
+void Model::setFileLoaderCap(int cap)
+{
+    m_fileLoaderRestriction.setCap(cap);
+    Queue::instance()->reschedule();
 }
 
 void Model::clear()
@@ -116,12 +131,18 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
     auto queue = stream();
     for(Image& image : m_images) {
         auto loadFile = [&image]() { image.loadFile(); };
+        auto loadFileJob = new Lambda<decltype(loadFile)>(loadFile);
+        {
+            QMutexLocker l(loadFileJob->mutex());
+            loadFileJob->assignQueuePolicy(&m_fileLoaderRestriction);
+        }
+
         auto loadImage = [&image]() { image.loadImage(); };
         auto computeThumbNail = [&image]() { image.computeThumbNail(); };
         auto saveThumbNail = [&image]() { image.saveThumbNail(); };
         auto sequence = new Sequence();
 
-        *sequence << new PriorityDecorator(Image::Step_LoadFile, new Lambda<decltype(loadFile)>(loadFile))
+        *sequence << new PriorityDecorator(Image::Step_LoadFile, loadFileJob)
                   << new PriorityDecorator(Image::Step_LoadImage, new Lambda<decltype(loadImage)>(loadImage))
                   << new PriorityDecorator(Image::Step_ComputeThumbNail, new Lambda<decltype(computeThumbNail)>(computeThumbNail))
                   << new PriorityDecorator(Image::Step_SaveThumbNail, new Lambda<decltype(saveThumbNail)>(saveThumbNail));

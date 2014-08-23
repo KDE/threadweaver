@@ -31,6 +31,8 @@
 #include <QVector>
 #include <QFileInfoList>
 
+#include <ThreadWeaver/ResourceRestrictionPolicy>
+
 #include "Progress.h"
 #include "Image.h"
 
@@ -44,6 +46,9 @@ public:
     };
 
     explicit Model(QObject *parent = 0);
+
+    int fileLoaderCap() const;
+    void setFileLoaderCap(int cap);
 
     void clear();
     void prepareConversions(const QFileInfoList& filenames, const QString& outputDirectory);
@@ -69,6 +74,7 @@ private Q_SLOTS:
 
 private:
     QVector<Image> m_images;
+    ThreadWeaver::ResourceRestrictionPolicy m_fileLoaderRestriction;
 };
 
 #endif // MODEL_H

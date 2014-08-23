@@ -12,7 +12,7 @@ PriorityDecorator::PriorityDecorator(int priority, ThreadWeaver::JobInterface *j
 
 //FIXME remove
 void PriorityDecorator::run(JobPointer self, Thread *thread) {
-    QThread::msleep(500);
+//    QThread::msleep(500);
     IdDecorator::run(self, thread);
 }
 
