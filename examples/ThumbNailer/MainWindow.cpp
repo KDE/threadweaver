@@ -45,6 +45,8 @@ const QString MainWindow::Setting_OutputLocation = QLatin1String("OutputLocation
 const QString MainWindow::Setting_WindowState = QLatin1String("WindowState");
 const QString MainWindow::Setting_WindowGeometry = QLatin1String("WindowGeometry");
 
+using namespace ThreadWeaver;
+
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
@@ -58,11 +60,14 @@ MainWindow::MainWindow(QWidget *parent)
     ui->listView->setModel(m_filter);
     ui->listView->setItemDelegate(new ItemDelegate(this));
     ui->fileLoaderCap->setValue(m_model.fileLoaderCap());
+    ui->workers->setValue(Queue::instance()->maximumNumberOfThreads());
+
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
     connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
     connect(ui->fileLoaderCap, SIGNAL(valueChanged(int)), SLOT(slotFileLoaderCapChanged()));
+    connect(ui->workers, SIGNAL(valueChanged(int)), SLOT(slotWorkerCapChanged()));
 
     QSettings settings;
     m_outputDirectory = settings.value(Setting_OutputLocation).toString();
@@ -121,8 +126,15 @@ void MainWindow::slotSelectOutputDirectory()
 void MainWindow::slotFileLoaderCapChanged()
 {
     const int value = ui->fileLoaderCap->value();
-    Q_ASSERT(value > 0 && value <= 1000); // limits set in UI file
+    Q_ASSERT(value > 0); // limits set in UI file
     m_model.setFileLoaderCap(value);
+}
+
+void MainWindow::slotWorkerCapChanged()
+{
+    const int value = ui->workers->value();
+    Q_ASSERT(value > 0); // limits set in UI file
+    Queue::instance()->setMaximumNumberOfThreads(value);
 }
 
 void MainWindow::slotQuit()

@@ -55,6 +55,7 @@ private Q_SLOTS:
     void slotOpenFiles();
     void slotSelectOutputDirectory();
     void slotFileLoaderCapChanged();
+    void slotWorkerCapChanged();
     void slotQuit();
 
 private:
