@@ -112,6 +112,7 @@ void MainWindow::slotSelectOutputDirectory()
 
 void MainWindow::slotQuit()
 {
+    ThreadWeaver::Queue::instance()->dequeue();
     ThreadWeaver::Queue::instance()->finish();
     QApplication::instance()->quit();
 }
