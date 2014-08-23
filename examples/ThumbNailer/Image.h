@@ -56,6 +56,7 @@ public:
           Model* model = 0, int id = 0);
     Progress progress() const;
     QString description() const;
+    int processingOrder() const;
 
     const QString inputFileName() const;
     const QString outputFileName() const;
@@ -76,6 +77,7 @@ private:
     QString m_outputFileName;
     QAtomicInt m_progress;
     QAtomicInt m_failedStep;
+    QAtomicInt m_processingOrder;
 
     QByteArray m_imageData;
     QImage m_image;
@@ -84,6 +86,7 @@ private:
     int m_id;
 
     static QReadWriteLock Lock;
+    static int ProcessingOrder;
 };
 
 Q_DECLARE_METATYPE(Image)

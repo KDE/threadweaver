@@ -33,9 +33,12 @@
 #include "Image.h"
 #include "Model.h"
 
-const int Image::ThumbHeight = 75;
-const int Image::ThumbWidth = 120;
+//const int Image::ThumbHeight = 75;
+//const int Image::ThumbWidth = 120;
+const int Image::ThumbHeight = 60;
+const int Image::ThumbWidth = 80;
 QReadWriteLock Image::Lock;
+int Image::ProcessingOrder;
 
 Image::Image(const QString inputFileName, const QString outputFileName, Model *model, int id)
     : m_inputFileName(inputFileName)
@@ -58,6 +61,11 @@ QString Image::description() const
     return result;
 }
 
+int Image::processingOrder() const
+{
+    return m_processingOrder.loadAcquire();
+}
+
 const QString Image::inputFileName() const
 {
     return m_inputFileName;
@@ -76,6 +84,7 @@ QImage Image::thumbNail() const
 
 void Image::loadFile()
 {
+    m_processingOrder.storeRelease(ProcessingOrder++);
     QFile file(m_inputFileName);
     if (!file.open(QIODevice::ReadOnly)) {
         error(Step_LoadFile, tr("Unable to load input file!"));
