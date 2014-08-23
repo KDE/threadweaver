@@ -59,6 +59,13 @@ public:
     explicit JobFailed(const QString &message = QString());
 };
 
+//test:
+class AbortThread : public Exception
+{
+public:
+    AbortThread(const QString &message = QString());
+};
+
 }
 
 #endif // EXCEPTION_H

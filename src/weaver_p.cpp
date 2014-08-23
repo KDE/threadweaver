@@ -114,6 +114,16 @@ bool Weaver_Private::canBeExecuted(JobPointer job)
     return success;
 }
 
+void Weaver_Private::deleteExpiredThreads()
+{
+    Q_ASSERT(!mutex->tryLock()); //mutex has to be held when this method is called
+    for (Thread* thread : expiredThreads) {
+        thread->wait();
+        delete thread;
+    }
+    expiredThreads.clear();
+}
+
 }
 
 }

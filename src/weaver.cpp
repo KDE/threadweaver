@@ -48,6 +48,7 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 #include "workinghardstate.h"
 #include "shuttingdownstate.h"
 #include "inconstructionstate.h"
+#include "exception.h"
 
 using namespace ThreadWeaver;
 
@@ -175,6 +176,7 @@ void Weaver::setMaximumNumberOfThreads(int cap)
     Q_ASSERT_X(cap > 0, "Weaver Impl", "Thread inventory size has to be larger than zero.");
     QMutexLocker l(d()->mutex);  Q_UNUSED(l);
     state()->setMaximumNumberOfThreads(cap);
+    reschedule();
 }
 
 void Weaver::setMaximumNumberOfThreads_p(int cap)
@@ -222,7 +224,7 @@ void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
     Q_FOREACH (const JobPointer &job, jobs) {
         if (job) {
             Q_ASSERT(job->status() == Job::Status_New);
-            adjustInventory(1);
+            adjustInventory(jobs.size());
             TWDEBUG(3, "WeaverImpl::enqueue: queueing job %p.\n", (void *)job.data());
             job->aboutToBeQueued(this);
             // find position for insertion:
@@ -507,6 +509,8 @@ JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadW
           th->id(), qPrintable(state()->stateName()));
     TWDEBUG(5, "WeaverImpl::takeFirstAvailableJobOrWait: %i active threads, was busy: %s, suspend: %s, assign new job: %s.\n",
           activeThreadCount(), threadWasBusy ? "yes" : "no", suspendIfInactive ? "yes" : "no", !justReturning ? "yes" : "no");
+    d()->deleteExpiredThreads();
+
     if (threadWasBusy) {
         // cleanup and send events:
         decActiveThreadCount();
@@ -520,6 +524,13 @@ JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadW
 
     if (state()->stateId() != WorkingHard || justReturning) {
         return JobPointer();
+    }
+
+    if (state()->stateId() == WorkingHard && d()->inventory.size() > d()->inventoryMax) {
+        const int count = d()->inventory.removeAll(th);
+        Q_ASSERT(count == 1);
+        d()->expiredThreads.append(th);
+        throw AbortThread(tr("Inventory size exceeded"));
     }
 
     JobPointer next;

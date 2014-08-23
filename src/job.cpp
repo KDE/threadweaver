@@ -88,6 +88,8 @@ void Job::execute(const JobPointer& self, Thread *th)
         self->setStatus(Status_Aborted);
     } catch (JobFailed &) {
         self->setStatus(Status_Failed);
+    } catch (AbortThread&) {
+        throw;
     } catch (...) {
         TWDEBUG(0, "Uncaught exception in Job %p, aborting.", self.data());
         throw;

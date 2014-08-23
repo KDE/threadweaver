@@ -37,6 +37,7 @@
 #include "weaver.h"
 #include "job.h"
 #include "debuggingaids.h"
+#include "exception.h"
 
 using namespace ThreadWeaver;
 
@@ -67,7 +68,7 @@ Thread::Thread(Weaver *parent)
     : QThread() // no parent, because the QObject hierarchy of this thread
     // does not have a parent (see QObject::pushToThread)
     , d(new Private(parent))
-{
+ {
     const QString queueName = parent->objectName().isEmpty()
             ? QString::fromLatin1("Queue(0x%1)").arg(quintptr(parent), 0, 16, QChar::fromLatin1('0'))
             : parent->objectName();
@@ -97,11 +98,15 @@ void Thread::run()
     while (true) {
         TWDEBUG(3, "Thread::run [%u]: trying to execute the next job.\n", id());
 
-        // the assignment is intentional: newJob needs to go out of scope at the end of the if statement
-        if (JobPointer newJob = d->parent->applyForWork(this, wasBusy)) {
-            QMutexLocker l(&d->mutex); Q_UNUSED(l);
-            d->job = newJob;
-        } else {
+        try {
+            // the assignment is intentional: newJob needs to go out of scope at the end of the if statement
+            if (JobPointer newJob = d->parent->applyForWork(this, wasBusy)) {
+                QMutexLocker l(&d->mutex); Q_UNUSED(l);
+                d->job = newJob;
+            } else {
+                break;
+            }
+        } catch (AbortThread&) {
             break;
         }
 

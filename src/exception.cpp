@@ -53,4 +53,9 @@ JobFailed::JobFailed(const QString &message)
 {
 }
 
+AbortThread::AbortThread(const QString &message)
+    : Exception(message)
+{
+}
+
 }

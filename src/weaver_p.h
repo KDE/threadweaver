@@ -51,8 +51,12 @@ public:
     void dumpJobs();
 
     bool canBeExecuted(JobPointer);
+    void deleteExpiredThreads();
+
     /** The thread inventory. */
     QList<Thread *> inventory;
+    /** Threads that have exited and can be deleted. */
+    QList<Thread *> expiredThreads;
     /** The job queue. */
     QList<JobPointer> assignments;
     /** The number of jobs that are assigned to the worker threads, but not finished. */
