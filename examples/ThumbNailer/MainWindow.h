@@ -64,6 +64,8 @@ private:
 
     static const QString Setting_OpenLocation;
     static const QString Setting_OutputLocation;
+    static const QString Setting_WindowState;
+    static const QString Setting_WindowGeometry;
 };
 
 #endif // MAINWINDOW_H

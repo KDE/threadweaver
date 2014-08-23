@@ -42,6 +42,8 @@
 
 const QString MainWindow::Setting_OpenLocation = QLatin1String("OpenFilesLocation");
 const QString MainWindow::Setting_OutputLocation = QLatin1String("OutputLocation");
+const QString MainWindow::Setting_WindowState = QLatin1String("WindowState");
+const QString MainWindow::Setting_WindowGeometry = QLatin1String("WindowGeometry");
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -60,10 +62,13 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
     connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
 
-    m_outputDirectory = QSettings().value(Setting_OutputLocation).toString();
+    QSettings settings;
+    m_outputDirectory = settings.value(Setting_OutputLocation).toString();
     if (!m_outputDirectory.isEmpty()) {
         ui->outputDirectory->setText(m_outputDirectory);
     }
+    restoreGeometry(settings.value(Setting_WindowGeometry).toByteArray());
+    restoreState(settings.value(Setting_WindowState).toByteArray());
 }
 
 MainWindow::~MainWindow()
@@ -74,6 +79,7 @@ MainWindow::~MainWindow()
 void MainWindow::closeEvent(QCloseEvent *event)
 {
     event->ignore();
+    QMainWindow::closeEvent(event);
     slotQuit();
 }
 
@@ -112,6 +118,9 @@ void MainWindow::slotSelectOutputDirectory()
 
 void MainWindow::slotQuit()
 {
+    QSettings settings;
+    settings.setValue(Setting_WindowGeometry, saveGeometry());
+    settings.setValue(Setting_WindowState, saveState());
     ThreadWeaver::Queue::instance()->dequeue();
     ThreadWeaver::Queue::instance()->finish();
     QApplication::instance()->quit();
