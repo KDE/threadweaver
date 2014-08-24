@@ -192,6 +192,8 @@ QVariant Model::data(const QModelIndex &index, int role) const
         return 1000000 * value - image.processingOrder();
     } else if (role == Role_ImageRole) {
         return QVariant::fromValue(&image);
+    } else if (role == Role_StepRole) {
+        return QVariant::fromValue(image.progress().first);
     }
     return QVariant();
 }

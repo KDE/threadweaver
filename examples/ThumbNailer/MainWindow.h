@@ -31,7 +31,7 @@
 
 #include "Model.h"
 
-class QSortFilterProxyModel;
+class ImageListFilter;
 
 namespace Ui {
 class MainWindow;
@@ -62,7 +62,10 @@ private:
     Ui::MainWindow *ui;
     QString m_outputDirectory;
     Model m_model;
-    QSortFilterProxyModel* m_filter;
+    ImageListFilter* m_fileLoaderFilter;
+    ImageListFilter* m_imageLoaderFilter;
+    ImageListFilter* m_imageScalerFilter;
+    ImageListFilter* m_imageWriterFilter;
 
     static const QString Setting_OpenLocation;
     static const QString Setting_OutputLocation;

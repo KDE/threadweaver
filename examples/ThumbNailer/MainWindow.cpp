@@ -37,7 +37,7 @@
 #include "MainWindow.h"
 #include "Model.h"
 #include "ItemDelegate.h"
-
+#include "ImageListFilter.h"
 #include "ui_MainWindow.h"
 
 const QString MainWindow::Setting_OpenLocation = QLatin1String("OpenFilesLocation");
@@ -50,17 +50,38 @@ using namespace ThreadWeaver;
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
     , ui(new Ui::MainWindow)
-    , m_filter(new QSortFilterProxyModel(this))
+    , m_fileLoaderFilter(new ImageListFilter(Image::Step_LoadFile, this))
+    , m_imageLoaderFilter(new ImageListFilter(Image::Step_LoadImage, this))
+    , m_imageScalerFilter(new ImageListFilter(Image::Step_ComputeThumbNail, this))
+    , m_imageWriterFilter(new ImageListFilter(Image::Step_SaveThumbNail, this))
+
 {
     ui->setupUi(this);
-    m_filter->setSortRole(Model::Role_SortRole);
-    m_filter->setSourceModel(&m_model);
-    m_filter->setDynamicSortFilter(true);
-    m_filter->sort(0, Qt::AscendingOrder);
-    ui->listView->setModel(m_filter);
-    ui->listView->setItemDelegate(new ItemDelegate(this));
+    //The file loader list:
+    m_fileLoaderFilter->setSourceModel(&m_model);
+    ui->fileLoaderList->setModel(m_fileLoaderFilter);
+    ui->fileLoaderList->setItemDelegate(new ItemDelegate(this));
     ui->fileLoaderCap->setValue(m_model.fileLoaderCap());
+    //The image loader list:
+    m_imageLoaderFilter->setSourceModel(&m_model);
+    ui->imageLoaderList->setModel(m_imageLoaderFilter);
+    ui->imageLoaderList->setItemDelegate(new ItemDelegate(this));
+//    ui->imageLoaderCap->setValue(m_model.fileLoaderCap());
+
+    //The image scaler list:
+    m_imageScalerFilter->setSourceModel(&m_model);
+    ui->imageScalerList->setModel(m_imageScalerFilter);
+    ui->imageScalerList->setItemDelegate(new ItemDelegate(this));
+//    ui->imageLoaderCap->setValue(m_model.fileLoaderCap());
+
+    //The image writer list:
+    m_imageWriterFilter->setSourceModel(&m_model);
+    ui->imageWriterList->setModel(m_imageWriterFilter);
+    ui->imageWriterList->setItemDelegate(new ItemDelegate(this));
+//    ui->imageLoaderCap->setValue(m_model.fileLoaderCap());
+
     ui->workers->setValue(Queue::instance()->maximumNumberOfThreads());
+
 
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));

@@ -42,7 +42,8 @@ class Model : public QAbstractListModel
 public:
     enum Roles {
         Role_SortRole = Qt::UserRole,
-        Role_ImageRole
+        Role_ImageRole,
+        Role_StepRole
     };
 
     explicit Model(QObject *parent = 0);
