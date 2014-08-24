@@ -66,19 +66,19 @@ MainWindow::MainWindow(QWidget *parent)
     m_imageLoaderFilter->setSourceModel(&m_model);
     ui->imageLoaderList->setModel(m_imageLoaderFilter);
     ui->imageLoaderList->setItemDelegate(new ItemDelegate(this));
-//    ui->imageLoaderCap->setValue(m_model.fileLoaderCap());
+    ui->imageLoaderCap->setValue(m_model.imageLoaderCap());
 
     //The image scaler list:
     m_imageScalerFilter->setSourceModel(&m_model);
     ui->imageScalerList->setModel(m_imageScalerFilter);
     ui->imageScalerList->setItemDelegate(new ItemDelegate(this));
-//    ui->imageLoaderCap->setValue(m_model.fileLoaderCap());
+    ui->imageScalerCap->setValue(m_model.computeThumbNailCap());
 
     //The image writer list:
     m_imageWriterFilter->setSourceModel(&m_model);
     ui->imageWriterList->setModel(m_imageWriterFilter);
     ui->imageWriterList->setItemDelegate(new ItemDelegate(this));
-//    ui->imageLoaderCap->setValue(m_model.fileLoaderCap());
+    ui->fileWriterCap->setValue(m_model.saveThumbNailCap());
 
     ui->workers->setValue(Queue::instance()->maximumNumberOfThreads());
 
@@ -149,6 +149,27 @@ void MainWindow::slotFileLoaderCapChanged()
     const int value = ui->fileLoaderCap->value();
     Q_ASSERT(value > 0); // limits set in UI file
     m_model.setFileLoaderCap(value);
+}
+
+void MainWindow::slotImageLoaderCapChanged()
+{
+    const int value = ui->imageLoaderCap->value();
+    Q_ASSERT(value > 0); // limits set in UI file
+    m_model.setImageLoaderCap(value);
+}
+
+void MainWindow::slotComputeThumbNailCapChanged()
+{
+    const int value = ui->imageScalerCap->value();
+    Q_ASSERT(value > 0); // limits set in UI file
+    m_model.setComputeThumbNailCap(value);
+}
+
+void MainWindow::slotSaveThumbNailCapChanged()
+{
+    const int value = ui->fileWriterCap->value();
+    Q_ASSERT(value > 0); // limits set in UI file
+    m_model.setSaveThumbNailCap(value);
 }
 
 void MainWindow::slotWorkerCapChanged()

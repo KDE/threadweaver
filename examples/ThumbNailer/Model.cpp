@@ -47,6 +47,9 @@ using namespace ThreadWeaver;
 Model::Model(QObject *parent)
     : QAbstractListModel(parent)
     , m_fileLoaderRestriction(4)
+    , m_imageLoaderRestriction(4)
+    , m_imageScalerRestriction(4)
+    , m_fileWriterRestriction(4)
 {
     ThreadWeaver::setDebugLevel(true, 0);
     connect(this, SIGNAL(signalElementChanged(int)), this, SLOT(slotElementChanged(int)));
@@ -61,6 +64,37 @@ void Model::setFileLoaderCap(int cap)
 {
     m_fileLoaderRestriction.setCap(cap);
     Queue::instance()->reschedule();
+}
+
+int Model::imageLoaderCap() const
+{
+    return m_imageLoaderRestriction.cap();
+}
+
+void Model::setImageLoaderCap(int cap)
+{
+    m_imageLoaderRestriction.setCap(cap);
+    Queue::instance()->reschedule();
+}
+
+int Model::computeThumbNailCap() const
+{
+    return m_imageScalerRestriction.cap();
+}
+
+void Model::setComputeThumbNailCap(int cap)
+{
+    m_imageScalerRestriction.setCap(cap);
+}
+
+int Model::saveThumbNailCap() const
+{
+    return m_fileWriterRestriction.cap();
+}
+
+void Model::setSaveThumbNailCap(int cap)
+{
+    m_imageScalerRestriction.setCap(cap);
 }
 
 void Model::clear()

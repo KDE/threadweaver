@@ -51,6 +51,15 @@ public:
     int fileLoaderCap() const;
     void setFileLoaderCap(int cap);
 
+    int imageLoaderCap() const;
+    void setImageLoaderCap(int cap);
+
+    int computeThumbNailCap() const;
+    void setComputeThumbNailCap(int cap);
+
+    int saveThumbNailCap() const;
+    void setSaveThumbNailCap(int cap);
+
     void clear();
     void prepareConversions(const QFileInfoList& filenames, const QString& outputDirectory);
     bool computeThumbNailsBlockingInLoop();
@@ -76,6 +85,9 @@ private Q_SLOTS:
 private:
     QVector<Image> m_images;
     ThreadWeaver::ResourceRestrictionPolicy m_fileLoaderRestriction;
+    ThreadWeaver::ResourceRestrictionPolicy m_imageLoaderRestriction;
+    ThreadWeaver::ResourceRestrictionPolicy m_imageScalerRestriction;
+    ThreadWeaver::ResourceRestrictionPolicy m_fileWriterRestriction;
 };
 
 #endif // MODEL_H
