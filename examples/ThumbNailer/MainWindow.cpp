@@ -88,6 +88,10 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
     connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
     connect(ui->fileLoaderCap, SIGNAL(valueChanged(int)), SLOT(slotFileLoaderCapChanged()));
+    connect(ui->imageLoaderCap, SIGNAL(valueChanged(int)), SLOT(slotImageLoaderCapChanged()));
+    connect(ui->imageScalerCap, SIGNAL(valueChanged(int)), SLOT(slotComputeThumbNailCapChanged()));
+    connect(ui->fileWriterCap, SIGNAL(valueChanged(int)), SLOT(slotSaveThumbNailCapChanged()));
+
     connect(ui->workers, SIGNAL(valueChanged(int)), SLOT(slotWorkerCapChanged()));
 
     QSettings settings;
