@@ -172,14 +172,31 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
         }
 
         auto loadImage = [&image]() { image.loadImage(); };
-        auto computeThumbNail = [&image]() { image.computeThumbNail(); };
-        auto saveThumbNail = [&image]() { image.saveThumbNail(); };
-        auto sequence = new Sequence();
+        auto loadImageJob = new Lambda<decltype(loadImage)>(loadImage);
+        {
+            QMutexLocker l(loadImageJob->mutex());
+            loadImageJob->assignQueuePolicy(&m_imageLoaderRestriction);
+        }
 
+        auto computeThumbNail = [&image]() { image.computeThumbNail(); };
+        auto computeThumbNailJob = new Lambda<decltype(computeThumbNail)>(computeThumbNail);
+        {
+            QMutexLocker l(computeThumbNailJob->mutex());
+            computeThumbNailJob->assignQueuePolicy(&m_imageScalerRestriction);
+        }
+
+        auto saveThumbNail = [&image]() { image.saveThumbNail(); };
+        auto saveThumbNailJob = new Lambda<decltype(saveThumbNail)>(saveThumbNail);
+        {
+            QMutexLocker l(saveThumbNailJob->mutex());
+            saveThumbNailJob->assignQueuePolicy(&m_fileWriterRestriction);
+        }
+
+        auto sequence = new Sequence();
         *sequence << new PriorityDecorator(Image::Step_LoadFile, loadFileJob)
-                  << new PriorityDecorator(Image::Step_LoadImage, new Lambda<decltype(loadImage)>(loadImage))
-                  << new PriorityDecorator(Image::Step_ComputeThumbNail, new Lambda<decltype(computeThumbNail)>(computeThumbNail))
-                  << new PriorityDecorator(Image::Step_SaveThumbNail, new Lambda<decltype(saveThumbNail)>(saveThumbNail));
+                  << new PriorityDecorator(Image::Step_LoadImage, loadImageJob)
+                  << new PriorityDecorator(Image::Step_ComputeThumbNail, computeThumbNailJob)
+                  << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
         queue << sequence;
     }
 }
