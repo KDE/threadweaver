@@ -401,8 +401,6 @@ void Weaver::requestAbort_p()
  * startup time. Threads are created when the inventory size is under
  * inventoryMin and new jobs are queued.
  */
-//TODO add code to raise inventory size over inventoryMin
-//TODO add code to quit unnecessary threads
 void Weaver::adjustInventory(int numberOfNewJobs)
 {
     Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
@@ -510,6 +508,7 @@ JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadW
     TWDEBUG(5, "WeaverImpl::takeFirstAvailableJobOrWait: %i active threads, was busy: %s, suspend: %s, assign new job: %s.\n",
           activeThreadCount(), threadWasBusy ? "yes" : "no", suspendIfInactive ? "yes" : "no", !justReturning ? "yes" : "no");
     d()->deleteExpiredThreads();
+    adjustInventory(1);
 
     if (threadWasBusy) {
         // cleanup and send events:
