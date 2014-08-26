@@ -40,6 +40,7 @@
 
 #include "Model.h"
 #include "PriorityDecorator.h"
+#include "FileLoaderJob.h"
 
 using namespace std;
 using namespace ThreadWeaver;
@@ -164,13 +165,6 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
     //FIXME duplicated code
     auto queue = stream();
     for(Image& image : m_images) {
-        auto loadFile = [&image]() { image.loadFile(); };
-        auto loadFileJob = new Lambda<decltype(loadFile)>(loadFile);
-        {
-            QMutexLocker l(loadFileJob->mutex());
-            loadFileJob->assignQueuePolicy(&m_fileLoaderRestriction);
-        }
-
         auto loadImage = [&image]() { image.loadImage(); };
         auto loadImageJob = new Lambda<decltype(loadImage)>(loadImage);
         {
@@ -193,7 +187,7 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
         }
 
         auto sequence = new Sequence();
-        *sequence << new PriorityDecorator(Image::Step_LoadFile, loadFileJob)
+        *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction)
                   << new PriorityDecorator(Image::Step_LoadImage, loadImageJob)
                   << new PriorityDecorator(Image::Step_ComputeThumbNail, computeThumbNailJob)
                   << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);

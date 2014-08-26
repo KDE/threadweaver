@@ -13,6 +13,7 @@ add_executable(ThreadWeaver_ThumbNailer
     PriorityDecorator.cpp
     ItemDelegate.cpp
     ImageListFilter.cpp
+    FileLoaderJob.cpp
     ${UI_FILES}
 )
 qt5_use_modules(ThreadWeaver_ThumbNailer Core Widgets Test)
