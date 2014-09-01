@@ -120,6 +120,7 @@ void MainWindow::slotProgress(int step, int total)
     ui->progressBar->setMinimum(0);
     ui->progressBar->setMaximum(total);
     ui->progressBar->setValue(step);
+    ui->actionOpen_Files->setEnabled(step >= total);
 }
 
 void MainWindow::slotOpenFiles()
@@ -134,6 +135,7 @@ void MainWindow::slotOpenFiles()
     m_model.clear();
     const QFileInfo fi(files.at(0));
     settings.setValue(Setting_OpenLocation, fi.absolutePath());
+    slotProgress(0, files.count());
     m_model.queueUpConversion(files, m_outputDirectory);
 }
 
