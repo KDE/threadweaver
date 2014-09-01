@@ -96,6 +96,7 @@ void Image::loadFile()
 
 void Image::loadImage()
 {
+    m_processingOrder.storeRelease(ProcessingOrder++);
     if (!m_image.loadFromData(m_imageData)) {
         error(Step_LoadImage, tr("Unable to parse image data!"));
     }
@@ -106,6 +107,7 @@ void Image::loadImage()
 
 void Image::computeThumbNail()
 {
+    m_processingOrder.storeRelease(ProcessingOrder++);
     QImage thumb = m_image.scaled(ThumbWidth, ThumbHeight,  Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
     if (thumb.isNull()) {
         error(Step_ComputeThumbNail, tr("Unable to compute thumbnail!"));
