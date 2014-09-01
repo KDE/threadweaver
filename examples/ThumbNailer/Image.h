@@ -70,7 +70,7 @@ public:
     static const int ThumbHeight;
     static const int ThumbWidth;
 private:
-    void announceProgress();
+    void announceProgress(Steps step);
     void error(Steps step, const QString& message);
 
     QString m_inputFileName;

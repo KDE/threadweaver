@@ -90,8 +90,7 @@ void Image::loadFile()
         error(Step_LoadFile, tr("Unable to load input file!"));
     }
     m_imageData = file.readAll();
-    m_progress.storeRelease(1);
-    announceProgress();
+    announceProgress(Step_LoadFile);
 }
 
 void Image::loadImage()
@@ -101,8 +100,7 @@ void Image::loadImage()
         error(Step_LoadImage, tr("Unable to parse image data!"));
     }
     m_imageData.clear();
-    m_progress.storeRelease(2);
-    announceProgress();
+    announceProgress(Step_LoadImage);
 }
 
 void Image::computeThumbNail()
@@ -118,8 +116,7 @@ void Image::computeThumbNail()
     }
 
     m_image = QImage();
-    m_progress.storeRelease(3);
-    announceProgress();
+    announceProgress(Step_ComputeThumbNail);
 }
 
 void Image::saveThumbNail()
@@ -132,12 +129,12 @@ void Image::saveThumbNail()
     if (!thumb.save(m_outputFileName)) {
         error(Step_SaveThumbNail, tr("Unable to save output file!"));
     }
-    m_progress.storeRelease(4);
-    announceProgress();
+    announceProgress(Step_SaveThumbNail);
 }
 
-void Image::announceProgress()
+void Image::announceProgress(Steps step)
 {
+    m_progress.storeRelease(step);
     if (m_model) {
         m_model->progressChanged();
         m_model->elementChanged(m_id);
