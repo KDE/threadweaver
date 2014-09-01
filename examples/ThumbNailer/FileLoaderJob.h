@@ -28,9 +28,12 @@
 #define FILELOADERJOB_H
 
 #include <ThreadWeaver/ThreadWeaver>
-#include <ThreadWeaver/ResourceRestrictionPolicy>
 
 class Image;
+
+namespace ThreadWeaver {
+class ResourceRestrictionPolicy;
+}
 
 class FileLoaderJob : public ThreadWeaver::Job
 {

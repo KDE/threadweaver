@@ -29,24 +29,24 @@
 #include <ThreadWeaver/ResourceRestrictionPolicy>
 
 #include "Image.h"
-#include "FileLoaderJob.h"
+#include "ImageLoaderJob.h"
 
 using namespace ThreadWeaver;
 
-FileLoaderJob::FileLoaderJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle)
+ImageLoaderJob::ImageLoaderJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle)
     : m_image(image)
 {
     QMutexLocker l(mutex());
     assignQueuePolicy(throttle);
 }
 
-int FileLoaderJob::priority() const
+int ImageLoaderJob::priority() const
 {
-    return Image::Step_LoadFile;
+    return Image::Step_LoadImage;
 }
 
-void FileLoaderJob::run(JobPointer, Thread*)
+void ImageLoaderJob::run(JobPointer, Thread*)
 {
     Q_ASSERT(m_image);
-    m_image->loadFile();
+    m_image->loadImage();
 }

@@ -41,6 +41,7 @@
 #include "Model.h"
 #include "PriorityDecorator.h"
 #include "FileLoaderJob.h"
+#include "ImageLoaderJob.h"
 
 using namespace std;
 using namespace ThreadWeaver;
@@ -165,13 +166,6 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
     //FIXME duplicated code
     auto queue = stream();
     for(Image& image : m_images) {
-        auto loadImage = [&image]() { image.loadImage(); };
-        auto loadImageJob = new Lambda<decltype(loadImage)>(loadImage);
-        {
-            QMutexLocker l(loadImageJob->mutex());
-            loadImageJob->assignQueuePolicy(&m_imageLoaderRestriction);
-        }
-
         auto computeThumbNail = [&image]() { image.computeThumbNail(); };
         auto computeThumbNailJob = new Lambda<decltype(computeThumbNail)>(computeThumbNail);
         {
@@ -188,7 +182,7 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
 
         auto sequence = new Sequence();
         *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction)
-                  << new PriorityDecorator(Image::Step_LoadImage, loadImageJob)
+                  << new ImageLoaderJob(&image, &m_imageLoaderRestriction)
                   << new PriorityDecorator(Image::Step_ComputeThumbNail, computeThumbNailJob)
                   << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
         queue << sequence;
@@ -231,7 +225,7 @@ QVariant Model::data(const QModelIndex &index, int role) const
     if (role == Qt::DisplayRole) {
         return image.description();
     } else if (role == Role_SortRole) {
-        return image.processingOrder();
+        return -image.processingOrder();
     } else if (role == Role_ImageRole) {
         return QVariant::fromValue(&image);
     } else if (role == Role_StepRole) {

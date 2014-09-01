@@ -24,29 +24,27 @@
    Boston, MA 02110-1301, USA.
 */
 
-#include <QMutexLocker>
+#ifndef IMAGELOADERJOB_H
+#define IMAGELOADERJOB_H
 
-#include <ThreadWeaver/ResourceRestrictionPolicy>
+#include <ThreadWeaver/ThreadWeaver>
 
-#include "Image.h"
-#include "FileLoaderJob.h"
+class Image;
 
-using namespace ThreadWeaver;
-
-FileLoaderJob::FileLoaderJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle)
-    : m_image(image)
-{
-    QMutexLocker l(mutex());
-    assignQueuePolicy(throttle);
+namespace ThreadWeaver {
+class ResourceRestrictionPolicy;
 }
 
-int FileLoaderJob::priority() const
+class ImageLoaderJob : public ThreadWeaver::Job
 {
-    return Image::Step_LoadFile;
-}
+public:
+    explicit ImageLoaderJob(Image* image, ThreadWeaver::ResourceRestrictionPolicy* throttle);
+    int priority() const override;
+    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 
-void FileLoaderJob::run(JobPointer, Thread*)
-{
-    Q_ASSERT(m_image);
-    m_image->loadFile();
-}
+private:
+    Image* m_image;
+
+};
+
+#endif // IMAGELOADERJOB_H
