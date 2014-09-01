@@ -26,6 +26,8 @@
 
 #include <QtDebug>
 #include <QFile>
+#include <QFileInfo>
+#include <QLocale>
 
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/Exception>
@@ -55,10 +57,20 @@ Progress Image::progress() const
 
 QString Image::description() const
 {
-    const QString result = tr("[%1]: %2")
-            .arg(m_progress.loadAcquire())
-            .arg(inputFileName());
-    return result;
+    QReadLocker l(&Lock);
+    return m_description;
+}
+
+QString Image::details() const
+{
+    QReadLocker l(&Lock);
+    return m_details;
+}
+
+QString Image::details2() const
+{
+    QReadLocker l(&Lock);
+    return m_details2;
 }
 
 int Image::processingOrder() const
@@ -90,16 +102,32 @@ void Image::loadFile()
         error(Step_LoadFile, tr("Unable to load input file!"));
     }
     m_imageData = file.readAll();
+    QFileInfo fi(file);
+    QLocale locale;
+    QString details2 = tr("%1kB").arg(locale.toString(fi.size()/1024));
+    {
+        QWriteLocker l(&Lock);
+        m_description = fi.fileName();
+        m_details2 = details2;
+    }
     announceProgress(Step_LoadFile);
 }
 
 void Image::loadImage()
 {
     m_processingOrder.storeRelease(ProcessingOrder++);
-    if (!m_image.loadFromData(m_imageData)) {
+    const bool result = m_image.loadFromData(m_imageData);
+    m_imageData.clear();
+    if (!result) {
         error(Step_LoadImage, tr("Unable to parse image data!"));
     }
-    m_imageData.clear();
+    QString details = tr("%1x%2 pixels")
+            .arg(m_image.width())
+            .arg(m_image.height());
+    {
+        QWriteLocker l(&Lock);
+        m_details = details;
+    }
     announceProgress(Step_LoadImage);
 }
 

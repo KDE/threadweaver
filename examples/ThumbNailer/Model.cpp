@@ -55,7 +55,8 @@ Model::Model(QObject *parent)
     , m_fileWriterRestriction(4)
 {
     ThreadWeaver::setDebugLevel(true, 0);
-    connect(this, SIGNAL(signalElementChanged(int)), this, SLOT(slotElementChanged(int)));
+    connect(this, SIGNAL(signalElementChanged(int)),
+            this, SLOT(slotElementChanged(int)));
 }
 
 int Model::fileLoaderCap() const

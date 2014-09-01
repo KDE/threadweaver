@@ -74,13 +74,13 @@ void ItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
         painter->setPen(Qt::darkGray);
     }
     QFont font2 = option.font;
-    font2.setPointSize((int) (0.8 * option.font.pointSize()));
+    font2.setPointSize((int) (0.9 * option.font.pointSize()));
     painter->setFont(font2);
     QFontMetrics font2Metrics(font2);
     QRect text2Rect = text1Rect.adjusted(0, font1Metrics.lineSpacing(), 0, font2Metrics.lineSpacing());
-    painter->drawText(text2Rect, image->inputFileName());
+    painter->drawText(text2Rect, image->details());
     QRect text3Rect = text2Rect.adjusted(0, font2Metrics.lineSpacing(), 0, font2Metrics.lineSpacing());
-    painter->drawText(text3Rect, image->outputFileName());
+    painter->drawText(text3Rect, image->details2());
 
     painter->restore();
 }

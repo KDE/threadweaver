@@ -56,6 +56,8 @@ public:
           Model* model = 0, int id = 0);
     Progress progress() const;
     QString description() const;
+    QString details() const;
+    QString details2() const;
     int processingOrder() const;
 
     const QString inputFileName() const;
@@ -75,6 +77,9 @@ private:
 
     QString m_inputFileName;
     QString m_outputFileName;
+    QString m_description;
+    QString m_details;
+    QString m_details2;
     QAtomicInt m_progress;
     QAtomicInt m_failedStep;
     QAtomicInt m_processingOrder;
