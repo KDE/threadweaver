@@ -42,6 +42,7 @@
 #include "PriorityDecorator.h"
 #include "FileLoaderJob.h"
 #include "ImageLoaderJob.h"
+#include "ComputeThumbNailJob.h"
 
 using namespace std;
 using namespace ThreadWeaver;
@@ -166,13 +167,6 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
     //FIXME duplicated code
     auto queue = stream();
     for(Image& image : m_images) {
-        auto computeThumbNail = [&image]() { image.computeThumbNail(); };
-        auto computeThumbNailJob = new Lambda<decltype(computeThumbNail)>(computeThumbNail);
-        {
-            QMutexLocker l(computeThumbNailJob->mutex());
-            computeThumbNailJob->assignQueuePolicy(&m_imageScalerRestriction);
-        }
-
         auto saveThumbNail = [&image]() { image.saveThumbNail(); };
         auto saveThumbNailJob = new Lambda<decltype(saveThumbNail)>(saveThumbNail);
         {
@@ -183,7 +177,7 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
         auto sequence = new Sequence();
         *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction)
                   << new ImageLoaderJob(&image, &m_imageLoaderRestriction)
-                  << new PriorityDecorator(Image::Step_ComputeThumbNail, computeThumbNailJob)
+                  << new ComputeThumbNailJob(&image, &m_imageScalerRestriction)
                   << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
         queue << sequence;
     }

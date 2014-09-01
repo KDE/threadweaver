@@ -15,6 +15,7 @@ add_executable(ThreadWeaver_ThumbNailer
     ImageListFilter.cpp
     FileLoaderJob.cpp
     ImageLoaderJob.cpp
+    ComputeThumbNailJob.cpp
     ${UI_FILES}
 )
 qt5_use_modules(ThreadWeaver_ThumbNailer Core Widgets Test)
