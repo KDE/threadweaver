@@ -28,6 +28,8 @@
 #include <QFile>
 #include <QFileInfo>
 #include <QLocale>
+#include <QImageReader>
+#include <QBuffer>
 
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/Exception>
@@ -116,10 +118,15 @@ void Image::loadFile()
 void Image::loadImage()
 {
     m_processingOrder.storeRelease(ProcessingOrder++);
-    const bool result = m_image.loadFromData(m_imageData);
+    QBuffer in(&m_imageData);
+    in.open(QIODevice::ReadOnly);
+    QImageReader reader(&in);
+    m_image = reader.read();
     m_imageData.clear();
-    if (!result) {
-        error(Step_LoadImage, tr("Unable to parse image data!"));
+    if (m_image.isNull()) {
+        QWriteLocker l(&Lock);
+        m_details = tr("%1!").arg(reader.errorString());
+        error(Step_LoadImage, m_details);
     }
     QString details = tr("%1x%2 pixels")
             .arg(m_image.width())
