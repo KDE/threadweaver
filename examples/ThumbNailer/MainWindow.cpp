@@ -107,6 +107,9 @@ MainWindow::MainWindow(QWidget *parent)
     }
     restoreGeometry(settings.value(Setting_WindowGeometry).toByteArray());
     restoreState(settings.value(Setting_WindowState).toByteArray());
+
+    connect(m_averageLoadManager, SIGNAL(recommendedWorkerCount(int)),
+            ui->workers, SLOT(setValue(int)));
 }
 
 MainWindow::~MainWindow()

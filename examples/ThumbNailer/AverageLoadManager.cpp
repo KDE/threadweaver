@@ -45,16 +45,19 @@ void AverageLoadManager::update()
         return;
     }
 
-    qDebug() << averages[0] << averages[1] << averages[2];
-    const float targetedBaseLoad = 0.7f;
     const float processors = QThread::idealThreadCount();
-    const float b = 1.5f * processors; // base thread count
-    const float r = averages[0] / processors; // relative system load
-    const float deviation = targetedBaseLoad - r;
+    const float relativeLoadPerProcessor = averages[0] / processors; // relative system load
+    const float targetedBaseLoad = 0.7f;
 
-    auto const e = [deviation, processors](float r) { return processors * 1.2 * deviation; };
-    const float c = b + e(r);
-    qDebug() << qRound(qBound(1.0f, c, b)) << c << e(r) << r << deviation << b << processors;
+    const float x = relativeLoadPerProcessor / targetedBaseLoad;
+    auto const linearLoadFunction = [](float x) { return -x+2.0f; };
+    //auto const reciprocalLoadFunction = [](float x) { return 1.0f / (0.5*x+0.5); };
+
+    const float y = linearLoadFunction(x);
+    const int threads = qRound(processors * y);
+    qDebug() << threads << y << x << relativeLoadPerProcessor << averages[0] << processors;
+    //<< qRound(qBound(1.0f, c, b)) << c << e(relativeLoadPerProcessor) << relativeLoadPerProcessor << deviation
+    emit recommendedWorkerCount(threads);
 #endif
 }
 
