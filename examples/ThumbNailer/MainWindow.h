@@ -37,6 +37,8 @@ namespace Ui {
 class MainWindow;
 }
 
+class AverageLoadManager;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
@@ -59,6 +61,7 @@ private Q_SLOTS:
     void slotComputeThumbNailCapChanged();
     void slotSaveThumbNailCapChanged();
     void slotWorkerCapChanged();
+    void slotEnableAverageLoadManager(bool);
     void slotQuit();
 
 private:
@@ -69,6 +72,7 @@ private:
     ImageListFilter* m_imageLoaderFilter;
     ImageListFilter* m_imageScalerFilter;
     ImageListFilter* m_imageWriterFilter;
+    AverageLoadManager* m_averageLoadManager;
 
     static const QString Setting_OpenLocation;
     static const QString Setting_OutputLocation;

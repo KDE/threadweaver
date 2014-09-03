@@ -27,6 +27,7 @@
 #include <algorithm> //for transform
 #include <numeric>   //for accumulate
 
+
 #include <QtDebug>
 #include <QStringList>
 #include <QDir>
@@ -241,4 +242,3 @@ void Model::slotElementChanged(int id)
         emit dataChanged(i, i);
     }
 }
-

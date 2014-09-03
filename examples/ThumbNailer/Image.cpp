@@ -172,7 +172,6 @@ void Image::announceProgress(Steps step)
 void Image::error(Image::Steps step, const QString &message)
 {
     m_failedStep.store(step);
-    m_progress.storeRelease(Step_Complete);
-    m_model->elementChanged(m_id);
+    announceProgress(Step_Complete);
     throw ThreadWeaver::JobFailed(message);
 }

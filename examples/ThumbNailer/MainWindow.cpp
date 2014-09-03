@@ -31,6 +31,7 @@
 #include <QVariant>
 #include <QString>
 #include <QSortFilterProxyModel>
+#include <QCheckBox>
 
 #include <ThreadWeaver/ThreadWeaver>
 
@@ -38,6 +39,8 @@
 #include "Model.h"
 #include "ItemDelegate.h"
 #include "ImageListFilter.h"
+#include "AverageLoadManager.h"
+
 #include "ui_MainWindow.h"
 
 const QString MainWindow::Setting_OpenLocation = QLatin1String("OpenFilesLocation");
@@ -54,7 +57,7 @@ MainWindow::MainWindow(QWidget *parent)
     , m_imageLoaderFilter(new ImageListFilter(Image::Step_LoadImage, this))
     , m_imageScalerFilter(new ImageListFilter(Image::Step_ComputeThumbNail, this))
     , m_imageWriterFilter(new ImageListFilter(Image::Step_SaveThumbNail, this))
-
+    , m_averageLoadManager(new AverageLoadManager(this))
 {
     ui->setupUi(this);
     //The file loader list:
@@ -82,6 +85,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->workers->setValue(Queue::instance()->maximumNumberOfThreads());
 
+    //Configure average load manager:
+    ui->loadManager->setEnabled(m_averageLoadManager->available());
+    connect(ui->loadManager, SIGNAL(toggled(bool)), SLOT(slotEnableAverageLoadManager(bool)));
 
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
@@ -183,6 +189,11 @@ void MainWindow::slotWorkerCapChanged()
     const int value = ui->workers->value();
     Q_ASSERT(value > 0); // limits set in UI file
     Queue::instance()->setMaximumNumberOfThreads(value);
+}
+
+void MainWindow::slotEnableAverageLoadManager(bool enabled)
+{
+    m_averageLoadManager->activate(enabled);
 }
 
 void MainWindow::slotQuit()

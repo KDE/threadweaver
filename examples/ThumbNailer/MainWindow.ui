@@ -72,6 +72,13 @@
          </widget>
         </item>
         <item>
+         <widget class="QCheckBox" name="loadManager">
+          <property name="text">
+           <string>Manage system load average</string>
+          </property>
+         </widget>
+        </item>
+        <item>
          <spacer name="horizontalSpacer">
           <property name="orientation">
            <enum>Qt::Horizontal</enum>
@@ -241,16 +248,6 @@
      </layout>
     </item>
    </layout>
-   <zorder>fileLoaderList</zorder>
-   <zorder>label_3</zorder>
-   <zorder>fileLoaderCap</zorder>
-   <zorder>horizontalSpacer_2</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>imageLoaderList_2</zorder>
-   <zorder>imageLoaderList_3</zorder>
-   <zorder>layoutWidget</zorder>
-   <zorder>layoutWidget_2</zorder>
-   <zorder>imageScalerList</zorder>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">

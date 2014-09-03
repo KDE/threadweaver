@@ -16,6 +16,7 @@ add_executable(ThreadWeaver_ThumbNailer
     FileLoaderJob.cpp
     ImageLoaderJob.cpp
     ComputeThumbNailJob.cpp
+    AverageLoadManager.cpp
     ${UI_FILES}
 )
 qt5_use_modules(ThreadWeaver_ThumbNailer Core Widgets Test)
