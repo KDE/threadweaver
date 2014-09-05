@@ -132,7 +132,7 @@ void JobTests::CollectionQueueingTest()
     WaitForIdleAndFinished w(&weaver);
     weaver.suspend();
     weaver.stream() << jobCollection;
-    QCOMPARE(weaver.queueLength(), 1); //collection queues itself, and it's elements upon execution of self
+    QCOMPARE(weaver.queueLength(), 1); //collection queues itself, and its elements upon execution of self
     weaver.resume();
     weaver.finish();
     QCOMPARE(output.length(), 3);
