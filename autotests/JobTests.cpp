@@ -72,6 +72,7 @@ void JobTests::WeaverLazyThreadCreationTest()
     WaitForIdleAndFinished w(&weaver);
     Q_ASSERT(weaver.isIdle());
     QCOMPARE(weaver.currentNumberOfThreads(), 0);
+    weaver.setMaximumNumberOfThreads(1);
     weaver.stream() << new AppendCharacterJob(QChar('a'), &sequence);
     weaver.finish();
     QCOMPARE(weaver.currentNumberOfThreads(), 1);

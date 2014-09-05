@@ -57,7 +57,7 @@ public:
     explicit ResourceRestrictionPolicy(int cap = 0);
     ~ResourceRestrictionPolicy();
 
-    /** @brief Cap the number of simultaniously executing jobs.
+    /** @brief Cap the number of simultaneously executing jobs.
      *  Capping the amount of jobs will make sure that at max the number of jobs executing at any time is
      *  limited to the capped amount. Note that immediately after setting the amount of running jobs may be
      *  higher than the set amount. This setting only limits the starting of new jobs.
