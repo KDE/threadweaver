@@ -306,5 +306,22 @@
   </action>
  </widget>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>loadManager</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>workers</receiver>
+   <slot>setDisabled(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>266</x>
+     <y>129</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>207</x>
+     <y>136</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>
