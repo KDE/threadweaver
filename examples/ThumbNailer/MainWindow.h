@@ -62,6 +62,7 @@ private Q_SLOTS:
     void slotSaveThumbNailCapChanged();
     void slotWorkerCapChanged();
     void slotEnableAverageLoadManager(bool);
+    void slotRecommendedWorkerCountChanged(int);
     void slotQuit();
 
 private:

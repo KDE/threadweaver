@@ -13,6 +13,7 @@ public:
 
     void activate(bool enabled);
     bool available() const;
+    QPair<int, int> workersRange() const;
 
 Q_SIGNALS:
     void recommendedWorkerCount(int);
@@ -22,7 +23,7 @@ private Q_SLOTS:
 
 private:
     QTimer* m_timer;
-
+    int m_min, m_max;
 };
 
 #endif // AVERAGELOADMANAGER_H

@@ -109,7 +109,7 @@ MainWindow::MainWindow(QWidget *parent)
     restoreState(settings.value(Setting_WindowState).toByteArray());
 
     connect(m_averageLoadManager, SIGNAL(recommendedWorkerCount(int)),
-            ui->workers, SLOT(setValue(int)));
+                                         SLOT(slotRecommendedWorkerCountChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -197,6 +197,16 @@ void MainWindow::slotWorkerCapChanged()
 void MainWindow::slotEnableAverageLoadManager(bool enabled)
 {
     m_averageLoadManager->activate(enabled);
+}
+
+void MainWindow::slotRecommendedWorkerCountChanged(int value)
+{
+    auto const minMax = m_averageLoadManager->workersRange();
+    ui->workersSlider->setRange(minMax.first, minMax.second);
+    ui->workersSlider->setValue(value);
+    ui->loadManager->setText(QString::number(value));
+    ui->workersMin->setText(QString::number(minMax.first));
+    ui->workersMax->setText(QString::number(minMax.second));
 }
 
 void MainWindow::slotQuit()

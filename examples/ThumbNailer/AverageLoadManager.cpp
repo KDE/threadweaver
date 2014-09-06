@@ -11,9 +11,11 @@
 AverageLoadManager::AverageLoadManager(QObject *parent)
     : QObject(parent)
     , m_timer(new QTimer(this))
+    , m_min()
+    , m_max(0)
 {
     m_timer->setSingleShot(false);
-    m_timer->setInterval(2000);
+    m_timer->setInterval(500);
     connect(m_timer, SIGNAL(timeout()), SLOT(update()));
 }
 
@@ -37,6 +39,11 @@ bool AverageLoadManager::available() const
 #endif
 }
 
+QPair<int, int> AverageLoadManager::workersRange() const
+{
+    return qMakePair(m_min, m_max);
+}
+
 void AverageLoadManager::update()
 {
 #ifdef Q_OS_UNIX
@@ -53,10 +60,11 @@ void AverageLoadManager::update()
     auto const linearLoadFunction = [](float x) { return -x+2.0f; };
     //auto const reciprocalLoadFunction = [](float x) { return 1.0f / (0.5*x+0.5); };
 
+    m_min = qRound(qMax(1.0f, linearLoadFunction(1000* processors)));
+    m_max = qRound(qMin(2 * processors, processors*linearLoadFunction(0.0)));
     const float y = linearLoadFunction(x);
-    const int threads = qRound(processors * y);
+    const int threads = qBound(m_min, qRound(processors * y), m_max);
     qDebug() << threads << y << x << relativeLoadPerProcessor << averages[0] << processors;
-    //<< qRound(qBound(1.0f, c, b)) << c << e(relativeLoadPerProcessor) << relativeLoadPerProcessor << deviation
     emit recommendedWorkerCount(threads);
 #endif
 }
