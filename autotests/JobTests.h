@@ -45,6 +45,7 @@ private Q_SLOTS:
 
     void initTestCase();
     void WeaverLazyThreadCreationTest();
+    void ReduceWorkerCountTest();
     void SimpleJobTest();
     void SimpleJobCollectionTest();
     void EmptyJobCollectionTest();

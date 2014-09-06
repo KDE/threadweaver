@@ -79,6 +79,34 @@ void JobTests::WeaverLazyThreadCreationTest()
     Q_ASSERT(weaver.isIdle());
 }
 
+void JobTests::ReduceWorkerCountTest()
+{
+    Queue weaver;
+    QString sequence;
+
+    WaitForIdleAndFinished w(&weaver);
+    Q_ASSERT(weaver.isIdle());
+    QCOMPARE(weaver.currentNumberOfThreads(), 0);
+    weaver.setMaximumNumberOfThreads(8);
+    weaver.stream() << new AppendCharacterJob(QChar('a'), &sequence);
+    weaver.finish();
+    QVERIFY(weaver.currentNumberOfThreads() >= 1);
+    weaver.setMaximumNumberOfThreads(1);
+    weaver.stream() << new AppendCharacterJob(QChar('b'), &sequence);
+    weaver.finish();
+    QCOMPARE(weaver.currentNumberOfThreads(), 1);
+    weaver.setMaximumNumberOfThreads(0);
+    weaver.stream() << new AppendCharacterJob(QChar('c'), &sequence);
+    weaver.reschedule();
+    // Unfortunately, there is no way to enforce that the last thread has exited:
+    // QCOMPARE(weaver.currentNumberOfThreads(), 0);
+    weaver.setMaximumNumberOfThreads(1);
+    weaver.stream() << new AppendCharacterJob(QChar('d'), &sequence);
+    weaver.finish();
+    QCOMPARE(weaver.currentNumberOfThreads(), 1);
+    QCOMPARE(sequence, QLatin1String("abcd"));
+}
+
 void JobTests::SimpleJobTest()
 {
     QString sequence;

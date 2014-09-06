@@ -172,8 +172,7 @@ State *Weaver::state()
 
 void Weaver::setMaximumNumberOfThreads(int cap)
 {
-    //FIXME really? Why not 0?
-    Q_ASSERT_X(cap > 0, "Weaver Impl", "Thread inventory size has to be larger than zero.");
+    Q_ASSERT_X(cap >= 0, "Weaver Impl", "Thread inventory size has to be larger than or equal to zero.");
     QMutexLocker l(d()->mutex);  Q_UNUSED(l);
     state()->setMaximumNumberOfThreads(cap);
     reschedule();
@@ -182,7 +181,11 @@ void Weaver::setMaximumNumberOfThreads(int cap)
 void Weaver::setMaximumNumberOfThreads_p(int cap)
 {
     Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
+    const bool createInitialThread = (d()->inventoryMax == 0 && cap > 0);
     d()->inventoryMax = cap;
+    if (createInitialThread) {
+        adjustInventory(1);
+    }
 }
 
 int Weaver::maximumNumberOfThreads() const

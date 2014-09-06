@@ -190,7 +190,7 @@ void MainWindow::slotSaveThumbNailCapChanged()
 void MainWindow::slotWorkerCapChanged()
 {
     const int value = ui->workers->value();
-    Q_ASSERT(value > 0); // limits set in UI file
+    Q_ASSERT(value >= 0); // limits set in UI file
     Queue::instance()->setMaximumNumberOfThreads(value);
 }
 
