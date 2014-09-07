@@ -204,9 +204,10 @@ void MainWindow::slotRecommendedWorkerCountChanged(int value)
     auto const minMax = m_averageLoadManager->workersRange();
     ui->workersSlider->setRange(minMax.first, minMax.second);
     ui->workersSlider->setValue(value);
-    ui->loadManager->setText(QString::number(value));
+    ui->loadManager->setText(tr("%1 workers").arg(value));
     ui->workersMin->setText(QString::number(minMax.first));
     ui->workersMax->setText(QString::number(minMax.second));
+    Queue::instance()->setMaximumNumberOfThreads(value);
 }
 
 void MainWindow::slotQuit()
