@@ -33,7 +33,7 @@ $Id: State.cpp 20 2005-08-08 21:02:51Z mirko $
 namespace ThreadWeaver
 {
 
-const char *StateNames[NoOfStates] = {
+const char *const StateNames[NoOfStates] = {
     "InConstruction",
     "WorkingHard",
     "Suspending",
