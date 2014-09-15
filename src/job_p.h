@@ -43,7 +43,7 @@ public:
     void end(const JobPointer& job, Thread *thread);
 };
 
-static DefaultExecutor defaultExecutor;
+extern DefaultExecutor defaultExecutor;
 
 class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
