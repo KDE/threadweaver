@@ -39,8 +39,8 @@ class FileLoaderJob : public ThreadWeaver::Job
 {
 public:
     explicit FileLoaderJob(Image* image, ThreadWeaver::ResourceRestrictionPolicy* throttle);
-    int priority() const override;
-    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
+    int priority() const Q_DECL_OVERRIDE;
+    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) Q_DECL_OVERRIDE;
 
 private:
     Image* m_image;

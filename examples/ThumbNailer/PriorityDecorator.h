@@ -36,7 +36,7 @@ public:
     //FIXME temp
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread);
 
-    int priority() const override;
+    int priority() const Q_DECL_OVERRIDE;
 
 private:
     int m_priority;
