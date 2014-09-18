@@ -5,7 +5,11 @@ if (SNIPPETEXTRACTOR)
 endif()
 
 # Tell CMake we will be using C++ 11:
-set(CMAKE_CXX_FLAGS "-Wall -std=c++11")
+if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "GNU" OR "${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+elseif ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Intel" AND NOT WIN32)
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
+endif()
 
 add_subdirectory(HelloWorld)
 add_subdirectory(HelloWorldRaw)
