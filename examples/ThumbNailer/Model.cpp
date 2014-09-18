@@ -125,7 +125,8 @@ void Model::prepareConversions(const QFileInfoList &filenames, const QString &ou
 
 bool Model::computeThumbNailsBlockingInLoop()
 {
-    for(Image& image : m_images) {
+    for (auto it = m_images.begin(); it != m_images.end(); ++it) {
+        Image& image = *it;
         try {
             image.loadFile();
             image.loadImage();
@@ -143,7 +144,8 @@ bool Model::computeThumbNailsBlockingInLoop()
 bool Model::computeThumbNailsBlockingConcurrent()
 {
     auto queue = stream();
-    for(Image& image : m_images) {
+    for (auto it = m_images.begin(); it != m_images.end(); ++it) {
+        Image& image = *it;
         auto sequence = new Sequence();
         *sequence << make_job( [&image]() { image.loadFile(); } );
         *sequence << make_job( [&image]() { image.loadImage(); } );
@@ -154,7 +156,7 @@ bool Model::computeThumbNailsBlockingConcurrent()
     queue.flush();
     Queue::instance()->finish();
     // figure out result:
-    for(auto image : m_images) {
+    foreach (const Image& image, m_images) {
         if (image.progress().first != Image::Step_NumberOfSteps) return false;
     }
     return true;
@@ -168,7 +170,8 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
     prepareConversions(fileInfos, outputDirectory);
     //FIXME duplicated code
     auto queue = stream();
-    for(Image& image : m_images) {
+    for (auto it = m_images.begin(); it != m_images.end(); ++it) {
+        Image& image = *it;
         auto saveThumbNail = [&image]() { image.saveThumbNail(); };
         auto saveThumbNailJob = new Lambda<decltype(saveThumbNail)>(saveThumbNail);
         {
