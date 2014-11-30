@@ -54,7 +54,7 @@ Image::Image(const QString inputFileName, const QString outputFileName, Model *m
 
 Progress Image::progress() const
 {
-    return qMakePair(m_progress, Step_NumberOfSteps);
+    return qMakePair(m_progress.load(), Step_NumberOfSteps);
 }
 
 QString Image::description() const
