@@ -64,7 +64,7 @@ public:
 
     QueueStream stream();
 
-    const State *state() const;
+    const State *state() const Q_DECL_OVERRIDE;
 
     void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
     int maximumNumberOfThreads() const Q_DECL_OVERRIDE;

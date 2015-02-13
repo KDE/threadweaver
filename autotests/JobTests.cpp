@@ -954,7 +954,7 @@ void JobTests::IdDecoratorSingleAllocationTest()
 struct InstanceCountedJob : public Job {
     static QAtomicInt counter;
 
-    void run(JobPointer, Thread *)
+    void run(JobPointer, Thread *) Q_DECL_OVERRIDE
     {
     }
 
@@ -1110,7 +1110,7 @@ public:
         : start_(start), count_(count), numbers_(numbers)
     {}
 
-    void run(JobPointer, Thread*) {
+    void run(JobPointer, Thread*) Q_DECL_OVERRIDE {
         numbers_->append(start_);
         for(int index = start_ + 1; index < start_+count_; ++index) {
             *this << new GeneratingEnumeratorSequence(numbers_, index, 1);
@@ -1129,7 +1129,7 @@ public:
         : start_(start), count_(count), numbers_(numbers)
     {}
 
-    void run(JobPointer, Thread*) {
+    void run(JobPointer, Thread*) Q_DECL_OVERRIDE {
         numbers_->append(start_);
         QVector<GeneratingEnumeratorCollection*> elements;
         for(int index = start_ + 1; index < start_+count_; ++index) {

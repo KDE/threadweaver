@@ -38,9 +38,9 @@ namespace Private {
 class THREADWEAVER_EXPORT DefaultExecutor : public ThreadWeaver::Executor
 {
 public:
-    void begin(const JobPointer& job, Thread *thread);
+    void begin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
     void execute(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
-    void end(const JobPointer& job, Thread *thread);
+    void end(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
 };
 
 extern DefaultExecutor defaultExecutor;

@@ -48,7 +48,7 @@ public:
     ~MainWindow();
 
 protected:
-    void closeEvent(QCloseEvent*);
+    void closeEvent(QCloseEvent*) Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void slotProgress(int step, int total);

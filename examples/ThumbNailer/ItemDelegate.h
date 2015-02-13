@@ -29,8 +29,8 @@ public:
     static const int TextMargin;
     static const int Margin;
 private:
-    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex& index) const;
-    void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const;
+    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex& index) const Q_DECL_OVERRIDE;
+    void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const Q_DECL_OVERRIDE;
 };
 
 #endif // SMIVITEMDELEGATE

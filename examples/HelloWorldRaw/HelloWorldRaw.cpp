@@ -34,7 +34,7 @@ class QDebugJob : public Job {
 public:
     QDebugJob(const char* message = 0) : m_message(message) {}
 protected:
-    void run(JobPointer, Thread*) {
+    void run(JobPointer, Thread*) Q_DECL_OVERRIDE {
         qDebug() << m_message;
     }
 private:

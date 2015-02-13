@@ -14,7 +14,7 @@ public:
     ~MainWidget();
 
 protected:
-    void resizeEvent(QResizeEvent *);
+    void resizeEvent(QResizeEvent *) Q_DECL_OVERRIDE;
 
 public Q_SLOTS:
     void setImage(QImage image);

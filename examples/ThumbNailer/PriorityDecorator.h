@@ -34,7 +34,7 @@ public:
     explicit PriorityDecorator(int priority, ThreadWeaver::JobInterface* job, bool autoDelete = true);
 
     //FIXME temp
-    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread);
+    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) Q_DECL_OVERRIDE;
 
     int priority() const Q_DECL_OVERRIDE;
 

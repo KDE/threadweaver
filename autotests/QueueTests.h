@@ -37,7 +37,7 @@ class LowPriorityAppendCharacterJob : public AppendCharacterJob
 public:
     LowPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = 0);
 
-    int priority() const;
+    int priority() const Q_DECL_OVERRIDE;
 };
 
 class HighPriorityAppendCharacterJob : public AppendCharacterJob
@@ -45,7 +45,7 @@ class HighPriorityAppendCharacterJob : public AppendCharacterJob
 public:
     HighPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = 0);
 
-    int priority() const;
+    int priority() const Q_DECL_OVERRIDE;
 };
 
 namespace ThreadWeaver
@@ -65,7 +65,7 @@ public:
     SecondThreadThatQueues();
 
 protected:
-    void run();
+    void run() Q_DECL_OVERRIDE;
 };
 
 class QueueTests : public QObject

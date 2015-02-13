@@ -181,7 +181,7 @@ public:
     void removeQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
 
     /** @brief Return the queue policies assigned to this Job. */
-    QList<QueuePolicy *> queuePolicies() const;
+    QList<QueuePolicy *> queuePolicies() const Q_DECL_OVERRIDE;
 
     /** The mutex used to protect this job. */
     QMutex *mutex() const Q_DECL_OVERRIDE;
