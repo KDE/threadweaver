@@ -74,7 +74,7 @@ public:
     bool isEmpty() const Q_DECL_OVERRIDE;
     bool isIdle() const Q_DECL_OVERRIDE;
     int queueLength() const Q_DECL_OVERRIDE;
-    virtual JobPointer applyForWork(Thread *thread, bool wasBusy) Q_DECL_OVERRIDE;
+    JobPointer applyForWork(Thread *thread, bool wasBusy) Q_DECL_OVERRIDE;
     void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
     void blockThreadUntilJobsAreBeingAssigned(Thread *th);
     void blockThreadUntilJobsAreBeingAssigned_locked(Thread *th);

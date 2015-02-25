@@ -78,7 +78,7 @@ public:
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object.
      */
-    virtual void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
 
     /** Perform the job synchroneously in the current thread. */
     void blockingExecute() Q_DECL_OVERRIDE;
