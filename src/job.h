@@ -204,7 +204,7 @@ protected:
      * counted object handled by the queue. Using it as signal parameters will amongst other things prevent thejob from being
      * memory managed and deleted.
      */
-    virtual void run(JobPointer self, Thread *thread) = 0;
+    virtual void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE = 0;
 
     /** @brief Perform standard tasks before starting the execution of a job.
      *
