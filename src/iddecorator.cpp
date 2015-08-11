@@ -30,10 +30,14 @@
 
 #include "iddecorator.h"
 
+namespace {
+
+const quintptr IdDecorator_AutoDelete = 1;
+
+}
+
 namespace ThreadWeaver
 {
-
-const int IdDecorator_AutoDelete = 1;
 
 // Pssst: IdDecorator uses the d pointer to hold decoratee. It also uses d2 as a bitfield to store the
 // autoDelete setting. The goal is not to require a dynamic allocation on creation.
