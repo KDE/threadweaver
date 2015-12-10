@@ -15,5 +15,5 @@ add_executable(ThreadWeaver_HelloInternet
 )
 
 kde_enable_exceptions()
-target_link_libraries(ThreadWeaver_HelloInternet Qt5::Network Qt5::Xml Qt::Widgets KF5::ThreadWeaver)
+target_link_libraries(ThreadWeaver_HelloInternet Qt5::Network Qt5::Xml Qt5::Widgets KF5::ThreadWeaver)
 
