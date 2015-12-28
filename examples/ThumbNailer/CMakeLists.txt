@@ -19,5 +19,4 @@ add_executable(ThreadWeaver_ThumbNailer
     AverageLoadManager.cpp
     ${UI_FILES}
 )
-qt5_use_modules(ThreadWeaver_ThumbNailer Core Widgets Test)
-target_link_libraries(ThreadWeaver_ThumbNailer KF5::ThreadWeaver)
+target_link_libraries(ThreadWeaver_ThumbNailer KF5::ThreadWeaver Qt5::Test Qt5::Widgets)
