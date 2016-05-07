@@ -213,6 +213,7 @@ void Model::elementChanged(int id)
 
 int Model::rowCount(const QModelIndex &parent) const
 {
+    Q_UNUSED(parent);
     return m_images.size();
 }
 
@@ -235,6 +236,9 @@ QVariant Model::data(const QModelIndex &index, int role) const
 
 QVariant Model::headerData(int section, Qt::Orientation orientation, int role) const
 {
+    Q_UNUSED(section);
+    Q_UNUSED(orientation);
+    Q_UNUSED(role);
     return QVariant();
 }
 
