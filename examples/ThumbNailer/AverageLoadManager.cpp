@@ -32,7 +32,7 @@ void AverageLoadManager::activate(bool enabled)
 
 bool AverageLoadManager::available() const
 {
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) && ! defined(Q_OS_ANDROID)
     return true;
 #else
     return false;
@@ -46,7 +46,7 @@ QPair<int, int> AverageLoadManager::workersRange() const
 
 void AverageLoadManager::update()
 {
-#ifdef Q_OS_UNIX
+#if defined(Q_OS_UNIX) && ! defined(Q_OS_ANDROID)
     double averages[3];
     if (getloadavg(averages, 3) == -1) {
         return;
