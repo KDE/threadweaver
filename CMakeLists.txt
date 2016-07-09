@@ -29,7 +29,7 @@ IF(THREADWEAVER_USE_GNU_CXX11)
 ENDIF()
 
 # -- Maintained by scripty
-set(KF5_VERSION "5.24.0") # handled by release scripts
+set(KF5_VERSION "5.25.0") # handled by release scripts
 
 ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX THREADWEAVER
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/threadweaver_version.h"
