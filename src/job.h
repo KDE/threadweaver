@@ -45,6 +45,7 @@ class Thread;
 class QueuePolicy;
 class QueueAPI;
 class Executor;
+class ProgressInterface;
 
 /** @brief A Job is a simple abstraction of an action that is to be executed in a thread context.
  *
@@ -82,6 +83,16 @@ public:
 
     /** Perform the job synchroneously in the current thread. */
     void blockingExecute() Q_DECL_OVERRIDE;
+
+    /** Set the progress interface for the job
+     *
+     * Returns the previously set interface. The interface can never be unset. If zero is passed in as the new interface, the Job
+     * will internally reset to a default progress interface that does nothing
+     */
+    ProgressInterface *setProgressInterface(ProgressInterface *interface) Q_DECL_OVERRIDE;
+
+    /** Returns the progress interface currently set on the job. */
+    ProgressInterface *progressInterface() const Q_DECL_OVERRIDE;
 
     /** Set the Executor object that is supposed to run the job.
      *

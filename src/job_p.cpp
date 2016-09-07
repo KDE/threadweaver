@@ -32,11 +32,13 @@ http://creative-destruction.me $
 #include "thread.h"
 
 ThreadWeaver::Private::DefaultExecutor ThreadWeaver::Private::defaultExecutor;
+ThreadWeaver::Private::DefaultProgressInterface ThreadWeaver::Private::defaultProgressInterface;
 
 ThreadWeaver::Private::Job_Private::Job_Private()
     : mutex(QMutex::NonRecursive)
     , status(Job::Status_NoStatus)
     , executor(&defaultExecutor)
+    , progressInterface(&defaultProgressInterface)
 {
 }
 

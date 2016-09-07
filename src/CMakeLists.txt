@@ -15,6 +15,7 @@ set(ThreadWeaver_LIB_SRCS
     job_p.cpp
     iddecorator.cpp
     qobjectdecorator.cpp
+    qobjectprogressdecorator.cpp
     executor.cpp
     executewrapper.cpp
     state.cpp
@@ -64,9 +65,11 @@ ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
     DebuggingAids
     Thread
     JobInterface
+    ProgressInterface
     Job
     IdDecorator
     QObjectDecorator
+    QObjectProgressDecorator
     Lambda
     State
     WeaverImplState

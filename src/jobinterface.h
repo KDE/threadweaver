@@ -39,6 +39,7 @@ namespace ThreadWeaver
 
 class Thread;
 class Executor;
+class ProgressInterface;
 class QueueAPI;
 class QueuePolicy;
 
@@ -64,6 +65,8 @@ public:
     virtual void blockingExecute() = 0;
     virtual Executor *setExecutor(Executor *executor) = 0;
     virtual Executor *executor() const = 0;
+    virtual ProgressInterface *setProgressInterface(ProgressInterface *interface) = 0;
+    virtual ProgressInterface *progressInterface() const = 0;
     virtual int priority() const = 0;
     virtual Status status() const = 0;
     virtual void setStatus(Status) = 0;

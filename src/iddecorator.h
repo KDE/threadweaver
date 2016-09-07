@@ -50,6 +50,8 @@ public:
     const JobInterface *job() const;
     /** Retrieve the decorated job. */
     JobInterface *job();
+    /** Retrieve the jobs decorator ( in case there is more then one) */
+		IdDecorator *jobDecorator();
     /** Auto-delete the decoratee or not. */
     void setAutoDelete(bool onOff);
     /** Will the decoratee be auto-deleted? */
@@ -71,6 +73,8 @@ public:
     void blockingExecute() Q_DECL_OVERRIDE;
     Executor *setExecutor(Executor *executor) Q_DECL_OVERRIDE;
     Executor *executor() const Q_DECL_OVERRIDE;
+    ProgressInterface *setProgressInterface(ProgressInterface* interface) Q_DECL_OVERRIDE;
+    ProgressInterface *progressInterface() const Q_DECL_OVERRIDE;
     int priority() const Q_DECL_OVERRIDE;
     void setStatus(Status) Q_DECL_OVERRIDE;
     Status status() const Q_DECL_OVERRIDE;
