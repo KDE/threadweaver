@@ -104,6 +104,7 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
     if (remainingJobs <= -1) {
         //its no use to count, the elements have been dequeued, now the threads call back that have been processing jobs in the meantime
     } else {
+        collection->progressInterface()->setProgress(saveYourSelf, 1.0-((float)remainingJobs / (float)elements.size()));
         Q_ASSERT(remainingJobs >= 0);
         if (remainingJobs == 0) {
             // all elements can only be done if self has been executed:

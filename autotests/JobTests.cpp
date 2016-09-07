@@ -46,6 +46,7 @@
 #include <ThreadWeaver/DependencyPolicy>
 #include <ThreadWeaver/QObjectDecorator>
 #include <ThreadWeaver/Exception>
+#include <ThreadWeaver/QObjectProgressDecorator>
 
 #include "AppendCharacterJob.h"
 #include "AppendCharacterAndVerifyJob.h"
@@ -117,10 +118,49 @@ void JobTests::SimpleJobTest()
     QCOMPARE(sequence, QString("1"));
 }
 
+void JobTests::ProgressTest()
+{
+  QString sequence;
+
+  QProgressJobPointer jobA(new QObjectProgressDecorator(new QObjectDecorator(new AppendCharacterJobWithProgress(QChar('a'), &sequence))));
+
+  QVERIFY(connect(jobA.data(), SIGNAL(progressChanged(ThreadWeaver::JobPointer, float)), SLOT(jobProgress(ThreadWeaver::JobPointer, float))));
+  QVERIFY(connect(jobA.data(), SIGNAL(progressMessageChanged(ThreadWeaver::JobPointer, QString)), SLOT(jobProgressMessage(ThreadWeaver::JobPointer,QString))));
+
+  QProgressJobPointer jobB(new QObjectProgressDecorator(new AppendCharacterJobWithProgress(QChar('b'), &sequence)));
+
+  QVERIFY(connect(jobB.data(), SIGNAL(progressChanged(ThreadWeaver::JobPointer, float)), SLOT(jobProgress(ThreadWeaver::JobPointer, float))));
+  QVERIFY(connect(jobB.data(), SIGNAL(progressMessageChanged(ThreadWeaver::JobPointer, QString)), SLOT(jobProgressMessage(ThreadWeaver::JobPointer,QString))));
+
+  JobPointer jobC(new AppendCharacterJobWithProgress(QChar('c'), &sequence));
+
+  QProgressJobPointer jobSequence(new QObjectProgressDecorator(new QObjectDecorator(new Sequence())));
+
+  QVERIFY(connect(jobSequence.data(), SIGNAL(progressChanged(ThreadWeaver::JobPointer, float)), SLOT(jobProgress(ThreadWeaver::JobPointer, float))));
+  QVERIFY(connect(jobSequence.data(), SIGNAL(progressMessageChanged(ThreadWeaver::JobPointer, QString)), SLOT(jobProgressMessage(ThreadWeaver::JobPointer,QString))));
+
+  jobSequence->sequence()->addJob(jobA);
+  jobSequence->sequence()->addJob(jobB);
+  jobSequence->sequence()->addJob(jobC);
+
+  WaitForIdleAndFinished w(Queue::instance());
+  stream() << jobSequence;
+
+  Queue::instance()->finish();
+
+  QCoreApplication::processEvents();
+
+  QVERIFY(sequence.length() == 3);
+  QVERIFY(sequence.count('a') == 1);
+  QVERIFY(sequence.count('b') == 1);
+  QVERIFY(sequence.count('c') == 1);
+}
+
 void JobTests::SimpleJobCollectionTest()
 {
     QString sequence;
     Collection jobCollection;
+    
     jobCollection << new AppendCharacterJob(QChar('a'), &sequence)
                   << new AppendCharacterJob(QChar('b'), &sequence)
                   << new AppendCharacterJob(QChar('c'), &sequence);
@@ -129,6 +169,8 @@ void JobTests::SimpleJobCollectionTest()
     stream() << jobCollection;
 
     Queue::instance()->finish();
+		
+		QCoreApplication::processEvents();
 
     QVERIFY(sequence.length() == 3);
     QVERIFY(sequence.count('a') == 1);
@@ -821,6 +863,16 @@ void JobTests::jobDone(JobPointer)
     QVERIFY(thread() == QThread::currentThread());
 }
 
+void JobTests::jobProgress(ThreadWeaver::JobPointer, float)
+{
+    QVERIFY(thread() == QThread::currentThread());
+}
+
+void JobTests::jobProgressMessage(ThreadWeaver::JobPointer, const QString&)
+{
+    QVERIFY(thread() == QThread::currentThread());
+}
+
 void JobTests::JobSignalsAreEmittedAsynchronouslyTest()
 {
     using namespace ThreadWeaver;
@@ -832,10 +884,13 @@ void JobTests::JobSignalsAreEmittedAsynchronouslyTest()
 
     QVERIFY(connect(&collection, SIGNAL(started(ThreadWeaver::JobPointer)), SLOT(jobStarted(ThreadWeaver::JobPointer))));
     QVERIFY(connect(&collection, SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(jobDone(ThreadWeaver::JobPointer))));
+		
     for (int counter = 0; counter < NumberOfBits; ++counter) {
         QJobPointer job(new QObjectDecorator(new AppendCharacterJob(bits[counter], &sequence)));
+				
         QVERIFY(connect(job.data(), SIGNAL(started(ThreadWeaver::JobPointer)), SLOT(jobStarted(ThreadWeaver::JobPointer))));
         QVERIFY(connect(job.data(), SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(jobDone(ThreadWeaver::JobPointer))));
+				
         collection.collection()->addJob(job);
     }
 

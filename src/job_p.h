@@ -30,6 +30,7 @@ http://creative-destruction.me $
 
 #include <QMutex>
 #include "executewrapper_p.h"
+#include "progressinterface.h"
 
 namespace ThreadWeaver {
 
@@ -43,7 +44,16 @@ public:
     void end(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
 };
 
+class THREADWEAVER_EXPORT DefaultProgressInterface : public ThreadWeaver::ProgressInterface
+{
+public:
+    virtual ~DefaultProgressInterface() {}
+    void setProgress(const JobPointer& /*self*/, float /*progress*/) {}
+    void setProgressMessage(const JobPointer& /*self*/, const QString& /*message*/) {}
+};
+
 extern DefaultExecutor defaultExecutor;
+extern DefaultProgressInterface defaultProgressInterface;
 
 class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
@@ -69,6 +79,9 @@ public:
 
     /** The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
+
+    /** The progress Interface of this Job. */
+    QAtomicPointer<ProgressInterface> progressInterface;
 
     //FIXME What is the correct KDE frameworks no debug switch?
 #if !defined(NDEBUG)

@@ -34,6 +34,7 @@
 #include <ThreadWeaver/JobPointer>
 #include <ThreadWeaver/Job>
 #include <ThreadWeaver/DebuggingAids>
+#include <ThreadWeaver/ProgressInterface>
 
 // define in test binary:
 
@@ -77,6 +78,24 @@ protected:
 private:
     QChar m_c;
     QString *m_stringref;
+};
+
+class AppendCharacterJobWithProgress : public AppendCharacterJob
+{
+public:
+  AppendCharacterJobWithProgress(QChar c = QChar(), QString *stringref = 0)
+      : AppendCharacterJob(c, stringref)
+  {
+  }
+
+  void run(ThreadWeaver::JobPointer job, ThreadWeaver::Thread* thread) Q_DECL_OVERRIDE
+  {
+      progressInterface()->setProgress(job, 0.0);
+      progressInterface()->setProgressMessage(job, "Starting to append");
+      AppendCharacterJob::run(job, thread);
+      progressInterface()->setProgress(job, 1.0);
+      progressInterface()->setProgressMessage(job, "Job done");
+  }
 };
 
 class FailingAppendCharacterJob : public AppendCharacterJob

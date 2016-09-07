@@ -42,7 +42,6 @@ class JobTests : public QObject
     Q_OBJECT
 
 private Q_SLOTS:
-
     void initTestCase();
     void WeaverLazyThreadCreationTest();
     void ReduceWorkerCountTest();
@@ -60,6 +59,7 @@ private Q_SLOTS:
     void CollectionDependenciesTest();
     void QueueAndDequeueCollectionTest();
     void QueueAndDequeueSequenceTest();
+		void ProgressTest();
     void BlockingExecuteTest();
     void RecursiveSequenceTest();
     void RecursiveQueueAndDequeueCollectionTest();
@@ -91,6 +91,8 @@ private Q_SLOTS:
 public Q_SLOTS: // slots used during tests that are not test cases
     void jobStarted(ThreadWeaver::JobPointer);
     void jobDone(ThreadWeaver::JobPointer);
+    void jobProgressMessage(ThreadWeaver::JobPointer, const QString&);
+    void jobProgress(ThreadWeaver::JobPointer, float);
 
     void deliveryTestJobDone(ThreadWeaver::JobPointer);
 };

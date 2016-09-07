@@ -101,7 +101,17 @@ void Job::execute(const JobPointer& self, Thread *th)
 
 void Job::blockingExecute()
 {
-    execute(ManagedJobPointer<Job>(this), 0);
+	execute(ManagedJobPointer<Job>(this), 0);
+}
+
+ProgressInterface *Job::setProgressInterface(ProgressInterface *interface)
+{
+    return d()->progressInterface.fetchAndStoreOrdered(interface == 0 ? &Private::defaultProgressInterface : interface);
+}
+
+ProgressInterface *Job::progressInterface() const
+{
+    return d()->progressInterface.loadAcquire();
 }
 
 Executor *Job::setExecutor(Executor *executor)
