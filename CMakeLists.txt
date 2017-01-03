@@ -1,6 +1,7 @@
 cmake_minimum_required(VERSION 3.0)
 
-project(ThreadWeaver)
+set(KF5_VERSION "5.30.0") # handled by release scripts
+project(ThreadWeaver VERSION ${KF5_VERSION})
 
 include(FeatureSummary)
 find_package(ECM 5.29.0  NO_MODULE)
@@ -28,10 +29,7 @@ IF(THREADWEAVER_USE_GNU_CXX11)
     ADD_DEFINITIONS(-std=c++11)
 ENDIF()
 
-# -- Maintained by scripty
-set(KF5_VERSION "5.30.0") # handled by release scripts
-
-ecm_setup_version(${KF5_VERSION} VARIABLE_PREFIX THREADWEAVER
+ecm_setup_version(PROJECT VARIABLE_PREFIX THREADWEAVER
                         VERSION_HEADER "${CMAKE_CURRENT_BINARY_DIR}/threadweaver_version.h"
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ThreadWeaverConfigVersion.cmake"
                         SOVERSION 5)
