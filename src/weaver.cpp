@@ -107,7 +107,7 @@ void Weaver::shutDown_p()
     // loop).
 
     for (;;) {
-        Thread *th = 0;
+        Thread *th = nullptr;
         {
             QMutexLocker l(d()->mutex); Q_UNUSED(l);
             if (d()->inventory.isEmpty()) {
@@ -150,7 +150,7 @@ void Weaver::setState_p(StateId id)
     Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
     State *newState = d()->states[id].data();
     State *previous = d()->state.fetchAndStoreOrdered(newState);
-    if (previous == 0 || previous->stateId() != id) {
+    if (previous == nullptr || previous->stateId() != id) {
         newState->activated();
         TWDEBUG(2, "WeaverImpl::setState: state changed to \"%s\".\n", newState->stateName().toLatin1().constData());
         if (id == Suspended) {

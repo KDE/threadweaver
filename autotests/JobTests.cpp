@@ -322,7 +322,7 @@ void JobTests::EmitStartedOnFirstElementTest()
     JobPointer jobB(new AppendCharacterJob(QChar('b'), &result));
     QObjectDecorator collection(new Collection());
     Collection *decorated = dynamic_cast<Collection *>(collection.job());
-    QVERIFY(decorated != 0);
+    QVERIFY(decorated != nullptr);
     decorated->addJob(jobA);
     decorated->addJob(jobB);
 
@@ -925,7 +925,7 @@ void JobTests::IdDecoratorDecoratesTest()
 void JobTests::IdDecoratorAutoDeleteTest()
 {
     using namespace ThreadWeaver;
-    IdDecorator id(0);
+    IdDecorator id(nullptr);
     QCOMPARE(id.autoDelete(), true); // autoDelete is on by default
     id.setAutoDelete(false);
     QCOMPARE(id.autoDelete(), false);

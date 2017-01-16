@@ -39,7 +39,7 @@ class QueueSignals_Private {};
 /** @brief Construct a QueueSignals object, passing the QObject parent. */
 QueueSignals::QueueSignals(QObject *parent)
     : QObject(parent)
-    , m_d(0)
+    , m_d(nullptr)
 {
 }
 
@@ -52,7 +52,7 @@ QueueSignals::QueueSignals(Private::QueueSignals_Private *d, QObject *parent)
 QueueSignals::~QueueSignals()
 {
     delete m_d;
-    m_d = 0;
+    m_d = nullptr;
 }
 
 Private::QueueSignals_Private *QueueSignals::d()

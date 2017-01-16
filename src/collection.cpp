@@ -46,7 +46,7 @@ class CollectionExecuteWrapper : public ExecuteWrapper
 {
 public:
     CollectionExecuteWrapper()
-        : collection(0)
+        : collection(nullptr)
     {}
 
     void setCollection(Collection *collection_)
@@ -94,7 +94,7 @@ Collection::~Collection()
     MUTEX_ASSERT_UNLOCKED(mutex());
     // dequeue all remaining jobs:
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    if (d()->api != 0) { // still queued
+    if (d()->api != nullptr) { // still queued
         d()->dequeueElements(this, false);
     }
 }
@@ -102,8 +102,8 @@ Collection::~Collection()
 void Collection::addJob(JobPointer job)
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
-    REQUIRE(d()->api == 0 || d()->selfIsExecuting == true); // not queued yet or still running
-    REQUIRE(job != 0);
+    REQUIRE(d()->api == nullptr || d()->selfIsExecuting == true); // not queued yet or still running
+    REQUIRE(job != nullptr);
 
     CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
     wrapper->setCollection(this);
@@ -121,7 +121,7 @@ void Collection::stop(JobPointer job)
 void Collection::aboutToBeQueued_locked(QueueAPI *api)
 {
     Q_ASSERT(!mutex()->tryLock());
-    Q_ASSERT(d()->api == 0); // never queue twice
+    Q_ASSERT(d()->api == nullptr); // never queue twice
     d()->api = api;
     d()->selfExecuteWrapper.wrap(setExecutor(&d()->selfExecuteWrapper));
     CollectionExecuteWrapper *wrapper = new CollectionExecuteWrapper();
@@ -135,7 +135,7 @@ void Collection::aboutToBeDequeued_locked(QueueAPI *api)
     Q_ASSERT(!mutex()->tryLock());
     Q_ASSERT(api && d()->api == api);
     d()->dequeueElements(this, true);
-    d()->api = 0;
+    d()->api = nullptr;
     Job::aboutToBeDequeued_locked(api);
 }
 
@@ -144,7 +144,7 @@ void Collection::execute(const JobPointer& job, Thread *thread)
     {
         QMutexLocker l(mutex()); Q_UNUSED(l);
         Q_ASSERT(d()->self.isNull());
-        Q_ASSERT(d()->api != 0);
+        Q_ASSERT(d()->api != nullptr);
         d()->self = job;
         d()->selfIsExecuting = true; // reset in elementFinished
     }

@@ -32,7 +32,7 @@ namespace ThreadWeaver
 {
 
 DestructedState::DestructedState(QueueSignals *)
-    : WeaverImplState(0) // make sure we cannot use weaver, ever :-)
+    : WeaverImplState(nullptr) // make sure we cannot use weaver, ever :-)
 {
 }
 
@@ -42,12 +42,12 @@ void DestructedState::shutDown()
 
 Weaver *DestructedState::weaver()
 {
-    return 0;
+    return nullptr;
 }
 
 const Weaver *DestructedState::weaver() const
 {
-    return 0;
+    return nullptr;
 }
 
 void DestructedState::setMaximumNumberOfThreads(int)

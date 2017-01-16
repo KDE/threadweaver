@@ -36,7 +36,7 @@ class JobLoggingWeaver : public ThreadWeaver::Weaver
 {
     Q_OBJECT
 public:
-    explicit JobLoggingWeaver(QObject* parent = 0);
+    explicit JobLoggingWeaver(QObject* parent = nullptr);
     void enqueue(const QVector<ThreadWeaver::JobPointer> &jobs) Q_DECL_OVERRIDE;
 
 private:

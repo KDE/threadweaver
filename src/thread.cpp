@@ -47,7 +47,7 @@ public:
     explicit Private(Weaver *theParent)
         : parent(theParent)
         , id(makeId())
-        , job(0)
+        , job(nullptr)
     {
         Q_ASSERT(parent);
     }
@@ -88,7 +88,7 @@ unsigned int Thread::id() const
 void Thread::run()
 {
     Q_ASSERT(d->parent);
-    Q_ASSERT(QCoreApplication::instance() != 0);
+    Q_ASSERT(QCoreApplication::instance() != nullptr);
     d->parent->threadEnteredRun(this);
 
     emit started(this);

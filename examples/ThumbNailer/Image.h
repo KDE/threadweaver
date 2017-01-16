@@ -53,7 +53,7 @@ public:
     };
 
     Image(const QString inputFileName = QString(), const QString outputFileName = QString(),
-          Model* model = 0, int id = 0);
+          Model* model = nullptr, int id = 0);
     Progress progress() const;
     QString description() const;
     QString details() const;

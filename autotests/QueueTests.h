@@ -35,7 +35,7 @@
 class LowPriorityAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    LowPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = 0);
+    LowPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = nullptr);
 
     int priority() const Q_DECL_OVERRIDE;
 };
@@ -43,7 +43,7 @@ public:
 class HighPriorityAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    HighPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = 0);
+    HighPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = nullptr);
 
     int priority() const Q_DECL_OVERRIDE;
 };
@@ -73,7 +73,7 @@ class QueueTests : public QObject
     Q_OBJECT
 
 public:
-    explicit QueueTests(QObject *parent = 0);
+    explicit QueueTests(QObject *parent = nullptr);
 
 public Q_SLOTS:
     // this slot (which is not a test) is part of

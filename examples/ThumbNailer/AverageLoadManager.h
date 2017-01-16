@@ -9,7 +9,7 @@ class AverageLoadManager : public QObject
 {
     Q_OBJECT
 public:
-    explicit AverageLoadManager(QObject *parent = 0);
+    explicit AverageLoadManager(QObject *parent = nullptr);
 
     void activate(bool enabled);
     bool available() const;

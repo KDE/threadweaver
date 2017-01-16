@@ -92,7 +92,7 @@ void LifecycleTests::testJobAutoDeletion()
         ThreadWeaver::JobPointer job1(new NotifyOnDeletejob(job1Exists));
         QCOMPARE(job1Exists, true);
         int argc = 0;
-        QCoreApplication app(argc, (char **)0); Q_UNUSED(app);
+        QCoreApplication app(argc, (char **)nullptr); Q_UNUSED(app);
         QVERIFY(ThreadWeaver::Queue::instance());
         ThreadWeaver::Queue::instance()->suspend();
         ThreadWeaver::Queue::instance()->enqueue(job1);
@@ -105,7 +105,7 @@ void LifecycleTests::testJobAutoDeletion()
         QCOMPARE(job2Exists, false);
         QCOMPARE(job1Exists, true);
     }
-    QVERIFY(ThreadWeaver::Queue::instance() == 0);
+    QVERIFY(ThreadWeaver::Queue::instance() == nullptr);
     QCOMPARE(job2Exists, false);
     QCOMPARE(job1Exists, false);
 }

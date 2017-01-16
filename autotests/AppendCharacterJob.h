@@ -42,7 +42,7 @@ extern QMutex s_GlobalMutex;
 class AppendCharacterJob : public ThreadWeaver::Job
 {
 public:
-    AppendCharacterJob(QChar c = QChar(), QString *stringref = 0)
+    AppendCharacterJob(QChar c = QChar(), QString *stringref = nullptr)
         : ThreadWeaver::Job()
     {
         setValues(c, stringref);
@@ -82,7 +82,7 @@ private:
 class FailingAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    FailingAppendCharacterJob(QChar c = QChar(), QString *stringref = 0)
+    FailingAppendCharacterJob(QChar c = QChar(), QString *stringref = nullptr)
         : AppendCharacterJob(c, stringref)
     {
     }

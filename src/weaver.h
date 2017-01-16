@@ -52,7 +52,7 @@ class THREADWEAVER_EXPORT Weaver : public QueueAPI
 {
     Q_OBJECT
 public:
-    explicit Weaver(QObject *parent = 0);
+    explicit Weaver(QObject *parent = nullptr);
     virtual ~Weaver();
     void shutDown() Q_DECL_OVERRIDE;
     void shutDown_p() Q_DECL_OVERRIDE;

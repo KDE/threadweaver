@@ -101,12 +101,12 @@ void Job::execute(const JobPointer& self, Thread *th)
 
 void Job::blockingExecute()
 {
-    execute(ManagedJobPointer<Job>(this), 0);
+    execute(ManagedJobPointer<Job>(this), nullptr);
 }
 
 Executor *Job::setExecutor(Executor *executor)
 {
-    return d()->executor.fetchAndStoreOrdered(executor == 0 ? &Private::defaultExecutor : executor);
+    return d()->executor.fetchAndStoreOrdered(executor == nullptr ? &Private::defaultExecutor : executor);
 }
 
 Executor *Job::executor() const

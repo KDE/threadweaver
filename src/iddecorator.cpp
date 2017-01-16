@@ -43,7 +43,7 @@ namespace ThreadWeaver
 // autoDelete setting. The goal is not to require a dynamic allocation on creation.
 IdDecorator::IdDecorator(JobInterface *decoratee, bool autoDelete)
     : d1(reinterpret_cast<Private1 *>(decoratee))
-    , d2(0)
+    , d2(nullptr)
 {
     setAutoDelete(autoDelete);
 }
@@ -199,7 +199,7 @@ void IdDecorator::setAutoDelete(bool onOff)
     if (onOff) {
         d2 = reinterpret_cast<IdDecorator::Private2 *>(IdDecorator_AutoDelete);
     } else {
-        d2 = 0;
+        d2 = nullptr;
     }
 }
 

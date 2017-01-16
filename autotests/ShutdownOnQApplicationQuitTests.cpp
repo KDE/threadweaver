@@ -51,13 +51,13 @@ void ShutdownOnQApplicationQuitTests::testShutdownOnQApplicationQuit()
 {
     {
         int argc = 0;
-        QCoreApplication app(argc, (char **)0);
-        QVERIFY(ThreadWeaver::Queue::instance() != 0);
+        QCoreApplication app(argc, (char **)nullptr);
+        QVERIFY(ThreadWeaver::Queue::instance() != nullptr);
         ThreadWeaver::Queue::instance()->suspend();
         ThreadWeaver::Queue::instance()->resume();
         QTest::qWait(10);
     }
-    QVERIFY(ThreadWeaver::Queue::instance() == 0);
+    QVERIFY(ThreadWeaver::Queue::instance() == nullptr);
 }
 
 QTEST_APPLESS_MAIN(ShutdownOnQApplicationQuitTests)

@@ -56,10 +56,10 @@ class THREADWEAVER_EXPORT Queue : public QueueSignals
 {
     Q_OBJECT
 public:
-    explicit Queue(QObject *parent = 0);
+    explicit Queue(QObject *parent = nullptr);
     /** @brief Construct a queue with a customized implementation
      * The queue takes ownership and will delete the implementation upon destruction. */
-    explicit Queue(QueueSignals *implementation, QObject *parent = 0);
+    explicit Queue(QueueSignals *implementation, QObject *parent = nullptr);
     virtual ~Queue();
 
     QueueStream stream();

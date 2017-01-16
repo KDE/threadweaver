@@ -77,7 +77,7 @@ DependencyPolicy::~DependencyPolicy()
 void DependencyPolicy::addDependency(JobPointer jobA, JobPointer jobB)
 {
     // jobA depends on jobB
-    REQUIRE(jobA != 0 && jobB != 0 && jobA != jobB);
+    REQUIRE(jobA != nullptr && jobB != nullptr && jobA != jobB);
 
     QMutexLocker a(jobA->mutex());
     QMutexLocker b(jobB->mutex());
@@ -96,7 +96,7 @@ void DependencyPolicy::addDependency(const Dependency &dep)
 
 bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
 {
-    REQUIRE(jobA != 0 && jobB != 0);
+    REQUIRE(jobA != nullptr && jobB != nullptr);
     bool result = false;
     QMutexLocker l(d->mutex());
 
@@ -156,7 +156,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
 
 bool DependencyPolicy::hasUnresolvedDependencies(JobPointer job) const
 {
-    REQUIRE(job != 0);
+    REQUIRE(job != nullptr);
     QMutexLocker l(d->mutex());
     return d->dependencies().contains(job);
 }
@@ -175,13 +175,13 @@ DependencyPolicy &DependencyPolicy::instance()
 
 bool DependencyPolicy::canRun(JobPointer job)
 {
-    REQUIRE(job != 0);
+    REQUIRE(job != nullptr);
     return !hasUnresolvedDependencies(job);
 }
 
 void DependencyPolicy::free(JobPointer job)
 {
-    REQUIRE(job != 0);
+    REQUIRE(job != nullptr);
     REQUIRE(job->status() > Job::Status_Running);
     if (job->success()) {
         resolveDependencies(job);
@@ -195,12 +195,12 @@ void DependencyPolicy::free(JobPointer job)
 
 void DependencyPolicy::release(JobPointer job)
 {
-    REQUIRE(job != 0); Q_UNUSED(job)
+    REQUIRE(job != nullptr); Q_UNUSED(job)
 }
 
 void DependencyPolicy::destructed(JobInterface *job)
 {
-    REQUIRE(job != 0);
+    REQUIRE(job != nullptr);
     resolveDependencies(ManagedJobPointer<JobInterface>(job));
 }
 

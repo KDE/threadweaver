@@ -41,8 +41,8 @@ class QueueSignals : public QObject, public QueueInterface
 {
     Q_OBJECT
 public:
-    explicit QueueSignals(QObject *parent = 0);
-    explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = 0);
+    explicit QueueSignals(QObject *parent = nullptr);
+    explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = nullptr);
     virtual ~QueueSignals();
 
 Q_SIGNALS:

@@ -46,7 +46,7 @@ public:
         Role_StepRole
     };
 
-    explicit Model(QObject *parent = 0);
+    explicit Model(QObject *parent = nullptr);
 
     int fileLoaderCap() const;
     void setFileLoaderCap(int cap);

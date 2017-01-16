@@ -58,7 +58,7 @@ void Sequence_Private::prepareToEnqueueElements()
 void Sequence_Private::processCompletedElement(Collection* collection, JobPointer job, Thread*)
 {
     Q_ASSERT(!mutex.tryLock());
-    Q_ASSERT(job != 0);
+    Q_ASSERT(job != nullptr);
     Q_ASSERT(!self.isNull());
     const JobInterface::Status status = job->status();
     if (status != JobInterface::Status_Success) {

@@ -52,7 +52,7 @@ public:
      *
      *  @param parent the parent Weaver
      */
-    explicit Thread(Weaver *parent = 0);
+    explicit Thread(Weaver *parent = nullptr);
 
     /** The destructor. */
     ~Thread();

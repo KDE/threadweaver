@@ -32,7 +32,7 @@ using namespace ThreadWeaver;
 //@@snippet_begin(sample-helloworldraw-class)
 class QDebugJob : public Job {
 public:
-    QDebugJob(const char* message = 0) : m_message(message) {}
+    QDebugJob(const char* message = nullptr) : m_message(message) {}
 protected:
     void run(JobPointer, Thread*) Q_DECL_OVERRIDE {
         qDebug() << m_message;

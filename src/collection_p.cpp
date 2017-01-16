@@ -35,7 +35,7 @@ namespace ThreadWeaver {
 namespace Private {
 
 Collection_Private::Collection_Private()
-    : api(0)
+    : api(nullptr)
     , jobCounter(0)
     , selfIsExecuting(false)
 {
@@ -53,7 +53,7 @@ void Collection_Private::finalCleanup(Collection *collection)
     if (collection->status() < Job::Status_Success) {
         collection->setStatus(Job::Status_Success);
     }
-    api = 0;
+    api = nullptr;
 }
 
 void Collection_Private::enqueueElements()
@@ -132,7 +132,7 @@ void Collection_Private::processCompletedElement(Collection*, JobPointer, Thread
 void Collection_Private::stop_locked(Collection *collection)
 {
     Q_ASSERT(!mutex.tryLock());
-    if (api != 0) {
+    if (api != nullptr) {
         TWDEBUG(4, "Collection::stop: dequeueing %p.\n", collection);
         if (!api->dequeue(ManagedJobPointer<Collection>(collection))) {
             dequeueElements(collection, false);
@@ -144,7 +144,7 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
 {
     // dequeue everything:
     Q_ASSERT(!mutex.tryLock());
-    if (api == 0) {
+    if (api == nullptr) {
         return;    //not queued
     }
 
