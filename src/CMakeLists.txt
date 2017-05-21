@@ -97,6 +97,30 @@ install(FILES
     DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver/threadweaver COMPONENT Devel
 )
 
+if(BUILD_QCH)
+    ecm_add_qch(
+        KF5ThreadWeaver_QCH
+        NAME ThreadWeaver
+        BASE_NAME KF5ThreadWeaver
+        VERSION ${KF5_VERSION}
+        ORG_DOMAIN org.kde
+        SOURCES # using only public headers, to cover only public API
+            ${ThreadWeaver_HEADERS}
+            "${CMAKE_SOURCE_DIR}/docs/use-cases.md"
+            "${CMAKE_SOURCE_DIR}/docs/whymultithreading.md"
+        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
+        LINK_QCHS
+            Qt5Core_QCH
+        BLANK_MACROS
+            THREADWEAVER_EXPORT
+            THREADWEAVER_DEPRECATED
+            THREADWEAVER_DEPRECATED_EXPORT
+        TAGFILE_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
+        QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
+        COMPONENT Devel
+    )
+endif()
+
 include(ECMGeneratePriFile)
 ecm_generate_pri_file(BASE_NAME ThreadWeaver LIB_NAME KF5ThreadWeaver DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})
