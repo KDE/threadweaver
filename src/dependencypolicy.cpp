@@ -42,7 +42,7 @@ using namespace ThreadWeaver;
 
 typedef QMultiMap<JobPointer, JobPointer> JobMultiMap;
 
-class DependencyPolicy::Private
+class Q_DECL_HIDDEN DependencyPolicy::Private
 {
 public:
     /** A container to keep track of Job dependencies.

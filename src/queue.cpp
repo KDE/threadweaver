@@ -39,7 +39,7 @@ namespace
 static Queue::GlobalQueueFactory *globalQueueFactory;
 }
 
-class Queue::Private
+class Q_DECL_HIDDEN Queue::Private
 {
 public:
     Private(Queue *q, QueueSignals *queue)

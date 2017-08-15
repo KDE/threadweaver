@@ -36,7 +36,7 @@
 
 using namespace ThreadWeaver;
 
-class ResourceRestrictionPolicy::Private
+class Q_DECL_HIDDEN ResourceRestrictionPolicy::Private
 {
 public:
     Private(int theCap)

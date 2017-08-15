@@ -42,7 +42,7 @@ const char *const StateNames[NoOfStates] = {
     "Destructed"
 };
 
-class State::Private
+class Q_DECL_HIDDEN State::Private
 {
 public:
     Private(QueueInterface *theWeaver)

@@ -41,7 +41,7 @@
 
 using namespace ThreadWeaver;
 
-class Thread::Private
+class Q_DECL_HIDDEN Thread::Private
 {
 public:
     explicit Private(Weaver *theParent)

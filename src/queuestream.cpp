@@ -34,7 +34,7 @@
 namespace ThreadWeaver
 {
 
-class QueueStream::Private
+class Q_DECL_HIDDEN QueueStream::Private
 {
 public:
     Private(Queue *w) : weaver(w) {}
