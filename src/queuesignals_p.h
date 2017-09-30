@@ -36,6 +36,7 @@ class QueueSignals_Private
 {
 public:
     QueueSignals_Private();
+    virtual ~QueueSignals_Private();
 };
 
 }

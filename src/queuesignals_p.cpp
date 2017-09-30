@@ -30,3 +30,7 @@ http://creative-destruction.me $
 ThreadWeaver::Private::QueueSignals_Private::QueueSignals_Private()
 {
 }
+
+ThreadWeaver::Private::QueueSignals_Private::~QueueSignals_Private()
+{
+}

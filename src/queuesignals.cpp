@@ -26,15 +26,10 @@
 */
 
 #include "queuesignals.h"
+#include "queuesignals_p.h"
 
 namespace ThreadWeaver
 {
-
-namespace Private {
-
-class QueueSignals_Private {};
-
-}
 
 /** @brief Construct a QueueSignals object, passing the QObject parent. */
 QueueSignals::QueueSignals(QObject *parent)
