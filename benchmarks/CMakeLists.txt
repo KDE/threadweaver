@@ -1,9 +1,5 @@
 find_package(Qt5Test ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
-if(NOT MSVC)
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x")
-endif()
-
 remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 
 ########### next target ###############
