@@ -6,6 +6,11 @@ cmake_minimum_required(VERSION 3.0)
 find_package(ECM 1.1.0 REQUIRED NO_MODULE)
 ##@@snippet_end
 
+if(POLICY CMP0063)
+    cmake_policy(SET CMP0063 NEW)
+endif()
+
+
 if (NOT TARGET KF5ThreadWeaver)
   # Find the ThreadWeaver framework when we compiling this example stand-alone
 ##@@snippet_begin(adding_tw_2)
