@@ -29,8 +29,8 @@
 #include <cstdlib>
 #include <algorithm>
 
-#include <QtCore/QMutex>
-#include <QtTest/QtTest>
+#include <QMutex>
+#include <QtTest>
 #include <QSignalSpy>
 
 #include <ThreadWeaver/Queueing>

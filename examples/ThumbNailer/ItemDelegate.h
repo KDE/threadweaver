@@ -18,7 +18,7 @@
 #define ITEMDELEGATE_H
 
 #include <QItemDelegate>
-#include <QtCore/QSize>
+#include <QSize>
 
 class ItemDelegate : public QItemDelegate
 {

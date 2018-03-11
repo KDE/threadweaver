@@ -27,7 +27,7 @@
 #ifndef JOBTESTS_H
 #define JOBTESTS_H
 
-#include <QtCore/QObject>
+#include <QObject>
 #include <ThreadWeaver/JobPointer>
 
 namespace ThreadWeaver

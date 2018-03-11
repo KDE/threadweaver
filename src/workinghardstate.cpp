@@ -28,7 +28,7 @@ $Id: WorkingHardState.cpp 30 2005-08-16 16:16:04Z mirko $
 
 #include "workinghardstate.h"
 
-#include <QtCore/QByteRef>
+#include <QByteRef>
 
 #include "job.h"
 #include "thread.h"

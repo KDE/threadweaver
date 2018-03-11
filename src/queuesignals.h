@@ -28,7 +28,7 @@
 #ifndef THREADWEAVER_QUEUESIGNALS_H
 #define THREADWEAVER_QUEUESIGNALS_H
 
-#include <QtCore/QObject>
+#include <QObject>
 #include "queueinterface.h"
 
 namespace ThreadWeaver

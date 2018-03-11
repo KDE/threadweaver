@@ -28,7 +28,7 @@ $Id: State.cpp 20 2005-08-08 21:02:51Z mirko $
 
 #include "state.h"
 
-#include <QtCore/QString>
+#include <QString>
 
 namespace ThreadWeaver
 {

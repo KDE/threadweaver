@@ -28,7 +28,7 @@ http://creative-destruction.me $
 #ifndef WeaverImpl_H
 #define WeaverImpl_H
 
-#include <QtCore/QObject>
+#include <QObject>
 #include "queueapi.h"
 
 namespace ThreadWeaver

@@ -28,10 +28,10 @@
 
 #include "thread.h"
 
-#include <QtCore/QMutex>
-#include <QtCore/QDebug>
+#include <QMutex>
+#include <QDebug>
 #include <QPointer>
-#include <QtCore/QCoreApplication>
+#include <QCoreApplication>
 
 #include "threadweaver.h"
 #include "weaver.h"

@@ -28,8 +28,8 @@
 
 #include "resourcerestrictionpolicy.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMutex>
+#include <QList>
+#include <QMutex>
 
 #include "debuggingaids.h"
 #include "managedjobpointer.h"

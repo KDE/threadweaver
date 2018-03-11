@@ -31,9 +31,9 @@ http://creative-destruction.me $
 #include "queueing.h"
 #include "collection_p.h"
 
-#include <QtCore/QList>
-#include <QtCore/QObject>
-#include <QtCore/QPointer>
+#include <QList>
+#include <QObject>
+#include <QPointer>
 
 #include "dependencypolicy.h"
 #include "executewrapper_p.h"

@@ -1,11 +1,11 @@
 #include "QueueTests.h"
 
-#include <QtCore/QChar>
+#include <QChar>
 
-#include <QtCore/QObject>
-#include <QtCore/QThread>
-#include <QtCore/QDebug>
-#include <QtTest/QtTest>
+#include <QObject>
+#include <QThread>
+#include <QDebug>
+#include <QtTest>
 
 #include "AppendCharacterJob.h"
 

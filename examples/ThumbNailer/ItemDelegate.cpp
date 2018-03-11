@@ -14,7 +14,7 @@
    $Id: SMIVItemDelegate.cpp 30 2005-08-16 16:16:04Z mirko $
 */
 
-#include <QtCore/QModelIndex>
+#include <QModelIndex>
 #include <QPainter>
 
 #include "ItemDelegate.h"

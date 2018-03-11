@@ -29,8 +29,8 @@ $Id: Job.cpp 20 2005-08-08 21:02:51Z mirko $
 #include "job.h"
 #include "job_p.h"
 
-#include <QtCore/QList>
-#include <QtCore/QMutex>
+#include <QList>
+#include <QMutex>
 #include "debuggingaids.h"
 #include "thread.h"
 #include <QAtomicPointer>

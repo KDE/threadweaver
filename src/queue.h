@@ -28,7 +28,7 @@
 #ifndef THREADWEAVER_QUEUE_H
 #define THREADWEAVER_QUEUE_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include "queuesignals.h"
 #include "queuestream.h"

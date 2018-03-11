@@ -31,7 +31,7 @@
 #ifndef DEBUGGINGAIDS_H
 #define DEBUGGINGAIDS_H
 
-#include <QtCore/QtGlobal>
+#include <QtGlobal>
 
 extern "C"
 {
@@ -44,8 +44,8 @@ extern "C"
 #include <assert.h>
 }
 
-#include <QtCore/QMutex>
-#include <QtCore/QString>
+#include <QMutex>
+#include <QString>
 #include "threadweaver_export.h"
 
 namespace ThreadWeaver

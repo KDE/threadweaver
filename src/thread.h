@@ -28,8 +28,8 @@
 #ifndef THREADWEAVER_THREAD_H
 #define THREADWEAVER_THREAD_H
 
-#include <QtCore/QMutex>
-#include <QtCore/QThread>
+#include <QMutex>
+#include <QThread>
 
 #include "threadweaver_export.h"
 #include "jobpointer.h"

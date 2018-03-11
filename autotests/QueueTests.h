@@ -28,7 +28,7 @@
 #ifndef QUEUETESTS_H
 #define QUEUETESTS_H
 
-#include <QtCore/QThread>
+#include <QThread>
 
 #include "AppendCharacterJob.h"
 

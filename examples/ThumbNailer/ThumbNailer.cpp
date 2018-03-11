@@ -26,7 +26,7 @@
 
 #include <iostream>
 
-#include <QtTest/QTest>
+#include <QTest>
 #include <QFileInfoList>
 #include <QApplication>
 #include <QCommandLineParser>

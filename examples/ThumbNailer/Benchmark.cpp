@@ -25,7 +25,7 @@
 */
 
 #include <QTemporaryDir>
-#include <QtTest/QTest>
+#include <QTest>
 
 #include <ThreadWeaver/ThreadWeaver>
 

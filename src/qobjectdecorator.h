@@ -27,7 +27,7 @@
 #ifndef THREADWEAVER_QOBJECTDECORATOR_H
 #define THREADWEAVER_QOBJECTDECORATOR_H
 
-#include <QtCore/QObject>
+#include <QObject>
 
 #include "threadweaver_export.h"
 #include "iddecorator.h"

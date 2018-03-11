@@ -25,9 +25,9 @@
 
 */
 
-#include <QtCore/QCoreApplication>
-#include <QtCore/QMutex>
-#include <QtCore/QVector>
+#include <QCoreApplication>
+#include <QMutex>
+#include <QVector>
 
 #include "queue.h"
 #include "weaver.h"
