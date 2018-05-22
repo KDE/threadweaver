@@ -176,7 +176,7 @@ QString SequenceTemplate = "abcdefghijklmnopqrstuvwxyz";
 class GeneratingCollection : public Collection
 {
 public:
-    void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+    void run(JobPointer, Thread *) override {
         std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(), [this](QChar it) {
             *this << new AppendCharacterJob(it, &sequence_);
         } );
@@ -187,7 +187,7 @@ public:
 class GeneratingSequence : public Sequence
 {
 public:
-    void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+    void run(JobPointer, Thread *) override {
         std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(), [this](QChar it) {
             *this << new AppendCharacterJob(it, &sequence_);
         } );
@@ -954,7 +954,7 @@ void JobTests::IdDecoratorSingleAllocationTest()
 struct InstanceCountedJob : public Job {
     static QAtomicInt counter;
 
-    void run(JobPointer, Thread *) Q_DECL_OVERRIDE
+    void run(JobPointer, Thread *) override
     {
     }
 
@@ -1000,7 +1000,7 @@ void JobTests::JobExitStatusByExceptionTest()
     using namespace ThreadWeaver;
 
     struct FailingJob : public Job {
-        void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+        void run(JobPointer, Thread *) override {
             throw JobFailed();
         }
     };
@@ -1010,7 +1010,7 @@ void JobTests::JobExitStatusByExceptionTest()
     QCOMPARE(failing.status(), Job::Status_Failed);
 
     struct AbortingJob : public Job {
-        void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+        void run(JobPointer, Thread *) override {
             throw JobAborted();
         }
     };
@@ -1020,7 +1020,7 @@ void JobTests::JobExitStatusByExceptionTest()
     QCOMPARE(aborting.status(), Job::Status_Aborted);
 
     struct SuccessfulJob : public Job {
-        void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+        void run(JobPointer, Thread *) override {
             // do nothing
         }
     };
@@ -1034,7 +1034,7 @@ void JobTests::JobManualExitStatusTest()
     using namespace ThreadWeaver;
 
     struct FailingJob : public Job {
-        void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+        void run(JobPointer, Thread *) override {
             setStatus(Job::Status_Failed);
         }
     };
@@ -1044,7 +1044,7 @@ void JobTests::JobManualExitStatusTest()
     QCOMPARE(failing.status(), Job::Status_Failed);
 
     struct AbortingJob : public Job {
-        void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+        void run(JobPointer, Thread *) override {
             setStatus(Job::Status_Aborted);
         }
     };
@@ -1054,7 +1054,7 @@ void JobTests::JobManualExitStatusTest()
     QCOMPARE(aborting.status(), Job::Status_Aborted);
 
     struct SuccessfulJob : public Job {
-        void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+        void run(JobPointer, Thread *) override {
             // do nothing
         }
     };
@@ -1110,7 +1110,7 @@ public:
         : start_(start), count_(count), numbers_(numbers)
     {}
 
-    void run(JobPointer, Thread*) Q_DECL_OVERRIDE {
+    void run(JobPointer, Thread*) override {
         numbers_->append(start_);
         for(int index = start_ + 1; index < start_+count_; ++index) {
             *this << new GeneratingEnumeratorSequence(numbers_, index, 1);
@@ -1129,7 +1129,7 @@ public:
         : start_(start), count_(count), numbers_(numbers)
     {}
 
-    void run(JobPointer, Thread*) Q_DECL_OVERRIDE {
+    void run(JobPointer, Thread*) override {
         numbers_->append(start_);
         QVector<GeneratingEnumeratorCollection*> elements;
         for(int index = start_ + 1; index < start_+count_; ++index) {

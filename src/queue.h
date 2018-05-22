@@ -60,30 +60,30 @@ public:
     /** @brief Construct a queue with a customized implementation
      * The queue takes ownership and will delete the implementation upon destruction. */
     explicit Queue(QueueSignals *implementation, QObject *parent = nullptr);
-    virtual ~Queue();
+    ~Queue() override;
 
     QueueStream stream();
 
-    const State *state() const Q_DECL_OVERRIDE;
+    const State *state() const override;
 
-    void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
-    int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
-    int currentNumberOfThreads() const Q_DECL_OVERRIDE;
+    void setMaximumNumberOfThreads(int cap) override;
+    int maximumNumberOfThreads() const override;
+    int currentNumberOfThreads() const override;
 
     static ThreadWeaver::Queue *instance();
-    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
+    void enqueue(const QVector<JobPointer> &jobs) override;
     void enqueue(const JobPointer &job);
-    bool dequeue(const JobPointer &) Q_DECL_OVERRIDE;
-    void dequeue() Q_DECL_OVERRIDE;
-    void finish() Q_DECL_OVERRIDE;
-    void suspend() Q_DECL_OVERRIDE;
-    void resume() Q_DECL_OVERRIDE;
-    bool isEmpty() const Q_DECL_OVERRIDE;
-    bool isIdle() const Q_DECL_OVERRIDE;
-    int queueLength() const Q_DECL_OVERRIDE;
-    void requestAbort() Q_DECL_OVERRIDE;
-    void reschedule() Q_DECL_OVERRIDE;
-    void shutDown() Q_DECL_OVERRIDE;
+    bool dequeue(const JobPointer &) override;
+    void dequeue() override;
+    void finish() override;
+    void suspend() override;
+    void resume() override;
+    bool isEmpty() const override;
+    bool isIdle() const override;
+    int queueLength() const override;
+    void requestAbort() override;
+    void reschedule() override;
+    void shutDown() override;
 
     /** @brief Interface for the global queue factory. */
     struct GlobalQueueFactory {

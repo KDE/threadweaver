@@ -49,7 +49,7 @@ public:
     };
 
     explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector* collector);
-    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) Q_DECL_OVERRIDE;
+    void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 private:
     JobData data_;
     JobLoggingDecoratorCollector* collector_;

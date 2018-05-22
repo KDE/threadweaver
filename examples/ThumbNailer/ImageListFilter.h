@@ -34,7 +34,7 @@ class ImageListFilter : public QSortFilterProxyModel {
     Q_OBJECT
 public:
     explicit ImageListFilter(Image::Steps step, QObject* parent = nullptr);
-    bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const Q_DECL_OVERRIDE;
+    bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const override;
 private:
     Image::Steps m_step;
 };

@@ -49,7 +49,7 @@ class THREADWEAVER_EXPORT Collection : public Job
 public:
     Collection();
     Collection(ThreadWeaver::Private::Collection_Private * d);
-    ~Collection();
+    ~Collection() override;
 
     /** Append a job to the collection.
      *
@@ -81,10 +81,10 @@ public:
 
 protected:
     /** Overload to queue the collection. */
-    void aboutToBeQueued_locked(QueueAPI *api) Q_DECL_OVERRIDE;
+    void aboutToBeQueued_locked(QueueAPI *api) override;
 
     /** Overload to dequeue the collection. */
-    void aboutToBeDequeued_locked(QueueAPI *api) Q_DECL_OVERRIDE;
+    void aboutToBeDequeued_locked(QueueAPI *api) override;
 
     /** Return a ref-erence to the job in the job list at position i. */
     JobPointer jobAt(int i);
@@ -97,11 +97,11 @@ protected:
 
 protected:
     /** Overload the execute method. */
-    void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *) override;
 
     /** Overload run().
      * We have to. */
-    void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
+    void run(JobPointer self, Thread *thread) override;
 
 protected:
     friend class CollectionExecuteWrapper; //needs to access d()

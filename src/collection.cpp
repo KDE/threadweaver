@@ -54,7 +54,7 @@ public:
         collection = collection_;
     }
 
-    void begin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE {
+    void begin(const JobPointer& job, Thread *thread) override {
         TWDEBUG(4, "CollectionExecuteWrapper::begin: collection %p\n", collection);
         ExecuteWrapper::begin(job, thread);
         Q_ASSERT(collection);
@@ -62,14 +62,14 @@ public:
         ExecuteWrapper::begin(job, thread);
     }
 
-    void end(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE {
+    void end(const JobPointer& job, Thread *thread) override {
         TWDEBUG(4, "CollectionExecuteWrapper::end: collection %p\n", collection);
         Q_ASSERT(collection);
         ExecuteWrapper::end(job, thread);
         collection->d()->elementFinished(collection, job, thread);
     }
 
-    void cleanup(const JobPointer& job, Thread *) Q_DECL_OVERRIDE {
+    void cleanup(const JobPointer& job, Thread *) override {
         //Once job is unwrapped from us, this object is dangling. Job::executor points to the next higher up execute wrapper.
         //It is thus safe to "delete this". By no means add any later steps after delete!
         delete unwrap(job);

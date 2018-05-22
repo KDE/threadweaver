@@ -52,7 +52,7 @@ class THREADWEAVER_EXPORT DependencyPolicy : public QueuePolicy
 {
 public:
     /** Destructor. */
-    ~DependencyPolicy();
+    ~DependencyPolicy() override;
 
     /** @brief Add jobB as a dependency of jobA.
      *  jobA will only be executed after jobB has been successfully processed.
@@ -84,13 +84,13 @@ public:
 
     static DependencyPolicy &instance();
 
-    bool canRun(JobPointer) Q_DECL_OVERRIDE;
+    bool canRun(JobPointer) override;
 
-    void free(JobPointer) Q_DECL_OVERRIDE;
+    void free(JobPointer) override;
 
-    void release(JobPointer) Q_DECL_OVERRIDE;
+    void release(JobPointer) override;
 
-    void destructed(JobInterface *job) Q_DECL_OVERRIDE;
+    void destructed(JobInterface *job) override;
 
     bool isEmpty() const;
 

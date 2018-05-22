@@ -46,7 +46,7 @@ public:
         m_exists = false;
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) Q_DECL_OVERRIDE {}
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override {}
 
 private:
     bool &m_exists;

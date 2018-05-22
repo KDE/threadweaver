@@ -43,25 +43,25 @@ class DestructedState : public WeaverImplState
 {
 public:
     explicit DestructedState(QueueSignals *weaver);
-    void shutDown() Q_DECL_OVERRIDE;
-    Weaver *weaver() Q_DECL_OVERRIDE;
-    const Weaver *weaver() const Q_DECL_OVERRIDE;
-    void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
-    int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
-    int currentNumberOfThreads() const Q_DECL_OVERRIDE;
-    void enqueue(const QVector<JobPointer> &job) Q_DECL_OVERRIDE;
-    bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
-    void dequeue() Q_DECL_OVERRIDE;
-    void finish() Q_DECL_OVERRIDE;
-    bool isEmpty() const Q_DECL_OVERRIDE;
-    bool isIdle() const Q_DECL_OVERRIDE;
-    int queueLength() const Q_DECL_OVERRIDE;
-    void requestAbort() Q_DECL_OVERRIDE;
-    void suspend() Q_DECL_OVERRIDE;
-    void resume() Q_DECL_OVERRIDE;
-    JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
-    void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
-    StateId stateId() const Q_DECL_OVERRIDE;
+    void shutDown() override;
+    Weaver *weaver() override;
+    const Weaver *weaver() const override;
+    void setMaximumNumberOfThreads(int cap) override;
+    int maximumNumberOfThreads() const override;
+    int currentNumberOfThreads() const override;
+    void enqueue(const QVector<JobPointer> &job) override;
+    bool dequeue(const JobPointer &job) override;
+    void dequeue() override;
+    void finish() override;
+    bool isEmpty() const override;
+    bool isIdle() const override;
+    int queueLength() const override;
+    void requestAbort() override;
+    void suspend() override;
+    void resume() override;
+    JobPointer applyForWork(Thread *th, bool wasBusy) override;
+    void waitForAvailableJob(Thread *th) override;
+    StateId stateId() const override;
 };
 
 }

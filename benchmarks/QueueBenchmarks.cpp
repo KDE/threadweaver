@@ -72,7 +72,7 @@ public:
     }
 
 protected:
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) Q_DECL_OVERRIDE
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override
     {
         payload();
     }

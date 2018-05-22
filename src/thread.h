@@ -55,14 +55,14 @@ public:
     explicit Thread(Weaver *parent = nullptr);
 
     /** The destructor. */
-    ~Thread();
+    ~Thread() override;
 
     /** @brief The run method is reimplemented to execute jobs from the queue.
      *
      * Whenever the thread is idle, it will ask its Weaver parent for a Job to do. The Weaver will either return a Job or a null
      * pointer. When a null pointer is returned, it tells the thread to exit.
      */
-    void run() Q_DECL_OVERRIDE;
+    void run() override;
 
     /** @brief Returns the thread id.
      *

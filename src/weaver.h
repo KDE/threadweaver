@@ -53,29 +53,29 @@ class THREADWEAVER_EXPORT Weaver : public QueueAPI
     Q_OBJECT
 public:
     explicit Weaver(QObject *parent = nullptr);
-    virtual ~Weaver();
-    void shutDown() Q_DECL_OVERRIDE;
-    void shutDown_p() Q_DECL_OVERRIDE;
+    ~Weaver() override;
+    void shutDown() override;
+    void shutDown_p() override;
 
-    const State *state() const Q_DECL_OVERRIDE;
-    State *state() Q_DECL_OVERRIDE;
+    const State *state() const override;
+    State *state() override;
 
-    void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
-    int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
-    int currentNumberOfThreads() const Q_DECL_OVERRIDE;
+    void setMaximumNumberOfThreads(int cap) override;
+    int maximumNumberOfThreads() const override;
+    int currentNumberOfThreads() const override;
 
     void setState(StateId);
-    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
-    bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
-    void dequeue() Q_DECL_OVERRIDE;
-    void finish() Q_DECL_OVERRIDE;
-    void suspend() Q_DECL_OVERRIDE;
-    void resume() Q_DECL_OVERRIDE;
-    bool isEmpty() const Q_DECL_OVERRIDE;
-    bool isIdle() const Q_DECL_OVERRIDE;
-    int queueLength() const Q_DECL_OVERRIDE;
-    JobPointer applyForWork(Thread *thread, bool wasBusy) Q_DECL_OVERRIDE;
-    void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
+    void enqueue(const QVector<JobPointer> &jobs) override;
+    bool dequeue(const JobPointer &job) override;
+    void dequeue() override;
+    void finish() override;
+    void suspend() override;
+    void resume() override;
+    bool isEmpty() const override;
+    bool isIdle() const override;
+    int queueLength() const override;
+    JobPointer applyForWork(Thread *thread, bool wasBusy) override;
+    void waitForAvailableJob(Thread *th) override;
     void blockThreadUntilJobsAreBeingAssigned(Thread *th);
     void blockThreadUntilJobsAreBeingAssigned_locked(Thread *th);
     void incActiveThreadCount();
@@ -85,26 +85,26 @@ public:
     void threadEnteredRun(Thread *thread);
     JobPointer takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy,
                                                     bool suspendIfAllThreadsInactive, bool justReturning);
-    void requestAbort() Q_DECL_OVERRIDE;
-    void reschedule() Q_DECL_OVERRIDE;
+    void requestAbort() override;
+    void reschedule() override;
 
     //FIXME: rename _p to _locked:
     friend class WeaverImplState;
     friend class SuspendingState;
     void setState_p(StateId);
-    void setMaximumNumberOfThreads_p(int cap) Q_DECL_OVERRIDE;
-    int maximumNumberOfThreads_p() const Q_DECL_OVERRIDE;
-    int currentNumberOfThreads_p() const Q_DECL_OVERRIDE;
+    void setMaximumNumberOfThreads_p(int cap) override;
+    int maximumNumberOfThreads_p() const override;
+    int currentNumberOfThreads_p() const override;
     void enqueue_p(const QVector<JobPointer> &jobs);
-    bool dequeue_p(JobPointer job) Q_DECL_OVERRIDE;
-    void dequeue_p() Q_DECL_OVERRIDE;
-    void finish_p() Q_DECL_OVERRIDE;
-    void suspend_p() Q_DECL_OVERRIDE;
-    void resume_p() Q_DECL_OVERRIDE;
-    bool isEmpty_p() const Q_DECL_OVERRIDE;
-    bool isIdle_p() const Q_DECL_OVERRIDE;
-    int queueLength_p() const Q_DECL_OVERRIDE;
-    void requestAbort_p() Q_DECL_OVERRIDE;
+    bool dequeue_p(JobPointer job) override;
+    void dequeue_p() override;
+    void finish_p() override;
+    void suspend_p() override;
+    void resume_p() override;
+    bool isEmpty_p() const override;
+    bool isIdle_p() const override;
+    int queueLength_p() const override;
+    void requestAbort_p() override;
 
 Q_SIGNALS:
     /** @brief A Thread has been created. */

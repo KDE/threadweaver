@@ -55,7 +55,7 @@ class THREADWEAVER_EXPORT ResourceRestrictionPolicy : public QueuePolicy
 {
 public:
     explicit ResourceRestrictionPolicy(int cap = 0);
-    ~ResourceRestrictionPolicy();
+    ~ResourceRestrictionPolicy() override;
 
     /** @brief Cap the number of simultaneously executing jobs.
      *  Capping the amount of jobs will make sure that at max the number of jobs executing at any time is
@@ -65,10 +65,10 @@ public:
      */
     void setCap(int newCap);
     int cap() const;
-    bool canRun(JobPointer) Q_DECL_OVERRIDE;
-    void free(JobPointer) Q_DECL_OVERRIDE;
-    void release(JobPointer) Q_DECL_OVERRIDE;
-    void destructed(JobInterface *job) Q_DECL_OVERRIDE;
+    bool canRun(JobPointer) override;
+    void free(JobPointer) override;
+    void release(JobPointer) override;
+    void destructed(JobInterface *job) override;
 
 private:
     class Private;

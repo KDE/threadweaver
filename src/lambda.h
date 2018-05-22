@@ -43,7 +43,7 @@ public:
     {}
 
 protected:
-    void run(JobPointer, Thread *) Q_DECL_OVERRIDE {
+    void run(JobPointer, Thread *) override {
         t();
     }
 

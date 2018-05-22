@@ -45,7 +45,7 @@ public:
     explicit QueueAPI(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = nullptr);
 
     virtual void shutDown_p() = 0;
-    const State *state() const Q_DECL_OVERRIDE = 0;
+    const State *state() const override = 0;
     virtual State *state() = 0;
     virtual void setMaximumNumberOfThreads_p(int cap) = 0;
     virtual int maximumNumberOfThreads_p() const = 0;

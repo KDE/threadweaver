@@ -43,41 +43,41 @@ class WeaverImplState : public State
 public:
     explicit WeaverImplState(QueueSignals *weaver);
 
-    const State *state() const Q_DECL_OVERRIDE;
+    const State *state() const override;
 
     /** Shut down the queue. */
-    void shutDown() Q_DECL_OVERRIDE;
+    void shutDown() override;
     /** Set the maximum number of threads this Weaver object may start. */
-    void setMaximumNumberOfThreads(int cap) Q_DECL_OVERRIDE;
+    void setMaximumNumberOfThreads(int cap) override;
     /** Get the maximum number of threads this Weaver may start. */
-    int maximumNumberOfThreads() const Q_DECL_OVERRIDE;
+    int maximumNumberOfThreads() const override;
     /** Returns the current number of threads in the inventory. */
-    int currentNumberOfThreads() const Q_DECL_OVERRIDE;
+    int currentNumberOfThreads() const override;
     /** Enqueue a job. */
-    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE;
+    void enqueue(const QVector<JobPointer> &jobs) override;
     /** Dequeue a job. */
-    bool dequeue(const JobPointer &job) Q_DECL_OVERRIDE;
+    bool dequeue(const JobPointer &job) override;
     /** Dequeue all jobs. */
-    void dequeue() Q_DECL_OVERRIDE;
+    void dequeue() override;
     /** Finish all queued jobs. */
-    void finish() Q_DECL_OVERRIDE;
+    void finish() override;
     /** Are no more jobs queued? */
-    bool isEmpty() const Q_DECL_OVERRIDE;
+    bool isEmpty() const override;
     /** Are all threads waiting? */
-    bool isIdle() const Q_DECL_OVERRIDE;
+    bool isIdle() const override;
     /** How many jobs are currently queued? */
-    int queueLength() const Q_DECL_OVERRIDE;
+    int queueLength() const override;
     /** Request abort for all queued and currently executed jobs. */
-    void requestAbort() Q_DECL_OVERRIDE;
+    void requestAbort() override;
     /** Reschedule jobs to threads. */
-    void reschedule() Q_DECL_OVERRIDE;
+    void reschedule() override;
     /** Wait (by suspending the calling thread) until a job becomes available. */
-    void waitForAvailableJob(Thread *th) Q_DECL_OVERRIDE;
+    void waitForAvailableJob(Thread *th) override;
 
 protected:
     /** Provide correct return type for WeaverImpl states. */
-    Weaver *weaver() Q_DECL_OVERRIDE;
-    const Weaver *weaver() const Q_DECL_OVERRIDE;
+    Weaver *weaver() override;
+    const Weaver *weaver() const override;
 };
 
 }

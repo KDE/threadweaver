@@ -35,7 +35,7 @@ class AppendCharacterAndVerifyJob : public AppendCharacterJob
 public:
     AppendCharacterAndVerifyJob();
     void setValues(QChar character, QString *stringref, const QString &expected);
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) Q_DECL_OVERRIDE;
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override;
 
 private:
     QString m_expected;

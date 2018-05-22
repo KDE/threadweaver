@@ -39,10 +39,10 @@ namespace Private {
 
 class BlockerPolicy : public QueuePolicy {
 public:
-    bool canRun(JobPointer) Q_DECL_OVERRIDE;
-    void free(JobPointer) Q_DECL_OVERRIDE;
-    void release(JobPointer) Q_DECL_OVERRIDE;
-    void destructed(JobInterface *job) Q_DECL_OVERRIDE;
+    bool canRun(JobPointer) override;
+    void free(JobPointer) override;
+    void release(JobPointer) override;
+    void destructed(JobInterface *job) override;
 };
 
 class Sequence_Private : public Collection_Private
@@ -50,9 +50,9 @@ class Sequence_Private : public Collection_Private
 public:
     Sequence_Private();
     BlockerPolicy* blocker();
-    void prepareToEnqueueElements() Q_DECL_OVERRIDE;
-    void processCompletedElement(Collection* collection, JobPointer job, Thread *thread) Q_DECL_OVERRIDE;
-    void elementDequeued(const JobPointer& job) Q_DECL_OVERRIDE;
+    void prepareToEnqueueElements() override;
+    void processCompletedElement(Collection* collection, JobPointer job, Thread *thread) override;
+    void elementDequeued(const JobPointer& job) override;
     BlockerPolicy blocker_;
     QAtomicInt completed_;
 };

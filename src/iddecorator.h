@@ -45,7 +45,7 @@ class THREADWEAVER_EXPORT IdDecorator : public JobInterface
 {
 public:
     explicit IdDecorator(JobInterface *job, bool autoDelete = true);
-    ~IdDecorator();
+    ~IdDecorator() override;
     /** Retrieve the decorated job. */
     const JobInterface *job() const;
     /** Retrieve the decorated job. */
@@ -67,29 +67,29 @@ public:
      *  If the decorated Job is not a Sequence, 0 is returned. */
     Sequence *sequence();
 
-    void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
-    void blockingExecute() Q_DECL_OVERRIDE;
-    Executor *setExecutor(Executor *executor) Q_DECL_OVERRIDE;
-    Executor *executor() const Q_DECL_OVERRIDE;
-    int priority() const Q_DECL_OVERRIDE;
-    void setStatus(Status) Q_DECL_OVERRIDE;
-    Status status() const Q_DECL_OVERRIDE;
-    bool success() const Q_DECL_OVERRIDE;
-    void requestAbort() Q_DECL_OVERRIDE;
-    void aboutToBeQueued(QueueAPI *api) Q_DECL_OVERRIDE;
-    void aboutToBeQueued_locked(QueueAPI *api) Q_DECL_OVERRIDE;
-    void aboutToBeDequeued(QueueAPI *api) Q_DECL_OVERRIDE;
-    void aboutToBeDequeued_locked(QueueAPI *api) Q_DECL_OVERRIDE;
-    bool isFinished() const Q_DECL_OVERRIDE;
-    void assignQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
-    void removeQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
-    QList<QueuePolicy *> queuePolicies() const Q_DECL_OVERRIDE;    
-    QMutex *mutex() const Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *) override;
+    void blockingExecute() override;
+    Executor *setExecutor(Executor *executor) override;
+    Executor *executor() const override;
+    int priority() const override;
+    void setStatus(Status) override;
+    Status status() const override;
+    bool success() const override;
+    void requestAbort() override;
+    void aboutToBeQueued(QueueAPI *api) override;
+    void aboutToBeQueued_locked(QueueAPI *api) override;
+    void aboutToBeDequeued(QueueAPI *api) override;
+    void aboutToBeDequeued_locked(QueueAPI *api) override;
+    bool isFinished() const override;
+    void assignQueuePolicy(QueuePolicy *) override;
+    void removeQueuePolicy(QueuePolicy *) override;
+    QList<QueuePolicy *> queuePolicies() const override;    
+    QMutex *mutex() const override;
 
 protected:
-    void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE;
-    void defaultBegin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
-    void defaultEnd(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
+    void run(JobPointer self, Thread *thread) override;
+    void defaultBegin(const JobPointer& job, Thread *thread) override;
+    void defaultEnd(const JobPointer& job, Thread *thread) override;
 
 private:
     class Private1;

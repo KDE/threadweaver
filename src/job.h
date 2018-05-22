@@ -67,7 +67,7 @@ public:
     Job(Private::Job_Private* d);
 
     /** Destructor. */
-    virtual ~Job();
+    ~Job() override;
 
     /** Perform the job. The thread in which this job is executed is given as a parameter.
      *
@@ -78,20 +78,20 @@ public:
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object.
      */
-    void execute(const JobPointer& job, Thread *) Q_DECL_OVERRIDE;
+    void execute(const JobPointer& job, Thread *) override;
 
     /** Perform the job synchroneously in the current thread. */
-    void blockingExecute() Q_DECL_OVERRIDE;
+    void blockingExecute() override;
 
     /** Set the Executor object that is supposed to run the job.
      *
      * Returns the previously set executor. The executor can never be unset. If zero is passed in as the new executor, the Job
      * will internally reset to a default executor that only invokes run().
      */
-    Executor *setExecutor(Executor *executor) Q_DECL_OVERRIDE;
+    Executor *setExecutor(Executor *executor) override;
 
     /** Returns the executor currently set on the Job. */
-    Executor *executor() const Q_DECL_OVERRIDE;
+    Executor *executor() const override;
 
     /** The queueing priority of the job.
      * Jobs will be sorted by their queueing priority when enqueued. A higher queueing priority will place the job in front of all
@@ -102,18 +102,18 @@ public:
      *
      * The default implementation returns zero. Only if this method is overloaded for some job classes, priorities will influence
      * the execution order of jobs. */
-    int priority() const Q_DECL_OVERRIDE;
+    int priority() const override;
 
     /** @brief Set the status of the Job.
      *
      * Do not call this method unless you know what you are doing, please :-) */
-    void setStatus(Status) Q_DECL_OVERRIDE;
+    void setStatus(Status) override;
 
     /** @brief The status of the job.
      *
      * The status will be changed to Status_Success if the run() method exits normally.
      */
-    Status status() const Q_DECL_OVERRIDE;
+    Status status() const override;
 
     /** Return whether the Job finished successfully or not.
      * The default implementation simply returns true. Overload in derived classes if the derived Job class can fail.
@@ -125,7 +125,7 @@ public:
      * not be executed after a failure, it is important to dequeue those before deleting the failed Job. A Sequence may be
      * helpful for that purpose.
      */
-    bool success() const Q_DECL_OVERRIDE;
+    bool success() const override;
 
     /** Abort the execution of the job.
      *
@@ -137,7 +137,7 @@ public:
      * The method is not pure virtual because users are not supposed to be forced to always implement requestAbort(). Also, this
      * method is supposed to return immediately, not after the abort has completed. It requests the abort, the Job has to act on
      * the request. */
-    void requestAbort() Q_DECL_OVERRIDE {}
+    void requestAbort() override {}
 
     /** The job is about to be added to the weaver's job queue.
      *
@@ -148,10 +148,10 @@ public:
      * is save to assume that recursive queueing is atomic from the queues perspective.
      *
      * @param api the QueueAPI object the job will be queued in */
-    void aboutToBeQueued(QueueAPI *api) Q_DECL_OVERRIDE;
+    void aboutToBeQueued(QueueAPI *api) override;
 
     /** Called from aboutToBeQueued() while the mutex is being held. */
-    void aboutToBeQueued_locked(QueueAPI *api) Q_DECL_OVERRIDE;
+    void aboutToBeQueued_locked(QueueAPI *api) override;
 
     /** This Job is about the be dequeued from the weaver's job queue.
      *
@@ -162,29 +162,29 @@ public:
      * Note: The default implementation does nothing.
      *
      * @param weaver the Weaver object from which the job will be dequeued */
-    void aboutToBeDequeued(QueueAPI *api) Q_DECL_OVERRIDE;
+    void aboutToBeDequeued(QueueAPI *api) override;
 
     /** Called from aboutToBeDequeued() while the mutex is being held. */
-    void aboutToBeDequeued_locked(QueueAPI *api) Q_DECL_OVERRIDE;
+    void aboutToBeDequeued_locked(QueueAPI *api) override;
 
     /** Returns true if the jobs's execute method finished. */
-    bool isFinished() const Q_DECL_OVERRIDE;
+    bool isFinished() const override;
 
     /** Assign a queue policy.
      *
      * Queue Policies customize the queueing (running) behaviour of sets of jobs. Examples for queue policies are dependencies
      * and resource restrictions. Every queue policy object can only be assigned once to a job, multiple assignments will be
      * IGNORED. */
-    void assignQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
+    void assignQueuePolicy(QueuePolicy *) override;
 
     /** Remove a queue policy from this job. */
-    void removeQueuePolicy(QueuePolicy *) Q_DECL_OVERRIDE;
+    void removeQueuePolicy(QueuePolicy *) override;
 
     /** @brief Return the queue policies assigned to this Job. */
-    QList<QueuePolicy *> queuePolicies() const Q_DECL_OVERRIDE;
+    QList<QueuePolicy *> queuePolicies() const override;
 
     /** The mutex used to protect this job. */
-    QMutex *mutex() const Q_DECL_OVERRIDE;
+    QMutex *mutex() const override;
 
 private:
     Private::Job_Private *d_;
@@ -204,21 +204,21 @@ protected:
      * counted object handled by the queue. Using it as signal parameters will amongst other things prevent thejob from being
      * memory managed and deleted.
      */
-    virtual void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE = 0;
+    virtual void run(JobPointer self, Thread *thread) override = 0;
 
     /** @brief Perform standard tasks before starting the execution of a job.
      *
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultBegin(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
+    void defaultBegin(const JobPointer& job, Thread *thread) override;
 
     /** @brief Perform standard task after the execution of a job.
      *
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultEnd(const JobPointer& job, Thread *thread) Q_DECL_OVERRIDE;
+    void defaultEnd(const JobPointer& job, Thread *thread) override;
 };
 
 }

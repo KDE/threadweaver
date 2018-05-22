@@ -54,7 +54,7 @@ public:
         m_stringref = stringref;
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) Q_DECL_OVERRIDE
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override
     {
         QMutexLocker locker(&s_GlobalMutex);
         m_stringref->append(m_c);
@@ -87,7 +87,7 @@ public:
     {
     }
 
-    void run(ThreadWeaver::JobPointer job, ThreadWeaver::Thread* thread) Q_DECL_OVERRIDE
+    void run(ThreadWeaver::JobPointer job, ThreadWeaver::Thread* thread) override
     {
         AppendCharacterJob::run(job, thread);
         setStatus(Job::Status_Failed);
@@ -110,7 +110,7 @@ public:
         TWDEBUG(3, "~BusyJob\n");
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) Q_DECL_OVERRIDE
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override
     {
         using namespace ThreadWeaver;
         TWDEBUG(3, "BusyJob: entered run()\n");

@@ -44,7 +44,7 @@ public:
         , original_(job)
     {}
 
-    void run(JobPointer self, Thread *thread) Q_DECL_OVERRIDE {
+    void run(JobPointer self, Thread *thread) override {
         counter.fetchAndAddRelease(1);
         IdDecorator::run(self, thread);
         counter.fetchAndAddAcquire(1);
@@ -58,7 +58,7 @@ class JobCountingWeaver : public Weaver
     Q_OBJECT
 public:
     explicit JobCountingWeaver(QObject *parent = nullptr) : Weaver(parent) {}
-    void enqueue(const QVector<JobPointer> &jobs) Q_DECL_OVERRIDE {
+    void enqueue(const QVector<JobPointer> &jobs) override {
         QVector<JobPointer> decorated;
         std::transform(jobs.begin(), jobs.end(), std::back_inserter(decorated),
         [](const JobPointer & job)
@@ -71,7 +71,7 @@ public:
 
 class CountingGlobalQueueFactory : public Queue::GlobalQueueFactory
 {
-    Queue *create(QObject *parent = nullptr) Q_DECL_OVERRIDE {
+    Queue *create(QObject *parent = nullptr) override {
         return new Queue(new JobCountingWeaver, parent);
     }
 };

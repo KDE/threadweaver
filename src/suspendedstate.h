@@ -42,13 +42,13 @@ class SuspendedState : public WeaverImplState
 public:
     explicit SuspendedState(Weaver *weaver);
     /** Suspend job processing. */
-    void suspend() Q_DECL_OVERRIDE;
+    void suspend() override;
     /** Resume job processing. */
-    void resume() Q_DECL_OVERRIDE;
+    void resume() override;
     /** Assign a job to an idle thread. */
-    JobPointer applyForWork(Thread *th, bool wasBusy) Q_DECL_OVERRIDE;
+    JobPointer applyForWork(Thread *th, bool wasBusy) override;
     /** reimpl */
-    StateId stateId() const Q_DECL_OVERRIDE;
+    StateId stateId() const override;
 };
 
 }
