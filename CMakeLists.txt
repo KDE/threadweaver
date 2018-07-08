@@ -36,8 +36,10 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX THREADWEAVER
 # --
 
 add_subdirectory(src)
-add_subdirectory(autotests)
-add_subdirectory(benchmarks)
+if (BUILD_TESTING)
+    add_subdirectory(autotests)
+    add_subdirectory(benchmarks)
+endif()
 add_subdirectory(examples)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
