@@ -48,7 +48,7 @@ public:
 Q_SIGNALS:
     /** @brief Emitted when the Queue has completed all jobs currently queued.
      *
-     * The Queue emits finished() when the the job queue is empty, and the last job currently processed by a worker threads was
+     * The Queue emits finished() when the job queue is empty, and the last job currently processed by a worker threads was
      * completed. Beware that if multiple jobs are enqueued repeatedly one by one, this signal might be emitted multiple times, because the
      * queued jobs where processed before new ones could be queued. To avoid this, queue all relevant jobs in a single operation,
      * using for example a QueueStream or a Collection.

@@ -44,7 +44,7 @@ private:
     ThreadWeaver::Queue *weaver_;
 };
 
-/** @brief Create a WaitForIdleAndFinished, and supress the IDE unused warning. */
+/** @brief Create a WaitForIdleAndFinished, and suppress the IDE unused warning. */
 #define WAITFORIDLEANDFINISHED(queue) const WaitForIdleAndFinished waitForIdleAndFinished##__LINE__(queue);\
     Q_UNUSED(waitForIdleAndFinished##__LINE__);
 

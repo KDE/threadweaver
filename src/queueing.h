@@ -79,7 +79,7 @@ QSharedPointer<T>  enqueue(Queue *weaver, T *t)
     return ret;
 }
 
-// specialise for JobPointer:
+// specialize for JobPointer:
 template<>
 inline JobPointer enqueue<JobPointer>(Queue *weaver, JobPointer job)
 {

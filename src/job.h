@@ -80,7 +80,7 @@ public:
      */
     void execute(const JobPointer& job, Thread *) override;
 
-    /** Perform the job synchroneously in the current thread. */
+    /** Perform the job synchronously in the current thread. */
     void blockingExecute() override;
 
     /** Set the Executor object that is supposed to run the job.
@@ -199,7 +199,7 @@ protected:
      * It is called from execute(). This method is the one to overload it with the job's task.
      *
      * The Job will be executed in the specified thread. thread may be zero, indicating that the job is being executed some
-     * other way (for example, synchroneously by some other job). self specifies the job as the queue sees it. Whenever publishing
+     * other way (for example, synchronously by some other job). self specifies the job as the queue sees it. Whenever publishing
      * information about the job to the outside world, for example by emitting signals, use self, not this. self is the reference
      * counted object handled by the queue. Using it as signal parameters will amongst other things prevent thejob from being
      * memory managed and deleted.

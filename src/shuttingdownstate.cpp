@@ -59,7 +59,7 @@ JobPointer ShuttingDownState::applyForWork(Thread *, bool wasBusy)
 
 void ShuttingDownState::waitForAvailableJob(Thread *)
 {
-    // immidiately return here
+    // immediately return here
 }
 
 StateId ShuttingDownState::stateId() const
