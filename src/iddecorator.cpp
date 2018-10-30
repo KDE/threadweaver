@@ -50,7 +50,7 @@ IdDecorator::IdDecorator(JobInterface *decoratee, bool autoDelete)
 
 IdDecorator::~IdDecorator()
 {
-    // Do not assert here. IdDecorator can decorate a null pointer. Only assert if a method is called on a decorared
+    // Do not assert here. IdDecorator can decorate a null pointer. Only assert if a method is called on a decorated
     // null  pointer.
     if (autoDelete()) {
         delete job();

@@ -51,7 +51,7 @@ class JobInterface;
  *  A job can have multiple queue policies assigned, and will only be executed if all of them
  *  return true from canRun() within the same execution attempt. Jobs only keep a reference to the
  *  QueuePolicy. Therefore, the same policy object can be assigned to multiple jobs and this way
- *  control the way all those jobs are exeuted. Jobs never assume ownership of their assigned queue
+ *  control the way all those jobs are executed. Jobs never assume ownership of their assigned queue
  *  policies.
  */
 class THREADWEAVER_EXPORT QueuePolicy

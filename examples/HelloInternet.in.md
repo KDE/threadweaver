@@ -97,7 +97,7 @@ the program is downloading the post.
 The method is called from the worker thread that executes the job, not
 the main thread. When the signal is emitted, Qt notices that sender and
 receiver are not in the same thread at the time, and sends the signal
-asynchroneously. The receiver will not be called from the thread
+asynchronously. The receiver will not be called from the thread
 executing `loadPlaceholderFromResource()`, instead it will be invoked
 from the event loop of the main thread. That means there is no shared
 data between the controller and the main widget for processing the

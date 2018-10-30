@@ -25,8 +25,8 @@
 
 */
 
-#ifndef THREADWEAVER_QUEUEINTERFACE_H
-#define THREADWEAVER_QUEUEINTERFACE_H
+#ifndef WEAVER_INTERFACE_H
+#define WEAVER_INTERFACE_H
 
 #include "jobpointer.h"
 
@@ -53,4 +53,4 @@ public:
 
 }
 
-#endif // THREADWEAVER_QUEUEINTERFACE_H
+#endif // WEAVER_INTERFACE_H

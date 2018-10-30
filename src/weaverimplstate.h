@@ -26,8 +26,8 @@
    $Id$
 */
 
-#ifndef STATEIMPLEMENTATION_H
-#define STATEIMPLEMENTATION_H
+#ifndef WEAVERIMPLSTATE_H
+#define WEAVERIMPLSTATE_H
 
 #include "state.h"
 #include "weaver.h"

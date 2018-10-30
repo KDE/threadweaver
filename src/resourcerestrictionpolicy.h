@@ -44,7 +44,7 @@ class JobInterface;
  *  If a set of Jobs accesses a resource that can be overloaded, this may degrade application performance. For
  *  example, loading too many files from the hard disc at the same time may lead to longer load times.
  *  ResourceRestrictionPolicy can be used to cap the number of accesses. Resource restriction policies are
- *  shared between the affected jobs. All jobs that share a resurce restriction policy have to acquire
+ *  shared between the affected jobs. All jobs that share a resource restriction policy have to acquire
  *  permission from the policy before they can run. In this way, resource restrictions can be compared to
  *  semaphores, only that they require no locking at the thread level.
  *  The  example uses a resource restriction to limit the number of images files that are loaded from

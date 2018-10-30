@@ -25,8 +25,8 @@
 
 */
 
-#ifndef WeaverInterface_H
-#define WeaverInterface_H
+#ifndef QueueInterface_H
+#define QueueInterface_H
 
 #include <QObject>
 #include <QVector>

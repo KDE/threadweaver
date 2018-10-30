@@ -18,7 +18,7 @@ mainly on the ability of the application to process events, an ability
 that is much limited if the application is executing processing
 power expensive, lengthy operations. This leads, for example, to delayed
 or sluggish processing of necessary paint events. Even if this does not influence the total time necessary to perform the operation the
-user requested, is is annoying and not state of the art.
+user requested, it is annoying and not state of the art.
 
 There are different approaches to solve this issue. The crudest one
 may be to process single or multiple events while performing a lengthy
@@ -35,7 +35,7 @@ time or blocking may still stop event processing for a while. Such risks
 are hard to assess, and especially hard to test in laboratory
 environments where networks are fast and reliable and the system I/O
 load is generally low. Network operations may fail. Hard disks may be
-suspended. The I/O subsystem may be so busy that transfering 2 kByte may
+suspended. The I/O subsystem may be so busy that transferring 2 kByte may
 take a couple of seconds.
 
 Processing events in objects that are executed in other threads is
@@ -91,5 +91,5 @@ to do that.
 In general, ThreadWeaver tries to make the task of creating
 multithreaded, performant applications as simple as
 possible. Programmers should be relieved of synchronization, execution
-dependendancy and load balancing issues as much as possible. The API
+dependency and load balancing issues as much as possible. The API
 tends to be clean, extensible and easy to understand.

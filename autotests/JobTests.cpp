@@ -974,7 +974,7 @@ QAtomicInt InstanceCountedJob::counter;
 /** @brief Verify that neither the queue nor the thread keep a reference to the job after completing it.
  *
  * This is necessary because user-allocated objects like queue policies may be registered with the jobs. If the jobs stick around
- * until the thread or queue are deleted, the user-allocatd objects may have gone out of scope or been deleted already, causing
+ * until the thread or queue are deleted, the user-allocated objects may have gone out of scope or been deleted already, causing
  * potential errors. From ThreadWeaver's point of view, a job seizes to exist once the processing thread asks for the next job. */
 void JobTests::JobsAreDestroyedAfterFinishTest()
 {
