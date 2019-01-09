@@ -80,6 +80,8 @@ struct MutexUnlocker {
     QMutexLocker* locker;
     MutexUnlocker(QMutexLocker* l) : locker(l) { locker->unlock(); }
     ~MutexUnlocker() { locker->relock(); }
+    MutexUnlocker(const MutexUnlocker &) = delete;
+    MutexUnlocker &operator=(const MutexUnlocker &) = delete;
 };
 }
 
