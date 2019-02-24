@@ -800,7 +800,8 @@ void JobTests::ResourceRestrictionPolicyBasicsTest()
     AppendCharacterJob g('g', &sequence);
     Collection collection;
     collection << a << b << c << d << e << f << g;
-    Q_FOREACH(AppendCharacterJob* job, QList<AppendCharacterJob*>() << &a << &b << &c << &d << &e << &f << &g) {
+    const QList<AppendCharacterJob*> lstJob = { &a, &b, &c, &d, &e, &f, &g };
+    for (AppendCharacterJob* job : lstJob) {
         QMutexLocker l(job->mutex());
         job->assignQueuePolicy(&restriction);
     }

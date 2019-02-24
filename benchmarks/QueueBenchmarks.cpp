@@ -294,8 +294,8 @@ void QueueBenchmarksTest::defaultBenchmarkData(bool singleThreaded)
 
     const QList<int> threads = singleThreaded ? QList<int>() << 1 : QList<int>() << 1 << 2 << 4 << 8 << 16 << 32 << 64 << 128;
     const QList<int> ms = QList<int>() << 1 << 10 << 100 << 1000 << 10000 << 100000;
-    Q_FOREACH (int m, ms) {
-        Q_FOREACH (int t, threads) {
+    for (int m : ms) {
+        for (int t : threads) {
             const QString name = QString::fromLatin1("%1 threads, %2 values").arg(t).arg(m);
             // newRow expects const char*, but then qstrdup's it in the QTestData constructor. Eeeew.
             QTest::newRow(qPrintable(name)) << m << 256 << 256 << t;

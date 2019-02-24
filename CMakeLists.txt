@@ -34,6 +34,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX THREADWEAVER
                         PACKAGE_VERSION_FILE "${CMAKE_CURRENT_BINARY_DIR}/KF5ThreadWeaverConfigVersion.cmake"
                         SOVERSION 5)
 # --
+add_definitions(-DQT_NO_FOREACH)
 
 add_subdirectory(src)
 if (BUILD_TESTING)

@@ -158,7 +158,7 @@ bool Model::computeThumbNailsBlockingConcurrent()
     queue.flush();
     Queue::instance()->finish();
     // figure out result:
-    foreach (const Image& image, m_images) {
+    for (const Image& image : qAsConst(m_images)) {
         if (image.progress().first != Image::Step_NumberOfSteps) return false;
     }
     return true;

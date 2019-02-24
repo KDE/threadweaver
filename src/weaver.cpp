@@ -224,7 +224,7 @@ void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
     if (jobs.isEmpty()) {
         return;
     }
-    Q_FOREACH (const JobPointer &job, jobs) {
+    for (const JobPointer &job : jobs) {
         if (job) {
             Q_ASSERT(job->status() == Job::Status_New);
             adjustInventory(jobs.size());
