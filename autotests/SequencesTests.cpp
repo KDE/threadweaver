@@ -26,6 +26,7 @@
 
 #include <QString>
 #include <QtTest>
+#include <QCoreApplication>
 
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/DebuggingAids>

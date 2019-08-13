@@ -27,8 +27,10 @@
 #include <iostream>
 
 #include <QTest>
+#include <QFileInfoList>
 #include <QApplication>
 #include <QCommandLineParser>
+#include <QCommandLineOption>
 
 #include "Model.h"
 #include "MainWindow.h"

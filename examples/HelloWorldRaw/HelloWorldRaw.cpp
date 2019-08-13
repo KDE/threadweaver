@@ -24,9 +24,8 @@
    Boston, MA 02110-1301, USA.
 */
 
+#include <QtCore>
 #include <ThreadWeaver/ThreadWeaver>
-#include <QCoreApplication>
-#include <QDebug>
 
 using namespace ThreadWeaver;
 

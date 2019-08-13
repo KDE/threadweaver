@@ -28,7 +28,9 @@
 #include <QApplication>
 #include <QCloseEvent>
 #include <QSettings>
+#include <QVariant>
 #include <QString>
+#include <QSortFilterProxyModel>
 #include <QCheckBox>
 
 #include <ThreadWeaver/ThreadWeaver>

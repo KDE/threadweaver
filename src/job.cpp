@@ -33,6 +33,8 @@ $Id: Job.cpp 20 2005-08-08 21:02:51Z mirko $
 #include <QMutex>
 #include "debuggingaids.h"
 #include "thread.h"
+#include <QAtomicPointer>
+#include <QAtomicInt>
 
 #include "queuepolicy.h"
 #include "dependencypolicy.h"

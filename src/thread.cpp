@@ -29,6 +29,8 @@
 #include "thread.h"
 
 #include <QMutex>
+#include <QDebug>
+#include <QPointer>
 #include <QCoreApplication>
 
 #include "threadweaver.h"

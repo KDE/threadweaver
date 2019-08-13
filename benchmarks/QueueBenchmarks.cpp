@@ -29,6 +29,7 @@
 #include <QtDebug>
 #include <QString>
 #include <QtTest>
+#include <QCoreApplication>
 #include <QList>
 
 #include <ThreadWeaver/Queueing>

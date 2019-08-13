@@ -26,6 +26,7 @@
 */
 
 #include <QCoreApplication>
+#include <QMutex>
 #include <QVector>
 
 #include "queue.h"

@@ -4,6 +4,7 @@
 
 #include <QObject>
 #include <QThread>
+#include <QDebug>
 #include <QtTest>
 
 #include "AppendCharacterJob.h"

@@ -28,6 +28,7 @@ http://creative-destruction.me $
 #define COLLECTION_COLLECTION_P_H
 
 #include <QVector>
+#include <QMutex>
 
 #include "job_p.h"
 #include "executewrapper_p.h"
