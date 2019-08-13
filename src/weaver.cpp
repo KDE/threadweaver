@@ -29,10 +29,8 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 
 #include "weaver.h"
 
-#include <QCoreApplication>
 #include <QObject>
 #include <QMutex>
-#include <QDebug>
 
 #include "job.h"
 #include "managedjobpointer.h"

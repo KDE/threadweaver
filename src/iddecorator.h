@@ -27,7 +27,6 @@
 #ifndef THREADWEAVER_IDDECORATOR_H
 #define THREADWEAVER_IDDECORATOR_H
 
-#include <QObject>
 
 #include "threadweaver_export.h"
 #include "jobinterface.h"

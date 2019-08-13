@@ -29,7 +29,6 @@ $Id: Job.h 32 2005-08-17 08:38:01Z mirko $
 #ifndef RESOURCE_RESTRICTION_POLICY_H
 #define RESOURCE_RESTRICTION_POLICY_H
 
-#include <QtGlobal>
 
 #include "jobpointer.h"
 #include "queuepolicy.h"

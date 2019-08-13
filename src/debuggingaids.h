@@ -31,7 +31,6 @@
 #ifndef DEBUGGINGAIDS_H
 #define DEBUGGINGAIDS_H
 
-#include <QtGlobal>
 
 extern "C"
 {

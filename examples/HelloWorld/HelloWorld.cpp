@@ -25,8 +25,9 @@
 */
 
 //@@snippet_begin(sample-helloworld)
-#include <QtCore>
 #include <ThreadWeaver/ThreadWeaver>
+#include <QCoreApplication>
+#include <QDebug>
 
 int main(int argc, char** argv)
 {

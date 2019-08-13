@@ -28,7 +28,6 @@
 #ifndef THREADWEAVER_THREAD_H
 #define THREADWEAVER_THREAD_H
 
-#include <QMutex>
 #include <QThread>
 
 #include "threadweaver_export.h"

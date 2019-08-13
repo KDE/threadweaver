@@ -28,7 +28,6 @@
 #ifndef APPENDCHARACTER_JOB
 #define APPENDCHARACTER_JOB
 
-#include <QObject>
 #include <QMutex>
 
 #include <ThreadWeaver/JobPointer>

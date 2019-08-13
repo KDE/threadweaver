@@ -28,7 +28,6 @@
 #ifndef QueueInterface_H
 #define QueueInterface_H
 
-#include <QObject>
 #include <QVector>
 
 #include "threadweaver_export.h"

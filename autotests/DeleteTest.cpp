@@ -36,6 +36,7 @@
 #include <ThreadWeaver/DebuggingAids>
 
 #include "AppendCharacterJob.h"
+#include <QTest>
 
 class InstanceCountingBusyJob : public BusyJob
 {
