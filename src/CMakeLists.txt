@@ -38,7 +38,8 @@ add_library(KF5ThreadWeaver ${ThreadWeaver_LIB_SRCS})
 generate_export_header(KF5ThreadWeaver BASE_NAME ThreadWeaver)
 add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 target_link_libraries(KF5ThreadWeaver PUBLIC Qt5::Core)
-target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..;${CMAKE_CURRENT_BINARY_DIR}>")
+set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
+target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
 target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver>")
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 kde_target_enable_exceptions(KF5ThreadWeaver PRIVATE)
@@ -111,6 +112,8 @@ if(BUILD_QCH)
         MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
         LINK_QCHS
             Qt5Core_QCH
+        INCLUDE_DIRS
+            ${threadweaver_BUILD_INCLUDE_DIRS}
         BLANK_MACROS
             THREADWEAVER_EXPORT
             THREADWEAVER_DEPRECATED
