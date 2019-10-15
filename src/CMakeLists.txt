@@ -35,8 +35,15 @@ set(ThreadWeaver_LIB_SRCS
 )
 
 add_library(KF5ThreadWeaver ${ThreadWeaver_LIB_SRCS})
-generate_export_header(KF5ThreadWeaver BASE_NAME ThreadWeaver)
 add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
+ecm_generate_export_header(KF5ThreadWeaver
+    BASE_NAME ThreadWeaver
+    # GROUP_BASE_NAME KF <- enable once all of KF modules use ecm_generate_export_header
+    VERSION ${KF5_VERSION}
+    DEPRECATED_BASE_VERSION 0
+    DEPRECATION_VERSIONS 5.0
+    EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
+)
 target_link_libraries(KF5ThreadWeaver PUBLIC Qt5::Core)
 set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")

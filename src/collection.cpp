@@ -180,11 +180,13 @@ int Collection::elementCount() const
 }
 
 
+#if THREADWEAVER_BUILD_DEPRECATED_SINCE(5, 0)
 int Collection::jobListLength() const
 {
     QMutexLocker l(mutex()); Q_UNUSED(l);
     return jobListLength_locked();
 }
+#endif
 
 int Collection::jobListLength_locked() const
 {
