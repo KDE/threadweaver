@@ -38,7 +38,7 @@ add_library(KF5ThreadWeaver ${ThreadWeaver_LIB_SRCS})
 add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 ecm_generate_export_header(KF5ThreadWeaver
     BASE_NAME ThreadWeaver
-    # GROUP_BASE_NAME KF <- enable once all of KF modules use ecm_generate_export_header
+    GROUP_BASE_NAME KF
     VERSION ${KF5_VERSION}
     DEPRECATED_BASE_VERSION 0
     DEPRECATION_VERSIONS 5.0
