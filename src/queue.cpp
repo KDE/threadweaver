@@ -135,7 +135,11 @@ public:
         , instance_(instance)
     {
         Q_ASSERT_X(app != nullptr, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
         QObject *impl = instance.load()->findChild<QueueSignals*>();
+#else
+        QObject *impl = instance.loadRelaxed()->findChild<QueueSignals*>();
+#endif
         Q_ASSERT(impl);
         impl->setObjectName(QStringLiteral("GlobalQueue"));
         qAddPostRoutine(shutDownGlobalQueue);
@@ -178,9 +182,17 @@ Queue *Queue::instance()
     //the object s_instance pointed to.
     static StaticThreadWeaverInstanceGuard *s_instanceGuard = new StaticThreadWeaverInstanceGuard(s_instance, qApp);
     Q_UNUSED(s_instanceGuard);
-    Q_ASSERT_X(s_instance.load() == nullptr || s_instance.load()->thread() == QCoreApplication::instance()->thread(),
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    Q_ASSERT_X(s_instance.load() == nullptr ||
+               s_instance.load()->thread() == QCoreApplication::instance()->thread(),
                Q_FUNC_INFO,
                "The global ThreadWeaver queue needs to be instantiated (accessed first) from the main thread!");
+#else
+    Q_ASSERT_X(s_instance.loadRelaxed() == nullptr ||
+               s_instance.loadRelaxed()->thread() == QCoreApplication::instance()->thread(),
+               Q_FUNC_INFO,
+               "The global ThreadWeaver queue needs to be instantiated (accessed first) from the main thread!");
+#endif
     return s_instance.loadAcquire();
 }
 
