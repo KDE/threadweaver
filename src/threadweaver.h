@@ -7,7 +7,7 @@
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2005-2013 Mirko Boehm $
    $ Contact: mirko@kde.org
-         http://www.kde.org
+         https://www.kde.org
          http://creative-destruction.me $
 
    This library is free software; you can redistribute it and/or

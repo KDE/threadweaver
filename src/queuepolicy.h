@@ -5,7 +5,7 @@
    $ Author: Mirko Boehm $
    $ Copyright: (C) 2004, 2005, 2006 Mirko Boehm $
    $ Contact: mirko@kde.org
-         http://www.kde.org
+         https://www.kde.org
          http://www.hackerbuero.org $
 
    This library is free software; you can redistribute it and/or
