@@ -33,7 +33,9 @@ $Id: WeaverImpl.cpp 30 2005-08-16 16:16:04Z mirko $
 #include <QObject>
 #include <QMutex>
 #include <QDebug>
-
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#include <QDeadlineTimer>
+#endif
 #include "job.h"
 #include "managedjobpointer.h"
 #include "state.h"
@@ -307,7 +309,11 @@ void Weaver::finish_p()
     while (!isIdle_p()) {
         Q_ASSERT_X(state()->stateId() == WorkingHard, Q_FUNC_INFO, qPrintable(state()->stateName()));
         TWDEBUG(2, "WeaverImpl::finish: not done, waiting.\n");
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
         if (d()->jobFinished.wait(d()->mutex, MaxWaitMilliSeconds) == false) {
+#else
+        if (d()->jobFinished.wait(d()->mutex, QDeadlineTimer(MaxWaitMilliSeconds)) == false) {
+#endif
             TWDEBUG(2, "WeaverImpl::finish: wait timed out, %i jobs left, waking threads.\n", queueLength_p());
             reschedule();
         }
