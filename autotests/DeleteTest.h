@@ -29,7 +29,7 @@
 #define DELETETEST_H
 
 #include <QObject>
-#include <QtTest>
+#include <QTest>
 #include <QAtomicInt>
 
 #include <ThreadWeaver/JobPointer>

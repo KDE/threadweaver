@@ -28,7 +28,7 @@
 
 #include <QtDebug>
 #include <QString>
-#include <QtTest>
+#include <QTest>
 #include <QCoreApplication>
 #include <QList>
 

@@ -30,7 +30,8 @@
 #include <algorithm>
 
 #include <QMutex>
-#include <QtTest>
+#include <QTest>
+#include <QThread>
 #include <QSignalSpy>
 
 #include <ThreadWeaver/Queueing>

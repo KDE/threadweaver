@@ -25,7 +25,7 @@
 */
 
 #include <QString>
-#include <QtTest>
+#include <QTest>
 
 #include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/QueueSignals>
