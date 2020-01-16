@@ -112,7 +112,11 @@ QByteArray ViewController::download(const QUrl &url)
                      &loop, SLOT(quit()));
     auto reply = manager.get(QNetworkRequest(url));
     loop.exec();
+#if (QT_VERSION < QT_VERSION_CHECK(5, 15, 0))
     if (reply->error() == QNetworkReply::NoError) {
+#else
+    if (reply->networkError() == QNetworkReply::NoError) {
+#endif
         const QByteArray data = reply->readAll();
         return data;
     } else {
