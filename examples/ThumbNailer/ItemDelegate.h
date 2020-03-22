@@ -1,17 +1,15 @@
-﻿/* -*- C++ -*-
+/* -*- C++ -*-
+    This file declares the SMIVItemDelegate class.
 
-   This file declares the SMIVItemDelegate class.
+    SPDX-FileCopyrightText: 2005 Mirko Boehm <mirko@kde.org>
 
-   $ Author: Mirko Boehm $
-   $ Copyright: (C) 2005, Mirko Boehm $
-   $ Contact: mirko@kde.org
-         https://www.kde.org
-         http://www.hackerbuero.org $
-   $ License: LGPL with the following explicit clarification:
-         This code may be linked against any version of the Qt toolkit
-         from Trolltech, Norway. $
+    SPDX-License-Identifier: LGPL-2.0-or-later
 
-   $Id: SMIVItemDelegate.h 30 2005-08-16 16:16:04Z mirko $
+    License: LGPL with the following explicit clarification:
+        This code may be linked against any version of the Qt toolkit
+        from Trolltech, Norway.
+
+    $Id: SMIVItemDelegate.h 30 2005-08-16 16:16:04Z mirko $
 */
 
 #ifndef ITEMDELEGATE_H

@@ -1,27 +1,9 @@
-﻿/* -*- C++ -*-
+/* -*- C++ -*-
+    This file is part of ThreadWeaver.
 
-   This file is part of ThreadWeaver.
+    SPDX-FileCopyrightText: 2005-2014 Mirko Boehm <mirko@kde.org>
 
-   Author: Mirko Boehm
-   Copyright: (C) 2005-2014 Mirko Boehm
-   Contact: mirko@kde.org
-         https://www.kde.org
-         http://creative-destruction.me
-
-   This library is free software; you can redistribute it and/or
-   modify it under the terms of the GNU Library General Public
-   License as published by the Free Software Foundation; either
-   version 2 of the License, or (at your option) any later version.
-
-   This library is distributed in the hope that it will be useful,
-   but WITHOUT ANY WARRANTY; without even the implied warranty of
-   MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-   Library General Public License for more details.
-
-   You should have received a copy of the GNU Library General Public License
-   along with this library; see the file COPYING.LIB.  If not, write to
-   the Free Software Foundation, Inc., 51 Franklin Street, Fifth Floor,
-   Boston, MA 02110-1301, USA.
+    SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
 #include <QtCore>
@@ -49,7 +31,7 @@ int main(int argc, char** argv)
     // Allocate jobs as local variables:
     QDebugJob j1("Hello");
     QDebugJob j2("World!");
-    JobPointer j3(new QDebugJob("This is..."));    
+    JobPointer j3(new QDebugJob("This is..."));
     Job* j4 = new QDebugJob("ThreadWeaver!");
     // Queue the Job using the default Queue stream:
     stream() << j1 << j2 // local variables
