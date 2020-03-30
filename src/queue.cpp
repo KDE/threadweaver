@@ -116,7 +116,7 @@ public:
         , instance_(instance)
     {
         Q_ASSERT_X(app != nullptr, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
         QObject *impl = instance.load()->findChild<QueueSignals*>();
 #else
         QObject *impl = instance.loadRelaxed()->findChild<QueueSignals*>();
@@ -163,7 +163,7 @@ Queue *Queue::instance()
     //the object s_instance pointed to.
     static StaticThreadWeaverInstanceGuard *s_instanceGuard = new StaticThreadWeaverInstanceGuard(s_instance, qApp);
     Q_UNUSED(s_instanceGuard);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     Q_ASSERT_X(s_instance.load() == nullptr ||
                s_instance.load()->thread() == QCoreApplication::instance()->thread(),
                Q_FUNC_INFO,
