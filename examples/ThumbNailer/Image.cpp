@@ -36,7 +36,7 @@ Image::Image(const QString inputFileName, const QString outputFileName, Model *m
 
 Progress Image::progress() const
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     return qMakePair(m_progress.load(), Step_NumberOfSteps);
 #else
     return qMakePair(m_progress.loadRelaxed(), Step_NumberOfSteps);
