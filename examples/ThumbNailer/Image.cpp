@@ -164,7 +164,7 @@ void Image::announceProgress(Steps step)
 
 void Image::error(Image::Steps step, const QString &message)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
     m_failedStep.store(step);
 #else
     m_failedStep.storeRelaxed(step);
