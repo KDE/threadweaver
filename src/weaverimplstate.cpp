@@ -10,7 +10,6 @@
 
 #include "weaverimplstate.h"
 
-#include "weaver.h"
 
 namespace ThreadWeaver
 {

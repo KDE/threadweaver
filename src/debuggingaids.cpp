@@ -10,7 +10,6 @@
 
 #include "debuggingaids.h"
 
-#include <QMutex>
 
 #include <threadweaver_export.h>
 

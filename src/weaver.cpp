@@ -11,7 +11,6 @@
 #include "weaver.h"
 
 #include <QCoreApplication>
-#include <QObject>
 #include <QMutex>
 #include <QDebug>
 #if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)

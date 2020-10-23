@@ -14,7 +14,6 @@
 
 #include "job.h"
 #include "thread.h"
-#include "weaver.h"
 #include "threadweaver.h"
 #include "debuggingaids.h"
 

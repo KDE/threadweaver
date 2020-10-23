@@ -10,7 +10,6 @@
 
 #include "DeleteTest.h"
 
-#include <ThreadWeaver/JobPointer>
 #include <ThreadWeaver/QObjectDecorator>
 #include <ThreadWeaver/Sequence>
 #include <ThreadWeaver/ThreadWeaver>

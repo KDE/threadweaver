@@ -18,7 +18,6 @@
 #include <ThreadWeaver/ThreadWeaver>
 
 #include "MainWindow.h"
-#include "Model.h"
 #include "ItemDelegate.h"
 #include "ImageListFilter.h"
 #include "AverageLoadManager.h"

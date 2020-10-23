@@ -7,7 +7,6 @@
 */
 
 #include "JobLoggingWeaver.h"
-#include "JobLoggingDecorator.h"
 
 using namespace ThreadWeaver;
 

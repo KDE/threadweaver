@@ -11,7 +11,6 @@
 #include "suspendedstate.h"
 
 #include "threadweaver.h"
-#include "weaver.h"
 
 namespace ThreadWeaver
 {

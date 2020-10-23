@@ -10,7 +10,6 @@
 
 #include "state.h"
 
-#include <QString>
 
 namespace ThreadWeaver
 {

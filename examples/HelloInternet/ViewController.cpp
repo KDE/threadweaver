@@ -2,9 +2,7 @@
 #include <QNetworkReply>
 #include <QNetworkRequest>
 #include <QEventLoop>
-#include <QUrl>
 #include <QThread>
-#include <QByteArray>
 #include <QDomDocument>
 #include <QFile>
 

@@ -14,7 +14,6 @@
 #include <QStringList>
 #include <QDir>
 #include <QFileInfo>
-#include <QFileInfoList>
 #include <QMutexLocker>
 
 #include <ThreadWeaver/ThreadWeaver>

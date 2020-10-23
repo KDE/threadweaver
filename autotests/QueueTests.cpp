@@ -11,11 +11,9 @@
 #include <QChar>
 
 #include <QObject>
-#include <QThread>
 #include <QDebug>
 #include <QTest>
 
-#include "AppendCharacterJob.h"
 
 #include <ThreadWeaver/Queueing>
 #include <ThreadWeaver/Job>
