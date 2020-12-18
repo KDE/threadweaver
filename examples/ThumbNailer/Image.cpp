@@ -36,11 +36,7 @@ Image::Image(const QString inputFileName, const QString outputFileName, Model *m
 
 Progress Image::progress() const
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    return qMakePair(m_progress.load(), Step_NumberOfSteps);
-#else
     return qMakePair(m_progress.loadRelaxed(), Step_NumberOfSteps);
-#endif
 }
 
 QString Image::description() const
@@ -164,11 +160,7 @@ void Image::announceProgress(Steps step)
 
 void Image::error(Image::Steps step, const QString &message)
 {
-#if QT_VERSION < QT_VERSION_CHECK(5, 14, 0)
-    m_failedStep.store(step);
-#else
     m_failedStep.storeRelaxed(step);
-#endif
     announceProgress(Step_Complete);
     throw ThreadWeaver::JobFailed(message);
 }
