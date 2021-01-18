@@ -108,7 +108,7 @@ void Weaver::shutDown_p()
                       "retrying.\n", th->id());
             }
         }
-        emit(threadExited(th));
+        Q_EMIT(threadExited(th));
         delete th;
     }
     Q_ASSERT(d()->inventory.isEmpty());
@@ -136,9 +136,9 @@ void Weaver::setState_p(StateId id)
         newState->activated();
         TWDEBUG(2, "WeaverImpl::setState: state changed to \"%s\".\n", newState->stateName().toLatin1().constData());
         if (id == Suspended) {
-            emit(suspended());
+            Q_EMIT(suspended());
         }
-        emit(stateChanged(newState));
+        Q_EMIT(stateChanged(newState));
     }
 }
 
@@ -456,7 +456,7 @@ void Weaver::adjustActiveThreadCount(int diff)
 
     if (d()->assignments.isEmpty() && d()->active == 0) {
         P_ASSERT(diff < 0);    // cannot reach zero otherwise
-        emit(finished());
+        Q_EMIT(finished());
     }
 }
 
@@ -474,7 +474,7 @@ int Weaver::activeThreadCount()
 void Weaver::threadEnteredRun(Thread *thread)
 {
     d()->semaphore.release(1);
-    emit threadStarted(thread);
+    Q_EMIT threadStarted(thread);
 }
 
 /** @brief Take the first available job out of the queue and return it.
@@ -576,7 +576,7 @@ void Weaver::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
     Q_ASSERT(!d()->mutex->tryLock()); //mutex has to be held when this method is called
     TWDEBUG(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i blocked (%s state).\n",
           th->id(), qPrintable(state()->stateName()));
-    emit threadSuspended(th);
+    Q_EMIT threadSuspended(th);
     d()->jobAvailable.wait(d()->mutex);
     TWDEBUG(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i resumed  (%s state).\n",
           th->id(), qPrintable(state()->stateName()));

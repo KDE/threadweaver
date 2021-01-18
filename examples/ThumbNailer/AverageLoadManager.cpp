@@ -65,7 +65,7 @@ void AverageLoadManager::update()
     const float y = linearLoadFunction(x);
     const int threads = qBound(m_min, qRound(processors * y), m_max);
     qDebug() << threads << y << x << relativeLoadPerProcessor << averages[0] << processors;
-    emit recommendedWorkerCount(threads);
+    Q_EMIT recommendedWorkerCount(threads);
 #endif
 }
 

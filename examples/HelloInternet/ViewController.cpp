@@ -43,7 +43,7 @@ void ViewController::loadPlaceholderFromResource()
 {
     QThread::msleep(500);
     showResourceImage("IMG_20140813_004131.png");
-    emit setStatus(tr("Downloading post..."));
+    Q_EMIT setStatus(tr("Downloading post..."));
 }
 //@@snippet_end
 
@@ -53,7 +53,7 @@ void ViewController::loadPostFromTumblr()
     const QUrl url(m_apiPostUrl);
 
     auto const data = download(url);
-    emit setStatus(tr("Post downloaded..."));
+    Q_EMIT setStatus(tr("Post downloaded..."));
 
     QDomDocument doc;
     if (!doc.setContent(data)) {
@@ -71,7 +71,7 @@ void ViewController::loadPostFromTumblr()
     if (caption.isEmpty()) {
         error(tr("Post does not contain a caption!"));
     }
-    emit setCaption(caption);
+    Q_EMIT setCaption(caption);
     auto const imageUrl = textOfFirst("photo-url");
     if (imageUrl.isEmpty()) {
         error(tr("Post does not contain an image!"));
@@ -83,7 +83,7 @@ void ViewController::loadPostFromTumblr()
     }
     m_imageUrl = QUrl(imageUrl);
     showResourceImage("IMG_20140813_004131-colors-cubed.png");
-    emit setStatus(tr("Downloading image..."));
+    Q_EMIT setStatus(tr("Downloading image..."));
     QThread::msleep(500);
 }
 //@@snippet_end
@@ -91,11 +91,11 @@ void ViewController::loadPostFromTumblr()
 void ViewController::loadImageFromTumblr()
 {
     auto const data = download(m_imageUrl);
-    emit setStatus(tr("Image downloaded..."));
+    Q_EMIT setStatus(tr("Image downloaded..."));
     const QImage image=QImage::fromData(data);
     if (!image.isNull()) {
-        emit setImage(image);
-        emit setStatus(tr("Download complete (see %1).")
+        Q_EMIT setImage(image);
+        Q_EMIT setStatus(tr("Download complete (see %1).")
                        .arg(m_fullPostUrl));
     } else {
         error(tr("Image format error!"));
@@ -124,8 +124,8 @@ QByteArray ViewController::download(const QUrl &url)
 void ViewController::error(const QString &message)
 {
     showResourceImage("IMG_20140813_004131-colors-cubed.png");
-    emit setCaption(tr("Error"));
-    emit setStatus(tr("%1").arg(message));
+    Q_EMIT setCaption(tr("Error"));
+    Q_EMIT setStatus(tr("%1").arg(message));
     throw ThreadWeaver::JobFailed(message);
 }
 //@@snippet_end
@@ -137,7 +137,7 @@ void ViewController::showResourceImage(const char* file)
     Q_ASSERT(QFile::exists(path));
     const QImage i(path);
     Q_ASSERT(!i.isNull());
-    emit setImage(i);
+    Q_EMIT setImage(i);
 }
 
 QString ViewController::attributeTextFor(const QDomDocument &doc, const char *tag, const char *attribute)

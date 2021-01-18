@@ -186,7 +186,7 @@ Progress Model::progress() const
 void Model::progressChanged()
 {
     auto const p = progress();
-    emit progress(p.first, p.second);
+    Q_EMIT progress(p.first, p.second);
 }
 
 void Model::elementChanged(int id)
@@ -229,6 +229,6 @@ void Model::slotElementChanged(int id)
 {
     if (id >= 0 && id < m_images.count()) {
         auto const i = index(id, 0);
-        emit dataChanged(i, i);
+        Q_EMIT dataChanged(i, i);
     }
 }

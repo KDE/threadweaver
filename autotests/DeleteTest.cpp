@@ -262,14 +262,14 @@ void DeleteTest::DeleteSequenceTest()
 void DeleteTest::deleteSequence(ThreadWeaver::JobPointer)
 {
     if (m_finishCount.fetchAndAddRelease(-1) == 1) { // if it *was* 1...
-        emit deleteSequenceTestCompleted();
+        Q_EMIT deleteSequenceTestCompleted();
     }
 }
 
 void DeleteTest::countCompletedDecoratedCollection(JobPointer)
 {
     if (m_finishCount.fetchAndAddRelease(-1) == 1) { // if it *was* 1...
-        emit deleteDecoratedCollectionTestCompleted();
+        Q_EMIT deleteDecoratedCollectionTestCompleted();
     }
 }
 
