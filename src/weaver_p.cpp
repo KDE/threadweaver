@@ -26,7 +26,7 @@ Weaver_Private::Weaver_Private()
     : QueueSignals_Private()
     , active(0)
     , inventoryMax(qMax(4, 2 * QThread::idealThreadCount()))
-    , mutex(new QMutex(QMutex::NonRecursive))
+    , mutex(new QMutex)
 
 {
 }
