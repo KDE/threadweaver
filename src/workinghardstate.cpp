@@ -10,8 +10,6 @@
 
 #include "workinghardstate.h"
 
-#include <QByteRef>
-
 #include "job.h"
 #include "thread.h"
 #include "threadweaver.h"
