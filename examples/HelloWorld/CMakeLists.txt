@@ -14,7 +14,7 @@ endif()
 if (NOT TARGET KF5ThreadWeaver)
   # Find the ThreadWeaver framework when we compiling this example stand-alone
 ##@@snippet_begin(adding_tw_2)
-find_package(KF5ThreadWeaver ${KF5_VERSION} REQUIRED)
+find_package(KF5ThreadWeaver ${KF_VERSION} REQUIRED)
 ##@@snippet_end
 endif()
 
