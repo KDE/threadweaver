@@ -72,7 +72,10 @@ void Thread::run()
     Q_ASSERT(QCoreApplication::instance() != nullptr);
     d->parent->threadEnteredRun(this);
 
+#if THREADWEAVER_BUILD_DEPRECATED_SINCE(5, 80)
     Q_EMIT started(this);
+#endif
+
     TWDEBUG(3, "Thread::run [%u]: running.\n", id());
 
     bool wasBusy = false;

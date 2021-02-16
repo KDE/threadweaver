@@ -58,7 +58,7 @@ public:
 
 Q_SIGNALS:
     void completed();
-    void progress(int, int);
+    void progressStepChanged(int, int);
     void signalElementChanged(int);
 
 private Q_SLOTS:

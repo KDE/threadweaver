@@ -61,9 +61,15 @@ public:
     void requestAbort();
 
 Q_SIGNALS:
-    //FIXME needed?
-    /** The thread has been started. */
-    void started(ThreadWeaver::Thread *);
+#if THREADWEAVER_ENABLE_DEPRECATED_SINCE(5, 80)
+    /**
+     *The thread has been started.
+     *
+     * @deprecated since 5.80, use the @c QThread::started() signal
+     */
+    THREADWEAVER_DEPRECATED_VERSION(5, 80, "Use the QThread::started() signal")
+    void started(ThreadWeaver::Thread *); // clazy:exclude=overloaded-signal
+#endif
 
 private:
     class Private;

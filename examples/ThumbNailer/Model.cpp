@@ -186,7 +186,7 @@ Progress Model::progress() const
 void Model::progressChanged()
 {
     auto const p = progress();
-    Q_EMIT progress(p.first, p.second);
+    Q_EMIT progressStepChanged(p.first, p.second);
 }
 
 void Model::elementChanged(int id)
