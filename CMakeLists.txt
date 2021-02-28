@@ -15,6 +15,7 @@ set(CMAKE_MODULE_PATH ${ECM_MODULE_PATH})
 include(KDEInstallDirs)
 include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
+include(KDEGitCommitHooks)
 
 set(REQUIRED_QT_VERSION 5.14.0)
 find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
@@ -76,3 +77,5 @@ install(FILES
 install(EXPORT KF5ThreadWeaverTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF5ThreadWeaverTargets.cmake NAMESPACE KF5:: )
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+
+kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
