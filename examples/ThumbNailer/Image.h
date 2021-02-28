@@ -31,7 +31,7 @@ public:
         Step_ComputeThumbNail,
         Step_SaveThumbNail,
         Step_NumberOfSteps = Step_SaveThumbNail,
-        Step_Complete = Step_SaveThumbNail
+        Step_Complete = Step_SaveThumbNail,
     };
 
     Image(const QString inputFileName = QString(), const QString outputFileName = QString(),

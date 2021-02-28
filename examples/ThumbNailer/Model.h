@@ -25,7 +25,7 @@ public:
     enum Roles {
         Role_SortRole = Qt::UserRole,
         Role_ImageRole,
-        Role_StepRole
+        Role_StepRole,
     };
 
     explicit Model(QObject *parent = nullptr);

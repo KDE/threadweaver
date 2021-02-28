@@ -49,7 +49,7 @@ enum StateId {
      *  exited. No jobs are handled anymore. */
     Destructed,
     /** Not a state, but a sentinel for the number of defined states. */
-    NoOfStates
+    NoOfStates,
 };
 
 /** We use a State pattern to handle the system state in ThreadWeaver. */
