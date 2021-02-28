@@ -9,8 +9,8 @@
 #ifndef BENCHMARK_H
 #define BENCHMARK_H
 
-#include <QObject>
 #include <QFileInfoList>
+#include <QObject>
 
 class Benchmark : public QObject
 {

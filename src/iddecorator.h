@@ -11,12 +11,11 @@
 
 #include <QObject>
 
-#include "threadweaver_export.h"
 #include "jobinterface.h"
+#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
-
 class Collection;
 class Sequence;
 
@@ -49,7 +48,7 @@ public:
      *  If the decorated Job is not a Sequence, 0 is returned. */
     Sequence *sequence();
 
-    void execute(const JobPointer& job, Thread *) override;
+    void execute(const JobPointer &job, Thread *) override;
     void blockingExecute() override;
     Executor *setExecutor(Executor *executor) override;
     Executor *executor() const override;
@@ -70,8 +69,8 @@ public:
 
 protected:
     void run(JobPointer self, Thread *thread) override;
-    void defaultBegin(const JobPointer& job, Thread *thread) override;
-    void defaultEnd(const JobPointer& job, Thread *thread) override;
+    void defaultBegin(const JobPointer &job, Thread *thread) override;
+    void defaultEnd(const JobPointer &job, Thread *thread) override;
 
 private:
     class Private1;

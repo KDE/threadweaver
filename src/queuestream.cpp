@@ -8,17 +8,19 @@
 
 #include <QVector>
 
-#include "queuestream.h"
 #include "queue.h"
 #include "queueing.h"
+#include "queuestream.h"
 
 namespace ThreadWeaver
 {
-
 class Q_DECL_HIDDEN QueueStream::Private
 {
 public:
-    Private(Queue *w) : weaver(w) {}
+    Private(Queue *w)
+        : weaver(w)
+    {
+    }
     Queue *weaver;
     QVector<JobPointer> jobs;
 };
@@ -76,4 +78,3 @@ QueueStream stream()
 }
 
 }
-

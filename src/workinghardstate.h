@@ -11,12 +11,11 @@
 #ifndef WorkingHardState_H
 #define WorkingHardState_H
 
-#include "weaverimplstate.h"
 #include "weaver.h"
+#include "weaverimplstate.h"
 
 namespace ThreadWeaver
 {
-
 /* WorkingHardState handles the state dependent calls in the state where
  * jobs are executed.  */
 class WorkingHardState : public WeaverImplState

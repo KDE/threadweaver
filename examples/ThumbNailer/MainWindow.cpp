@@ -6,21 +6,21 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QFileDialog>
 #include <QApplication>
-#include <QCloseEvent>
-#include <QSettings>
-#include <QVariant>
-#include <QString>
-#include <QSortFilterProxyModel>
 #include <QCheckBox>
+#include <QCloseEvent>
+#include <QFileDialog>
+#include <QSettings>
+#include <QSortFilterProxyModel>
+#include <QString>
+#include <QVariant>
 
 #include <ThreadWeaver/ThreadWeaver>
 
-#include "MainWindow.h"
-#include "ItemDelegate.h"
-#include "ImageListFilter.h"
 #include "AverageLoadManager.h"
+#include "ImageListFilter.h"
+#include "ItemDelegate.h"
+#include "MainWindow.h"
 
 #include "ui_MainWindow.h"
 
@@ -41,24 +41,24 @@ MainWindow::MainWindow(QWidget *parent)
     , m_averageLoadManager(new AverageLoadManager(this))
 {
     ui->setupUi(this);
-    //The file loader list:
+    // The file loader list:
     m_fileLoaderFilter->setSourceModel(&m_model);
     ui->fileLoaderList->setModel(m_fileLoaderFilter);
     ui->fileLoaderList->setItemDelegate(new ItemDelegate(this));
     ui->fileLoaderCap->setValue(m_model.fileLoaderCap());
-    //The image loader list:
+    // The image loader list:
     m_imageLoaderFilter->setSourceModel(&m_model);
     ui->imageLoaderList->setModel(m_imageLoaderFilter);
     ui->imageLoaderList->setItemDelegate(new ItemDelegate(this));
     ui->imageLoaderCap->setValue(m_model.imageLoaderCap());
 
-    //The image scaler list:
+    // The image scaler list:
     m_imageScalerFilter->setSourceModel(&m_model);
     ui->imageScalerList->setModel(m_imageScalerFilter);
     ui->imageScalerList->setItemDelegate(new ItemDelegate(this));
     ui->imageScalerCap->setValue(m_model.computeThumbNailCap());
 
-    //The image writer list:
+    // The image writer list:
     m_imageWriterFilter->setSourceModel(&m_model);
     ui->imageWriterList->setModel(m_imageWriterFilter);
     ui->imageWriterList->setItemDelegate(new ItemDelegate(this));
@@ -66,14 +66,14 @@ MainWindow::MainWindow(QWidget *parent)
 
     ui->workers->setValue(Queue::instance()->maximumNumberOfThreads());
 
-    //Configure average load manager:
+    // Configure average load manager:
     ui->loadManager->setEnabled(m_averageLoadManager->available());
     connect(ui->loadManager, SIGNAL(toggled(bool)), SLOT(slotEnableAverageLoadManager(bool)));
 
     connect(ui->actionOpen_Files, SIGNAL(triggered()), SLOT(slotOpenFiles()));
     connect(ui->outputDirectory, SIGNAL(clicked()), SLOT(slotSelectOutputDirectory()));
     connect(ui->actionQuit, SIGNAL(triggered()), SLOT(slotQuit()));
-    connect(&m_model, SIGNAL(progress(int,int)), SLOT(slotProgress(int,int)));
+    connect(&m_model, SIGNAL(progress(int, int)), SLOT(slotProgress(int, int)));
     connect(ui->fileLoaderCap, SIGNAL(valueChanged(int)), SLOT(slotFileLoaderCapChanged()));
     connect(ui->imageLoaderCap, SIGNAL(valueChanged(int)), SLOT(slotImageLoaderCapChanged()));
     connect(ui->imageScalerCap, SIGNAL(valueChanged(int)), SLOT(slotComputeThumbNailCapChanged()));
@@ -89,8 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     restoreGeometry(settings.value(Setting_WindowGeometry).toByteArray());
     restoreState(settings.value(Setting_WindowState).toByteArray());
 
-    connect(m_averageLoadManager, SIGNAL(recommendedWorkerCount(int)),
-                                         SLOT(slotRecommendedWorkerCountChanged(int)));
+    connect(m_averageLoadManager, SIGNAL(recommendedWorkerCount(int)), SLOT(slotRecommendedWorkerCountChanged(int)));
 }
 
 MainWindow::~MainWindow()
@@ -118,7 +117,8 @@ void MainWindow::slotOpenFiles()
     QSettings settings;
     const QString previousLocation = settings.value(Setting_OpenLocation, QDir::homePath()).toString();
     auto const files = QFileDialog::getOpenFileNames(this, tr("Select images to convert"), previousLocation);
-    if (files.isEmpty()) return;
+    if (files.isEmpty())
+        return;
     if (m_outputDirectory.isNull()) {
         slotSelectOutputDirectory();
     }
@@ -134,7 +134,8 @@ void MainWindow::slotSelectOutputDirectory()
     QSettings settings;
     const QString previousLocation = settings.value(Setting_OutputLocation, QDir::homePath()).toString();
     auto directory = QFileDialog::getExistingDirectory(this, tr("Select output directory..."));
-    if (directory.isNull()) return;
+    if (directory.isNull())
+        return;
     m_outputDirectory = directory;
     settings.setValue(Setting_OutputLocation, directory);
     ui->outputDirectory->setText(directory);

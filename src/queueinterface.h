@@ -12,13 +12,12 @@
 #include <QObject>
 #include <QVector>
 
-#include "threadweaver_export.h"
-#include "jobpointer.h"
 #include "jobinterface.h"
+#include "jobpointer.h"
+#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
-
 class Job;
 class State;
 class WeaverObserver;
@@ -45,7 +44,9 @@ WeaverImpl classes.
 class THREADWEAVER_EXPORT QueueInterface
 {
 public:
-    virtual ~QueueInterface() {}
+    virtual ~QueueInterface()
+    {
+    }
     /** Return the state of the weaver object. */
     virtual const State *state() const = 0;
 

@@ -7,4 +7,3 @@
 */
 
 #include "threadweaver.h"
-

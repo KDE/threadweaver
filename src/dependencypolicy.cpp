@@ -11,11 +11,11 @@
 #include "dependencypolicy.h"
 
 #include <QCoreApplication>
-#include <QMutex>
 #include <QDebug>
+#include <QMutex>
 
-#include "job.h"
 #include "debuggingaids.h"
+#include "job.h"
 #include "managedjobpointer.h"
 
 #include "dependency.h"
@@ -83,7 +83,7 @@ bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
     QMutexLocker l(d->mutex());
 
     // there may be only one (!) occurrence of [this, dep]:
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QMutableMultiMapIterator<JobPointer, JobPointer> it(d->dependencies());
 #else
     QMutableMapIterator<JobPointer, JobPointer> it(d->dependencies());
@@ -98,7 +98,7 @@ bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
         }
     }
     TWDEBUG(result == false, 2, "cannot remove dependency %p->%p, not found.\n", jobA.data(), jobB.data());
-    ENSURE(! d->dependencies().keys(jobB).contains(jobA));
+    ENSURE(!d->dependencies().keys(jobB).contains(jobA));
     return result;
 }
 
@@ -111,7 +111,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
 {
     if (job->success()) {
         QMutexLocker l(d->mutex());
-#if QT_VERSION >= QT_VERSION_CHECK(6,0,0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QMutableMultiMapIterator<JobPointer, JobPointer> it(d->dependencies());
 #else
         QMutableMapIterator<JobPointer, JobPointer> it(d->dependencies());
@@ -127,7 +127,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
     }
 }
 
-//QList<JobPointer> DependencyPolicy::getDependencies(JobPointer job) const
+// QList<JobPointer> DependencyPolicy::getDependencies(JobPointer job) const
 //{
 //    REQUIRE (job != 0);
 //    QList<JobInterface*> result;
@@ -177,15 +177,15 @@ void DependencyPolicy::free(JobPointer job)
         resolveDependencies(job);
         TWDEBUG(3, "DependencyPolicy::free: dependencies resolved for job %p.\n", (void *)job.data());
     } else {
-        TWDEBUG(3, "DependencyPolicy::free: not resolving dependencies for %p (execution not successful).\n",
-              (void *)job.data());
+        TWDEBUG(3, "DependencyPolicy::free: not resolving dependencies for %p (execution not successful).\n", (void *)job.data());
     }
     ENSURE((!hasUnresolvedDependencies(job) && job->success()) || !job->success());
 }
 
 void DependencyPolicy::release(JobPointer job)
 {
-    REQUIRE(job != nullptr); Q_UNUSED(job)
+    REQUIRE(job != nullptr);
+    Q_UNUSED(job)
 }
 
 void DependencyPolicy::destructed(JobInterface *job)
@@ -194,7 +194,7 @@ void DependencyPolicy::destructed(JobInterface *job)
     resolveDependencies(ManagedJobPointer<JobInterface>(job));
 }
 
-//void DependencyPolicy::dumpJobDependencies()
+// void DependencyPolicy::dumpJobDependencies()
 //{
 //    QMutexLocker l( & d->mutex() );
 
@@ -205,4 +205,3 @@ void DependencyPolicy::destructed(JobInterface *job)
 //    }
 //    debug ( 0, "-----------------\n" );
 //}
-

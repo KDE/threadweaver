@@ -9,10 +9,10 @@
 #ifndef JOBLOGGINGDECORATOR_H
 #define JOBLOGGINGDECORATOR_H
 
-#include <QElapsedTimer>
-#include <QVector>
 #include <QDateTime>
+#include <QElapsedTimer>
 #include <QMutex>
+#include <QVector>
 
 #include "src/iddecorator.h"
 
@@ -26,20 +26,25 @@ public:
         QString description;
         qint64 start;
         qint64 end;
-        JobData(): threadId(0) {}
+        JobData()
+            : threadId(0)
+        {
+        }
     };
 
-    explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector* collector);
+    explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector *collector);
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
+
 private:
     JobData data_;
-    JobLoggingDecoratorCollector* collector_;
+    JobLoggingDecoratorCollector *collector_;
 };
 
-class JobLoggingDecoratorCollector {
+class JobLoggingDecoratorCollector
+{
 public:
     JobLoggingDecoratorCollector();
-    void storeJobData(const JobLoggingDecorator::JobData& data);
+    void storeJobData(const JobLoggingDecorator::JobData &data);
     qint64 time();
 
 private:

@@ -9,10 +9,10 @@
 #include "sequence_p.h"
 #include "debuggingaids.h"
 
-namespace ThreadWeaver {
-
-namespace Private {
-
+namespace ThreadWeaver
+{
+namespace Private
+{
 Sequence_Private::Sequence_Private()
 {
 }
@@ -37,7 +37,7 @@ void Sequence_Private::prepareToEnqueueElements()
     }
 }
 
-void Sequence_Private::processCompletedElement(Collection* collection, JobPointer job, Thread*)
+void Sequence_Private::processCompletedElement(Collection *collection, JobPointer job, Thread *)
 {
     Q_ASSERT(!mutex.tryLock());
     Q_ASSERT(job != nullptr);
@@ -57,7 +57,6 @@ void Sequence_Private::processCompletedElement(Collection* collection, JobPointe
             nextJob->removeQueuePolicy(blocker());
         }
     }
-
 }
 
 void Sequence_Private::elementDequeued(const JobPointer &job)
@@ -67,7 +66,7 @@ void Sequence_Private::elementDequeued(const JobPointer &job)
     job->removeQueuePolicy(blocker());
 }
 
-void BlockerPolicy::destructed(JobInterface*)
+void BlockerPolicy::destructed(JobInterface *)
 {
 }
 

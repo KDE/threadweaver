@@ -12,7 +12,6 @@
 
 namespace ThreadWeaver
 {
-
 Dependency::Dependency(const JobPointer &dependent, const JobPointer &dependee)
     : m_dependent(dependent)
     , m_dependee(dependee)

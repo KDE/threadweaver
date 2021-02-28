@@ -10,30 +10,30 @@
 
 #include <QChar>
 
-#include <QObject>
 #include <QDebug>
+#include <QObject>
 #include <QTest>
 
-
-#include <ThreadWeaver/Queueing>
-#include <ThreadWeaver/Job>
-#include <ThreadWeaver/State>
-#include <ThreadWeaver/QueuePolicy>
-#include <ThreadWeaver/Sequence>
 #include <ThreadWeaver/Collection>
 #include <ThreadWeaver/DebuggingAids>
 #include <ThreadWeaver/DependencyPolicy>
+#include <ThreadWeaver/Job>
+#include <ThreadWeaver/QueuePolicy>
+#include <ThreadWeaver/Queueing>
 #include <ThreadWeaver/ResourceRestrictionPolicy>
+#include <ThreadWeaver/Sequence>
+#include <ThreadWeaver/State>
 
-#include <ThreadWeaver/ThreadWeaver>
-#include <ThreadWeaver/Thread>
 #include <ThreadWeaver/QObjectDecorator>
+#include <ThreadWeaver/Thread>
+#include <ThreadWeaver/ThreadWeaver>
 
 QMutex s_GlobalMutex;
 
 LowPriorityAppendCharacterJob::LowPriorityAppendCharacterJob(QChar c, QString *stringref)
     : AppendCharacterJob(c, stringref)
-{}
+{
+}
 
 int LowPriorityAppendCharacterJob ::priority() const
 {
@@ -42,7 +42,8 @@ int LowPriorityAppendCharacterJob ::priority() const
 
 HighPriorityAppendCharacterJob::HighPriorityAppendCharacterJob(QChar c, QString *stringref)
     : AppendCharacterJob(c, stringref)
-{}
+{
+}
 
 int HighPriorityAppendCharacterJob::priority() const
 {
@@ -72,7 +73,7 @@ QueueTests::QueueTests(QObject *parent)
 
 void QueueTests::initTestCase()
 {
-    ThreadWeaver::setDebugLevel(true,  1);
+    ThreadWeaver::setDebugLevel(true, 1);
 }
 
 void QueueTests::SimpleQueuePrioritiesTest()
@@ -80,7 +81,7 @@ void QueueTests::SimpleQueuePrioritiesTest()
     using namespace ThreadWeaver;
 
     Queue weaver;
-    weaver.setMaximumNumberOfThreads(1);    // just one thread
+    weaver.setMaximumNumberOfThreads(1); // just one thread
     QString sequence;
     LowPriorityAppendCharacterJob jobA(QChar('a'), &sequence);
     AppendCharacterJob jobB(QChar('b'), &sequence);
@@ -114,7 +115,7 @@ void QueueTests::WeaverInitializationTest()
 
 void QueueTests::QueueFromSecondThreadTest()
 {
-    ThreadWeaver::Queue::instance(); //create global instance in the main thread
+    ThreadWeaver::Queue::instance(); // create global instance in the main thread
     SecondThreadThatQueues thread;
     thread.start();
     thread.wait();
@@ -126,7 +127,8 @@ void QueueTests::deleteJob(ThreadWeaver::JobPointer job)
     // test that signals are properly emitted (asynchronously, that is):
     QVERIFY(thread() == QThread::currentThread());
     QVERIFY(job == autoDeleteJob);
-    delete autoDeleteJob; autoDeleteJob = nullptr;
+    delete autoDeleteJob;
+    autoDeleteJob = nullptr;
 }
 
 void QueueTests::DeleteDoneJobsFromSequenceTest()
@@ -139,8 +141,7 @@ void QueueTests::DeleteDoneJobsFromSequenceTest()
     Collection collection;
     collection << make_job_raw(autoDeleteJob) << b << c;
     QVERIFY(autoDeleteJob != nullptr);
-    QVERIFY(connect(autoDeleteJob, SIGNAL(done(ThreadWeaver::JobPointer)),
-                    SLOT(deleteJob(ThreadWeaver::JobPointer))));
+    QVERIFY(connect(autoDeleteJob, SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(deleteJob(ThreadWeaver::JobPointer))));
     stream() << collection;
     QTest::qWait(100); // return to event queue to make sure signals are delivered
     Queue::instance()->finish();
@@ -153,7 +154,8 @@ void QueueTests::deleteCollection(ThreadWeaver::JobPointer collection)
 {
     QVERIFY(thread() == QThread::currentThread());
     QVERIFY(collection == autoDeleteCollection);
-    delete autoDeleteCollection; autoDeleteCollection = nullptr;
+    delete autoDeleteCollection;
+    autoDeleteCollection = nullptr;
 }
 
 void QueueTests::DeleteCollectionOnDoneTest()
@@ -161,8 +163,7 @@ void QueueTests::DeleteCollectionOnDoneTest()
     using namespace ThreadWeaver;
     QString sequence;
     autoDeleteCollection = new QObjectDecorator(new Collection);
-    QVERIFY(connect(autoDeleteCollection, SIGNAL(done(ThreadWeaver::JobPointer)),
-                    SLOT(deleteCollection(ThreadWeaver::JobPointer))));
+    QVERIFY(connect(autoDeleteCollection, SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(deleteCollection(ThreadWeaver::JobPointer))));
 
     AppendCharacterJob a(QChar('a'), &sequence);
     AppendCharacterJob b(QChar('b'), &sequence);
@@ -182,4 +183,3 @@ void QueueTests::DeleteCollectionOnDoneTest()
 }
 
 QTEST_MAIN(QueueTests)
-

@@ -9,9 +9,9 @@
 #include <QString>
 #include <QTest>
 
-#include <ThreadWeaver/ThreadWeaver>
-#include <ThreadWeaver/JobPointer>
 #include <ThreadWeaver/Job>
+#include <ThreadWeaver/JobPointer>
+#include <ThreadWeaver/ThreadWeaver>
 
 class NotifyOnDeletejob : public ThreadWeaver::Job
 {
@@ -28,7 +28,9 @@ public:
         m_exists = false;
     }
 
-    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override {}
+    void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override
+    {
+    }
 
 private:
     bool &m_exists;
@@ -74,7 +76,8 @@ void LifecycleTests::testJobAutoDeletion()
         ThreadWeaver::JobPointer job1(new NotifyOnDeletejob(job1Exists));
         QCOMPARE(job1Exists, true);
         int argc = 0;
-        QCoreApplication app(argc, (char **)nullptr); Q_UNUSED(app);
+        QCoreApplication app(argc, (char **)nullptr);
+        Q_UNUSED(app);
         QVERIFY(ThreadWeaver::Queue::instance());
         ThreadWeaver::Queue::instance()->suspend();
         ThreadWeaver::Queue::instance()->enqueue(job1);

@@ -12,7 +12,6 @@
 
 namespace ThreadWeaver
 {
-
 ShuttingDownState::ShuttingDownState(QueueSignals *weaver)
     : WeaverImplState(weaver)
 {
@@ -36,7 +35,7 @@ JobPointer ShuttingDownState::applyForWork(Thread *, bool wasBusy)
 {
     Q_UNUSED(wasBusy) // except in Q_ASSERT
     Q_ASSERT(wasBusy == false);
-    return JobPointer();  // tell threads to exit
+    return JobPointer(); // tell threads to exit
 }
 
 void ShuttingDownState::waitForAvailableJob(Thread *)

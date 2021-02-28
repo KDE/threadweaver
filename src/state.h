@@ -14,13 +14,12 @@
 #include <QString>
 
 #include "queueinterface.h"
-#include "weaverinterface.h"
 #include "queuesignals.h"
 #include "threadweaver_export.h"
+#include "weaverinterface.h"
 
 namespace ThreadWeaver
 {
-
 class Job;
 class Thread;
 

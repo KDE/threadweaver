@@ -16,7 +16,6 @@
 
 namespace ThreadWeaver
 {
-
 class Job;
 class State;
 
@@ -68,11 +67,13 @@ public:
 
     /** @brief Interface for the global queue factory. */
     struct GlobalQueueFactory {
-        virtual ~GlobalQueueFactory() {}
+        virtual ~GlobalQueueFactory()
+        {
+        }
         virtual Queue *create(QObject *parent) = 0;
-
     };
     static void setGlobalQueueFactory(GlobalQueueFactory *factory);
+
 private:
     class Private;
     Private *const d;

@@ -10,10 +10,10 @@
 
 #include "DeleteTest.h"
 
+#include <ThreadWeaver/DebuggingAids>
 #include <ThreadWeaver/QObjectDecorator>
 #include <ThreadWeaver/Sequence>
 #include <ThreadWeaver/ThreadWeaver>
-#include <ThreadWeaver/DebuggingAids>
 
 #include "AppendCharacterJob.h"
 
@@ -101,10 +101,11 @@ void DeleteTest::DeleteJobsTest()
 {
     const int NumberOfJobs = 100;
     ThreadWeaver::Queue queue;
-//    queue.setMaximumNumberOfThreads(1);
+    //    queue.setMaximumNumberOfThreads(1);
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
-    {   // just to be sure instance counting works:
-        InstanceCountingBusyJob job; Q_UNUSED(job);
+    { // just to be sure instance counting works:
+        InstanceCountingBusyJob job;
+        Q_UNUSED(job);
         QCOMPARE(InstanceCountingBusyJob::instances(), 1);
     }
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
@@ -141,11 +142,11 @@ void DeleteTest::DeleteCollectionTest()
     const int NumberOfCollections = 100;
     const int NumberOfJobs = 10;
     ThreadWeaver::Queue queue;
-//    queue.setMaximumNumberOfThreads(1);
+    //    queue.setMaximumNumberOfThreads(1);
     QCOMPARE(InstanceCountingCollection::instances(), 0);
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
     queue.suspend();
-    JobPointer temp; //for debugging
+    JobPointer temp; // for debugging
     for (int i = 0; i < NumberOfCollections; ++i) {
         QSharedPointer<InstanceCountingCollection> col(new InstanceCountingCollection);
         if (i == 0) {
@@ -163,16 +164,20 @@ void DeleteTest::DeleteCollectionTest()
     // held anymore.
     queue.shutDown();
 
-    TWDEBUG(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
-          InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
+    TWDEBUG(3,
+            "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
+            InstanceCountingCollection::instances(),
+            InstanceCountingBusyJob::instances());
     // held by signals about the job being started and finished:
-    //QCOMPARE(InstanceCountingCollection::instances(), NumberOfCollections);
+    // QCOMPARE(InstanceCountingCollection::instances(), NumberOfCollections);
     // one, since threads are not sending the jobStarted/jobDone signals anymore:
     QCOMPARE(InstanceCountingCollection::instances(), 1);
     qApp->processEvents();
-    TWDEBUG(3, "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
-            InstanceCountingCollection::instances(), InstanceCountingBusyJob::instances());
-    //these are held in temp:
+    TWDEBUG(3,
+            "DeleteTest::DeleteJobsTest: collection instances: %i, job instances: %i\n",
+            InstanceCountingCollection::instances(),
+            InstanceCountingBusyJob::instances());
+    // these are held in temp:
     QCOMPARE(InstanceCountingBusyJob::instances(), NumberOfJobs);
     QCOMPARE(InstanceCountingCollection::instances(), 1);
     temp.clear();
@@ -186,11 +191,11 @@ void DeleteTest::DeleteDecoratedCollectionTest()
     const int NumberOfJobs = 10;
     m_finishCount.storeRelease(0);
     ThreadWeaver::Queue queue;
-//    queue.setMaximumNumberOfThreads(1);
+    //    queue.setMaximumNumberOfThreads(1);
     QCOMPARE(InstanceCountingCollection::instances(), 0);
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
     queue.suspend();
-    JobPointer temp; //for debugging
+    JobPointer temp; // for debugging
     for (int i = 0; i < NumberOfCollections; ++i) {
         QJobPointer col(new QObjectDecorator(new InstanceCountingCollection));
         if (i == 0) {
@@ -217,7 +222,7 @@ void DeleteTest::DeleteDecoratedCollectionTest()
     queue.shutDown();
 
     TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingCollection::instances());
-    QCOMPARE(InstanceCountingCollection::instances(), 1); //held in temp
+    QCOMPARE(InstanceCountingCollection::instances(), 1); // held in temp
     temp.clear();
     TWDEBUG(3, "DeleteTest::DeleteJobsTest: instances: %i\n", InstanceCountingCollection::instances());
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
@@ -230,7 +235,7 @@ void DeleteTest::DeleteSequenceTest()
     const int NumberOfJobs = 10;
     m_finishCount.storeRelease(0);
     ThreadWeaver::Queue queue;
-//    queue.setMaximumNumberOfThreads(1);
+    //    queue.setMaximumNumberOfThreads(1);
     QCOMPARE(InstanceCountingSequence::instances(), 0);
     QCOMPARE(InstanceCountingBusyJob::instances(), 0);
     queue.suspend();
@@ -276,4 +281,3 @@ void DeleteTest::countCompletedDecoratedCollection(JobPointer)
 QMutex s_GlobalMutex;
 
 QTEST_MAIN(DeleteTest)
-

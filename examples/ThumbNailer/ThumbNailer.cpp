@@ -8,19 +8,19 @@
 
 #include <iostream>
 
-#include <QTest>
-#include <QFileInfoList>
 #include <QApplication>
-#include <QCommandLineParser>
 #include <QCommandLineOption>
+#include <QCommandLineParser>
+#include <QFileInfoList>
+#include <QTest>
 
-#include "Model.h"
-#include "MainWindow.h"
 #include "Benchmark.h"
+#include "MainWindow.h"
+#include "Model.h"
 
 using namespace std;
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
     app.setApplicationName(QLatin1String("ThumbNailer"));
@@ -36,7 +36,7 @@ int main(int argc, char** argv)
         Benchmark benchmark;
         const QStringList arguments = app.arguments().mid(1); // remove mode selection
         return QTest::qExec(&benchmark, arguments);
-    } else if (mode == QLatin1String("demo")){
+    } else if (mode == QLatin1String("demo")) {
         // demo mode
         MainWindow mainWindow;
         mainWindow.show();

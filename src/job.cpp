@@ -11,23 +11,22 @@
 #include "job.h"
 #include "job_p.h"
 
-#include <QList>
-#include <QMutex>
 #include "debuggingaids.h"
 #include "thread.h"
-#include <QAtomicPointer>
 #include <QAtomicInt>
+#include <QAtomicPointer>
+#include <QList>
+#include <QMutex>
 
-#include "queuepolicy.h"
 #include "dependencypolicy.h"
-#include "executor_p.h"
-#include "executewrapper_p.h"
-#include "managedjobpointer.h"
 #include "exception.h"
+#include "executewrapper_p.h"
+#include "executor_p.h"
+#include "managedjobpointer.h"
+#include "queuepolicy.h"
 
 namespace ThreadWeaver
 {
-
 Job::Job()
     : d_(new Private::Job_Private())
 {
@@ -54,10 +53,10 @@ Job::~Job()
     delete d_;
 }
 
-void Job::execute(const JobPointer& self, Thread *th)
+void Job::execute(const JobPointer &self, Thread *th)
 {
     Executor *executor = d()->executor.loadAcquire();
-    Q_ASSERT(executor); //may never be unset!
+    Q_ASSERT(executor); // may never be unset!
     Q_ASSERT(self);
     executor->begin(self, th);
     self->setStatus(Status_Running);
@@ -70,7 +69,7 @@ void Job::execute(const JobPointer& self, Thread *th)
         self->setStatus(Status_Aborted);
     } catch (JobFailed &) {
         self->setStatus(Status_Failed);
-    } catch (AbortThread&) {
+    } catch (AbortThread &) {
         throw;
     } catch (...) {
         TWDEBUG(0, "Uncaught exception in Job %p, aborting.", self.data());
@@ -117,18 +116,19 @@ bool Job::success() const
     return d()->status.loadAcquire() == Status_Success;
 }
 
-void Job::defaultBegin(const JobPointer&, Thread *)
+void Job::defaultBegin(const JobPointer &, Thread *)
 {
 }
 
-void Job::defaultEnd(const JobPointer& job, Thread *)
+void Job::defaultEnd(const JobPointer &job, Thread *)
 {
     d()->freeQueuePolicyResources(job);
 }
 
 void Job::aboutToBeQueued(QueueAPI *api)
 {
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     aboutToBeQueued_locked(api);
 }
 
@@ -138,7 +138,8 @@ void Job::aboutToBeQueued_locked(QueueAPI *)
 
 void Job::aboutToBeDequeued(QueueAPI *api)
 {
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     aboutToBeDequeued_locked(api);
 }
 
@@ -149,7 +150,7 @@ void Job::aboutToBeDequeued_locked(QueueAPI *)
 void Job::assignQueuePolicy(QueuePolicy *policy)
 {
     Q_ASSERT(!mutex()->tryLock());
-    if (! d()->queuePolicies.contains(policy)) {
+    if (!d()->queuePolicies.contains(policy)) {
         d()->queuePolicies.append(policy);
     }
 }

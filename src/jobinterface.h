@@ -11,14 +11,13 @@
 
 #include <QSharedPointer>
 
-#include "threadweaver_export.h"
 #include "jobpointer.h"
+#include "threadweaver_export.h"
 
 class QMutex;
 
 namespace ThreadWeaver
 {
-
 class Thread;
 class Executor;
 class QueueAPI;
@@ -41,8 +40,10 @@ public:
         Status_NumberOfStatuses,
     };
 
-    virtual ~JobInterface() {}
-    virtual void execute(const JobPointer& job, Thread *) = 0;
+    virtual ~JobInterface()
+    {
+    }
+    virtual void execute(const JobPointer &job, Thread *) = 0;
     virtual void blockingExecute() = 0;
     virtual Executor *setExecutor(Executor *executor) = 0;
     virtual Executor *executor() const = 0;
@@ -61,8 +62,8 @@ public:
     virtual QList<QueuePolicy *> queuePolicies() const = 0;
     virtual void run(JobPointer self, Thread *thread) = 0;
     friend class Executor;
-    virtual void defaultBegin(const JobPointer& job, Thread *thread) = 0;
-    virtual void defaultEnd(const JobPointer& job, Thread *thread) = 0;
+    virtual void defaultBegin(const JobPointer &job, Thread *thread) = 0;
+    virtual void defaultEnd(const JobPointer &job, Thread *thread) = 0;
     virtual QMutex *mutex() const = 0;
 };
 

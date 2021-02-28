@@ -15,7 +15,8 @@
 
 class ImageListFilter;
 
-namespace Ui {
+namespace Ui
+{
 class MainWindow;
 }
 
@@ -30,7 +31,7 @@ public:
     ~MainWindow();
 
 protected:
-    void closeEvent(QCloseEvent*) override;
+    void closeEvent(QCloseEvent *) override;
 
 public Q_SLOTS:
     void slotProgress(int step, int total);
@@ -51,11 +52,11 @@ private:
     Ui::MainWindow *ui;
     QString m_outputDirectory;
     Model m_model;
-    ImageListFilter* m_fileLoaderFilter;
-    ImageListFilter* m_imageLoaderFilter;
-    ImageListFilter* m_imageScalerFilter;
-    ImageListFilter* m_imageWriterFilter;
-    AverageLoadManager* m_averageLoadManager;
+    ImageListFilter *m_fileLoaderFilter;
+    ImageListFilter *m_imageLoaderFilter;
+    ImageListFilter *m_imageScalerFilter;
+    ImageListFilter *m_imageWriterFilter;
+    AverageLoadManager *m_averageLoadManager;
 
     static const QString Setting_OpenLocation;
     static const QString Setting_OutputLocation;

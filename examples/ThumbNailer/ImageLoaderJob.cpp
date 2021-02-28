@@ -27,7 +27,7 @@ int ImageLoaderJob::priority() const
     return Image::Step_LoadImage;
 }
 
-void ImageLoaderJob::run(JobPointer, Thread*)
+void ImageLoaderJob::run(JobPointer, Thread *)
 {
     Q_ASSERT(m_image);
     m_image->loadImage();

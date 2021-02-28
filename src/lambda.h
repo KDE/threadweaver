@@ -14,18 +14,19 @@
 
 namespace ThreadWeaver
 {
-
 /** @brief Lambda is a template that takes any type on which operator() is available, and executes it in run(). */
-template <typename T>
+template<typename T>
 class Lambda : public Job
 {
 public:
     explicit Lambda(T t_)
         : t(t_)
-    {}
+    {
+    }
 
 protected:
-    void run(JobPointer, Thread *) override {
+    void run(JobPointer, Thread *) override
+    {
         t();
     }
 

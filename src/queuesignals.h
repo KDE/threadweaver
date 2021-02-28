@@ -9,13 +9,15 @@
 #ifndef THREADWEAVER_QUEUESIGNALS_H
 #define THREADWEAVER_QUEUESIGNALS_H
 
-#include <QObject>
 #include "queueinterface.h"
+#include <QObject>
 
 namespace ThreadWeaver
 {
-
-namespace Private { class QueueSignals_Private; }
+namespace Private
+{
+class QueueSignals_Private;
+}
 
 /** @brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes. */
 class THREADWEAVER_EXPORT QueueSignals : public QObject, public QueueInterface
@@ -23,7 +25,7 @@ class THREADWEAVER_EXPORT QueueSignals : public QObject, public QueueInterface
     Q_OBJECT
 public:
     explicit QueueSignals(QObject *parent = nullptr);
-    explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = nullptr);
+    explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private *d, QObject *parent = nullptr);
     virtual ~QueueSignals();
 
 Q_SIGNALS:
@@ -47,13 +49,14 @@ Q_SIGNALS:
     void suspended();
 
     /** @brief Emitted when the processing state of the Queue has changed. */
-    void stateChanged(ThreadWeaver::State*);
+    void stateChanged(ThreadWeaver::State *);
 
 protected:
-    ThreadWeaver::Private::QueueSignals_Private* d();
-    const ThreadWeaver::Private::QueueSignals_Private* d() const;
+    ThreadWeaver::Private::QueueSignals_Private *d();
+    const ThreadWeaver::Private::QueueSignals_Private *d() const;
+
 private:
-    ThreadWeaver::Private::QueueSignals_Private* m_d;
+    ThreadWeaver::Private::QueueSignals_Private *m_d;
 };
 
 }

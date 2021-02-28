@@ -10,14 +10,13 @@
 
 #include "workinghardstate.h"
 
+#include "debuggingaids.h"
 #include "job.h"
 #include "thread.h"
 #include "threadweaver.h"
-#include "debuggingaids.h"
 
 namespace ThreadWeaver
 {
-
 void WorkingHardState::activated()
 {
     weaver()->reschedule();
@@ -37,18 +36,16 @@ void WorkingHardState::resume()
 {
 }
 
-JobPointer WorkingHardState::applyForWork(Thread *th,  bool wasBusy)
+JobPointer WorkingHardState::applyForWork(Thread *th, bool wasBusy)
 {
     // beware: this code is executed in the applying thread!
-    TWDEBUG(2, "WorkingHardState::applyForWork: thread %i applies for work in %s state.\n", th->id(),
-             qPrintable(weaver()->state()->stateName()));
+    TWDEBUG(2, "WorkingHardState::applyForWork: thread %i applies for work in %s state.\n", th->id(), qPrintable(weaver()->state()->stateName()));
     JobPointer next = weaver()->takeFirstAvailableJobOrSuspendOrWait(th, wasBusy, false, false);
     if (next) {
         return next;
     } else {
         // this is no infinite recursion: the state may have changed meanwhile, or jobs may have become available:
-        TWDEBUG(2, "WorkingHardState::applyForWork: repeating for thread %i in %s state.\n", th->id(),
-                 qPrintable(weaver()->state()->stateName()));
+        TWDEBUG(2, "WorkingHardState::applyForWork: repeating for thread %i in %s state.\n", th->id(), qPrintable(weaver()->state()->stateName()));
         return weaver()->applyForWork(th, false);
     }
 }

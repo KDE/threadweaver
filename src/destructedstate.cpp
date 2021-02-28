@@ -12,7 +12,6 @@
 
 namespace ThreadWeaver
 {
-
 DestructedState::DestructedState(QueueSignals *)
     : WeaverImplState(nullptr) // make sure we cannot use weaver, ever :-)
 {

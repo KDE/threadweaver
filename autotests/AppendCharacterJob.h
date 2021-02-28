@@ -9,12 +9,12 @@
 #ifndef APPENDCHARACTER_JOB
 #define APPENDCHARACTER_JOB
 
-#include <QObject>
 #include <QMutex>
+#include <QObject>
 
-#include <ThreadWeaver/JobPointer>
-#include <ThreadWeaver/Job>
 #include <ThreadWeaver/DebuggingAids>
+#include <ThreadWeaver/Job>
+#include <ThreadWeaver/JobPointer>
 
 // define in test binary:
 
@@ -40,8 +40,7 @@ public:
         QMutexLocker locker(&s_GlobalMutex);
         m_stringref->append(m_c);
         using namespace ThreadWeaver;
-        TWDEBUG(3, "AppendCharacterJob::run: %c appended, result is %s.\n",
-                m_c.toLatin1(), qPrintable(*m_stringref));
+        TWDEBUG(3, "AppendCharacterJob::run: %c appended, result is %s.\n", m_c.toLatin1(), qPrintable(*m_stringref));
     }
 
     QChar character() const
@@ -68,7 +67,7 @@ public:
     {
     }
 
-    void run(ThreadWeaver::JobPointer job, ThreadWeaver::Thread* thread) override
+    void run(ThreadWeaver::JobPointer job, ThreadWeaver::Thread *thread) override
     {
         AppendCharacterJob::run(job, thread);
         setStatus(Job::Status_Failed);
@@ -103,4 +102,3 @@ public:
 };
 
 #endif
-

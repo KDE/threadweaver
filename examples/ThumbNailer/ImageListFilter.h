@@ -9,14 +9,16 @@
 #ifndef IMAGELISTFILTER_H
 #define IMAGELISTFILTER_H
 
-#include <QSortFilterProxyModel>
 #include "Image.h"
+#include <QSortFilterProxyModel>
 
-class ImageListFilter : public QSortFilterProxyModel {
+class ImageListFilter : public QSortFilterProxyModel
+{
     Q_OBJECT
 public:
-    explicit ImageListFilter(Image::Steps step, QObject* parent = nullptr);
-    bool filterAcceptsRow(int source_row, const QModelIndex & source_parent) const override;
+    explicit ImageListFilter(Image::Steps step, QObject *parent = nullptr);
+    bool filterAcceptsRow(int source_row, const QModelIndex &source_parent) const override;
+
 private:
     Image::Steps m_step;
 };

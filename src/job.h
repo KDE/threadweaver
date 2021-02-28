@@ -11,17 +11,19 @@
 #ifndef THREADWEAVER_JOB_H
 #define THREADWEAVER_JOB_H
 
-#include "threadweaver_export.h"
 #include "jobinterface.h"
 #include "jobpointer.h"
+#include "threadweaver_export.h"
 
 class QMutex;
 class QWaitCondition;
 
 namespace ThreadWeaver
 {
-
-namespace Private { class Job_Private; }
+namespace Private
+{
+class Job_Private;
+}
 
 class Thread;
 class QueuePolicy;
@@ -46,7 +48,7 @@ class THREADWEAVER_EXPORT Job : public JobInterface
 public:
     /** Construct a Job. */
     Job();
-    Job(Private::Job_Private* d);
+    Job(Private::Job_Private *d);
 
     /** Destructor. */
     ~Job() override;
@@ -60,7 +62,7 @@ public:
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object.
      */
-    void execute(const JobPointer& job, Thread *) override;
+    void execute(const JobPointer &job, Thread *) override;
 
     /** Perform the job synchronously in the current thread. */
     void blockingExecute() override;
@@ -119,7 +121,9 @@ public:
      * The method is not pure virtual because users are not supposed to be forced to always implement requestAbort(). Also, this
      * method is supposed to return immediately, not after the abort has completed. It requests the abort, the Job has to act on
      * the request. */
-    void requestAbort() override {}
+    void requestAbort() override
+    {
+    }
 
     /** The job is about to be added to the weaver's job queue.
      *
@@ -172,8 +176,8 @@ private:
     Private::Job_Private *d_;
 
 protected:
-    Private::Job_Private* d();
-    const Private::Job_Private* d() const;
+    Private::Job_Private *d();
+    const Private::Job_Private *d() const;
 
     friend class Executor;
     /** The method that actually performs the job.
@@ -193,14 +197,14 @@ protected:
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultBegin(const JobPointer& job, Thread *thread) override;
+    void defaultBegin(const JobPointer &job, Thread *thread) override;
 
     /** @brief Perform standard task after the execution of a job.
      *
      * The default implementation is empty.
      * job is the Job that the queue is executing. It is not necessarily equal to this. For example, Jobs that are
      * decorated expose the decorator's address, not the address of the decorated object. */
-    void defaultEnd(const JobPointer& job, Thread *thread) override;
+    void defaultEnd(const JobPointer &job, Thread *thread) override;
 };
 
 }

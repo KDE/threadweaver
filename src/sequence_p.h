@@ -11,15 +11,16 @@
 
 #include <QAtomicInt>
 
-#include "sequence.h"
-#include "queuepolicy.h"
 #include "collection_p.h"
+#include "queuepolicy.h"
+#include "sequence.h"
 
-namespace ThreadWeaver {
-
-namespace Private {
-
-class BlockerPolicy : public QueuePolicy {
+namespace ThreadWeaver
+{
+namespace Private
+{
+class BlockerPolicy : public QueuePolicy
+{
 public:
     bool canRun(JobPointer) override;
     void free(JobPointer) override;
@@ -31,10 +32,10 @@ class Sequence_Private : public Collection_Private
 {
 public:
     Sequence_Private();
-    BlockerPolicy* blocker();
+    BlockerPolicy *blocker();
     void prepareToEnqueueElements() override;
-    void processCompletedElement(Collection* collection, JobPointer job, Thread *thread) override;
-    void elementDequeued(const JobPointer& job) override;
+    void processCompletedElement(Collection *collection, JobPointer job, Thread *thread) override;
+    void elementDequeued(const JobPointer &job) override;
     BlockerPolicy blocker_;
     QAtomicInt completed_;
 };

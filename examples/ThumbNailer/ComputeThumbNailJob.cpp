@@ -10,8 +10,8 @@
 
 #include <ThreadWeaver/ResourceRestrictionPolicy>
 
-#include "Image.h"
 #include "ComputeThumbNailJob.h"
+#include "Image.h"
 
 using namespace ThreadWeaver;
 
@@ -27,9 +27,8 @@ int ComputeThumbNailJob::priority() const
     return Image::Step_ComputeThumbNail;
 }
 
-void ComputeThumbNailJob::run(JobPointer, Thread*)
+void ComputeThumbNailJob::run(JobPointer, Thread *)
 {
     Q_ASSERT(m_image);
     m_image->computeThumbNail();
 }
-

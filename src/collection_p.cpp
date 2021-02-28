@@ -6,16 +6,16 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "managedjobpointer.h"
-#include "debuggingaids.h"
-#include "queueapi.h"
 #include "collection_p.h"
 #include "collection.h"
+#include "debuggingaids.h"
+#include "managedjobpointer.h"
+#include "queueapi.h"
 
-namespace ThreadWeaver {
-
-namespace Private {
-
+namespace ThreadWeaver
+{
+namespace Private
+{
 Collection_Private::Collection_Private()
     : api(nullptr)
     , jobCounter(0)
@@ -42,26 +42,35 @@ void Collection_Private::enqueueElements()
 {
     Q_ASSERT(!mutex.tryLock());
     prepareToEnqueueElements();
-    jobCounter.fetchAndStoreOrdered(elements.count() + 1); //including self
+    jobCounter.fetchAndStoreOrdered(elements.count() + 1); // including self
     api->enqueue(elements);
 }
 
-void Collection_Private::elementStarted(Collection*, JobPointer job, Thread*)
+void Collection_Private::elementStarted(Collection *, JobPointer job, Thread *)
 {
-    QMutexLocker l(&mutex); Q_UNUSED(l);
+    QMutexLocker l(&mutex);
+    Q_UNUSED(l);
     Q_UNUSED(job) // except in Q_ASSERT
     Q_ASSERT(!self.isNull());
     if (jobsStarted.fetchAndAddOrdered(1) == 0) {
-        //emit started() signal on beginning of first job execution
+        // emit started() signal on beginning of first job execution
         selfExecuteWrapper.callBegin();
     }
 }
 
-namespace {
+namespace
+{
 struct MutexUnlocker {
-    QMutexLocker* locker;
-    MutexUnlocker(QMutexLocker* l) : locker(l) { locker->unlock(); }
-    ~MutexUnlocker() { locker->relock(); }
+    QMutexLocker *locker;
+    MutexUnlocker(QMutexLocker *l)
+        : locker(l)
+    {
+        locker->unlock();
+    }
+    ~MutexUnlocker()
+    {
+        locker->relock();
+    }
     MutexUnlocker(const MutexUnlocker &) = delete;
     MutexUnlocker &operator=(const MutexUnlocker &) = delete;
 };
@@ -69,8 +78,10 @@ struct MutexUnlocker {
 
 void Collection_Private::elementFinished(Collection *collection, JobPointer job, Thread *thread)
 {
-    JobPointer saveYourSelf = self; Q_UNUSED(saveYourSelf);
-    QMutexLocker l(&mutex); Q_UNUSED(l);
+    JobPointer saveYourSelf = self;
+    Q_UNUSED(saveYourSelf);
+    QMutexLocker l(&mutex);
+    Q_UNUSED(l);
     Q_ASSERT(!self.isNull());
     Q_UNUSED(job) // except in Q_ASSERT
     if (selfIsExecuting) {
@@ -81,12 +92,13 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
         selfIsExecuting = false;
     }
     const int started = jobsStarted.loadAcquire();
-    Q_ASSERT(started >= 0); Q_UNUSED(started);
+    Q_ASSERT(started >= 0);
+    Q_UNUSED(started);
     processCompletedElement(collection, job, thread);
     const int remainingJobs = jobCounter.fetchAndAddOrdered(-1) - 1;
     TWDEBUG(4, "Collection_Private::elementFinished: %i\n", remainingJobs);
     if (remainingJobs <= -1) {
-        //its no use to count, the elements have been dequeued, now the threads call back that have been processing jobs in the meantime
+        // its no use to count, the elements have been dequeued, now the threads call back that have been processing jobs in the meantime
     } else {
         Q_ASSERT(remainingJobs >= 0);
         if (remainingJobs == 0) {
@@ -95,7 +107,8 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
             // meantime, in this case, there is nothing left to clean up
             finalCleanup(collection);
             {
-                MutexUnlocker u(&l); Q_UNUSED(u);
+                MutexUnlocker u(&l);
+                Q_UNUSED(u);
                 selfExecuteWrapper.callEnd();
             }
             self.clear();
@@ -105,12 +118,12 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
 
 void Collection_Private::prepareToEnqueueElements()
 {
-    //empty in Collection
+    // empty in Collection
 }
 
-void Collection_Private::processCompletedElement(Collection*, JobPointer, Thread*)
+void Collection_Private::processCompletedElement(Collection *, JobPointer, Thread *)
 {
-    //empty in Collection
+    // empty in Collection
 }
 
 void Collection_Private::stop_locked(Collection *collection)
@@ -124,12 +137,12 @@ void Collection_Private::stop_locked(Collection *collection)
     }
 }
 
-void Collection_Private::dequeueElements(Collection* collection, bool queueApiIsLocked)
+void Collection_Private::dequeueElements(Collection *collection, bool queueApiIsLocked)
 {
     // dequeue everything:
     Q_ASSERT(!mutex.tryLock());
     if (api == nullptr) {
-        return;    //not queued
+        return; // not queued
     }
 
     for (int index = 0; index < elements.size(); ++index) {
@@ -142,7 +155,8 @@ void Collection_Private::dequeueElements(Collection* collection, bool queueApiIs
         if (result) {
             jobCounter.fetchAndAddOrdered(-1);
         }
-        TWDEBUG(3, "Collection::Private::dequeueElements: dequeueing %p (%s, %i jobs left).\n",
+        TWDEBUG(3,
+                "Collection::Private::dequeueElements: dequeueing %p (%s, %i jobs left).\n",
                 (void *)elements.at(index).data(),
                 result ? "found" : "not found",
                 jobCounter.loadAcquire());
@@ -158,13 +172,13 @@ void CollectionSelfExecuteWrapper::begin(const JobPointer &job, Thread *thread)
 {
     job_ = job;
     thread_ = thread;
-
 }
 
 void CollectionSelfExecuteWrapper::end(const JobPointer &job, Thread *thread)
 {
     Q_ASSERT(job_ == job && thread_ == thread);
-    Q_UNUSED(job); Q_UNUSED(thread); //except in assert
+    Q_UNUSED(job);
+    Q_UNUSED(thread); // except in assert
 }
 
 void CollectionSelfExecuteWrapper::callBegin()

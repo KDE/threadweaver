@@ -8,10 +8,10 @@
 
 #include "collection.h"
 
-#include "queueapi.h"
-#include "debuggingaids.h"
-#include "queueing.h"
 #include "collection_p.h"
+#include "debuggingaids.h"
+#include "queueapi.h"
+#include "queueing.h"
 
 #include <QList>
 #include <QObject>
@@ -23,20 +23,21 @@
 
 namespace ThreadWeaver
 {
-
 class CollectionExecuteWrapper : public ExecuteWrapper
 {
 public:
     CollectionExecuteWrapper()
         : collection(nullptr)
-    {}
+    {
+    }
 
     void setCollection(Collection *collection_)
     {
         collection = collection_;
     }
 
-    void begin(const JobPointer& job, Thread *thread) override {
+    void begin(const JobPointer &job, Thread *thread) override
+    {
         TWDEBUG(4, "CollectionExecuteWrapper::begin: collection %p\n", collection);
         ExecuteWrapper::begin(job, thread);
         Q_ASSERT(collection);
@@ -44,16 +45,18 @@ public:
         ExecuteWrapper::begin(job, thread);
     }
 
-    void end(const JobPointer& job, Thread *thread) override {
+    void end(const JobPointer &job, Thread *thread) override
+    {
         TWDEBUG(4, "CollectionExecuteWrapper::end: collection %p\n", collection);
         Q_ASSERT(collection);
         ExecuteWrapper::end(job, thread);
         collection->d()->elementFinished(collection, job, thread);
     }
 
-    void cleanup(const JobPointer& job, Thread *) override {
-        //Once job is unwrapped from us, this object is dangling. Job::executor points to the next higher up execute wrapper.
-        //It is thus safe to "delete this". By no means add any later steps after delete!
+    void cleanup(const JobPointer &job, Thread *) override
+    {
+        // Once job is unwrapped from us, this object is dangling. Job::executor points to the next higher up execute wrapper.
+        // It is thus safe to "delete this". By no means add any later steps after delete!
         delete unwrap(job);
     }
 
@@ -75,7 +78,8 @@ Collection::~Collection()
 {
     MUTEX_ASSERT_UNLOCKED(mutex());
     // dequeue all remaining jobs:
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     if (d()->api != nullptr) { // still queued
         d()->dequeueElements(this, false);
     }
@@ -83,7 +87,8 @@ Collection::~Collection()
 
 void Collection::addJob(JobPointer job)
 {
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     REQUIRE(d()->api == nullptr || d()->selfIsExecuting == true); // not queued yet or still running
     REQUIRE(job != nullptr);
 
@@ -96,7 +101,8 @@ void Collection::addJob(JobPointer job)
 void Collection::stop(JobPointer job)
 {
     Q_UNUSED(job);
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     d()->stop_locked(this);
 }
 
@@ -121,10 +127,11 @@ void Collection::aboutToBeDequeued_locked(QueueAPI *api)
     Job::aboutToBeDequeued_locked(api);
 }
 
-void Collection::execute(const JobPointer& job, Thread *thread)
+void Collection::execute(const JobPointer &job, Thread *thread)
 {
     {
-        QMutexLocker l(mutex()); Q_UNUSED(l);
+        QMutexLocker l(mutex());
+        Q_UNUSED(l);
         Q_ASSERT(d()->self.isNull());
         Q_ASSERT(d()->api != nullptr);
         d()->self = job;
@@ -135,17 +142,17 @@ void Collection::execute(const JobPointer& job, Thread *thread)
 
 void Collection::run(JobPointer, Thread *)
 {
-    //empty
+    // empty
 }
 
 Private::Collection_Private *Collection::d()
 {
-    return reinterpret_cast<Private::Collection_Private*>(Job::d());
+    return reinterpret_cast<Private::Collection_Private *>(Job::d());
 }
 
 const Private::Collection_Private *Collection::d() const
 {
-    return reinterpret_cast<const Private::Collection_Private*>(Job::d());
+    return reinterpret_cast<const Private::Collection_Private *>(Job::d());
 }
 
 JobPointer Collection::jobAt(int i)
@@ -157,15 +164,16 @@ JobPointer Collection::jobAt(int i)
 
 int Collection::elementCount() const
 {
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     return jobListLength_locked();
 }
-
 
 #if THREADWEAVER_BUILD_DEPRECATED_SINCE(5, 0)
 int Collection::jobListLength() const
 {
-    QMutexLocker l(mutex()); Q_UNUSED(l);
+    QMutexLocker l(mutex());
+    Q_UNUSED(l);
     return jobListLength_locked();
 }
 #endif
@@ -194,4 +202,3 @@ Collection &Collection::operator<<(JobInterface &job)
 }
 
 }
-

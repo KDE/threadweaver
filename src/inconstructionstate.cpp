@@ -10,12 +10,11 @@
 
 #include "inconstructionstate.h"
 
-#include "weaver.h"
 #include "threadweaver.h"
+#include "weaver.h"
 
 namespace ThreadWeaver
 {
-
 InConstructionState::InConstructionState(QueueSignals *weaver)
     : WeaverImplState(weaver)
 {

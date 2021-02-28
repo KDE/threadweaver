@@ -13,20 +13,20 @@
 
 class Image;
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 class ResourceRestrictionPolicy;
 }
 
 class ImageLoaderJob : public ThreadWeaver::Job
 {
 public:
-    explicit ImageLoaderJob(Image* image, ThreadWeaver::ResourceRestrictionPolicy* throttle);
+    explicit ImageLoaderJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle);
     int priority() const override;
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 
 private:
-    Image* m_image;
-
+    Image *m_image;
 };
 
 #endif // IMAGELOADERJOB_H

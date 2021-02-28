@@ -9,21 +9,20 @@
 #ifndef QUEUEAPI_H
 #define QUEUEAPI_H
 
-#include "queuesignals.h"
-#include "weaverinterface.h"
-#include "state.h"
 #include "jobpointer.h"
+#include "queuesignals.h"
+#include "state.h"
+#include "weaverinterface.h"
 
 namespace ThreadWeaver
 {
-
 class QueueAPI : public QueueSignals, public WeaverInterface
 {
     Q_OBJECT
 
 public:
     explicit QueueAPI(QObject *parent = nullptr);
-    explicit QueueAPI(ThreadWeaver::Private::QueueSignals_Private* d, QObject *parent = nullptr);
+    explicit QueueAPI(ThreadWeaver::Private::QueueSignals_Private *d, QObject *parent = nullptr);
 
     virtual void shutDown_p() = 0;
     const State *state() const override = 0;

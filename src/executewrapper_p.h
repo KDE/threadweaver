@@ -11,27 +11,26 @@
 
 #include <QAtomicPointer>
 
-#include "job.h"
 #include "executor_p.h"
+#include "job.h"
 
 namespace ThreadWeaver
 {
-
 class Job;
 class Thread;
 
-//FIXME Pimpl, make part of the API, document
-//Find a way to avoid new/delete operation, this is rather performance sensitive area
+// FIXME Pimpl, make part of the API, document
+// Find a way to avoid new/delete operation, this is rather performance sensitive area
 class ExecuteWrapper : public Executor
 {
 public:
     ExecuteWrapper();
     Executor *wrap(Executor *previous);
-    Executor *unwrap(const JobPointer& job);
-    void begin(const JobPointer& job, Thread *) override;
-    void execute(const JobPointer& job, Thread *thread) override;
-    void executeWrapped(const JobPointer& job, Thread *thread);
-    void end(const JobPointer& job, Thread *) override;
+    Executor *unwrap(const JobPointer &job);
+    void begin(const JobPointer &job, Thread *) override;
+    void execute(const JobPointer &job, Thread *thread) override;
+    void executeWrapped(const JobPointer &job, Thread *thread);
+    void end(const JobPointer &job, Thread *) override;
 
 private:
     QAtomicPointer<Executor> wrapped;

@@ -10,13 +10,12 @@
 
 #include "weaverimplstate.h"
 
-
 namespace ThreadWeaver
 {
-
 WeaverImplState::WeaverImplState(QueueSignals *weaver)
     : State(weaver)
-{}
+{
+}
 
 const State *WeaverImplState::state() const
 {

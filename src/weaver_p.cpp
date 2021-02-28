@@ -9,19 +9,19 @@
 #include <QMutexLocker>
 
 #include "debuggingaids.h"
-#include "weaver_p.h"
-#include "suspendedstate.h"
-#include "suspendingstate.h"
 #include "destructedstate.h"
-#include "workinghardstate.h"
-#include "shuttingdownstate.h"
 #include "inconstructionstate.h"
 #include "queuepolicy.h"
+#include "shuttingdownstate.h"
+#include "suspendedstate.h"
+#include "suspendingstate.h"
+#include "weaver_p.h"
+#include "workinghardstate.h"
 
-namespace ThreadWeaver {
-
-namespace Private {
-
+namespace ThreadWeaver
+{
+namespace Private
+{
 Weaver_Private::Weaver_Private()
     : QueueSignals_Private()
     , active(0)
@@ -33,7 +33,7 @@ Weaver_Private::Weaver_Private()
 
 Weaver_Private::~Weaver_Private()
 {
-    //FIXME no need for dynamic allocation
+    // FIXME no need for dynamic allocation
     delete mutex;
 }
 
@@ -43,10 +43,14 @@ Weaver_Private::~Weaver_Private()
  */
 void Weaver_Private::dumpJobs()
 {
-    QMutexLocker l(mutex); Q_UNUSED(l);
+    QMutexLocker l(mutex);
+    Q_UNUSED(l);
     TWDEBUG(0, "WeaverImpl::dumpJobs: current jobs:\n");
     for (int index = 0; index < assignments.size(); ++index) {
-        TWDEBUG(0, "--> %4i: %p (priority %i, can be executed: %s)\n", index, (void *)assignments.at(index).data(),
+        TWDEBUG(0,
+                "--> %4i: %p (priority %i, can be executed: %s)\n",
+                index,
+                (void *)assignments.at(index).data(),
                 assignments.at(index)->priority(),
                 canBeExecuted(assignments.at(index)) ? "yes" : "no");
     }
@@ -62,7 +66,7 @@ void Weaver_Private::dumpJobs()
  */
 bool Weaver_Private::canBeExecuted(JobPointer job)
 {
-    Q_ASSERT(!mutex->tryLock()); //mutex has to be held when this method is called
+    Q_ASSERT(!mutex->tryLock()); // mutex has to be held when this method is called
 
     QList<QueuePolicy *> acquired;
 
@@ -71,8 +75,7 @@ bool Weaver_Private::canBeExecuted(JobPointer job)
     QMutexLocker l(job->mutex());
     QList<QueuePolicy *> policies = job->queuePolicies();
     if (!policies.isEmpty()) {
-        TWDEBUG(4, "WeaverImpl::canBeExecuted: acquiring permission from %i queue %s.\n",
-              policies.size(), policies.size() == 1 ? "policy" : "policies");
+        TWDEBUG(4, "WeaverImpl::canBeExecuted: acquiring permission from %i queue %s.\n", policies.size(), policies.size() == 1 ? "policy" : "policies");
         for (int index = 0; index < policies.size(); ++index) {
             if (policies.at(index)->canRun(job)) {
                 acquired.append(policies.at(index));
@@ -97,8 +100,8 @@ bool Weaver_Private::canBeExecuted(JobPointer job)
 
 void Weaver_Private::deleteExpiredThreads()
 {
-    Q_ASSERT(!mutex->tryLock()); //mutex has to be held when this method is called
-    for (Thread* thread : qAsConst(expiredThreads)) {
+    Q_ASSERT(!mutex->tryLock()); // mutex has to be held when this method is called
+    for (Thread *thread : qAsConst(expiredThreads)) {
         thread->wait();
         delete thread;
     }

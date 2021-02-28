@@ -1,9 +1,9 @@
 #ifndef VIEWCONTROLLER_H
 #define VIEWCONTROLLER_H
 
+#include <QByteArray>
 #include <QObject>
 #include <QUrl>
-#include <QByteArray>
 
 class MainWidget;
 class QDomDocument;
@@ -12,7 +12,7 @@ class ViewController : public QObject
 {
     Q_OBJECT
 public:
-    explicit ViewController(MainWidget* mainwidget);
+    explicit ViewController(MainWidget *mainwidget);
     ~ViewController();
 
 Q_SIGNALS:
@@ -25,10 +25,10 @@ private:
     void loadPostFromTumblr();
     void loadImageFromTumblr();
 
-    QByteArray download(const QUrl& url);
-    void error(const QString& message);
-    void showResourceImage(const char* file);
-    QString attributeTextFor(const QDomDocument& doc, const char* tag, const char* attribute);
+    QByteArray download(const QUrl &url);
+    void error(const QString &message);
+    void showResourceImage(const char *file);
+    QString attributeTextFor(const QDomDocument &doc, const char *tag, const char *attribute);
 
     QUrl m_imageUrl;
     const QString m_apiPostUrl;

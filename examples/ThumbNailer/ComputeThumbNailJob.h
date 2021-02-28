@@ -13,20 +13,20 @@
 
 class Image;
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 class ResourceRestrictionPolicy;
 }
 
 class ComputeThumbNailJob : public ThreadWeaver::Job
 {
 public:
-    ComputeThumbNailJob(Image* image, ThreadWeaver::ResourceRestrictionPolicy* throttle);
+    ComputeThumbNailJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle);
     int priority() const override;
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 
 private:
-    Image* m_image;
-
+    Image *m_image;
 };
 
 #endif // COMPUTETHUMBNAILJOB_H

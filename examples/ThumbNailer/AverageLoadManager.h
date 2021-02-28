@@ -22,7 +22,7 @@ private Q_SLOTS:
     void update();
 
 private:
-    QTimer* m_timer;
+    QTimer *m_timer;
     int m_min, m_max;
 };
 

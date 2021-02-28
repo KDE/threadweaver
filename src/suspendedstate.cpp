@@ -14,7 +14,6 @@
 
 namespace ThreadWeaver
 {
-
 SuspendedState::SuspendedState(Weaver *weaver)
     : WeaverImplState(weaver)
 {

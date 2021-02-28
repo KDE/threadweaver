@@ -7,20 +7,19 @@
 */
 
 #include "collection.h"
-#include "sequence.h"
 #include "managedjobpointer.h"
+#include "sequence.h"
 
 #include "iddecorator.h"
 
-namespace {
-
+namespace
+{
 const quintptr IdDecorator_AutoDelete = 1;
 
 }
 
 namespace ThreadWeaver
 {
-
 // Pssst: IdDecorator uses the d pointer to hold decoratee. It also uses d2 as a bitfield to store the
 // autoDelete setting. The goal is not to require a dynamic allocation on creation.
 IdDecorator::IdDecorator(JobInterface *decoratee, bool autoDelete)
@@ -51,13 +50,13 @@ void IdDecorator::run(JobPointer self, Thread *thread)
     job()->run(self, thread);
 }
 
-void IdDecorator::defaultBegin(const JobPointer& self, Thread *thread)
+void IdDecorator::defaultBegin(const JobPointer &self, Thread *thread)
 {
     Q_ASSERT(d1);
     job()->defaultBegin(self, thread);
 }
 
-void IdDecorator::defaultEnd(const JobPointer& self, Thread *thread)
+void IdDecorator::defaultEnd(const JobPointer &self, Thread *thread)
 {
     Q_ASSERT(d1);
     job()->defaultEnd(self, thread);
@@ -153,7 +152,7 @@ Executor *IdDecorator::setExecutor(Executor *executor)
     return job()->setExecutor(executor);
 }
 
-void IdDecorator::execute(const JobPointer& self, ThreadWeaver::Thread *thread)
+void IdDecorator::execute(const JobPointer &self, ThreadWeaver::Thread *thread)
 {
     Q_ASSERT(d1);
     job()->execute(self, thread);
@@ -177,7 +176,6 @@ JobInterface *IdDecorator::job()
 
 void IdDecorator::setAutoDelete(bool onOff)
 {
-
     if (onOff) {
         d2 = reinterpret_cast<IdDecorator::Private2 *>(IdDecorator_AutoDelete);
     } else {

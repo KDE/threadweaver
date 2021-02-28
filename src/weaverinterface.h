@@ -13,14 +13,15 @@
 
 namespace ThreadWeaver
 {
-
 class Job;
 class Thread;
 
 class THREADWEAVER_EXPORT WeaverInterface
 {
 public:
-    virtual ~WeaverInterface() {}
+    virtual ~WeaverInterface()
+    {
+    }
 
     /** @brief Assign a job to an idle thread.
      * @param th the thread to give a new Job to

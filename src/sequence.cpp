@@ -9,15 +9,14 @@
 */
 
 #include "sequence.h"
-#include "sequence_p.h"
-#include "managedjobpointer.h"
-#include "queueapi.h"
 #include "debuggingaids.h"
 #include "dependencypolicy.h"
+#include "managedjobpointer.h"
+#include "queueapi.h"
+#include "sequence_p.h"
 
 namespace ThreadWeaver
 {
-
 Sequence::Sequence()
     : Collection(new Private::Sequence_Private())
 {
@@ -25,13 +24,12 @@ Sequence::Sequence()
 
 Private::Sequence_Private *Sequence::d()
 {
-    return reinterpret_cast<Private::Sequence_Private*>(Collection::d());
+    return reinterpret_cast<Private::Sequence_Private *>(Collection::d());
 }
 
 const Private::Sequence_Private *Sequence::d() const
 {
-    return reinterpret_cast<const Private::Sequence_Private*>(Collection::d());
+    return reinterpret_cast<const Private::Sequence_Private *>(Collection::d());
 }
 
 }
-

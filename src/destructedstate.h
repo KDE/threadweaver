@@ -15,7 +15,6 @@
 
 namespace ThreadWeaver
 {
-
 class QueueSignals;
 
 /** DestructedState is only active after the thread have been destroyed by

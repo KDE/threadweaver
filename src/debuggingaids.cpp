@@ -10,7 +10,6 @@
 
 #include "debuggingaids.h"
 
-
 #include <threadweaver_export.h>
 
 /** A global mutex for the ThreadWeaver objects.
@@ -19,9 +18,10 @@ THREADWEAVER_EXPORT QMutex ThreadWeaver::GlobalMutex;
 THREADWEAVER_EXPORT bool ThreadWeaver::Debug = true;
 THREADWEAVER_EXPORT int ThreadWeaver::DebugLevel = 1;
 
-namespace ThreadWeaver {
-
-void mutexAssertUnlocked(QMutex* mutex, const char* where) {
+namespace ThreadWeaver
+{
+void mutexAssertUnlocked(QMutex *mutex, const char *where)
+{
     if (mutex->tryLock()) {
         mutex->unlock();
     } else {
@@ -29,7 +29,8 @@ void mutexAssertUnlocked(QMutex* mutex, const char* where) {
     }
 }
 
-void mutexAssertLocked(QMutex* mutex, const char* where) {
+void mutexAssertLocked(QMutex *mutex, const char *where)
+{
     if (mutex->tryLock()) {
         mutex->unlock();
         Q_ASSERT_X(false, where, "mutexAssertUnlocked: mutex was locked!");

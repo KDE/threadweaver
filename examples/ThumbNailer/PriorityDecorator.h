@@ -11,11 +11,12 @@
 
 #include <ThreadWeaver/ThreadWeaver>
 
-class PriorityDecorator : public ThreadWeaver::IdDecorator {
+class PriorityDecorator : public ThreadWeaver::IdDecorator
+{
 public:
-    explicit PriorityDecorator(int priority, ThreadWeaver::JobInterface* job, bool autoDelete = true);
+    explicit PriorityDecorator(int priority, ThreadWeaver::JobInterface *job, bool autoDelete = true);
 
-    //FIXME temp
+    // FIXME temp
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 
     int priority() const override;

@@ -1,34 +1,35 @@
+#include <QDomDocument>
+#include <QEventLoop>
+#include <QFile>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QNetworkRequest>
-#include <QEventLoop>
 #include <QThread>
-#include <QDomDocument>
-#include <QFile>
 
-#include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/Exception>
+#include <ThreadWeaver/ThreadWeaver>
 
-#include "ViewController.h"
 #include "MainWidget.h"
+#include "ViewController.h"
 
 ViewController::ViewController(MainWidget *mainwidget)
     : QObject() // no parent
     , m_apiPostUrl(QStringLiteral("http://fickedinger.tumblr.com/api/read?id=94635924143"))
 //@@snippet_begin(hellointernet-sequence)
 {
-    connect(this, SIGNAL(setImage(QImage)), 
-	    mainwidget, SLOT(setImage(QImage)));
-    connect(this, SIGNAL(setCaption(QString)), 
-	    mainwidget, SLOT(setCaption(QString)));
-    connect(this, SIGNAL(setStatus(QString)),
-	    mainwidget, SLOT(setStatus(QString)));
+    connect(this, SIGNAL(setImage(QImage)), mainwidget, SLOT(setImage(QImage)));
+    connect(this, SIGNAL(setCaption(QString)), mainwidget, SLOT(setCaption(QString)));
+    connect(this, SIGNAL(setStatus(QString)), mainwidget, SLOT(setStatus(QString)));
 
     using namespace ThreadWeaver;
     auto s = new Sequence;
-    *s << make_job( [=]() { loadPlaceholderFromResource(); } )
-       << make_job( [=]() { loadPostFromTumblr(); } )
-       << make_job( [=]() { loadImageFromTumblr(); } );
+    *s << make_job([=]() {
+        loadPlaceholderFromResource();
+    }) << make_job([=]() {
+        loadPostFromTumblr();
+    }) << make_job([=]() {
+        loadImageFromTumblr();
+    });
     stream() << s;
 }
 //@@snippet_end
@@ -60,10 +61,11 @@ void ViewController::loadPostFromTumblr()
         error(tr("Post format not recognized!"));
     }
 
-    auto textOfFirst = [&doc](const char* name) {
+    auto textOfFirst = [&doc](const char *name) {
         auto const s = QString::fromLatin1(name);
         auto elements = doc.elementsByTagName(s);
-        if (elements.isEmpty()) return QString();
+        if (elements.isEmpty())
+            return QString();
         return elements.at(0).toElement().text();
     };
 
@@ -92,11 +94,10 @@ void ViewController::loadImageFromTumblr()
 {
     auto const data = download(m_imageUrl);
     Q_EMIT setStatus(tr("Image downloaded..."));
-    const QImage image=QImage::fromData(data);
+    const QImage image = QImage::fromData(data);
     if (!image.isNull()) {
         Q_EMIT setImage(image);
-        Q_EMIT setStatus(tr("Download complete (see %1).")
-                       .arg(m_fullPostUrl));
+        Q_EMIT setStatus(tr("Download complete (see %1).").arg(m_fullPostUrl));
     } else {
         error(tr("Image format error!"));
     }
@@ -106,16 +107,14 @@ QByteArray ViewController::download(const QUrl &url)
 {
     QNetworkAccessManager manager;
     QEventLoop loop;
-    QObject::connect(&manager, SIGNAL(finished(QNetworkReply*)),
-                     &loop, SLOT(quit()));
+    QObject::connect(&manager, SIGNAL(finished(QNetworkReply *)), &loop, SLOT(quit()));
     auto reply = manager.get(QNetworkRequest(url));
     loop.exec();
     if (reply->error() == QNetworkReply::NoError) {
         const QByteArray data = reply->readAll();
         return data;
     } else {
-        error(tr("Unable to download data for \"%1\"!").
-              arg(url.toString()));
+        error(tr("Unable to download data for \"%1\"!").arg(url.toString()));
         return QByteArray();
     }
 }
@@ -130,10 +129,9 @@ void ViewController::error(const QString &message)
 }
 //@@snippet_end
 
-void ViewController::showResourceImage(const char* file)
+void ViewController::showResourceImage(const char *file)
 {
-    const QString path(QStringLiteral("://resources/%1")
-                       .arg(QString::fromLatin1(file)));
+    const QString path(QStringLiteral("://resources/%1").arg(QString::fromLatin1(file)));
     Q_ASSERT(QFile::exists(path));
     const QImage i(path);
     Q_ASSERT(!i.isNull());
@@ -145,7 +143,8 @@ QString ViewController::attributeTextFor(const QDomDocument &doc, const char *ta
     auto const tagString = QString::fromLatin1(tag);
     auto const attributeString = QString::fromLatin1(attribute);
     auto elements = doc.elementsByTagName(tagString);
-    if (elements.isEmpty()) return QString();
+    if (elements.isEmpty())
+        return QString();
     const QString content = elements.at(0).toElement().attribute(attributeString);
     return content;
 }

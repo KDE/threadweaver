@@ -12,12 +12,11 @@
 #include <QMutex>
 #include <QThread>
 
-#include "threadweaver_export.h"
 #include "jobpointer.h"
+#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
-
 class Job;
 class Weaver;
 
@@ -79,4 +78,3 @@ private:
 }
 
 #endif
-

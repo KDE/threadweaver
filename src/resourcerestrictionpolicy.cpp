@@ -23,7 +23,8 @@ class Q_DECL_HIDDEN ResourceRestrictionPolicy::Private
 public:
     Private(int theCap)
         : cap(theCap)
-    {}
+    {
+    }
     QMutex *mutex()
     {
         return &mutex_;
@@ -62,8 +63,7 @@ bool ResourceRestrictionPolicy::canRun(JobPointer job)
     QMutexLocker l(d->mutex());
     if (d->customers.size() < d->cap) {
         d->customers.append(job);
-        TWDEBUG(4, "ResourceRestrictionPolicy::canRun: job %p added, %i customers (cap %i).\n",
-                (void *)job.data(), d->customers.count(), d->cap);
+        TWDEBUG(4, "ResourceRestrictionPolicy::canRun: job %p added, %i customers (cap %i).\n", (void *)job.data(), d->customers.count(), d->cap);
         return true;
     } else {
         return false;
@@ -77,8 +77,7 @@ void ResourceRestrictionPolicy::free(JobPointer job)
 
     if (position != -1) {
         d->customers.removeAt(position);
-        TWDEBUG(4, "ResourceRestrictionPolicy::free: job %p completed, %i customers (cap %i).\n",
-                (void *)job.data(), d->customers.count(), d->cap);
+        TWDEBUG(4, "ResourceRestrictionPolicy::free: job %p completed, %i customers (cap %i).\n", (void *)job.data(), d->customers.count(), d->cap);
     }
 }
 

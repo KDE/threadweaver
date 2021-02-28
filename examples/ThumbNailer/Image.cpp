@@ -6,21 +6,21 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QtDebug>
+#include <QBuffer>
 #include <QFile>
 #include <QFileInfo>
-#include <QLocale>
 #include <QImageReader>
-#include <QBuffer>
+#include <QLocale>
+#include <QtDebug>
 
-#include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/Exception>
+#include <ThreadWeaver/ThreadWeaver>
 
 #include "Image.h"
 #include "Model.h"
 
-//const int Image::ThumbHeight = 75;
-//const int Image::ThumbWidth = 120;
+// const int Image::ThumbHeight = 75;
+// const int Image::ThumbWidth = 120;
 const int Image::ThumbHeight = 60;
 const int Image::ThumbWidth = 80;
 QReadWriteLock Image::Lock;
@@ -88,7 +88,7 @@ void Image::loadFile()
     m_imageData = file.readAll();
     QFileInfo fi(file);
     QLocale locale;
-    QString details2 = tr("%1kB").arg(locale.toString(fi.size()/1024));
+    QString details2 = tr("%1kB").arg(locale.toString(fi.size() / 1024));
     {
         QWriteLocker l(&Lock);
         m_description = fi.fileName();
@@ -110,9 +110,7 @@ void Image::loadImage()
         m_details = tr("%1!").arg(reader.errorString());
         error(Step_LoadImage, m_details);
     }
-    QString details = tr("%1x%2 pixels")
-            .arg(m_image.width())
-            .arg(m_image.height());
+    QString details = tr("%1x%2 pixels").arg(m_image.width()).arg(m_image.height());
     {
         QWriteLocker l(&Lock);
         m_details = details;
@@ -123,11 +121,11 @@ void Image::loadImage()
 void Image::computeThumbNail()
 {
     m_processingOrder.storeRelease(ProcessingOrder++);
-    QImage thumb = m_image.scaled(ThumbWidth, ThumbHeight,  Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
+    QImage thumb = m_image.scaled(ThumbWidth, ThumbHeight, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
     if (thumb.isNull()) {
         error(Step_ComputeThumbNail, tr("Unable to compute thumbnail!"));
     }
-    {   // thumb is implicitly shared, no copy:
+    { // thumb is implicitly shared, no copy:
         QWriteLocker l(&Lock);
         m_thumbnail = thumb;
     }

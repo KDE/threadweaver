@@ -6,17 +6,17 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
+#include <QCoreApplication>
 #include <QString>
 #include <QTest>
-#include <QCoreApplication>
 
-#include <ThreadWeaver/ThreadWeaver>
 #include <ThreadWeaver/DebuggingAids>
+#include <ThreadWeaver/ThreadWeaver>
 
-#include "JobLoggingWeaver.h"
-#include "WaitForIdleAndFinished.h"
 #include "AppendCharacterJob.h"
+#include "JobLoggingWeaver.h"
 #include "SequencesTests.h"
+#include "WaitForIdleAndFinished.h"
 
 using namespace ThreadWeaver;
 
@@ -35,14 +35,10 @@ void SequencesTests::RecursiveStopTest()
     WAITFORIDLEANDFINISHED(&queue);
     QString result;
     Sequence innerSequence;
-    innerSequence << new AppendCharacterJob('b', &result)
-                  << new FailingAppendCharacterJob('c', &result)
-                  << new AppendCharacterJob('d', &result);
+    innerSequence << new AppendCharacterJob('b', &result) << new FailingAppendCharacterJob('c', &result) << new AppendCharacterJob('d', &result);
 
     Sequence outerSequence;
-    outerSequence << new AppendCharacterJob('a', &result)
-                  << innerSequence
-                  << new AppendCharacterJob('e', &result);
+    outerSequence << new AppendCharacterJob('a', &result) << innerSequence << new AppendCharacterJob('e', &result);
 
     queue.stream() << outerSequence;
     queue.finish();

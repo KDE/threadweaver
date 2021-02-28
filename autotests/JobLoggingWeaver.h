@@ -9,15 +9,15 @@
 #ifndef JOBLOGGINGWEAVER_H
 #define JOBLOGGINGWEAVER_H
 
-#include "src/weaver.h"
-#include "src/jobpointer.h"
 #include "JobLoggingDecorator.h"
+#include "src/jobpointer.h"
+#include "src/weaver.h"
 
 class JobLoggingWeaver : public ThreadWeaver::Weaver
 {
     Q_OBJECT
 public:
-    explicit JobLoggingWeaver(QObject* parent = nullptr);
+    explicit JobLoggingWeaver(QObject *parent = nullptr);
     void enqueue(const QVector<ThreadWeaver::JobPointer> &jobs) override;
 
 private:

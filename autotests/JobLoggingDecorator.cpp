@@ -12,7 +12,7 @@
 
 using namespace ThreadWeaver;
 
-JobLoggingDecorator::JobLoggingDecorator(const JobPointer &job, JobLoggingDecoratorCollector* collector)
+JobLoggingDecorator::JobLoggingDecorator(const JobPointer &job, JobLoggingDecoratorCollector *collector)
     : IdDecorator(job.data(), false)
     , collector_(collector)
 {
@@ -32,7 +32,6 @@ void JobLoggingDecorator::run(JobPointer self, Thread *thread)
     collector_->storeJobData(data_);
 }
 
-
 JobLoggingDecoratorCollector::JobLoggingDecoratorCollector()
 {
     elapsed_.start();
@@ -49,4 +48,3 @@ qint64 JobLoggingDecoratorCollector::time()
 {
     return elapsed_.nsecsElapsed();
 }
-

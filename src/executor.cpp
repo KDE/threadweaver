@@ -10,7 +10,6 @@
 
 namespace ThreadWeaver
 {
-
 Executor::~Executor()
 {
 }
@@ -25,7 +24,7 @@ void Executor::defaultEnd(const JobPointer &job, Thread *thread)
     job->defaultEnd(job, thread);
 }
 
-void Executor::cleanup(const JobPointer&, Thread *)
+void Executor::cleanup(const JobPointer &, Thread *)
 {
 }
 

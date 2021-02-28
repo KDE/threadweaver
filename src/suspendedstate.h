@@ -11,12 +11,11 @@
 #ifndef SuspendedState_H
 #define SuspendedState_H
 
-#include "weaverimplstate.h"
 #include "weaver.h"
+#include "weaverimplstate.h"
 
 namespace ThreadWeaver
 {
-
 /** In SuspendedState, jobs are queued, but will not be executed. All
  *  thread remains blocked.  */
 class SuspendedState : public WeaverImplState

@@ -1,5 +1,5 @@
-#include <QThread>
 #include <QPixmap>
+#include <QThread>
 
 #include "MainWidget.h"
 
@@ -10,7 +10,7 @@ MainWidget::MainWidget(QWidget *parent)
     , m_status(new QLabel(tr("Please wait..."), m_image))
 {
     setFixedSize(800, 450);
-    //set style sheet for the text labels:
+    // set style sheet for the text labels:
     m_caption->setContentsMargins(18, 9, 9, 9);
     m_caption->setAlignment(Qt::AlignLeft | Qt::AlignVCenter);
     m_caption->setWordWrap(true);
@@ -28,10 +28,10 @@ void MainWidget::resizeEvent(QResizeEvent *)
     m_image->setGeometry(0, 0, width(), height());
     m_caption->move(0, 0);
     m_caption->setFixedWidth(width());
-    m_caption->setFixedHeight(qMax(m_caption->sizeHint().height(), height()/3));
+    m_caption->setFixedHeight(qMax(m_caption->sizeHint().height(), height() / 3));
     m_status->setFixedWidth(width());
-    m_status->setFixedHeight(qMax(m_status->sizeHint().height(), height()/9));
-    m_status->move(0, height()-m_status->height());
+    m_status->setFixedHeight(qMax(m_status->sizeHint().height(), height() / 9));
+    m_status->move(0, height() - m_status->height());
 }
 
 void MainWidget::setImage(QImage image)

@@ -9,20 +9,20 @@
 #ifndef WEAVER_P_H
 #define WEAVER_P_H
 
-#include <QWaitCondition>
 #include <QSemaphore>
 #include <QSharedPointer>
+#include <QWaitCondition>
 
+#include "jobpointer.h"
 #include "state.h"
 #include "thread.h"
-#include "jobpointer.h"
 
 #include "queuesignals_p.h"
 
-namespace ThreadWeaver {
-
-namespace Private {
-
+namespace ThreadWeaver
+{
+namespace Private
+{
 class Weaver_Private : public QueueSignals_Private
 {
 public:
@@ -56,8 +56,8 @@ public:
      *  entered the run method. */
     QAtomicInt createdThreads;
     /** The state of the art.
-    * @see StateId
-    */
+     * @see StateId
+     */
     QAtomicPointer<State> state;
     /** The state objects. */
     QSharedPointer<State> states[NoOfStates];

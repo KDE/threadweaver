@@ -1,9 +1,9 @@
 #ifndef MAINWIDGET_H
 #define MAINWIDGET_H
 
-#include <QWidget>
-#include <QLabel>
 #include <QImage>
+#include <QLabel>
+#include <QWidget>
 
 class MainWidget : public QWidget
 {
@@ -22,9 +22,9 @@ public Q_SLOTS:
     void setStatus(QString text);
 
 private:
-    QLabel* m_image;
-    QLabel* m_caption;
-    QLabel* m_status;
+    QLabel *m_image;
+    QLabel *m_caption;
+    QLabel *m_status;
 };
 
 #endif // MAINWIDGET_H

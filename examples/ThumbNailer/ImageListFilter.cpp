@@ -19,7 +19,8 @@ ImageListFilter::ImageListFilter(Image::Steps step, QObject *parent)
     sort(0, Qt::AscendingOrder);
 }
 
-bool ImageListFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const {
+bool ImageListFilter::filterAcceptsRow(int source_row, const QModelIndex &source_parent) const
+{
     const QModelIndex index(sourceModel()->index(source_row, 0, source_parent));
     const int step = index.data(Model::Role_StepRole).value<int>();
     return step == m_step;

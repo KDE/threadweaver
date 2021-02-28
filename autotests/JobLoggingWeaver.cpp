@@ -18,10 +18,8 @@ JobLoggingWeaver::JobLoggingWeaver(QObject *parent)
 void JobLoggingWeaver::enqueue(const QVector<JobPointer> &jobs)
 {
     QVector<JobPointer> decorated;
-    std::transform(jobs.begin(), jobs.end(), std::back_inserter(decorated),
-                   [this](const JobPointer & job) {
+    std::transform(jobs.begin(), jobs.end(), std::back_inserter(decorated), [this](const JobPointer &job) {
         return JobPointer(new JobLoggingDecorator(job, &collector_));
-    } );
+    });
     Weaver::enqueue(decorated);
-
 }

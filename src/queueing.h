@@ -9,22 +9,21 @@
 #ifndef THREADWEAVER_QUEUEING_H
 #define THREADWEAVER_QUEUEING_H
 
-#include "jobpointer.h"
-#include "managedjobpointer.h"
-#include "jobinterface.h"
 #include "collection.h"
+#include "jobinterface.h"
+#include "jobpointer.h"
 #include "lambda.h"
+#include "managedjobpointer.h"
 #include "qobjectdecorator.h"
 #include "queue.h"
 
 namespace ThreadWeaver
 {
-
 // make a job that calls a functor, anything that responds to operator()
 template<typename T>
-QSharedPointer<Lambda<T> > make_job(T t)
+QSharedPointer<Lambda<T>> make_job(T t)
 {
-    QSharedPointer<Lambda<T> > ret(new Lambda<T>(t));
+    QSharedPointer<Lambda<T>> ret(new Lambda<T>(t));
     return ret;
 }
 
@@ -32,7 +31,8 @@ QSharedPointer<Lambda<T> > make_job(T t)
 template<typename T>
 inline QSharedPointer<T> make_job(T *job)
 {
-    JobInterface *test = static_cast<JobInterface *>(job); Q_UNUSED(test);
+    JobInterface *test = static_cast<JobInterface *>(job);
+    Q_UNUSED(test);
     return QSharedPointer<T>(job);
 }
 
@@ -52,9 +52,10 @@ JobPointer enqueue(Queue *weaver, T t)
 }
 
 template<typename T>
-QSharedPointer<T>  enqueue(Queue *weaver, T *t)
+QSharedPointer<T> enqueue(Queue *weaver, T *t)
 {
-    JobInterface *test = static_cast<JobInterface *>(t); Q_UNUSED(test);
+    JobInterface *test = static_cast<JobInterface *>(t);
+    Q_UNUSED(test);
     QSharedPointer<T> ret(make_job(t));
     weaver->enqueue(ret);
     return ret;

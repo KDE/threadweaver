@@ -17,7 +17,6 @@
 
 namespace ThreadWeaver
 {
-
 class THREADWEAVER_EXPORT Exception : public std::runtime_error
 {
 public:
@@ -41,7 +40,7 @@ public:
     explicit JobFailed(const QString &message = QString());
 };
 
-//test:
+// test:
 class AbortThread : public Exception
 {
 public:

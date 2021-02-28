@@ -8,32 +8,32 @@
 
 #include "JobTests.h"
 
-#include <cstdlib>
 #include <algorithm>
+#include <cstdlib>
 
 #include <QMutex>
+#include <QSignalSpy>
 #include <QTest>
 #include <QThread>
-#include <QSignalSpy>
 
-#include <ThreadWeaver/Queueing>
-#include <ThreadWeaver/QueueStream>
-#include <ThreadWeaver/Sequence>
-#include <ThreadWeaver/Lambda>
-#include <ThreadWeaver/ThreadWeaver>
-#include <ThreadWeaver/Thread>
-#include <ThreadWeaver/DebuggingAids>
 #include <ThreadWeaver/Collection>
-#include <ThreadWeaver/ResourceRestrictionPolicy>
+#include <ThreadWeaver/DebuggingAids>
 #include <ThreadWeaver/Dependency>
 #include <ThreadWeaver/DependencyPolicy>
-#include <ThreadWeaver/QObjectDecorator>
 #include <ThreadWeaver/Exception>
+#include <ThreadWeaver/Lambda>
+#include <ThreadWeaver/QObjectDecorator>
+#include <ThreadWeaver/QueueStream>
+#include <ThreadWeaver/Queueing>
+#include <ThreadWeaver/ResourceRestrictionPolicy>
+#include <ThreadWeaver/Sequence>
+#include <ThreadWeaver/Thread>
+#include <ThreadWeaver/ThreadWeaver>
 
-#include "AppendCharacterJob.h"
 #include "AppendCharacterAndVerifyJob.h"
-#include "WaitForIdleAndFinished.h"
+#include "AppendCharacterJob.h"
 #include "JobLoggingWeaver.h"
+#include "WaitForIdleAndFinished.h"
 
 QMutex s_GlobalMutex;
 
@@ -104,8 +104,7 @@ void JobTests::SimpleJobCollectionTest()
 {
     QString sequence;
     Collection jobCollection;
-    jobCollection << new AppendCharacterJob(QChar('a'), &sequence)
-                  << new AppendCharacterJob(QChar('b'), &sequence)
+    jobCollection << new AppendCharacterJob(QChar('a'), &sequence) << new AppendCharacterJob(QChar('b'), &sequence)
                   << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
@@ -135,15 +134,13 @@ void JobTests::CollectionQueueingTest()
 {
     QString output;
     Collection jobCollection;
-    jobCollection << new AppendCharacterJob(QChar('a'), &output)
-                  << new AppendCharacterJob(QChar('b'), &output)
-                  << new AppendCharacterJob(QChar('c'), &output);
+    jobCollection << new AppendCharacterJob(QChar('a'), &output) << new AppendCharacterJob(QChar('b'), &output) << new AppendCharacterJob(QChar('c'), &output);
 
     Queue weaver;
     WaitForIdleAndFinished w(&weaver);
     weaver.suspend();
     weaver.stream() << jobCollection;
-    QCOMPARE(weaver.queueLength(), 1); //collection queues itself, and its elements upon execution of self
+    QCOMPARE(weaver.queueLength(), 1); // collection queues itself, and its elements upon execution of self
     weaver.resume();
     weaver.finish();
     QCOMPARE(output.length(), 3);
@@ -159,10 +156,11 @@ QString SequenceTemplate = "abcdefghijklmnopqrstuvwxyz";
 class GeneratingCollection : public Collection
 {
 public:
-    void run(JobPointer, Thread *) override {
+    void run(JobPointer, Thread *) override
+    {
         std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(), [this](QChar it) {
             *this << new AppendCharacterJob(it, &sequence_);
-        } );
+        });
     }
     QString sequence_;
 };
@@ -170,10 +168,11 @@ public:
 class GeneratingSequence : public Sequence
 {
 public:
-    void run(JobPointer, Thread *) override {
+    void run(JobPointer, Thread *) override
+    {
         std::for_each(SequenceTemplate.cbegin(), SequenceTemplate.cend(), [this](QChar it) {
             *this << new AppendCharacterJob(it, &sequence_);
-        } );
+        });
     }
     QString sequence_;
 };
@@ -195,8 +194,7 @@ void JobTests::ShortJobSequenceTest()
 {
     QString sequence;
     Sequence jobSequence;
-    jobSequence << new AppendCharacterJob(QChar('a'), &sequence)
-                << new AppendCharacterJob(QChar('b'), &sequence)
+    jobSequence << new AppendCharacterJob(QChar('a'), &sequence) << new AppendCharacterJob(QChar('b'), &sequence)
                 << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
@@ -224,7 +222,8 @@ void JobTests::ShortDecoratedJobSequenceTest()
     jobSequence->addJob(jobB);
     jobSequence->addJob(jobC);
 
-    WaitForIdleAndFinished w(&queue); Q_UNUSED(w);
+    WaitForIdleAndFinished w(&queue);
+    Q_UNUSED(w);
     QVERIFY(DependencyPolicy::instance().isEmpty());
     queue.enqueue(jobSequence);
     // Job::DumpJobDependencies();
@@ -238,7 +237,8 @@ void JobTests::EmptyJobSequenceTest()
 {
     using namespace ThreadWeaver;
     QObjectDecorator sequence(new Sequence());
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    WaitForIdleAndFinished w(Queue::instance());
+    Q_UNUSED(w);
     Q_ASSERT(Queue::instance()->isIdle());
     QSignalSpy doneSignalSpy(&sequence, SIGNAL(done(ThreadWeaver::JobPointer)));
     QCOMPARE(doneSignalSpy.count(), 0);
@@ -267,7 +267,7 @@ void JobTests::IncompleteCollectionTest()
 
     QString result;
     QObjectDecorator jobA(new AppendCharacterJob(QChar('a'), &result));
-    AppendCharacterJob jobB(QChar('b'), &result); //jobB does not get added to the sequence and queued
+    AppendCharacterJob jobB(QChar('b'), &result); // jobB does not get added to the sequence and queued
     QObjectDecorator col(new Collection());
     *col.collection() << jobA;
 
@@ -352,13 +352,14 @@ void JobTests::CollectionDependenciesTest()
     DependencyPolicy::instance().addDependency(Dependency(&col, jobC));
 
     // queue collection, but not jobC, the collection should not be executed
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    WaitForIdleAndFinished w(Queue::instance());
+    Q_UNUSED(w);
     Queue::instance()->suspend();
     enqueue_raw(&col);
     Queue::instance()->resume();
     QCoreApplication::processEvents();
     QTest::qWait(100);
-    //FIXME verify: dfaure needed this here: QTRY_COMPARE(collectionStartedSignalSpy.count(), 0);
+    // FIXME verify: dfaure needed this here: QTRY_COMPARE(collectionStartedSignalSpy.count(), 0);
     QCOMPARE(collectionStartedSignalSpy.count(), 0);
     // enqueue jobC, first jobC then the collection should be executed
     Queue::instance()->enqueue(jobC);
@@ -366,8 +367,8 @@ void JobTests::CollectionDependenciesTest()
     Queue::instance()->finish();
     QVERIFY(col.isFinished());
     QVERIFY(result.startsWith(jobC->character()));
-    //QSKIP("This test is too fragile"); // PENDING(Mirko): fix
-    //QTRY_COMPARE(collectionStartedSignalSpy.count(), 1);
+    // QSKIP("This test is too fragile"); // PENDING(Mirko): fix
+    // QTRY_COMPARE(collectionStartedSignalSpy.count(), 1);
     loop.exec();
     qApp->processEvents();
     QCOMPARE(collectionStartedSignalSpy.count(), 1);
@@ -455,7 +456,7 @@ void JobTests::RecursiveSequenceTest()
     WaitForIdleAndFinished w(Queue::instance());
     Queue::instance()->suspend();
     Queue::instance()->enqueue(jobSequence4);
-//    DependencyPolicy::instance().dumpJobDependencies();
+    //    DependencyPolicy::instance().dumpJobDependencies();
     Queue::instance()->resume();
     Queue::instance()->finish();
     QCOMPARE(sequence, QLatin1String("abcdefghij"));
@@ -556,7 +557,7 @@ void JobTests::QueueAndDequeueAllCollectionTest()
     Queue::instance()->suspend();
     QVERIFY(Queue::instance()->isEmpty());
     Queue::instance()->enqueue(collection);
-    //collection cannot have been started, so only one job is queued at the moment:
+    // collection cannot have been started, so only one job is queued at the moment:
     QCOMPARE(Queue::instance()->queueLength(), 1);
     Queue::instance()->dequeue();
     QVERIFY(Queue::instance()->isEmpty());
@@ -620,7 +621,6 @@ void JobTests::RecursiveQueueAndDequeueAllCollectionTest()
     QVERIFY(Queue::instance()->isEmpty());
     Queue::instance()->resume();
     Queue::instance()->finish();
-
 }
 
 void JobTests::RecursiveQueueAndDequeueAllSequenceTest()
@@ -709,9 +709,7 @@ void JobTests::SimpleRecursiveSequencesTest()
     jobSequence1 << new AppendCharacterJob(QChar('b'), &sequence);
 
     Sequence jobSequence2;
-    jobSequence2 << new AppendCharacterJob(QChar('a'), &sequence)
-                 << jobSequence1
-                 << new AppendCharacterJob(QChar('c'), &sequence);
+    jobSequence2 << new AppendCharacterJob(QChar('a'), &sequence) << jobSequence1 << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
     stream() << jobSequence2;
@@ -783,8 +781,8 @@ void JobTests::ResourceRestrictionPolicyBasicsTest()
     AppendCharacterJob g('g', &sequence);
     Collection collection;
     collection << a << b << c << d << e << f << g;
-    const QList<AppendCharacterJob*> lstJob = { &a, &b, &c, &d, &e, &f, &g };
-    for (AppendCharacterJob* job : lstJob) {
+    const QList<AppendCharacterJob *> lstJob = {&a, &b, &c, &d, &e, &f, &g};
+    for (AppendCharacterJob *job : lstJob) {
         QMutexLocker l(job->mutex());
         job->assignQueuePolicy(&restriction);
     }
@@ -809,7 +807,7 @@ void JobTests::JobSignalsAreEmittedAsynchronouslyTest()
 {
     using namespace ThreadWeaver;
 
-    char bits[] = { 'a', 'b', 'c', 'd', 'e', 'f', 'g' };
+    char bits[] = {'a', 'b', 'c', 'd', 'e', 'f', 'g'};
     const int NumberOfBits = sizeof bits / sizeof bits[0];
     QString sequence;
     QObjectDecorator collection(new Collection, this);
@@ -837,18 +835,20 @@ void JobTests::deliveryTestJobDone(JobPointer)
     deliveryTestCounter.fetchAndAddRelease(-1);
 }
 
-void noOp() {}
+void noOp()
+{
+}
 
 void JobTests::JobSignalsDeliveryTest()
 {
-    //This test was added to investigate segmentation faults during signal delivery from jobs to the main thread.
-    //Relies on processEvents() processing all pending events, as the specification says.
+    // This test was added to investigate segmentation faults during signal delivery from jobs to the main thread.
+    // Relies on processEvents() processing all pending events, as the specification says.
     using namespace ThreadWeaver;
 
     QCOMPARE(deliveryTestCounter.loadAcquire(), 0);
     WaitForIdleAndFinished w(Queue::instance());
     for (int count = 0; count < 100; ++count) {
-        QJobPointer job(new QObjectDecorator(new Lambda<void(*)()>(noOp)));
+        QJobPointer job(new QObjectDecorator(new Lambda<void (*)()>(noOp)));
         QVERIFY(connect(job.data(), SIGNAL(done(ThreadWeaver::JobPointer)), SLOT(deliveryTestJobDone(ThreadWeaver::JobPointer))));
         deliveryTestCounter.fetchAndAddRelease(1);
         Queue::instance()->enqueue(job);
@@ -866,14 +866,14 @@ void decrementCounter()
 
 void JobTests::JobPointerExecutionTest()
 {
-    //This test was added to investigate segmentation faults during signal delivery from jobs to the main thread.
-    //Relies on processEvents() processing all pending events, as the specification says.
+    // This test was added to investigate segmentation faults during signal delivery from jobs to the main thread.
+    // Relies on processEvents() processing all pending events, as the specification says.
     using namespace ThreadWeaver;
 
     QCOMPARE(deliveryTestCounter.loadAcquire(), 0);
     WaitForIdleAndFinished w(Queue::instance());
     for (int count = 0; count < 100; ++count) {
-        JobPointer job(new Lambda<void(*)()>(decrementCounter));
+        JobPointer job(new Lambda<void (*)()>(decrementCounter));
         deliveryTestCounter.fetchAndAddRelease(1);
         Queue::instance()->enqueue(job);
     }
@@ -925,7 +925,11 @@ void JobTests::IdDecoratorSingleAllocationTest()
     struct DecoratedJob : public IdDecorator {
         QString sequence;
         AppendCharacterJob job;
-        DecoratedJob() : IdDecorator(&job, false), job('a', &sequence) {}
+        DecoratedJob()
+            : IdDecorator(&job, false)
+            , job('a', &sequence)
+        {
+        }
     };
 
     WaitForIdleAndFinished w(Queue::instance());
@@ -963,7 +967,8 @@ QAtomicInt InstanceCountedJob::counter;
 void JobTests::JobsAreDestroyedAfterFinishTest()
 {
     using namespace ThreadWeaver;
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    WaitForIdleAndFinished w(Queue::instance());
+    Q_UNUSED(w);
     Queue::instance()->suspend();
     JobPointer job(new InstanceCountedJob);
     Queue::instance()->enqueue(job);
@@ -984,7 +989,8 @@ void JobTests::JobExitStatusByExceptionTest()
     using namespace ThreadWeaver;
 
     struct FailingJob : public Job {
-        void run(JobPointer, Thread *) override {
+        void run(JobPointer, Thread *) override
+        {
             throw JobFailed();
         }
     };
@@ -994,7 +1000,8 @@ void JobTests::JobExitStatusByExceptionTest()
     QCOMPARE(failing.status(), Job::Status_Failed);
 
     struct AbortingJob : public Job {
-        void run(JobPointer, Thread *) override {
+        void run(JobPointer, Thread *) override
+        {
             throw JobAborted();
         }
     };
@@ -1004,7 +1011,8 @@ void JobTests::JobExitStatusByExceptionTest()
     QCOMPARE(aborting.status(), Job::Status_Aborted);
 
     struct SuccessfulJob : public Job {
-        void run(JobPointer, Thread *) override {
+        void run(JobPointer, Thread *) override
+        {
             // do nothing
         }
     };
@@ -1018,7 +1026,8 @@ void JobTests::JobManualExitStatusTest()
     using namespace ThreadWeaver;
 
     struct FailingJob : public Job {
-        void run(JobPointer, Thread *) override {
+        void run(JobPointer, Thread *) override
+        {
             setStatus(Job::Status_Failed);
         }
     };
@@ -1028,7 +1037,8 @@ void JobTests::JobManualExitStatusTest()
     QCOMPARE(failing.status(), Job::Status_Failed);
 
     struct AbortingJob : public Job {
-        void run(JobPointer, Thread *) override {
+        void run(JobPointer, Thread *) override
+        {
             setStatus(Job::Status_Aborted);
         }
     };
@@ -1038,7 +1048,8 @@ void JobTests::JobManualExitStatusTest()
     QCOMPARE(aborting.status(), Job::Status_Aborted);
 
     struct SuccessfulJob : public Job {
-        void run(JobPointer, Thread *) override {
+        void run(JobPointer, Thread *) override
+        {
             // do nothing
         }
     };
@@ -1051,7 +1062,8 @@ void JobTests::QueueStreamLifecycleTest()
 {
     QString sequence;
     using namespace ThreadWeaver;
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    WaitForIdleAndFinished w(Queue::instance());
+    Q_UNUSED(w);
     stream() << make_job(new AppendCharacterJob('a', &sequence)) // enqueues JobPointer
              << new AppendCharacterJob('b', &sequence) // enqueues JobInterface*
              << make_job(new AppendCharacterJob('c', &sequence));
@@ -1059,23 +1071,27 @@ void JobTests::QueueStreamLifecycleTest()
     QCOMPARE(sequence.count(), 3);
 }
 
-class SynchronizedNumbers {
+class SynchronizedNumbers
+{
 public:
-    void append(int number) {
+    void append(int number)
+    {
         QMutexLocker l(&mutex_);
         numbers_.append(number);
     }
 
-    bool isSorted() const {
+    bool isSorted() const
+    {
         QMutexLocker l(&mutex_);
         return std::is_sorted(numbers_.cbegin(), numbers_.cend());
     }
 
-    void sortChunks(int chunkSize) {
+    void sortChunks(int chunkSize)
+    {
         QMutexLocker l(&mutex_);
         Q_ASSERT(numbers_.count() % chunkSize == 0);
         auto start = numbers_.begin();
-        while(start!=numbers_.end()) {
+        while (start != numbers_.end()) {
             auto stop = start;
             std::advance(stop, chunkSize);
             std::sort(start, stop);
@@ -1088,15 +1104,20 @@ private:
     mutable QMutex mutex_;
 };
 
-class GeneratingEnumeratorSequence : public ThreadWeaver::Sequence {
+class GeneratingEnumeratorSequence : public ThreadWeaver::Sequence
+{
 public:
-    GeneratingEnumeratorSequence(SynchronizedNumbers* numbers, int start, int count)
-        : start_(start), count_(count), numbers_(numbers)
-    {}
+    GeneratingEnumeratorSequence(SynchronizedNumbers *numbers, int start, int count)
+        : start_(start)
+        , count_(count)
+        , numbers_(numbers)
+    {
+    }
 
-    void run(JobPointer, Thread*) override {
+    void run(JobPointer, Thread *) override
+    {
         numbers_->append(start_);
-        for(int index = start_ + 1; index < start_+count_; ++index) {
+        for (int index = start_ + 1; index < start_ + count_; ++index) {
             *this << new GeneratingEnumeratorSequence(numbers_, index, 1);
         }
     }
@@ -1104,43 +1125,49 @@ public:
 private:
     const int start_;
     const int count_;
-    SynchronizedNumbers* numbers_;
+    SynchronizedNumbers *numbers_;
 };
 
-class GeneratingEnumeratorCollection : public ThreadWeaver::Collection {
+class GeneratingEnumeratorCollection : public ThreadWeaver::Collection
+{
 public:
-    GeneratingEnumeratorCollection(SynchronizedNumbers* numbers, int start, int count)
-        : start_(start), count_(count), numbers_(numbers)
-    {}
+    GeneratingEnumeratorCollection(SynchronizedNumbers *numbers, int start, int count)
+        : start_(start)
+        , count_(count)
+        , numbers_(numbers)
+    {
+    }
 
-    void run(JobPointer, Thread*) override {
+    void run(JobPointer, Thread *) override
+    {
         numbers_->append(start_);
-        QVector<GeneratingEnumeratorCollection*> elements;
-        for(int index = start_ + 1; index < start_+count_; ++index) {
+        QVector<GeneratingEnumeratorCollection *> elements;
+        for (int index = start_ + 1; index < start_ + count_; ++index) {
             elements.append(new GeneratingEnumeratorCollection(numbers_, index, 1));
         }
         std::random_shuffle(elements.begin(), elements.end());
         std::for_each(elements.begin(), elements.end(), [this](QVector<GeneratingEnumeratorCollection>::iterator it) {
             *this << *it;
-        } );
+        });
     }
 
 private:
     const int start_;
     const int count_;
-    SynchronizedNumbers* numbers_;
+    SynchronizedNumbers *numbers_;
 };
 
 void JobTests::NestedGeneratingCollectionsTest()
 {
     using namespace ThreadWeaver;
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    WaitForIdleAndFinished w(Queue::instance());
+    Q_UNUSED(w);
 
     SynchronizedNumbers numbers;
     const int NumberOfSequences = 100;
     const int ElementsPerSequence = 20;
     Sequence sequence;
-    for(int index = 0; index < NumberOfSequences; ++index) {
+    for (int index = 0; index < NumberOfSequences; ++index) {
         sequence << new GeneratingEnumeratorCollection(&numbers, index * ElementsPerSequence, ElementsPerSequence);
     }
     stream() << sequence;
@@ -1149,15 +1176,17 @@ void JobTests::NestedGeneratingCollectionsTest()
     QVERIFY(numbers.isSorted());
 }
 
-void JobTests::NestedGeneratingSequencesTest() {
+void JobTests::NestedGeneratingSequencesTest()
+{
     using namespace ThreadWeaver;
-    WaitForIdleAndFinished w(Queue::instance()); Q_UNUSED(w);
+    WaitForIdleAndFinished w(Queue::instance());
+    Q_UNUSED(w);
 
     SynchronizedNumbers numbers;
     const int NumberOfSequences = 100;
     const int ElementsPerSequence = 20;
     Sequence sequence;
-    for(int index = 0; index < NumberOfSequences; ++index) {
+    for (int index = 0; index < NumberOfSequences; ++index) {
         sequence << new GeneratingEnumeratorSequence(&numbers, index * ElementsPerSequence, ElementsPerSequence);
     }
     stream() << sequence;
@@ -1171,14 +1200,16 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
     using namespace ThreadWeaver;
     auto logger = new JobLoggingWeaver();
     Queue queue(logger);
-    WaitForIdleAndFinished w(&queue); Q_UNUSED(w);
+    WaitForIdleAndFinished w(&queue);
+    Q_UNUSED(w);
     const int ElementsPerCollection = 20;
     const int NumberOfBlocks = 2;
     const int CollectionsPerBlock = 2;
-    SynchronizedNumbers numbers; Sequence sequence;
-    for(int block=0; block < NumberOfBlocks; ++block) {
+    SynchronizedNumbers numbers;
+    Sequence sequence;
+    for (int block = 0; block < NumberOfBlocks; ++block) {
         auto col = new Collection();
-        for(int collection = 0; collection < CollectionsPerBlock; ++collection) {
+        for (int collection = 0; collection < CollectionsPerBlock; ++collection) {
             const int start = (block * NumberOfBlocks + collection) * ElementsPerCollection;
             *col << new GeneratingEnumeratorCollection(&numbers, start, ElementsPerCollection);
         }
@@ -1186,11 +1217,8 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
     }
     queue.stream() << sequence;
     queue.finish();
-    numbers.sortChunks(NumberOfBlocks*ElementsPerCollection);
+    numbers.sortChunks(NumberOfBlocks * ElementsPerCollection);
     QVERIFY(numbers.isSorted());
 }
 
-
-
 QTEST_MAIN(JobTests)
-

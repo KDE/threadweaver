@@ -13,7 +13,6 @@
 
 namespace ThreadWeaver
 {
-
 class JobInterface;
 
 class THREADWEAVER_EXPORT Dependency
@@ -26,6 +25,7 @@ public:
 
     JobPointer dependent() const;
     JobPointer dependee() const;
+
 private:
     const JobPointer m_dependent;
     const JobPointer m_dependee;

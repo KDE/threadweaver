@@ -9,9 +9,9 @@
 #ifndef DELETETEST_H
 #define DELETETEST_H
 
+#include <QAtomicInt>
 #include <QObject>
 #include <QTest>
-#include <QAtomicInt>
 
 #include <ThreadWeaver/JobPointer>
 

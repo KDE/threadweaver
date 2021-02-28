@@ -106,7 +106,6 @@ const State *Queue::state() const
 
 namespace
 {
-
 class StaticThreadWeaverInstanceGuard : public QObject
 {
     Q_OBJECT
@@ -116,7 +115,7 @@ public:
         , instance_(instance)
     {
         Q_ASSERT_X(app != nullptr, Q_FUNC_INFO, "Calling ThreadWeaver::Weaver::instance() requires a QCoreApplication!");
-        QObject *impl = instance.loadRelaxed()->findChild<QueueSignals*>();
+        QObject *impl = instance.loadRelaxed()->findChild<QueueSignals *>();
         Q_ASSERT(impl);
         impl->setObjectName(QStringLiteral("GlobalQueue"));
         qAddPostRoutine(shutDownGlobalQueue);
@@ -128,6 +127,7 @@ public:
         delete globalQueueFactory;
         globalQueueFactory = nullptr;
     }
+
 private:
     static void shutDownGlobalQueue()
     {
@@ -151,16 +151,13 @@ private:
  */
 Queue *Queue::instance()
 {
-    static QAtomicPointer<Queue> s_instance(globalQueueFactory
-            ? globalQueueFactory->create(qApp)
-            : new Queue(qApp));
-    //Order is of importance here:
-    //When s_instanceGuard is destructed (first, before s_instance), it sets the value of s_instance to zero. Next, qApp will delete
-    //the object s_instance pointed to.
+    static QAtomicPointer<Queue> s_instance(globalQueueFactory ? globalQueueFactory->create(qApp) : new Queue(qApp));
+    // Order is of importance here:
+    // When s_instanceGuard is destructed (first, before s_instance), it sets the value of s_instance to zero. Next, qApp will delete
+    // the object s_instance pointed to.
     static StaticThreadWeaverInstanceGuard *s_instanceGuard = new StaticThreadWeaverInstanceGuard(s_instance, qApp);
     Q_UNUSED(s_instanceGuard);
-    Q_ASSERT_X(s_instance.loadRelaxed() == nullptr ||
-               s_instance.loadRelaxed()->thread() == QCoreApplication::instance()->thread(),
+    Q_ASSERT_X(s_instance.loadRelaxed() == nullptr || s_instance.loadRelaxed()->thread() == QCoreApplication::instance()->thread(),
                Q_FUNC_INFO,
                "The global ThreadWeaver queue needs to be instantiated (accessed first) from the main thread!");
     return s_instance.loadAcquire();

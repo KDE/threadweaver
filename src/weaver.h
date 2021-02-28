@@ -9,19 +9,21 @@
 #ifndef WeaverImpl_H
 #define WeaverImpl_H
 
-#include <QObject>
 #include "queueapi.h"
+#include <QObject>
 
 namespace ThreadWeaver
 {
-
 class State;
 class Job;
 class Thread;
 class WeaverImplState;
 class SuspendingState;
 
-namespace Private { class Weaver_Private; }
+namespace Private
+{
+class Weaver_Private;
+}
 
 /** @brief A Weaver manages worker threads.
  *
@@ -64,12 +66,11 @@ public:
     int activeThreadCount();
 
     void threadEnteredRun(Thread *thread);
-    JobPointer takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy,
-                                                    bool suspendIfAllThreadsInactive, bool justReturning);
+    JobPointer takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadWasBusy, bool suspendIfAllThreadsInactive, bool justReturning);
     void requestAbort() override;
     void reschedule() override;
 
-    //FIXME: rename _p to _locked:
+    // FIXME: rename _p to _locked:
     friend class WeaverImplState;
     friend class SuspendingState;
     void setState_p(StateId);
@@ -101,8 +102,8 @@ protected:
     void adjustInventory(int noOfNewJobs);
 
 private:
-    ThreadWeaver::Private::Weaver_Private* d();
-    const ThreadWeaver::Private::Weaver_Private* d() const;
+    ThreadWeaver::Private::Weaver_Private *d();
+    const ThreadWeaver::Private::Weaver_Private *d() const;
 };
 
 } // namespace ThreadWeaver

@@ -15,7 +15,6 @@
 
 namespace ThreadWeaver
 {
-
 class Weaver;
 class Queue;
 

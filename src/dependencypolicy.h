@@ -13,13 +13,12 @@
 
 #include <QtGlobal>
 
-//template <typename T> class QList;
+// template <typename T> class QList;
 
 #include "queuepolicy.h"
 
 namespace ThreadWeaver
 {
-
 class JobInterface;
 class Dependency;
 
@@ -60,9 +59,9 @@ public:
      */
     void resolveDependencies(JobPointer);
 
-    //FIXME remove
-//    /** @brief Retrieve a list of dependencies of this job. */
-//    QList<JobPointer> getDependencies(JobPointer) const;
+    // FIXME remove
+    //    /** @brief Retrieve a list of dependencies of this job. */
+    //    QList<JobPointer> getDependencies(JobPointer) const;
 
     static DependencyPolicy &instance();
 

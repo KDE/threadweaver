@@ -14,11 +14,13 @@
 
 namespace ThreadWeaver
 {
-
 class Thread;
 class CollectionExecuteWrapper;
 
-namespace Private { class Collection_Private; }
+namespace Private
+{
+class Collection_Private;
+}
 
 /** A Collection is a vector of Jobs that will be queued together.
  * In a Collection, the order of execution of the elements is not specified.
@@ -30,7 +32,7 @@ class THREADWEAVER_EXPORT Collection : public Job
 {
 public:
     Collection();
-    Collection(ThreadWeaver::Private::Collection_Private * d);
+    Collection(ThreadWeaver::Private::Collection_Private *d);
     ~Collection() override;
 
     /** Append a job to the collection.
@@ -44,7 +46,7 @@ public:
     /** Stop processing, dequeue all remaining Jobs.
      * job is supposed to be an element of the collection.
      */
-    //FIXME remove job argument?
+    // FIXME remove job argument?
     void stop(ThreadWeaver::JobPointer job);
 
     /** Return the number of elements in the collection. */
@@ -73,7 +75,7 @@ protected:
     /** Return a ref-erence to the job in the job list at position i. */
     JobPointer jobAt(int i);
 
-    //FIXME remove
+    // FIXME remove
     /** Return the number of jobs in the joblist.
      *  Assumes that the mutex is being held.
      */
@@ -81,17 +83,17 @@ protected:
 
 protected:
     /** Overload the execute method. */
-    void execute(const JobPointer& job, Thread *) override;
+    void execute(const JobPointer &job, Thread *) override;
 
     /** Overload run().
      * We have to. */
     void run(JobPointer self, Thread *thread) override;
 
 protected:
-    friend class CollectionExecuteWrapper; //needs to access d()
+    friend class CollectionExecuteWrapper; // needs to access d()
     friend class Collection_Private;
-    ThreadWeaver::Private::Collection_Private* d();
-    const ThreadWeaver::Private::Collection_Private* d() const;
+    ThreadWeaver::Private::Collection_Private *d();
+    const ThreadWeaver::Private::Collection_Private *d() const;
 };
 
 }

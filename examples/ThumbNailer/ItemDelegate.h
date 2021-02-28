@@ -22,13 +22,14 @@ class ItemDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
-    ItemDelegate(QObject* parent = nullptr);
+    ItemDelegate(QObject *parent = nullptr);
     static const int FrameWidth;
     static const int TextMargin;
     static const int Margin;
+
 private:
-    QSize sizeHint(const QStyleOptionViewItem & option, const QModelIndex& index) const override;
-    void paint(QPainter * painter, const QStyleOptionViewItem & option, const QModelIndex & index ) const override;
+    QSize sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const override;
+    void paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const override;
 };
 
 #endif // SMIVITEMDELEGATE

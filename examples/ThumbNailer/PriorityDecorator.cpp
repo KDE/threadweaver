@@ -18,10 +18,12 @@ PriorityDecorator::PriorityDecorator(int priority, ThreadWeaver::JobInterface *j
 {
 }
 
-void PriorityDecorator::run(JobPointer self, Thread *thread) {
+void PriorityDecorator::run(JobPointer self, Thread *thread)
+{
     IdDecorator::run(self, thread);
 }
 
-int PriorityDecorator::priority() const {
+int PriorityDecorator::priority() const
+{
     return m_priority;
 }

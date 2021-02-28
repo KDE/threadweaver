@@ -16,7 +16,6 @@
 
 namespace ThreadWeaver
 {
-
 class JobInterface;
 
 /** @brief QueuePolicy is an interface for customizations of the queueing behaviour of jobs.
@@ -39,7 +38,9 @@ class JobInterface;
 class THREADWEAVER_EXPORT QueuePolicy
 {
 public:
-    virtual ~QueuePolicy() {}
+    virtual ~QueuePolicy()
+    {
+    }
 
     /** @brief canRun() is called before the job is executed.
      *  The job will only be executed if canRun() returns true.

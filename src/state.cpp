@@ -10,18 +10,9 @@
 
 #include "state.h"
 
-
 namespace ThreadWeaver
 {
-
-const char *const StateNames[NoOfStates] = {
-    "InConstruction",
-    "WorkingHard",
-    "Suspending",
-    "Suspended",
-    "ShuttingDown",
-    "Destructed"
-};
+const char *const StateNames[NoOfStates] = {"InConstruction", "WorkingHard", "Suspending", "Suspended", "ShuttingDown", "Destructed"};
 
 class Q_DECL_HIDDEN State::Private
 {
@@ -29,8 +20,7 @@ public:
     Private(QueueInterface *theWeaver)
         : weaver(theWeaver)
     {
-        Q_ASSERT_X(sizeof StateNames / sizeof StateNames[0] == NoOfStates, "State::Private ctor",
-                   "Make sure to keep StateId and StateNames in sync!");
+        Q_ASSERT_X(sizeof StateNames / sizeof StateNames[0] == NoOfStates, "State::Private ctor", "Make sure to keep StateId and StateNames in sync!");
     }
 
     /** The Weaver we relate to. */

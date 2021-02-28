@@ -15,8 +15,10 @@
 
 namespace ThreadWeaver
 {
-
-namespace Private { class Sequence_Private; }
+namespace Private
+{
+class Sequence_Private;
+}
 
 /** @brief A Sequence is a vector of Jobs that will be executed in a sequence.
  *
@@ -31,8 +33,8 @@ public:
     explicit Sequence();
 
 private:
-    Private::Sequence_Private* d();
-    const Private::Sequence_Private* d() const;
+    Private::Sequence_Private *d();
+    const Private::Sequence_Private *d() const;
 };
 
 }

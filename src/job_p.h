@@ -9,19 +9,19 @@
 #ifndef JOB_P_H
 #define JOB_P_H
 
-#include <QMutex>
 #include "executewrapper_p.h"
+#include <QMutex>
 
-namespace ThreadWeaver {
-
-namespace Private {
-
+namespace ThreadWeaver
+{
+namespace Private
+{
 class THREADWEAVER_EXPORT DefaultExecutor : public ThreadWeaver::Executor
 {
 public:
-    void begin(const JobPointer& job, Thread *thread) override;
-    void execute(const JobPointer& job, Thread *thread) override;
-    void end(const JobPointer& job, Thread *thread) override;
+    void begin(const JobPointer &job, Thread *thread) override;
+    void execute(const JobPointer &job, Thread *thread) override;
+    void end(const JobPointer &job, Thread *thread) override;
 };
 
 extern DefaultExecutor defaultExecutor;
@@ -51,7 +51,7 @@ public:
     /** The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
 
-    //FIXME What is the correct KDE frameworks no debug switch?
+    // FIXME What is the correct KDE frameworks no debug switch?
 #if !defined(NDEBUG)
     /** DebugExecuteWrapper for logging of Job execution. */
     DebugExecuteWrapper debugExecuteWrapper;

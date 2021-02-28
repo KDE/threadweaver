@@ -8,31 +8,29 @@
     $Id: DebuggingAids.h 30 2005-08-16 16:16:04Z mirko $
 */
 
-//krazy:excludeall=inline
+// krazy:excludeall=inline
 
 #ifndef DEBUGGINGAIDS_H
 #define DEBUGGINGAIDS_H
 
 #include <QtGlobal>
 
-extern "C"
-{
+extern "C" {
 #include <stdarg.h>
 #ifndef Q_OS_WIN
 #include <unistd.h>
 #endif
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 }
 
+#include "threadweaver_export.h"
 #include <QMutex>
 #include <QString>
-#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
-
 extern THREADWEAVER_EXPORT bool Debug;
 extern THREADWEAVER_EXPORT int DebugLevel;
 extern THREADWEAVER_EXPORT QMutex GlobalMutex;
@@ -59,30 +57,38 @@ Use setDebugLevel () to integrate adapt debug () to your platform.
 */
 inline void TWDEBUG(int severity, const char *cformat, ...)
 #ifdef __GNUC__
-__attribute__((format(printf, 2, 3)))
+    __attribute__((format(printf, 2, 3)))
 #endif
-;
+    ;
 
 /** Prints the message to the console if condition is true. */
 inline void TWDEBUG(bool condition, int severity, const char *cformat, ...)
 #ifdef __GNUC__
-__attribute__((format(printf, 3, 4)))
+    __attribute__((format(printf, 3, 4)))
 #endif
-;
+    ;
 
 /** PROTECT executes x with GlobalMutex locked.
     Mostly used for debugging, as in P_ASSERT. */
 #ifdef PROTECT
 #undef PROTECT
 #endif
-#define PROTECT(x) do { QMutexLocker l(&ThreadWeaver::GlobalMutex); (x); } while (0)
+#define PROTECT(x)                                                                                                                                             \
+    do {                                                                                                                                                       \
+        QMutexLocker l(&ThreadWeaver::GlobalMutex);                                                                                                            \
+        (x);                                                                                                                                                   \
+    } while (0)
 
 /** P_ASSERT ensures that error messages occur in the correct order. */
 #ifdef P_ASSERT
 #undef P_ASSERT
 #endif
 
-#define P_ASSERT(x) do { QMutexLocker l(&ThreadWeaver::GlobalMutex); Q_ASSERT(x); } while (0)
+#define P_ASSERT(x)                                                                                                                                            \
+    do {                                                                                                                                                       \
+        QMutexLocker l(&ThreadWeaver::GlobalMutex);                                                                                                            \
+        Q_ASSERT(x);                                                                                                                                           \
+    } while (0)
 
 inline void setDebugLevel(bool debug, int level)
 {
@@ -121,8 +127,8 @@ inline void threadweaver_debug(bool condition, int severity, const char *cformat
 #endif
 
 // Macros to ensure that mutexes are locked or unlocked:
-void THREADWEAVER_EXPORT mutexAssertUnlocked(QMutex* mutex, const char* where);
-void THREADWEAVER_EXPORT mutexAssertLocked(QMutex* mutex, const char* where);
+void THREADWEAVER_EXPORT mutexAssertUnlocked(QMutex *mutex, const char *where);
+void THREADWEAVER_EXPORT mutexAssertLocked(QMutex *mutex, const char *where);
 
 #ifndef QT_NO_DEBUG
 #define MUTEX_ASSERT_UNLOCKED(x) mutexAssertUnlocked(x, Q_FUNC_INFO)
@@ -137,15 +143,15 @@ inline bool invariant()
     return true;
 }
 
-#define INVARIANT Q_ASSERT_X (invariant(), __FILE__, "class invariant failed" );
+#define INVARIANT Q_ASSERT_X(invariant(), __FILE__, "class invariant failed");
 
-#define REQUIRE(x) \
-    INVARIANT \
-    Q_ASSERT_X (x, Q_FUNC_INFO, "unfulfilled requirement " #x );
+#define REQUIRE(x)                                                                                                                                             \
+    INVARIANT                                                                                                                                                  \
+    Q_ASSERT_X(x, Q_FUNC_INFO, "unfulfilled requirement " #x);
 
-#define ENSURE(x) \
-    INVARIANT \
-    Q_ASSERT_X (x, Q_FUNC_INFO, "broken guarantee " #x );
+#define ENSURE(x)                                                                                                                                              \
+    INVARIANT                                                                                                                                                  \
+    Q_ASSERT_X(x, Q_FUNC_INFO, "broken guarantee " #x);
 
 #ifdef QT_NO_DEBUG
 #define DEBUGONLY(x)

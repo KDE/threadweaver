@@ -8,12 +8,11 @@
 
 #include "qobjectdecorator.h"
 #include "collection.h"
-#include "sequence.h"
 #include "managedjobpointer.h"
+#include "sequence.h"
 
 namespace ThreadWeaver
 {
-
 QObjectDecorator::QObjectDecorator(JobInterface *decoratee, QObject *parent)
     : QObject(parent)
     , IdDecorator(decoratee)
@@ -26,14 +25,14 @@ QObjectDecorator::QObjectDecorator(JobInterface *decoratee, bool autoDelete, QOb
 {
 }
 
-void QObjectDecorator::defaultBegin(const JobPointer& self, Thread *thread)
+void QObjectDecorator::defaultBegin(const JobPointer &self, Thread *thread)
 {
     Q_ASSERT(job());
     Q_EMIT started(self);
     job()->defaultBegin(self, thread);
 }
 
-void QObjectDecorator::defaultEnd(const JobPointer& self, Thread *thread)
+void QObjectDecorator::defaultEnd(const JobPointer &self, Thread *thread)
 {
     Q_ASSERT(job());
     job()->defaultEnd(self, thread);
@@ -44,4 +43,3 @@ void QObjectDecorator::defaultEnd(const JobPointer& self, Thread *thread)
 }
 
 }
-

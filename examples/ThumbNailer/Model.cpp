@@ -7,24 +7,23 @@
 */
 
 #include <algorithm> //for transform
-#include <numeric>   //for accumulate
+#include <numeric> //for accumulate
 
-
-#include <QtDebug>
-#include <QStringList>
 #include <QDir>
 #include <QFileInfo>
 #include <QMutexLocker>
+#include <QStringList>
+#include <QtDebug>
 
-#include <ThreadWeaver/ThreadWeaver>
-#include <ThreadWeaver/Exception>
 #include <ThreadWeaver/DebuggingAids>
+#include <ThreadWeaver/Exception>
+#include <ThreadWeaver/ThreadWeaver>
 
-#include "Model.h"
-#include "PriorityDecorator.h"
+#include "ComputeThumbNailJob.h"
 #include "FileLoaderJob.h"
 #include "ImageLoaderJob.h"
-#include "ComputeThumbNailJob.h"
+#include "Model.h"
+#include "PriorityDecorator.h"
 
 using namespace std;
 using namespace ThreadWeaver;
@@ -37,8 +36,7 @@ Model::Model(QObject *parent)
     , m_fileWriterRestriction(4)
 {
     ThreadWeaver::setDebugLevel(true, 0);
-    connect(this, SIGNAL(signalElementChanged(int)),
-            this, SLOT(slotElementChanged(int)));
+    connect(this, SIGNAL(signalElementChanged(int)), this, SLOT(slotElementChanged(int)));
 }
 
 int Model::fileLoaderCap() const
@@ -96,11 +94,11 @@ void Model::prepareConversions(const QFileInfoList &filenames, const QString &ou
     Q_ASSERT(m_images.isEmpty());
     m_images.reserve(filenames.size());
     int counter = 0;
-    auto initializeImage = [=, &counter] (const QFileInfo& file) {
+    auto initializeImage = [=, &counter](const QFileInfo &file) {
         auto const out = QFileInfo(outputDirectory, file.fileName()).absoluteFilePath();
         return Image(file.absoluteFilePath(), out, this, counter++);
     };
-    for (const auto& filename : filenames) {
+    for (const auto &filename : filenames) {
         m_images << initializeImage(filename);
     }
     endResetModel();
@@ -109,14 +107,14 @@ void Model::prepareConversions(const QFileInfoList &filenames, const QString &ou
 bool Model::computeThumbNailsBlockingInLoop()
 {
     for (auto it = m_images.begin(); it != m_images.end(); ++it) {
-        Image& image = *it;
+        Image &image = *it;
         try {
             image.loadFile();
             image.loadImage();
             image.computeThumbNail();
             image.saveThumbNail();
 
-        } catch (const ThreadWeaver::Exception& ex) {
+        } catch (const ThreadWeaver::Exception &ex) {
             qDebug() << ex.message();
             return false;
         }
@@ -128,19 +126,28 @@ bool Model::computeThumbNailsBlockingConcurrent()
 {
     auto queue = stream();
     for (auto it = m_images.begin(); it != m_images.end(); ++it) {
-        Image& image = *it;
+        Image &image = *it;
         auto sequence = new Sequence();
-        *sequence << make_job( [&image]() { image.loadFile(); } );
-        *sequence << make_job( [&image]() { image.loadImage(); } );
-        *sequence << make_job( [&image]() { image.computeThumbNail(); } );
-        *sequence << make_job( [&image]() { image.saveThumbNail(); } );
+        *sequence << make_job([&image]() {
+            image.loadFile();
+        });
+        *sequence << make_job([&image]() {
+            image.loadImage();
+        });
+        *sequence << make_job([&image]() {
+            image.computeThumbNail();
+        });
+        *sequence << make_job([&image]() {
+            image.saveThumbNail();
+        });
         queue << sequence;
     }
     queue.flush();
     Queue::instance()->finish();
     // figure out result:
-    for (const Image& image : qAsConst(m_images)) {
-        if (image.progress().first != Image::Step_NumberOfSteps) return false;
+    for (const Image &image : qAsConst(m_images)) {
+        if (image.progress().first != Image::Step_NumberOfSteps)
+            return false;
     }
     return true;
 }
@@ -148,14 +155,17 @@ bool Model::computeThumbNailsBlockingConcurrent()
 void Model::queueUpConversion(const QStringList &files, const QString &outputDirectory)
 {
     QFileInfoList fileInfos;
-    transform(files.begin(), files.end(), back_inserter(fileInfos),
-              [](const QString& file) { return QFileInfo(file); } );
+    transform(files.begin(), files.end(), back_inserter(fileInfos), [](const QString &file) {
+        return QFileInfo(file);
+    });
     prepareConversions(fileInfos, outputDirectory);
-    //FIXME duplicated code
+    // FIXME duplicated code
     auto queue = stream();
     for (auto it = m_images.begin(); it != m_images.end(); ++it) {
-        Image& image = *it;
-        auto saveThumbNail = [&image]() { image.saveThumbNail(); };
+        Image &image = *it;
+        auto saveThumbNail = [&image]() {
+            image.saveThumbNail();
+        };
         auto saveThumbNailJob = new Lambda<decltype(saveThumbNail)>(saveThumbNail);
         {
             QMutexLocker l(saveThumbNailJob->mutex());
@@ -163,23 +173,19 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
         }
 
         auto sequence = new Sequence();
-        *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction)
-                  << new ImageLoaderJob(&image, &m_imageLoaderRestriction)
-                  << new ComputeThumbNailJob(&image, &m_imageScalerRestriction)
-                  << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
+        *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction) << new ImageLoaderJob(&image, &m_imageLoaderRestriction)
+                  << new ComputeThumbNailJob(&image, &m_imageScalerRestriction) << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
         queue << sequence;
     }
 }
 
 Progress Model::progress() const
 {
-    auto sumItUp = [](const Progress& sum, const Image& image) {
+    auto sumItUp = [](const Progress &sum, const Image &image) {
         auto const values = image.progress();
-        return qMakePair(sum.first + values.first,
-                         sum.second + values.second);
+        return qMakePair(sum.first + values.first, sum.second + values.second);
     };
-    auto const soFar = accumulate(m_images.begin(), m_images.end(),
-                                  Progress(), sumItUp);
+    auto const soFar = accumulate(m_images.begin(), m_images.end(), Progress(), sumItUp);
     return soFar;
 }
 
@@ -202,9 +208,11 @@ int Model::rowCount(const QModelIndex &parent) const
 
 QVariant Model::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid()) return QVariant();
-    if (index.row() < 0 || index.row() >= rowCount()) return QVariant();
-    const Image& image = m_images.at(index.row());
+    if (!index.isValid())
+        return QVariant();
+    if (index.row() < 0 || index.row() >= rowCount())
+        return QVariant();
+    const Image &image = m_images.at(index.row());
     if (role == Qt::DisplayRole) {
         return image.description();
     } else if (role == Role_SortRole) {

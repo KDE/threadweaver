@@ -15,23 +15,23 @@
 #include <QModelIndex>
 #include <QPainter>
 
-#include "ItemDelegate.h"
 #include "Image.h"
+#include "ItemDelegate.h"
 #include "Model.h"
 
 const int ItemDelegate::FrameWidth = 2;
 const int ItemDelegate::TextMargin = 6;
 const int ItemDelegate::Margin = 3;
 
-ItemDelegate::ItemDelegate( QObject *parent )
-    : QItemDelegate ( parent )
+ItemDelegate::ItemDelegate(QObject *parent)
+    : QItemDelegate(parent)
 {
 }
 
-void ItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, const QModelIndex& index) const
+void ItemDelegate::paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
     const bool itemIsSelected = option.showDecorationSelected && (option.state & QStyle::State_Selected);
-    const Image* image = index.data(Model::Role_ImageRole).value<const Image*>();
+    const Image *image = index.data(Model::Role_ImageRole).value<const Image *>();
     // calculate some constants:
     const int y0 = option.rect.top();
     const int x0 = option.rect.left();
@@ -48,16 +48,14 @@ void ItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
 
     // draw the image frame:
     painter->setPen(Qt::blue);
-    painter->setBrush( Qt::white );
-    painter->drawRect(x0 + FrameWidth + Margin, y0 + FrameWidth + Margin,
-                      Image::ThumbWidth + 1,  Image::ThumbHeight + 1);
+    painter->setBrush(Qt::white);
+    painter->drawRect(x0 + FrameWidth + Margin, y0 + FrameWidth + Margin, Image::ThumbWidth + 1, Image::ThumbHeight + 1);
 
     // draw the image:
     if (image->progress().first >= Image::Step_LoadImage) {
-        const QImage& thumb = image->thumbNail();
+        const QImage &thumb = image->thumbNail();
         QPoint orig = QPoint(x0 + FrameWidth + Margin + 1, y0 + FrameWidth + Margin + 1);
-        painter->drawImage(orig,  thumb, QRect ( 0, qMax(0, (thumb.height() - Image::ThumbHeight)/2),
-                                                 Image::ThumbWidth,  Image::ThumbHeight));
+        painter->drawImage(orig, thumb, QRect(0, qMax(0, (thumb.height() - Image::ThumbHeight) / 2), Image::ThumbWidth, Image::ThumbHeight));
     }
 
     // render the text next to the image:
@@ -72,7 +70,7 @@ void ItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
         painter->setPen(Qt::darkGray);
     }
     QFont font2 = option.font;
-    font2.setPointSize((int) (0.9 * option.font.pointSize()));
+    font2.setPointSize((int)(0.9 * option.font.pointSize()));
     painter->setFont(font2);
     QFontMetrics font2Metrics(font2);
     QRect text2Rect = text1Rect.adjusted(0, font1Metrics.lineSpacing(), 0, font2Metrics.lineSpacing());
@@ -83,10 +81,9 @@ void ItemDelegate::paint(QPainter* painter, const QStyleOptionViewItem& option, 
     painter->restore();
 }
 
-QSize ItemDelegate::sizeHint(const QStyleOptionViewItem&, const QModelIndex&) const
+QSize ItemDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) const
 {
     static const int Width = Image::ThumbWidth + 2 * FrameWidth + 2 * Margin + 2;
     static const int Height = Image::ThumbHeight + 2 * FrameWidth + 2 * Margin + 2;
     return QSize(Width, Height);
 }
-

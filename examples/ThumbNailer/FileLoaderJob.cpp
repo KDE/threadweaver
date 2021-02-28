@@ -10,8 +10,8 @@
 
 #include <ThreadWeaver/ResourceRestrictionPolicy>
 
-#include "Image.h"
 #include "FileLoaderJob.h"
+#include "Image.h"
 
 using namespace ThreadWeaver;
 
@@ -27,7 +27,7 @@ int FileLoaderJob::priority() const
     return Image::Step_LoadFile;
 }
 
-void FileLoaderJob::run(JobPointer, Thread*)
+void FileLoaderJob::run(JobPointer, Thread *)
 {
     Q_ASSERT(m_image);
     m_image->loadFile();

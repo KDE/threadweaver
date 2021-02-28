@@ -10,13 +10,13 @@
 #define MODEL_H
 
 #include <QAbstractListModel>
-#include <QVector>
 #include <QFileInfoList>
+#include <QVector>
 
 #include <ThreadWeaver/ResourceRestrictionPolicy>
 
-#include "Progress.h"
 #include "Image.h"
+#include "Progress.h"
 
 class Model : public QAbstractListModel
 {
@@ -43,11 +43,11 @@ public:
     void setSaveThumbNailCap(int cap);
 
     void clear();
-    void prepareConversions(const QFileInfoList& filenames, const QString& outputDirectory);
+    void prepareConversions(const QFileInfoList &filenames, const QString &outputDirectory);
     bool computeThumbNailsBlockingInLoop();
     bool computeThumbNailsBlockingConcurrent();
 
-    void queueUpConversion(const QStringList& files, const QString& outputDirectory);
+    void queueUpConversion(const QStringList &files, const QString &outputDirectory);
     Progress progress() const;
     void progressChanged();
     void elementChanged(int id);

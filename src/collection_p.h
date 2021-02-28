@@ -9,30 +9,30 @@
 #ifndef COLLECTION_COLLECTION_P_H
 #define COLLECTION_COLLECTION_P_H
 
-#include <QVector>
 #include <QMutex>
+#include <QVector>
 
-#include "job_p.h"
 #include "executewrapper_p.h"
+#include "job_p.h"
 
-namespace ThreadWeaver {
-
+namespace ThreadWeaver
+{
 class Collection;
 
-namespace Private {
-
+namespace Private
+{
 class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
 public:
-    void begin(const JobPointer&, Thread *) override;
-    void end(const JobPointer&, Thread *) override;
+    void begin(const JobPointer &, Thread *) override;
+    void end(const JobPointer &, Thread *) override;
 
     void callBegin();
     void callEnd();
 
 private:
     JobPointer job_;
-    Thread* thread_;
+    Thread *thread_;
 };
 
 class Collection_Private : public Job_Private
@@ -44,31 +44,33 @@ public:
     /** Dequeue all elements of the collection.
      * Note: This will not dequeue the collection itself.
      */
-    void dequeueElements(Collection* collection, bool queueApiIsLocked);
+    void dequeueElements(Collection *collection, bool queueApiIsLocked);
 
     /** Perform the task usually done when one individual job is
      * finished, but in our case only when the whole collection
      * is finished or partly dequeued.
      */
-    void finalCleanup(Collection* collection);
+    void finalCleanup(Collection *collection);
 
     /** @brief Enqueue the elements of the collection. */
     void enqueueElements();
 
-    void elementStarted(Collection* collection, JobPointer, Thread *);
-    void elementFinished(Collection* collection, JobPointer job, Thread *thread);
+    void elementStarted(Collection *collection, JobPointer, Thread *);
+    void elementFinished(Collection *collection, JobPointer job, Thread *thread);
 
     /** @brief Prepare to enqueue the elements. */
     virtual void prepareToEnqueueElements();
 
     /** @brief Process a completed element. */
-    virtual void processCompletedElement(Collection* collection, JobPointer job, Thread *thread);
+    virtual void processCompletedElement(Collection *collection, JobPointer job, Thread *thread);
 
     /** @brief Implement stop. */
-    void stop_locked(Collection* collection);
+    void stop_locked(Collection *collection);
 
     /** @brief Called before an element will be dequeued. */
-    virtual void elementDequeued(const JobPointer&) {}
+    virtual void elementDequeued(const JobPointer &)
+    {
+    }
 
     /* The elements of the collection. */
     QVector<JobPointer> elements;

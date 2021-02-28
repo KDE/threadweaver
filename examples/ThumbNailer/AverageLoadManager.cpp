@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #endif
 
-#include <QTimer>
-#include <QThread>
 #include <QDebug>
+#include <QThread>
+#include <QTimer>
 
 #include "AverageLoadManager.h"
 
@@ -32,7 +32,7 @@ void AverageLoadManager::activate(bool enabled)
 
 bool AverageLoadManager::available() const
 {
-#if defined(Q_OS_UNIX) && ! defined(Q_OS_ANDROID)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID)
     return true;
 #else
     return false;
@@ -46,7 +46,7 @@ QPair<int, int> AverageLoadManager::workersRange() const
 
 void AverageLoadManager::update()
 {
-#if defined(Q_OS_UNIX) && ! defined(Q_OS_ANDROID)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID)
     double averages[3];
     if (getloadavg(averages, 3) == -1) {
         return;
@@ -57,15 +57,16 @@ void AverageLoadManager::update()
     const float targetedBaseLoad = 0.7f;
 
     const float x = relativeLoadPerProcessor / targetedBaseLoad;
-    auto const linearLoadFunction = [](float x) { return -x+2.0f; };
-    //auto const reciprocalLoadFunction = [](float x) { return 1.0f / (0.5*x+0.5); };
+    auto const linearLoadFunction = [](float x) {
+        return -x + 2.0f;
+    };
+    // auto const reciprocalLoadFunction = [](float x) { return 1.0f / (0.5*x+0.5); };
 
-    m_min = qRound(qMax(1.0f, linearLoadFunction(1000* processors)));
-    m_max = qRound(qMin(2 * processors, processors*linearLoadFunction(0.0)));
+    m_min = qRound(qMax(1.0f, linearLoadFunction(1000 * processors)));
+    m_max = qRound(qMin(2 * processors, processors * linearLoadFunction(0.0)));
     const float y = linearLoadFunction(x);
     const int threads = qBound(m_min, qRound(processors * y), m_max);
     qDebug() << threads << y << x << relativeLoadPerProcessor << averages[0] << processors;
     Q_EMIT recommendedWorkerCount(threads);
 #endif
 }
-

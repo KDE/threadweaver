@@ -14,7 +14,6 @@
 
 namespace ThreadWeaver
 {
-
 class Queue;
 class Job;
 
@@ -29,7 +28,7 @@ public:
 
     QueueStream &operator<<(const JobPointer &job);
     QueueStream &operator<<(JobInterface *job);
-    //FIXME try with QObjectDecorator (JobInterface&)
+    // FIXME try with QObjectDecorator (JobInterface&)
     QueueStream &operator<<(Job &job);
 
 private:

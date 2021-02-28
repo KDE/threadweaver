@@ -18,7 +18,6 @@
 
 namespace ThreadWeaver
 {
-
 class JobInterface;
 
 /** @brief ResourceRestrictionPolicy is used to limit the number of concurrent accesses to the same resource.

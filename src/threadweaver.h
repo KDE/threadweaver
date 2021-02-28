@@ -10,12 +10,12 @@
 #ifndef THREADWEAVER_H
 #define THREADWEAVER_H
 
-#include "queue.h"
-#include "queueing.h"
+#include "collection.h"
+#include "job.h"
 #include "jobinterface.h"
 #include "jobpointer.h"
-#include "job.h"
-#include "collection.h"
+#include "queue.h"
+#include "queueing.h"
 #include "sequence.h"
 
 #endif // THREADWEAVER_H

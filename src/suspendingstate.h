@@ -11,12 +11,11 @@
 #ifndef SuspendingState_H
 #define SuspendingState_H
 
-#include "weaverimplstate.h"
 #include "weaver.h"
+#include "weaverimplstate.h"
 
 namespace ThreadWeaver
 {
-
 /** SuspendingState is the state after suspend() has been called, but
  *  before all threads finished executing the current job and blocked.
  */
@@ -29,7 +28,7 @@ public:
     /** Resume job processing. */
     void resume() override;
     /** Assign a job to an idle thread. */
-    JobPointer applyForWork(Thread *th,  bool wasBusy) override;
+    JobPointer applyForWork(Thread *th, bool wasBusy) override;
     /** Overload. */
     void activated() override;
     /** reimpl */

@@ -8,15 +8,15 @@
 
 #include <numeric>
 
-#include <QtDebug>
-#include <QString>
-#include <QTest>
 #include <QCoreApplication>
 #include <QList>
+#include <QString>
+#include <QTest>
+#include <QtDebug>
 
-#include <ThreadWeaver/Queueing>
-#include <ThreadWeaver/Job>
 #include <ThreadWeaver/Collection>
+#include <ThreadWeaver/Job>
+#include <ThreadWeaver/Queueing>
 #include <ThreadWeaver/Sequence>
 #include <ThreadWeaver/ThreadWeaver>
 
@@ -49,7 +49,10 @@ public:
     void payload()
     {
         std::vector<quint64> numbers(m_count);
-        std::generate(numbers.begin(), numbers.end(), []() -> quint64 { static quint64 i = 0; return i++; });
+        std::generate(numbers.begin(), numbers.end(), []() -> quint64 {
+            static quint64 i = 0;
+            return i++;
+        });
         m_result = std::accumulate(numbers.begin(), numbers.end(), 0);
     }
 
@@ -119,11 +122,11 @@ void QueueBenchmarksTest::BaselineBenchmark()
         jobs[i].setCount(m);
     }
 
-    //executeLocal needs to emit similar signals as execute(), to be comparable to the threaded variants.
-    //BaselineAsJobsBenchmark does that. Compare BaselineAsJobsBenchmark and BaselineBenchmark to evaluate the overhead of executing
-    //an operation in a job.
+    // executeLocal needs to emit similar signals as execute(), to be comparable to the threaded variants.
+    // BaselineAsJobsBenchmark does that. Compare BaselineAsJobsBenchmark and BaselineBenchmark to evaluate the overhead of executing
+    // an operation in a job.
     QBENCHMARK {
-        for(int i = 0; i < n; ++i) {
+        for (int i = 0; i < n; ++i) {
             jobs[i].payload();
         }
     }
@@ -149,8 +152,7 @@ void QueueBenchmarksTest::BaselineAsJobsBenchmark()
     }
 
     QBENCHMARK {
-        for (int i = 0; i < n; ++i)
-        {
+        for (int i = 0; i < n; ++i) {
             jobs[i].blockingExecute();
         }
     }
@@ -204,10 +206,10 @@ void QueueBenchmarksTest::CollectionsBenchmark()
     weaver.suspend();
     QVector<AccumulateJob> jobs(n);
 
-    //FIXME currently, memory management of the job sequences (they are deleted when they go out of scope)
-    //is measured as part of the benchmark
+    // FIXME currently, memory management of the job sequences (they are deleted when they go out of scope)
+    // is measured as part of the benchmark
     qDebug() << b << "blocks" << c << "operations, queueing...";
-    //queue the jobs blockwise as collections
+    // queue the jobs blockwise as collections
     for (int block = 0; block < b; ++block) {
         ThreadWeaver::Collection *collection = new ThreadWeaver::Collection();
         for (int operation = 0; operation < c; ++operation) {
@@ -244,7 +246,7 @@ void QueueBenchmarksTest::SequencesBenchmark()
     QVector<AccumulateJob> jobs(n);
 
     qDebug() << b << "blocks" << c << "operations, queueing...";
-    //queue the jobs blockwise as collections
+    // queue the jobs blockwise as collections
     for (int block = 0; block < b; ++block) {
         ThreadWeaver::Sequence *sequence = new ThreadWeaver::Sequence();
         for (int operation = 0; operation < c; ++operation) {

@@ -9,7 +9,8 @@
 #ifndef WAITFORIDLEANDFINISHED_H
 #define WAITFORIDLEANDFINISHED_H
 
-namespace ThreadWeaver {
+namespace ThreadWeaver
+{
 class Queue;
 }
 
@@ -23,12 +24,14 @@ public:
     ~WaitForIdleAndFinished();
     WaitForIdleAndFinished(const WaitForIdleAndFinished &) = delete;
     WaitForIdleAndFinished &operator=(const WaitForIdleAndFinished &) = delete;
+
 private:
     ThreadWeaver::Queue *weaver_;
 };
 
 /** @brief Create a WaitForIdleAndFinished, and suppress the IDE unused warning. */
-#define WAITFORIDLEANDFINISHED(queue) const WaitForIdleAndFinished waitForIdleAndFinished##__LINE__(queue);\
+#define WAITFORIDLEANDFINISHED(queue)                                                                                                                          \
+    const WaitForIdleAndFinished waitForIdleAndFinished##__LINE__(queue);                                                                                      \
     Q_UNUSED(waitForIdleAndFinished##__LINE__);
 
 #endif // WAITFORIDLEANDFINISHED_H

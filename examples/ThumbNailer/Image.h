@@ -9,9 +9,9 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <QImage>
 #include <QAtomicInt>
 #include <QCoreApplication>
+#include <QImage>
 #include <QReadWriteLock>
 
 #include "Progress.h"
@@ -34,8 +34,7 @@ public:
         Step_Complete = Step_SaveThumbNail,
     };
 
-    Image(const QString inputFileName = QString(), const QString outputFileName = QString(),
-          Model* model = nullptr, int id = 0);
+    Image(const QString inputFileName = QString(), const QString outputFileName = QString(), Model *model = nullptr, int id = 0);
     Progress progress() const;
     QString description() const;
     QString details() const;
@@ -53,9 +52,10 @@ public:
 
     static const int ThumbHeight;
     static const int ThumbWidth;
+
 private:
     void announceProgress(Steps step);
-    void error(Steps step, const QString& message);
+    void error(Steps step, const QString &message);
 
     QString m_inputFileName;
     QString m_outputFileName;
@@ -69,7 +69,7 @@ private:
     QByteArray m_imageData;
     QImage m_image;
     QImage m_thumbnail;
-    Model* m_model;
+    Model *m_model;
     int m_id;
 
     static QReadWriteLock Lock;
@@ -77,6 +77,6 @@ private:
 };
 
 Q_DECLARE_METATYPE(Image)
-Q_DECLARE_METATYPE(const Image*)
+Q_DECLARE_METATYPE(const Image *)
 
 #endif // IMAGE_H

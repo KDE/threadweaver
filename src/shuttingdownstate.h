@@ -15,7 +15,6 @@
 
 namespace ThreadWeaver
 {
-
 class Queue;
 
 /** ShuttingDownState is enabled when the Weaver destructor is entered. It

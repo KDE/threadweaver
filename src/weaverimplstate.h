@@ -14,7 +14,6 @@
 
 namespace ThreadWeaver
 {
-
 class QueueSignals;
 
 /** @brief Base class for all WeaverImpl states. */

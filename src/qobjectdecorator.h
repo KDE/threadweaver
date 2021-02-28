@@ -11,12 +11,11 @@
 
 #include <QObject>
 
-#include "threadweaver_export.h"
 #include "iddecorator.h"
+#include "threadweaver_export.h"
 
 namespace ThreadWeaver
 {
-
 class Collection;
 class Sequence;
 
@@ -38,8 +37,8 @@ Q_SIGNALS:
     void failed(ThreadWeaver::JobPointer);
 
 protected:
-    void defaultBegin(const JobPointer& job, Thread *thread) override;
-    void defaultEnd(const JobPointer& job, Thread *thread) override;
+    void defaultBegin(const JobPointer &job, Thread *thread) override;
+    void defaultEnd(const JobPointer &job, Thread *thread) override;
 };
 
 typedef QSharedPointer<QObjectDecorator> QJobPointer;
