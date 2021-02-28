@@ -173,8 +173,12 @@ void Model::queueUpConversion(const QStringList &files, const QString &outputDir
         }
 
         auto sequence = new Sequence();
-        *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction) << new ImageLoaderJob(&image, &m_imageLoaderRestriction)
-                  << new ComputeThumbNailJob(&image, &m_imageScalerRestriction) << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
+        /* clang-format off */
+        *sequence << new FileLoaderJob(&image, &m_fileLoaderRestriction)
+                  << new ImageLoaderJob(&image, &m_imageLoaderRestriction)
+                  << new ComputeThumbNailJob(&image, &m_imageScalerRestriction)
+                  << new PriorityDecorator(Image::Step_SaveThumbNail, saveThumbNailJob);
+        /* clang-format on */
         queue << sequence;
     }
 }

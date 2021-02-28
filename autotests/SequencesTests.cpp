@@ -35,10 +35,14 @@ void SequencesTests::RecursiveStopTest()
     WAITFORIDLEANDFINISHED(&queue);
     QString result;
     Sequence innerSequence;
-    innerSequence << new AppendCharacterJob('b', &result) << new FailingAppendCharacterJob('c', &result) << new AppendCharacterJob('d', &result);
+    innerSequence << new AppendCharacterJob('b', &result) //
+                  << new FailingAppendCharacterJob('c', &result) //
+                  << new AppendCharacterJob('d', &result);
 
     Sequence outerSequence;
-    outerSequence << new AppendCharacterJob('a', &result) << innerSequence << new AppendCharacterJob('e', &result);
+    outerSequence << new AppendCharacterJob('a', &result) //
+                  << innerSequence //
+                  << new AppendCharacterJob('e', &result);
 
     queue.stream() << outerSequence;
     queue.finish();

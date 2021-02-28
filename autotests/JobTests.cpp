@@ -104,7 +104,8 @@ void JobTests::SimpleJobCollectionTest()
 {
     QString sequence;
     Collection jobCollection;
-    jobCollection << new AppendCharacterJob(QChar('a'), &sequence) << new AppendCharacterJob(QChar('b'), &sequence)
+    jobCollection << new AppendCharacterJob(QChar('a'), &sequence) //
+                  << new AppendCharacterJob(QChar('b'), &sequence) //
                   << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
@@ -134,7 +135,9 @@ void JobTests::CollectionQueueingTest()
 {
     QString output;
     Collection jobCollection;
-    jobCollection << new AppendCharacterJob(QChar('a'), &output) << new AppendCharacterJob(QChar('b'), &output) << new AppendCharacterJob(QChar('c'), &output);
+    jobCollection << new AppendCharacterJob(QChar('a'), &output) //
+                  << new AppendCharacterJob(QChar('b'), &output) //
+                  << new AppendCharacterJob(QChar('c'), &output);
 
     Queue weaver;
     WaitForIdleAndFinished w(&weaver);
@@ -194,7 +197,8 @@ void JobTests::ShortJobSequenceTest()
 {
     QString sequence;
     Sequence jobSequence;
-    jobSequence << new AppendCharacterJob(QChar('a'), &sequence) << new AppendCharacterJob(QChar('b'), &sequence)
+    jobSequence << new AppendCharacterJob(QChar('a'), &sequence) //
+                << new AppendCharacterJob(QChar('b'), &sequence) //
                 << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
@@ -709,7 +713,9 @@ void JobTests::SimpleRecursiveSequencesTest()
     jobSequence1 << new AppendCharacterJob(QChar('b'), &sequence);
 
     Sequence jobSequence2;
-    jobSequence2 << new AppendCharacterJob(QChar('a'), &sequence) << jobSequence1 << new AppendCharacterJob(QChar('c'), &sequence);
+    jobSequence2 << new AppendCharacterJob(QChar('a'), &sequence) //
+                 << jobSequence1 //
+                 << new AppendCharacterJob(QChar('c'), &sequence);
 
     WaitForIdleAndFinished w(Queue::instance());
     stream() << jobSequence2;

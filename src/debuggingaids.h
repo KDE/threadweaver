@@ -73,22 +73,27 @@ inline void TWDEBUG(bool condition, int severity, const char *cformat, ...)
 #ifdef PROTECT
 #undef PROTECT
 #endif
-#define PROTECT(x)                                                                                                                                             \
-    do {                                                                                                                                                       \
-        QMutexLocker l(&ThreadWeaver::GlobalMutex);                                                                                                            \
-        (x);                                                                                                                                                   \
+
+/* clang-format off */
+#define PROTECT(x) \
+    do { \
+        QMutexLocker l(&ThreadWeaver::GlobalMutex); \
+        (x); \
     } while (0)
+/* clang-format on */
 
 /** P_ASSERT ensures that error messages occur in the correct order. */
 #ifdef P_ASSERT
 #undef P_ASSERT
 #endif
 
-#define P_ASSERT(x)                                                                                                                                            \
-    do {                                                                                                                                                       \
-        QMutexLocker l(&ThreadWeaver::GlobalMutex);                                                                                                            \
-        Q_ASSERT(x);                                                                                                                                           \
+/* clang-format off */
+#define P_ASSERT(x) \
+    do { \
+        QMutexLocker l(&ThreadWeaver::GlobalMutex); \
+        Q_ASSERT(x); \
     } while (0)
+/* clang-format on */
 
 inline void setDebugLevel(bool debug, int level)
 {
@@ -145,13 +150,15 @@ inline bool invariant()
 
 #define INVARIANT Q_ASSERT_X(invariant(), __FILE__, "class invariant failed");
 
-#define REQUIRE(x)                                                                                                                                             \
-    INVARIANT                                                                                                                                                  \
+/* clang-format off */
+#define REQUIRE(x) \
+    INVARIANT \
     Q_ASSERT_X(x, Q_FUNC_INFO, "unfulfilled requirement " #x);
 
-#define ENSURE(x)                                                                                                                                              \
-    INVARIANT                                                                                                                                                  \
+#define ENSURE(x) \
+    INVARIANT \
     Q_ASSERT_X(x, Q_FUNC_INFO, "broken guarantee " #x);
+/* clang-format on */
 
 #ifdef QT_NO_DEBUG
 #define DEBUGONLY(x)

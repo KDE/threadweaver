@@ -30,8 +30,10 @@ private:
 };
 
 /** @brief Create a WaitForIdleAndFinished, and suppress the IDE unused warning. */
-#define WAITFORIDLEANDFINISHED(queue)                                                                                                                          \
-    const WaitForIdleAndFinished waitForIdleAndFinished##__LINE__(queue);                                                                                      \
+/* clang-format off */
+#define WAITFORIDLEANDFINISHED(queue) \
+    const WaitForIdleAndFinished waitForIdleAndFinished##__LINE__(queue); \
     Q_UNUSED(waitForIdleAndFinished##__LINE__);
+/* clang-format on */
 
 #endif // WAITFORIDLEANDFINISHED_H

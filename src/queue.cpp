@@ -157,7 +157,8 @@ Queue *Queue::instance()
     // the object s_instance pointed to.
     static StaticThreadWeaverInstanceGuard *s_instanceGuard = new StaticThreadWeaverInstanceGuard(s_instance, qApp);
     Q_UNUSED(s_instanceGuard);
-    Q_ASSERT_X(s_instance.loadRelaxed() == nullptr || s_instance.loadRelaxed()->thread() == QCoreApplication::instance()->thread(),
+    Q_ASSERT_X(s_instance.loadRelaxed() == nullptr //
+                   || s_instance.loadRelaxed()->thread() == QCoreApplication::instance()->thread(),
                Q_FUNC_INFO,
                "The global ThreadWeaver queue needs to be instantiated (accessed first) from the main thread!");
     return s_instance.loadAcquire();
