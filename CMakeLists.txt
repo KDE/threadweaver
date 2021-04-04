@@ -17,7 +17,7 @@ include(KDEFrameworkCompilerSettings NO_POLICY_SCOPE)
 include(KDECMakeSettings)
 include(KDEGitCommitHooks)
 
-set(REQUIRED_QT_VERSION 5.14.0)
+set(REQUIRED_QT_VERSION 5.15.0)
 find_package(Qt5Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
 include(ECMGenerateExportHeader)
@@ -36,7 +36,7 @@ ecm_setup_version(PROJECT VARIABLE_PREFIX THREADWEAVER
                         SOVERSION 5)
 # --
 add_definitions(-DQT_NO_FOREACH)
-add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050e00)
+add_definitions(-DQT_DISABLE_DEPRECATED_BEFORE=0x050f00)
 add_subdirectory(src)
 if (BUILD_TESTING)
     add_subdirectory(autotests)
