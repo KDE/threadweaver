@@ -52,7 +52,7 @@ target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_
 kde_target_enable_exceptions(KF5ThreadWeaver PRIVATE)
 
 set_target_properties(KF5ThreadWeaver PROPERTIES
-    VERSION ${THREADWEAVER_VERSION_STRING}
+    VERSION ${THREADWEAVER_VERSION}
     SOVERSION ${THREADWEAVER_SOVERSION}
     EXPORT_NAME ThreadWeaver
 )
