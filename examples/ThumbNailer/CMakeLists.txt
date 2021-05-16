@@ -3,7 +3,7 @@ project(ThumbNailer)
 kde_enable_exceptions()
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_AUTOMOC ON)
-qt5_wrap_ui(UI_FILES MainWindow.ui)
+qt_wrap_ui(UI_FILES MainWindow.ui)
 add_executable(ThreadWeaver_ThumbNailer
     ThumbNailer.cpp
     Image.cpp
