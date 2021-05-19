@@ -1,6 +1,7 @@
-########### next target ###############
+add_library(KF5ThreadWeaver)
+add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 
-set(ThreadWeaver_LIB_SRCS
+target_sources(KF5ThreadWeaver PRIVATE
     queuesignals.cpp
     queuesignals_p.cpp
     queuestream.cpp
@@ -34,8 +35,6 @@ set(ThreadWeaver_LIB_SRCS
     resourcerestrictionpolicy.cpp
 )
 
-add_library(KF5ThreadWeaver ${ThreadWeaver_LIB_SRCS})
-add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 ecm_generate_export_header(KF5ThreadWeaver
     BASE_NAME ThreadWeaver
     GROUP_BASE_NAME KF
