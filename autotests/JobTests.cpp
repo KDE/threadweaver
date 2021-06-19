@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include <cstdlib>
+#include <random>
 
 #include <QMutex>
 #include <QSignalSpy>
@@ -1151,7 +1152,9 @@ public:
         for (int index = start_ + 1; index < start_ + count_; ++index) {
             elements.append(new GeneratingEnumeratorCollection(numbers_, index, 1));
         }
-        std::random_shuffle(elements.begin(), elements.end());
+        std::random_device rd;
+        std::mt19937 g(rd());
+        std::shuffle(elements.begin(), elements.end(), g);
         std::for_each(elements.begin(), elements.end(), [this](QVector<GeneratingEnumeratorCollection>::iterator it) {
             *this << *it;
         });
