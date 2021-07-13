@@ -495,7 +495,7 @@ void Weaver::threadEnteredRun(Thread *thread)
 /** @brief Take the first available job out of the queue and return it.
  *
  * The job will be removed from the queue (therefore, take). Only jobs that have no unresolved dependencies
- * are considered available. If only jobs that depened on other unfinished jobs are in the queue, this method
+ * are considered available. If only jobs that depend on other unfinished jobs are in the queue, this method
  * blocks on m_jobAvailable.
  *
  * This method will enter suspended state if the active thread count is now zero and
