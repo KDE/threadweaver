@@ -21,9 +21,8 @@ Executor *ExecuteWrapper::wrap(Executor *previous)
 
 Executor *ExecuteWrapper::unwrap(const JobPointer &job)
 {
-    Executor *executor = job->setExecutor(wrapped.fetchAndAddOrdered(0));
+    Executor *executor = job->setExecutor(wrapped.fetchAndStoreOrdered(nullptr));
     Q_ASSERT_X(executor == this, Q_FUNC_INFO, "ExecuteWrapper can only unwrap itself!");
-    wrapped.fetchAndStoreOrdered(nullptr);
     return executor;
 }
 
