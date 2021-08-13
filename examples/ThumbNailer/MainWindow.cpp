@@ -117,8 +117,9 @@ void MainWindow::slotOpenFiles()
     QSettings settings;
     const QString previousLocation = settings.value(Setting_OpenLocation, QDir::homePath()).toString();
     auto const files = QFileDialog::getOpenFileNames(this, tr("Select images to convert"), previousLocation);
-    if (files.isEmpty())
+    if (files.isEmpty()) {
         return;
+    }
     if (m_outputDirectory.isNull()) {
         slotSelectOutputDirectory();
     }
@@ -134,8 +135,9 @@ void MainWindow::slotSelectOutputDirectory()
     QSettings settings;
     const QString previousLocation = settings.value(Setting_OutputLocation, QDir::homePath()).toString();
     auto directory = QFileDialog::getExistingDirectory(this, tr("Select output directory..."));
-    if (directory.isNull())
+    if (directory.isNull()) {
         return;
+    }
     m_outputDirectory = directory;
     settings.setValue(Setting_OutputLocation, directory);
     ui->outputDirectory->setText(directory);

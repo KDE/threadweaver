@@ -64,8 +64,9 @@ void ViewController::loadPostFromTumblr()
     auto textOfFirst = [&doc](const char *name) {
         auto const s = QString::fromLatin1(name);
         auto elements = doc.elementsByTagName(s);
-        if (elements.isEmpty())
+        if (elements.isEmpty()) {
             return QString();
+        }
         return elements.at(0).toElement().text();
     };
 
@@ -143,8 +144,9 @@ QString ViewController::attributeTextFor(const QDomDocument &doc, const char *ta
     auto const tagString = QString::fromLatin1(tag);
     auto const attributeString = QString::fromLatin1(attribute);
     auto elements = doc.elementsByTagName(tagString);
-    if (elements.isEmpty())
+    if (elements.isEmpty()) {
         return QString();
+    }
     const QString content = elements.at(0).toElement().attribute(attributeString);
     return content;
 }

@@ -146,8 +146,9 @@ bool Model::computeThumbNailsBlockingConcurrent()
     Queue::instance()->finish();
     // figure out result:
     for (const Image &image : qAsConst(m_images)) {
-        if (image.progress().first != Image::Step_NumberOfSteps)
+        if (image.progress().first != Image::Step_NumberOfSteps) {
             return false;
+        }
     }
     return true;
 }
@@ -212,10 +213,12 @@ int Model::rowCount(const QModelIndex &parent) const
 
 QVariant Model::data(const QModelIndex &index, int role) const
 {
-    if (!index.isValid())
+    if (!index.isValid()) {
         return QVariant();
-    if (index.row() < 0 || index.row() >= rowCount())
+    }
+    if (index.row() < 0 || index.row() >= rowCount()) {
         return QVariant();
+    }
     const Image &image = m_images.at(index.row());
     if (role == Qt::DisplayRole) {
         return image.description();
