@@ -26,7 +26,7 @@ class THREADWEAVER_EXPORT QueueSignals : public QObject, public QueueInterface
 public:
     explicit QueueSignals(QObject *parent = nullptr);
     explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private *d, QObject *parent = nullptr);
-    virtual ~QueueSignals();
+    ~QueueSignals() override;
 
 Q_SIGNALS:
     /** @brief Emitted when the Queue has completed all jobs currently queued.

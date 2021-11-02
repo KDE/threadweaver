@@ -11,7 +11,7 @@ class MainWidget : public QWidget
 
 public:
     explicit MainWidget(QWidget *parent = nullptr);
-    ~MainWidget();
+    ~MainWidget() override;
 
 protected:
     void resizeEvent(QResizeEvent *) override;

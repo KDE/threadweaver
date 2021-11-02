@@ -26,7 +26,7 @@ public:
         instances_.fetchAndAddAcquire(1);
     }
 
-    ~InstanceCountingBusyJob()
+    ~InstanceCountingBusyJob() override
     {
         instances_.fetchAndAddAcquire(-1);
     }
@@ -51,7 +51,7 @@ public:
         instances_.fetchAndAddAcquire(1);
     }
 
-    ~InstanceCountingCollection()
+    ~InstanceCountingCollection() override
     {
         instances_.fetchAndAddAcquire(-1);
     }
@@ -76,7 +76,7 @@ public:
         instances_.fetchAndAddAcquire(1);
     }
 
-    ~InstanceCountingSequence()
+    ~InstanceCountingSequence() override
     {
         instances_.fetchAndAddAcquire(-1);
     }

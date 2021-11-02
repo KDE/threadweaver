@@ -21,7 +21,7 @@ class THREADWEAVER_EXPORT Exception : public std::runtime_error
 {
 public:
     explicit Exception(const QString &message = QString());
-    ~Exception() throw();
+    ~Exception() throw() override;
     QString message() const;
 
 private:

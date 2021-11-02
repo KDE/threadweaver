@@ -13,7 +13,7 @@ class ViewController : public QObject
     Q_OBJECT
 public:
     explicit ViewController(MainWidget *mainwidget);
-    ~ViewController();
+    ~ViewController() override;
 
 Q_SIGNALS:
     void setImage(QImage image);

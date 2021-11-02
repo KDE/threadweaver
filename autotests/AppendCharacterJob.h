@@ -84,7 +84,7 @@ public:
         TWDEBUG(3, "BusyJob ctor\n");
     }
 
-    ~BusyJob()
+    ~BusyJob() override
     {
         using namespace ThreadWeaver;
         TWDEBUG(3, "~BusyJob\n");

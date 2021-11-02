@@ -121,7 +121,7 @@ public:
         qAddPostRoutine(shutDownGlobalQueue);
     }
 
-    ~StaticThreadWeaverInstanceGuard()
+    ~StaticThreadWeaverInstanceGuard() override
     {
         instance_.fetchAndStoreOrdered(nullptr);
         delete globalQueueFactory;

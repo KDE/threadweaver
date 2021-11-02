@@ -39,7 +39,7 @@ class Collection_Private : public Job_Private
 {
 public:
     Collection_Private();
-    ~Collection_Private();
+    ~Collection_Private() override;
 
     /** Dequeue all elements of the collection.
      * Note: This will not dequeue the collection itself.

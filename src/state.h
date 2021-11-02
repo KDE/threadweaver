@@ -59,7 +59,7 @@ public:
     explicit State(QueueSignals *weaver);
 
     /** Destructor. */
-    virtual ~State();
+    ~State() override;
 
     /** The ID of the current state.
      *  @see StateNames, StateID

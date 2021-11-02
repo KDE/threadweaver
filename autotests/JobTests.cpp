@@ -958,7 +958,7 @@ struct InstanceCountedJob : public Job {
         counter.fetchAndAddRelease(1);
     }
 
-    ~InstanceCountedJob()
+    ~InstanceCountedJob() override
     {
         counter.fetchAndAddRelease(-1);
     }

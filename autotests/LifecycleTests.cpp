@@ -23,7 +23,7 @@ public:
         exists = true;
     }
 
-    ~NotifyOnDeletejob()
+    ~NotifyOnDeletejob() override
     {
         m_exists = false;
     }
