@@ -2,37 +2,79 @@ add_library(KF5ThreadWeaver)
 add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
 
 target_sources(KF5ThreadWeaver PRIVATE
-    queuesignals.cpp
-    queuesignals_p.cpp
-    queuestream.cpp
-    queueapi.cpp
-    exception.cpp
-    queue.cpp
-    weaver.cpp
-    weaver_p.cpp
-    debuggingaids.cpp
-    thread.cpp
-    job.cpp
-    job_p.cpp
-    iddecorator.cpp
-    qobjectdecorator.cpp
-    executor.cpp
-    executewrapper.cpp
-    state.cpp
-    weaverimplstate.cpp
-    inconstructionstate.cpp
-    workinghardstate.cpp
-    suspendingstate.cpp
-    suspendedstate.cpp
-    shuttingdownstate.cpp
-    destructedstate.cpp
     collection.cpp
+    collection.h
     collection_p.cpp
-    sequence.cpp
-    sequence_p.cpp
-    dependencypolicy.cpp
+    collection_p.h
+    debuggingaids.cpp
+    debuggingaids.h
     dependency.cpp
+    dependency.h
+    dependencypolicy.cpp
+    dependencypolicy.h
+    destructedstate.cpp
+    destructedstate.h
+    exception.cpp
+    exception.h
+    executewrapper.cpp
+    executewrapper_p.h
+    executor.cpp
+    executor_p.h
+    iddecorator.cpp
+    iddecorator.h
+    inconstructionstate.cpp
+    inconstructionstate.h
+    job.cpp
+    job.h
+    jobinterface.h
+    job_p.cpp
+    job_p.h
+    jobpointer.h
+    lambda.h
+    managedjobpointer.h
+    qobjectdecorator.cpp
+    qobjectdecorator.h
+    queueapi.cpp
+    queueapi.h
+    queue.cpp
+    queue.h
+    queueing.h
+    queueinterface.h
+    queuepolicy.h
+    queuesignals.cpp
+    queuesignals.h
+    queuesignals_p.cpp
+    queuesignals_p.h
+    queuestream.cpp
+    queuestream.h
     resourcerestrictionpolicy.cpp
+    resourcerestrictionpolicy.h
+    sequence.cpp
+    sequence.h
+    sequence_p.cpp
+    sequence_p.h
+    shuttingdownstate.cpp
+    shuttingdownstate.h
+    state.cpp
+    state.h
+    suspendedstate.cpp
+    suspendedstate.h
+    suspendingstate.cpp
+    suspendingstate.h
+    thread.cpp
+    thread.h
+    threadweaver.cpp
+    threadweaver.h
+    weaver.cpp
+    weaver.h
+    weaverimplstate.cpp
+    weaverimplstate.h
+    weaverinterface.h
+    weaver_p.cpp
+    weaver_p.h
+    workinghardstate.cpp
+    workinghardstate.h
+
 )
 
 ecm_generate_export_header(KF5ThreadWeaver
