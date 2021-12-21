@@ -85,10 +85,10 @@ ecm_generate_export_header(KF5ThreadWeaver
     DEPRECATION_VERSIONS 5.0 5.80
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
-target_link_libraries(KF5ThreadWeaver PUBLIC Qt5::Core)
+target_link_libraries(KF5ThreadWeaver PUBLIC Qt${QT_MAJOR_VERSION}::Core)
 set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
-target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver>")
+target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver>")
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 kde_target_enable_exceptions(KF5ThreadWeaver PRIVATE)
 
@@ -138,12 +138,12 @@ ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
     PREFIX ThreadWeaver
     REQUIRED_HEADERS ThreadWeaver_HEADERS
 )
-install(FILES ${ThreadWeaver_CamelCase_HEADERS} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver/ThreadWeaver COMPONENT Devel)
+install(FILES ${ThreadWeaver_CamelCase_HEADERS} DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver/ThreadWeaver COMPONENT Devel)
 
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_export.h
     ${ThreadWeaver_HEADERS}
-    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver/threadweaver COMPONENT Devel
+    DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver/threadweaver COMPONENT Devel
 )
 
 if(BUILD_QCH)
@@ -174,5 +174,5 @@ if(BUILD_QCH)
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME ThreadWeaver LIB_NAME KF5ThreadWeaver DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF5}/ThreadWeaver)
+ecm_generate_pri_file(BASE_NAME ThreadWeaver LIB_NAME KF5ThreadWeaver DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})

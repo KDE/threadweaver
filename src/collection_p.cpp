@@ -61,8 +61,17 @@ void Collection_Private::elementStarted(Collection *, JobPointer job, Thread *)
 namespace
 {
 struct MutexUnlocker {
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    QMutexLocker<QMutex> *locker;
+#else
     QMutexLocker *locker;
+#endif
+
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
+    MutexUnlocker(QMutexLocker<QMutex> *l)
+#else
     MutexUnlocker(QMutexLocker *l)
+#endif
         : locker(l)
     {
         locker->unlock();
