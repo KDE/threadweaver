@@ -1155,8 +1155,8 @@ public:
         std::random_device rd;
         std::mt19937 g(rd());
         std::shuffle(elements.begin(), elements.end(), g);
-        std::for_each(elements.begin(), elements.end(), [this](QVector<GeneratingEnumeratorCollection>::iterator it) {
-            *this << *it;
+        std::for_each(elements.begin(), elements.end(), [this](GeneratingEnumeratorCollection *collection) {
+            *this << *collection;
         });
     }
 
