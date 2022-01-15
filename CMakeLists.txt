@@ -64,7 +64,7 @@ configure_package_config_file("${CMAKE_CURRENT_SOURCE_DIR}/KF5ThreadWeaverConfig
                               )
 
 install(FILES ${CMAKE_CURRENT_BINARY_DIR}/threadweaver_version.h
-        DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF} COMPONENT Devel)
+        DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver COMPONENT Devel)
 
 install(FILES
   "${CMAKE_CURRENT_BINARY_DIR}/KF5ThreadWeaverConfig.cmake"
