@@ -10,6 +10,7 @@
 #define JOB_P_H
 
 #include "executewrapper_p.h"
+#include <QList>
 #include <QMutex>
 
 namespace ThreadWeaver
