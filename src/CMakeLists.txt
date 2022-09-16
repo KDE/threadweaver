@@ -97,7 +97,7 @@ set_target_properties(KF5ThreadWeaver PROPERTIES
     SOVERSION ${THREADWEAVER_SOVERSION}
     EXPORT_NAME ThreadWeaver
 )
-install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${KF5_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
   HEADER_NAMES
