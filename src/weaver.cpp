@@ -536,7 +536,7 @@ JobPointer Weaver::takeFirstAvailableJobOrSuspendOrWait(Thread *th, bool threadW
         const int count = d()->inventory.removeAll(th);
         Q_ASSERT(count == 1);
         d()->expiredThreads.append(th);
-        throw AbortThread(tr("Inventory size exceeded"));
+        throw AbortThread(QStringLiteral("Inventory size exceeded"));
     }
 
     JobPointer next;
