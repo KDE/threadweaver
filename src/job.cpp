@@ -116,6 +116,11 @@ bool Job::success() const
     return d()->status.loadAcquire() == Status_Success;
 }
 
+void Job::requestAbort()
+{
+    d()->shouldAbort = true;
+}
+
 void Job::defaultBegin(const JobPointer &, Thread *)
 {
 }
@@ -189,6 +194,11 @@ bool Job::isFinished() const
 QMutex *Job::mutex() const
 {
     return &(d()->mutex);
+}
+
+bool Job::shouldAbort() const
+{
+    return d()->shouldAbort;
 }
 
 }

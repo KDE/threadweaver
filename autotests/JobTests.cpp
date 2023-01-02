@@ -1233,7 +1233,6 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
 struct AbortableJob : public Job {
     int aborted = 0;
     int extraCode = 0;
-    bool shouldAbort = false;
     QMutex waitForStart;
     QMutex waitForAbort;
 
@@ -1254,7 +1253,7 @@ struct AbortableJob : public Job {
         QCOMPARE(this->status(), Job::Status_Running);
         waitForStart.unlock();
         waitForAbort.lock();
-        if (shouldAbort) {
+        if (shouldAbort()) {
             aborted++;
             throw JobAborted();
         }
@@ -1263,7 +1262,7 @@ struct AbortableJob : public Job {
 
     void requestAbort() override
     {
-        shouldAbort = true;
+        Job::requestAbort();
 
         // Let it handle abortion
         waitForAbort.unlock();

@@ -31,7 +31,9 @@ void Collection_Private::finalCleanup(Collection *collection)
 {
     Q_ASSERT(!self.isNull());
     Q_ASSERT(!mutex.tryLock());
-    if (collection->status() < Job::Status_Success) {
+    if (collection->shouldAbort()) {
+        collection->setStatus(Job::Status_Aborted);
+    } else if (collection->status() < Job::Status_Success) {
         collection->setStatus(Job::Status_Success);
     } else {
         // At this point we either should have been running
@@ -93,8 +95,11 @@ void Collection_Private::elementFinished(Collection *collection, JobPointer job,
     if (selfIsExecuting) {
         // the element that is finished is the collection itself
         // the collection is always executed first
-        // queue the collection elements:
-        enqueueElements();
+        // No need to queue elements if we were aborted
+        if (!collection->shouldAbort()) {
+            // queue the collection elements:
+            enqueueElements();
+        }
         selfIsExecuting = false;
     }
     const int started = jobsStarted.loadAcquire();

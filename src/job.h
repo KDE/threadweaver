@@ -113,17 +113,24 @@ public:
 
     /** Abort the execution of the job.
      *
-     * Call this method to ask the Job to abort if it is currently executed. Please note that the default implementation of
-     * the method does nothing (!). This is due to the fact that there is no generic method to abort a processing Job. Not even a
-     * default boolean flag makes sense, as Job could, for example, be in an event loop and will need to create an exit event. You
-     * have to reimplement the method to actually initiate an abort action.
+     * Call this method to ask the Job to abort if it is currently executed. Default implementation of the method sets a flag
+     * causing `shouldAbort()` return true. You can reimplement this method to actually initiate an abort action.
      *
-     * The method is not pure virtual because users are not supposed to be forced to always implement requestAbort(). Also, this
-     * method is supposed to return immediately, not after the abort has completed. It requests the abort, the Job has to act on
+     * This method is supposed to return immediately, not after the abort has completed. It requests the abort, the Job has to act on
      * the request. */
-    void requestAbort() override
-    {
-    }
+    void requestAbort() override;
+
+    /** @brief Whether Job should abort itself
+     *
+     * It will return true if `requestAbort()` was invoked before
+     * but it's up to the job implementation itself to honor it
+     * and some implementations might not actually abort (ie. unabortable job).
+     *
+     * @threadsafe
+     *
+     * @since 6.0
+     */
+    bool shouldAbort() const;
 
     /** The job is about to be added to the weaver's job queue.
      *

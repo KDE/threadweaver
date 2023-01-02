@@ -16,6 +16,7 @@ ThreadWeaver::Private::DefaultExecutor ThreadWeaver::Private::defaultExecutor;
 
 ThreadWeaver::Private::Job_Private::Job_Private()
     : status(Job::Status_NoStatus)
+    , shouldAbort(false)
     , executor(&defaultExecutor)
 {
 }

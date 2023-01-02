@@ -13,6 +13,8 @@
 #include <QList>
 #include <QMutex>
 
+#include <atomic>
+
 namespace ThreadWeaver
 {
 namespace Private
@@ -48,6 +50,8 @@ public:
     mutable QMutex mutex;
     /* @brief The status of the Job. */
     QAtomicInt status;
+
+    std::atomic_bool shouldAbort;
 
     /** The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
