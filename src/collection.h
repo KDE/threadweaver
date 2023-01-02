@@ -11,6 +11,9 @@
 
 #include "job.h"
 #include "jobpointer.h"
+#include "lambda.h"
+
+#include <functional>
 
 namespace ThreadWeaver
 {
@@ -90,6 +93,21 @@ protected:
     const ThreadWeaver::Private::Collection_Private *d() const;
 };
 
+/**
+ * Make a Collection that will execute specified callable (eg. Lambda) for each item in given iterable container
+ * You can use it to have a parallel map function.
+ */
+template<typename Iterable, typename FN>
+QSharedPointer<Collection> make_collection(Iterable iterable, FN callable)
+{
+    QSharedPointer<Collection> collection(new Collection());
+    for (auto it = iterable.begin(); it != iterable.end(); ++it) {
+        *collection << make_job([callable, item = *it, collectionJob = collection.get()]() {
+            callable(item, *collectionJob);
+        });
+    }
+    return collection;
+}
 }
 
 #endif
