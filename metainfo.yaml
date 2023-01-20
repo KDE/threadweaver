@@ -13,8 +13,8 @@ deprecated: false
 release: true
 libraries:
  - qmake: ThreadWeaver
-   cmake: "KF5::ThreadWeaver"
-cmakename: KF5ThreadWeaver
+   cmake: "KF6::ThreadWeaver"
+cmakename: KF6ThreadWeaver
 
 public_lib: true
 group: Frameworks

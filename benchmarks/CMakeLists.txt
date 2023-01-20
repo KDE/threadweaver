@@ -7,5 +7,5 @@ remove_definitions(-DQT_NO_CAST_FROM_ASCII)
 add_executable(ThreadWeaverQueueBenchmarks QueueBenchmarks.cpp)
 # add_test(ThreadWeaverQueueBenchmarks ThreadWeaverQueueBenchmarks)
 
-target_link_libraries(ThreadWeaverQueueBenchmarks Qt${QT_MAJOR_VERSION}::Test KF5::ThreadWeaver)
+target_link_libraries(ThreadWeaverQueueBenchmarks Qt${QT_MAJOR_VERSION}::Test KF6::ThreadWeaver)
 set_target_properties(ThreadWeaverQueueBenchmarks PROPERTIES MACOSX_BUNDLE FALSE)

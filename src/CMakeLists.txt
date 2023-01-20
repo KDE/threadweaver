@@ -1,7 +1,7 @@
-add_library(KF5ThreadWeaver)
-add_library(KF5::ThreadWeaver ALIAS KF5ThreadWeaver)
+add_library(KF6ThreadWeaver)
+add_library(KF6::ThreadWeaver ALIAS KF6ThreadWeaver)
 
-target_sources(KF5ThreadWeaver PRIVATE
+target_sources(KF6ThreadWeaver PRIVATE
     collection.cpp
     collection.h
     collection_p.cpp
@@ -77,7 +77,7 @@ target_sources(KF5ThreadWeaver PRIVATE
 
 )
 
-ecm_generate_export_header(KF5ThreadWeaver
+ecm_generate_export_header(KF6ThreadWeaver
     BASE_NAME ThreadWeaver
     GROUP_BASE_NAME KF
     VERSION ${KF_VERSION}
@@ -85,19 +85,19 @@ ecm_generate_export_header(KF5ThreadWeaver
     DEPRECATION_VERSIONS 5.0 5.80
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
-target_link_libraries(KF5ThreadWeaver PUBLIC Qt${QT_MAJOR_VERSION}::Core)
+target_link_libraries(KF6ThreadWeaver PUBLIC Qt${QT_MAJOR_VERSION}::Core)
 set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(KF5ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
-target_include_directories(KF5ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver>")
+target_include_directories(KF6ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
+target_include_directories(KF6ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver>")
 #FIXME: make this PUBLIC, so that it applies to anything that links against
-kde_target_enable_exceptions(KF5ThreadWeaver PRIVATE)
+kde_target_enable_exceptions(KF6ThreadWeaver PRIVATE)
 
-set_target_properties(KF5ThreadWeaver PROPERTIES
+set_target_properties(KF6ThreadWeaver PROPERTIES
     VERSION ${THREADWEAVER_VERSION}
     SOVERSION ${THREADWEAVER_SOVERSION}
     EXPORT_NAME ThreadWeaver
 )
-install(TARGETS KF5ThreadWeaver EXPORT KF5ThreadWeaverTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
+install(TARGETS KF6ThreadWeaver EXPORT KF6ThreadWeaverTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
   HEADER_NAMES
@@ -148,9 +148,9 @@ install(FILES
 
 if(BUILD_QCH)
     ecm_add_qch(
-        KF5ThreadWeaver_QCH
+        KF6ThreadWeaver_QCH
         NAME ThreadWeaver
-        BASE_NAME KF5ThreadWeaver
+        BASE_NAME KF6ThreadWeaver
         VERSION ${KF_VERSION}
         ORG_DOMAIN org.kde
         SOURCES # using only public headers, to cover only public API
@@ -174,5 +174,5 @@ if(BUILD_QCH)
 endif()
 
 include(ECMGeneratePriFile)
-ecm_generate_pri_file(BASE_NAME ThreadWeaver LIB_NAME KF5ThreadWeaver DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver)
+ecm_generate_pri_file(BASE_NAME ThreadWeaver LIB_NAME KF6ThreadWeaver DEPS "core" FILENAME_VAR PRI_FILENAME INCLUDE_INSTALL_DIR ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver)
 install(FILES ${PRI_FILENAME} DESTINATION ${ECM_MKSPECS_INSTALL_DIR})

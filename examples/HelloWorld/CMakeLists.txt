@@ -11,10 +11,10 @@ if(POLICY CMP0063)
 endif()
 
 
-if (NOT TARGET KF5ThreadWeaver)
+if (NOT TARGET KF6ThreadWeaver)
   # Find the ThreadWeaver framework when we compiling this example stand-alone
 ##@@snippet_begin(adding_tw_2)
-find_package(KF5ThreadWeaver ${KF_VERSION} REQUIRED)
+find_package(KF6ThreadWeaver ${KF_VERSION} REQUIRED)
 ##@@snippet_end
 endif()
 
@@ -24,5 +24,5 @@ project(HelloWorld)
 # Add the HelloWorld executable and link the ThreadWeaver
 # library to it
 add_executable(ThreadWeaver_HelloWorld HelloWorld.cpp)
-target_link_libraries(ThreadWeaver_HelloWorld KF5::ThreadWeaver)
+target_link_libraries(ThreadWeaver_HelloWorld KF6::ThreadWeaver)
 ##@@snippet_end

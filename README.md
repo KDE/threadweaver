@@ -21,10 +21,10 @@ section below, for more detailed information.
 
 If you are using CMake, you need to have
 
-    find_package(KF5ThreadWeaver NO_MODULE)
+    find_package(KF6ThreadWeaver NO_MODULE)
 
 (or similar) in your CMakeLists.txt file, and you need to link to
-KF5::ThreadWeaver.
+KF6::ThreadWeaver.
 
 ThreadWeaver is a Job queue. It executes jobs in threads it internally manages.
 The minimum and maximum number of threads provided by a Weaver is set by the
