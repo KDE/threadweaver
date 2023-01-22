@@ -191,7 +191,7 @@ void JobTests::GeneratingCollectionTest()
     WaitForIdleAndFinished w(Queue::instance());
     stream() << collection;
     Queue::instance()->finish();
-    QCOMPARE(collection.sequence_.count(), SequenceTemplate.length());
+    QCOMPARE(collection.sequence_.size(), SequenceTemplate.length());
 }
 
 void JobTests::ShortJobSequenceTest()
@@ -1075,7 +1075,7 @@ void JobTests::QueueStreamLifecycleTest()
              << new AppendCharacterJob('b', &sequence) // enqueues JobInterface*
              << make_job(new AppendCharacterJob('c', &sequence));
     Queue::instance()->finish();
-    QCOMPARE(sequence.count(), 3);
+    QCOMPARE(sequence.size(), 3);
 }
 
 class SynchronizedNumbers
