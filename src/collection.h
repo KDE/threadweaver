@@ -52,12 +52,6 @@ public:
     /** Return the number of elements in the collection. */
     int elementCount() const;
 
-#if THREADWEAVER_ENABLE_DEPRECATED_SINCE(5, 0)
-    /** @deprecated Since 5.0, use elementCount(). */
-    THREADWEAVER_DEPRECATED_VERSION(5, 0, "Use Collection::elementCount()")
-    int jobListLength() const;
-#endif
-
     /** @brief Add the job to this collection by pointer. */
     Collection &operator<<(ThreadWeaver::JobInterface *job);
 
