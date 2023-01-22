@@ -1,6 +1,6 @@
 # Project name
 project(HelloInternet)
-find_package(Qt${QT_MAJOR_VERSION} COMPONENTS Core Network Xml Widgets REQUIRED)
+find_package(Qt6 COMPONENTS Core Network Xml Widgets REQUIRED)
 # Find includes in corresponding build directories
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 # Instruct CMake to run moc automatically when needed
@@ -15,5 +15,5 @@ add_executable(ThreadWeaver_HelloInternet
 )
 
 kde_enable_exceptions()
-target_link_libraries(ThreadWeaver_HelloInternet Qt${QT_MAJOR_VERSION}::Network Qt${QT_MAJOR_VERSION}::Xml Qt${QT_MAJOR_VERSION}::Widgets KF6::ThreadWeaver)
+target_link_libraries(ThreadWeaver_HelloInternet Qt6::Network Qt6::Xml Qt6::Widgets KF6::ThreadWeaver)
 

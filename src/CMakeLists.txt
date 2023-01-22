@@ -85,7 +85,7 @@ ecm_generate_export_header(KF6ThreadWeaver
     DEPRECATION_VERSIONS 5.0 5.80
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
-target_link_libraries(KF6ThreadWeaver PUBLIC Qt${QT_MAJOR_VERSION}::Core)
+target_link_libraries(KF6ThreadWeaver PUBLIC Qt6::Core)
 set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(KF6ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
 target_include_directories(KF6ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver>")
@@ -159,7 +159,7 @@ if(BUILD_QCH)
             "${CMAKE_SOURCE_DIR}/docs/whymultithreading.md"
         MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
         LINK_QCHS
-            Qt5Core_QCH
+            Qt6Core_QCH
         INCLUDE_DIRS
             ${threadweaver_BUILD_INCLUDE_DIRS}
         BLANK_MACROS

@@ -83,11 +83,7 @@ bool DependencyPolicy::removeDependency(JobPointer jobA, JobPointer jobB)
     QMutexLocker l(d->mutex());
 
     // there may be only one (!) occurrence of [this, dep]:
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
     QMutableMultiMapIterator<JobPointer, JobPointer> it(d->dependencies());
-#else
-    QMutableMapIterator<JobPointer, JobPointer> it(d->dependencies());
-#endif
     while (it.hasNext()) {
         it.next();
         if (it.key() == jobA && it.value() == jobB) {
@@ -111,11 +107,7 @@ void DependencyPolicy::resolveDependencies(JobPointer job)
 {
     if (job->success()) {
         QMutexLocker l(d->mutex());
-#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
         QMutableMultiMapIterator<JobPointer, JobPointer> it(d->dependencies());
-#else
-        QMutableMapIterator<JobPointer, JobPointer> it(d->dependencies());
-#endif
         // there has to be a better way to do this: (?)
         while (it.hasNext()) { // we remove all entries where jobs depend on *this* :
             it.next();
