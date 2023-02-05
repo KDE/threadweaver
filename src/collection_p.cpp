@@ -34,6 +34,11 @@ void Collection_Private::finalCleanup(Collection *collection)
     freeQueuePolicyResources(self);
     if (collection->status() < Job::Status_Success) {
         collection->setStatus(Job::Status_Success);
+    } else {
+        // At this point we either should have been running
+        // in which case above would mark Success
+        // or otherwise we already should be in Failed or Aborted state
+        Q_ASSERT(collection->status() == Job::Status_Failed || collection->status() == Job::Status_Aborted);
     }
     api = nullptr;
 }
@@ -122,9 +127,22 @@ void Collection_Private::prepareToEnqueueElements()
     // empty in Collection
 }
 
-void Collection_Private::processCompletedElement(Collection *, JobPointer, Thread *)
+JobInterface::Status Collection_Private::updateStatus(Collection *collection, JobPointer job)
 {
-    // empty in Collection
+    // Keep our collection status in running until all jobs have finished
+    // but make failures sticky so on first failed job we keep it counting as failure
+    auto newStatus = Job::Status_Running;
+    const auto jobStatus = job->status();
+    if (jobStatus != JobInterface::Status_Success) {
+        newStatus = jobStatus;
+    }
+    collection->setStatus(newStatus);
+    return newStatus;
+}
+
+void Collection_Private::processCompletedElement(Collection *collection, JobPointer job, Thread *)
+{
+    updateStatus(collection, job);
 }
 
 void Collection_Private::stop_locked(Collection *collection)

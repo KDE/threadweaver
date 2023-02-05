@@ -61,6 +61,8 @@ public:
     /** @brief Prepare to enqueue the elements. */
     virtual void prepareToEnqueueElements();
 
+    virtual JobInterface::Status updateStatus(Collection *collection, JobPointer job);
+
     /** @brief Process a completed element. */
     virtual void processCompletedElement(Collection *collection, JobPointer job, Thread *thread);
 

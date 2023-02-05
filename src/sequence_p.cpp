@@ -42,10 +42,15 @@ void Sequence_Private::processCompletedElement(Collection *collection, JobPointe
     Q_ASSERT(!mutex.tryLock());
     Q_ASSERT(job != nullptr);
     Q_ASSERT(!self.isNull());
-    const JobInterface::Status status = job->status();
-    if (status != JobInterface::Status_Success) {
+
+    auto updatedStatus = updateStatus(collection, job);
+    if (updatedStatus != JobInterface::Status_Running) {
+        // We're not in running status - either aborted or failed
+        // lets stop our sequence
         stop_locked(collection);
-        collection->setStatus(status);
+        // stop might have changed our status
+        // so lets restore back to original
+        collection->setStatus(updatedStatus);
     }
     const int next = completed_.fetchAndAddAcquire(1);
     const int count = elements.count();
