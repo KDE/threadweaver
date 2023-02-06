@@ -98,9 +98,8 @@ void Collection::addJob(JobPointer job)
     d()->elements.append(job);
 }
 
-void Collection::stop(JobPointer job)
+void Collection::stop()
 {
-    Q_UNUSED(job);
     QMutexLocker l(mutex());
     Q_UNUSED(l);
     d()->stop_locked(this);

@@ -44,10 +44,10 @@ public:
     virtual void addJob(JobPointer);
 
     /** Stop processing, dequeue all remaining Jobs.
-     * job is supposed to be an element of the collection.
+     *
+     * @since 6.0
      */
-    // FIXME remove job argument?
-    void stop(ThreadWeaver::JobPointer job);
+    void stop();
 
     /** Return the number of elements in the collection. */
     int elementCount() const;
