@@ -45,9 +45,11 @@ void Sequence_Private::processCompletedElement(Collection *collection, JobPointe
 
     auto updatedStatus = updateStatus(collection, job);
     if (updatedStatus != JobInterface::Status_Running) {
-        // We're not in running status - either aborted or failed
-        // lets stop our sequence
-        stop_locked(collection);
+        // We need to unlock mutex so that `stop` can
+        // properly stop us
+        mutex.unlock();
+        stop(collection);
+        mutex.lock();
         // stop might have changed our status
         // so lets restore back to original
         collection->setStatus(updatedStatus);

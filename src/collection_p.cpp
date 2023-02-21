@@ -145,12 +145,19 @@ void Collection_Private::processCompletedElement(Collection *collection, JobPoin
     updateStatus(collection, job);
 }
 
-void Collection_Private::stop_locked(Collection *collection)
+void Collection_Private::stop(Collection *collection)
 {
-    Q_ASSERT(!mutex.tryLock());
+    QMutexLocker l(&mutex);
     if (api != nullptr) {
+        // We can't dequeue ourselves while locked because we will
+        // get deadlock when our own aboutToBeDequeued will be invoked
+        // which will try to acquire this same lock
+        // and we need our own `api` because `finalCleanup` can be invoked in between
+        auto currentApi = api;
+        l.unlock();
         TWDEBUG(4, "Collection::stop: dequeueing %p.\n", collection);
-        if (!api->dequeue(ManagedJobPointer<Collection>(collection))) {
+        if (!currentApi->dequeue(ManagedJobPointer<Collection>(collection))) {
+            l.relock();
             dequeueElements(collection, false);
         }
     }
@@ -184,6 +191,17 @@ void Collection_Private::dequeueElements(Collection *collection, bool queueApiIs
 
     if (jobCounter.loadAcquire() == 1) {
         finalCleanup(collection);
+    }
+}
+
+void Collection_Private::requestAbort(Collection *collection)
+{
+    stop(collection);
+    QMutexLocker l(&mutex);
+    for (auto job = elements.begin(); job != elements.end(); ++job) {
+        if ((*job)->status() <= JobInterface::Status_Running) {
+            (*job)->requestAbort();
+        }
     }
 }
 

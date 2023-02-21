@@ -100,9 +100,13 @@ void Collection::addJob(JobPointer job)
 
 void Collection::stop()
 {
-    QMutexLocker l(mutex());
-    Q_UNUSED(l);
-    d()->stop_locked(this);
+    d()->stop(this);
+}
+
+void Collection::requestAbort()
+{
+    Job::requestAbort();
+    d()->requestAbort(this);
 }
 
 void Collection::aboutToBeQueued_locked(QueueAPI *api)

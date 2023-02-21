@@ -52,6 +52,13 @@ public:
      */
     void stop();
 
+    /** Dequeue all remaining Jobs and request abortion of all running jobs
+     * @see Job::requestAbort()
+     *
+     * @since 6.0
+     */
+    void requestAbort() override;
+
     /** Return the number of elements in the collection. */
     int elementCount() const;
 

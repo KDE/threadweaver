@@ -67,7 +67,9 @@ public:
     virtual void processCompletedElement(Collection *collection, JobPointer job, Thread *thread);
 
     /** @brief Implement stop. */
-    void stop_locked(Collection *collection);
+    void stop(Collection *collection);
+
+    void requestAbort(Collection *collection);
 
     /** @brief Called before an element will be dequeued. */
     virtual void elementDequeued(const JobPointer &)
