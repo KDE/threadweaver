@@ -31,7 +31,6 @@ void Collection_Private::finalCleanup(Collection *collection)
 {
     Q_ASSERT(!self.isNull());
     Q_ASSERT(!mutex.tryLock());
-    freeQueuePolicyResources(self);
     if (collection->status() < Job::Status_Success) {
         collection->setStatus(Job::Status_Success);
     } else {
@@ -40,6 +39,7 @@ void Collection_Private::finalCleanup(Collection *collection)
         // or otherwise we already should be in Failed or Aborted state
         Q_ASSERT(collection->status() == Job::Status_Failed || collection->status() == Job::Status_Aborted);
     }
+    freeQueuePolicyResources(self);
     api = nullptr;
 }
 
