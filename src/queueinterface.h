@@ -9,8 +9,8 @@
 #ifndef QueueInterface_H
 #define QueueInterface_H
 
+#include <QList>
 #include <QObject>
-#include <QVector>
 
 #include "jobinterface.h"
 #include "jobpointer.h"
@@ -76,7 +76,7 @@ public:
     JobPointer is a shared pointer. This means the object pointed to will be deleted if this object
     is the last remaining reference to it. Keep a JobPointer to the job to avoid automatic deletion.
     */
-    virtual void enqueue(const QVector<JobPointer> &jobs) = 0;
+    virtual void enqueue(const QList<JobPointer> &jobs) = 0;
 
     /** Remove a job from the queue.
      *

@@ -6,7 +6,7 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QVector>
+#include <QList>
 
 #include "queue.h"
 #include "queueing.h"
@@ -22,7 +22,7 @@ public:
     {
     }
     Queue *weaver;
-    QVector<JobPointer> jobs;
+    QList<JobPointer> jobs;
 };
 
 QueueStream::QueueStream(Queue *queue)

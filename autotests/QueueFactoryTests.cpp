@@ -45,9 +45,9 @@ public:
         : Weaver(parent)
     {
     }
-    void enqueue(const QVector<JobPointer> &jobs) override
+    void enqueue(const QList<JobPointer> &jobs) override
     {
-        QVector<JobPointer> decorated;
+        QList<JobPointer> decorated;
         std::transform(jobs.begin(), jobs.end(), std::back_inserter(decorated), [](const JobPointer &job) {
             return JobPointer(new CountingJobDecorator(job));
         });

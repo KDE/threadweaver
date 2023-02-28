@@ -9,8 +9,8 @@
 #ifndef COLLECTION_COLLECTION_P_H
 #define COLLECTION_COLLECTION_P_H
 
+#include <QList>
 #include <QMutex>
-#include <QVector>
 
 #include "executewrapper_p.h"
 #include "job_p.h"
@@ -73,7 +73,7 @@ public:
     }
 
     /* The elements of the collection. */
-    QVector<JobPointer> elements;
+    QList<JobPointer> elements;
 
     /* The Weaver interface this collection is queued in. */
     QueueAPI *api;

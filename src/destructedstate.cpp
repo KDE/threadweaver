@@ -45,7 +45,7 @@ int DestructedState::currentNumberOfThreads() const
     return 0;
 }
 
-void DestructedState::enqueue(const QVector<JobPointer> &)
+void DestructedState::enqueue(const QList<JobPointer> &)
 {
 }
 

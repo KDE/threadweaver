@@ -51,7 +51,7 @@ public:
     int currentNumberOfThreads() const override;
 
     static ThreadWeaver::Queue *instance();
-    void enqueue(const QVector<JobPointer> &jobs) override;
+    void enqueue(const QList<JobPointer> &jobs) override;
     void enqueue(const JobPointer &job);
     bool dequeue(const JobPointer &) override;
     void dequeue() override;

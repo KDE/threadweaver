@@ -33,7 +33,7 @@ public:
     /** Returns the current number of threads in the inventory. */
     int currentNumberOfThreads() const override;
     /** Enqueue a job. */
-    void enqueue(const QVector<JobPointer> &jobs) override;
+    void enqueue(const QList<JobPointer> &jobs) override;
     /** Dequeue a job. */
     bool dequeue(const JobPointer &job) override;
     /** Dequeue all jobs. */

@@ -11,8 +11,8 @@
 
 #include <QDateTime>
 #include <QElapsedTimer>
+#include <QList>
 #include <QMutex>
-#include <QVector>
 
 #include "src/iddecorator.h"
 
@@ -48,7 +48,7 @@ public:
     qint64 time();
 
 private:
-    QVector<JobLoggingDecorator::JobData> jobData_;
+    QList<JobLoggingDecorator::JobData> jobData_;
     QElapsedTimer elapsed_;
     QDateTime start_;
     QMutex mutex_;

@@ -30,7 +30,7 @@ public:
     void setMaximumNumberOfThreads(int cap) override;
     int maximumNumberOfThreads() const override;
     int currentNumberOfThreads() const override;
-    void enqueue(const QVector<JobPointer> &job) override;
+    void enqueue(const QList<JobPointer> &job) override;
     bool dequeue(const JobPointer &job) override;
     void dequeue() override;
     void finish() override;

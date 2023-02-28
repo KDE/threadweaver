@@ -117,7 +117,7 @@ void QueueBenchmarksTest::BaselineBenchmark()
     const int n = c * b;
     Q_UNUSED(t); // in this case
 
-    QVector<AccumulateJob> jobs(n);
+    QList<AccumulateJob> jobs(n);
     for (int i = 0; i < n; ++i) {
         jobs[i].setCount(m);
     }
@@ -146,7 +146,7 @@ void QueueBenchmarksTest::BaselineAsJobsBenchmark()
     const int n = c * b;
     Q_UNUSED(t); // in this case
 
-    QVector<AccumulateJob> jobs(n);
+    QList<AccumulateJob> jobs(n);
     for (int i = 0; i < n; ++i) {
         jobs[i].setCount(m);
     }
@@ -174,7 +174,7 @@ void QueueBenchmarksTest::IndividualJobsBenchmark()
     ThreadWeaver::Queue weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
-    QVector<AccumulateJob> jobs(n);
+    QList<AccumulateJob> jobs(n);
     {
         ThreadWeaver::QueueStream stream(&weaver);
         for (int i = 0; i < n; ++i) {
@@ -204,7 +204,7 @@ void QueueBenchmarksTest::CollectionsBenchmark()
     ThreadWeaver::Queue weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
-    QVector<AccumulateJob> jobs(n);
+    QList<AccumulateJob> jobs(n);
 
     // FIXME currently, memory management of the job sequences (they are deleted when they go out of scope)
     // is measured as part of the benchmark
@@ -243,7 +243,7 @@ void QueueBenchmarksTest::SequencesBenchmark()
     ThreadWeaver::Queue weaver;
     weaver.setMaximumNumberOfThreads(t);
     weaver.suspend();
-    QVector<AccumulateJob> jobs(n);
+    QList<AccumulateJob> jobs(n);
 
     qDebug() << b << "blocks" << c << "operations, queueing...";
     // queue the jobs blockwise as collections

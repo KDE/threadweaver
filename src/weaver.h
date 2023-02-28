@@ -48,7 +48,7 @@ public:
     int currentNumberOfThreads() const override;
 
     void setState(StateId);
-    void enqueue(const QVector<JobPointer> &jobs) override;
+    void enqueue(const QList<JobPointer> &jobs) override;
     bool dequeue(const JobPointer &job) override;
     void dequeue() override;
     void finish() override;
@@ -77,7 +77,7 @@ public:
     void setMaximumNumberOfThreads_p(int cap) override;
     int maximumNumberOfThreads_p() const override;
     int currentNumberOfThreads_p() const override;
-    void enqueue_p(const QVector<JobPointer> &jobs);
+    void enqueue_p(const QList<JobPointer> &jobs);
     bool dequeue_p(JobPointer job) override;
     void dequeue_p() override;
     void finish_p() override;

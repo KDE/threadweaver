@@ -54,7 +54,7 @@ int WeaverImplState::currentNumberOfThreads() const
     return weaver()->currentNumberOfThreads_p();
 }
 
-void WeaverImplState::enqueue(const QVector<JobPointer> &jobs)
+void WeaverImplState::enqueue(const QList<JobPointer> &jobs)
 {
     weaver()->enqueue_p(jobs);
 }

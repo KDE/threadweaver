@@ -7,8 +7,8 @@
 */
 
 #include <QCoreApplication>
+#include <QList>
 #include <QMutex>
-#include <QVector>
 
 #include "queue.h"
 #include "weaver.h"
@@ -164,14 +164,14 @@ Queue *Queue::instance()
     return s_instance.loadAcquire();
 }
 
-void Queue::enqueue(const QVector<JobPointer> &jobs)
+void Queue::enqueue(const QList<JobPointer> &jobs)
 {
     d->implementation->enqueue(jobs);
 }
 
 void Queue::enqueue(const JobPointer &job)
 {
-    enqueue(QVector<JobPointer>() << job);
+    enqueue(QList<JobPointer>() << job);
 }
 
 bool Queue::dequeue(const JobPointer &job)

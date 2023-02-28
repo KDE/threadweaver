@@ -1107,7 +1107,7 @@ public:
     }
 
 private:
-    QVector<int> numbers_;
+    QList<int> numbers_;
     mutable QMutex mutex_;
 };
 
@@ -1148,7 +1148,7 @@ public:
     void run(JobPointer, Thread *) override
     {
         numbers_->append(start_);
-        QVector<GeneratingEnumeratorCollection *> elements;
+        QList<GeneratingEnumeratorCollection *> elements;
         for (int index = start_ + 1; index < start_ + count_; ++index) {
             elements.append(new GeneratingEnumeratorCollection(numbers_, index, 1));
         }

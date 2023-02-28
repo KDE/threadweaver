@@ -11,7 +11,7 @@
 
 #include <QAbstractListModel>
 #include <QFileInfoList>
-#include <QVector>
+#include <QList>
 
 #include <ThreadWeaver/ResourceRestrictionPolicy>
 
@@ -65,7 +65,7 @@ private Q_SLOTS:
     void slotElementChanged(int id);
 
 private:
-    QVector<Image> m_images;
+    QList<Image> m_images;
     ThreadWeaver::ResourceRestrictionPolicy m_fileLoaderRestriction;
     ThreadWeaver::ResourceRestrictionPolicy m_imageLoaderRestriction;
     ThreadWeaver::ResourceRestrictionPolicy m_imageScalerRestriction;

@@ -200,14 +200,14 @@ int Weaver::currentNumberOfThreads_p() const
     return d()->inventory.count();
 }
 
-void Weaver::enqueue(const QVector<JobPointer> &jobs)
+void Weaver::enqueue(const QList<JobPointer> &jobs)
 {
     QMutexLocker l(d()->mutex);
     Q_UNUSED(l);
     state()->enqueue(jobs);
 }
 
-void Weaver::enqueue_p(const QVector<JobPointer> &jobs)
+void Weaver::enqueue_p(const QList<JobPointer> &jobs)
 {
     Q_ASSERT(!d()->mutex->tryLock()); // mutex has to be held when this method is called
     if (jobs.isEmpty()) {
