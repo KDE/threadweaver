@@ -67,4 +67,7 @@ delivered asynchronously.
 The Job class in the ThreadWeaver library itself contains such a helper class
 that can be used as a reference for this approach.
 
+## Porting
+
+Documentation about porting your code to newer versions is described in `docs/PORTING.md`
 
