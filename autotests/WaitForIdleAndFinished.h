@@ -24,6 +24,7 @@ public:
     ~WaitForIdleAndFinished();
     WaitForIdleAndFinished(const WaitForIdleAndFinished &) = delete;
     WaitForIdleAndFinished &operator=(const WaitForIdleAndFinished &) = delete;
+    void finish();
 
 private:
     ThreadWeaver::Queue *weaver_;

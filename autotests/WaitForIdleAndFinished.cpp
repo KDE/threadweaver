@@ -29,3 +29,9 @@ WaitForIdleAndFinished::~WaitForIdleAndFinished()
     weaver_->suspend();
     Q_ASSERT(weaver_->isIdle());
 }
+
+void WaitForIdleAndFinished::finish()
+{
+    weaver_->finish();
+    Q_ASSERT(weaver_->isIdle());
+}
