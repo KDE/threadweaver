@@ -1230,4 +1230,102 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
     QVERIFY(numbers.isSorted());
 }
 
+struct AbortableJob : public Job {
+    int aborted = 0;
+    int extraCode = 0;
+    bool shouldAbort = false;
+    QMutex waitForStart;
+    QMutex waitForAbort;
+
+    AbortableJob()
+    {
+        waitForStart.lock();
+        waitForAbort.lock();
+    }
+
+    ~AbortableJob()
+    {
+        waitForStart.unlock();
+        waitForAbort.unlock();
+    }
+
+    void run(JobPointer, Thread *) override
+    {
+        QCOMPARE(this->status(), Job::Status_Running);
+        waitForStart.unlock();
+        waitForAbort.lock();
+        if (shouldAbort) {
+            aborted++;
+            throw JobAborted();
+        }
+        extraCode++;
+    }
+
+    void requestAbort() override
+    {
+        shouldAbort = true;
+
+        // Let it handle abortion
+        waitForAbort.unlock();
+    }
+};
+
+void JobTests::RequestAbortCollectionTest()
+{
+    AbortableJob abortable;
+
+    QString sequence;
+    Collection jobCollection;
+    jobCollection << new AppendCharacterJob(QChar('a'), &sequence) << abortable << new AppendCharacterJob(QChar('c'), &sequence);
+
+    WaitForIdleAndFinished w(Queue::instance());
+    stream() << jobCollection;
+
+    // We need to wait for job to have started execution
+    abortable.waitForStart.lock();
+
+    // Now tell it to abort
+    jobCollection.requestAbort();
+
+    w.finish();
+
+    QVERIFY(DependencyPolicy::instance().isEmpty());
+    QVERIFY(sequence.length() == 2);
+    QVERIFY(sequence.count('a') == 1);
+    QVERIFY(sequence.count('c') == 1);
+    QVERIFY(abortable.aborted == 1);
+    QVERIFY(abortable.extraCode == 0);
+    QCOMPARE(jobCollection.status(), Job::Status_Aborted);
+    QVERIFY(abortable.waitForStart.tryLock() == false);
+    QVERIFY(abortable.waitForAbort.tryLock() == false);
+}
+
+void JobTests::RequestAbortSequenceTest()
+{
+    AbortableJob abortable;
+
+    QString sequence;
+    Sequence jobSequence;
+    jobSequence << new AppendCharacterJob(QChar('a'), &sequence) << abortable << new AppendCharacterJob(QChar('c'), &sequence);
+
+    WaitForIdleAndFinished w(Queue::instance());
+    stream() << jobSequence;
+
+    // We need to wait for job to have started execution
+    abortable.waitForStart.lock();
+
+    // Now tell it to abort
+    jobSequence.requestAbort();
+
+    w.finish();
+
+    QVERIFY(DependencyPolicy::instance().isEmpty());
+    QCOMPARE(sequence, QLatin1String("a"));
+    QVERIFY(abortable.aborted == 1);
+    QVERIFY(abortable.extraCode == 0);
+    QCOMPARE(jobSequence.status(), Job::Status_Aborted);
+    QVERIFY(abortable.waitForStart.tryLock() == false);
+    QVERIFY(abortable.waitForAbort.tryLock() == false);
+}
+
 QTEST_MAIN(JobTests)
