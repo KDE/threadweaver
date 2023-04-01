@@ -163,6 +163,12 @@ public:
     /** Returns true if the jobs's execute method finished. */
     bool isFinished() const override;
 
+    /** Add handler that will be invoked once job has finished
+     *
+     * @since 6.0
+     */
+    void onFinish(const std::function<void(const JobInterface &job)> &lambda);
+
     /** Assign a queue policy.
      *
      * Queue Policies customize the queueing (running) behaviour of sets of jobs. Examples for queue policies are dependencies

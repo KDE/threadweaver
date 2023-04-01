@@ -32,6 +32,18 @@ void ThreadWeaver::Private::Job_Private::freeQueuePolicyResources(JobPointer job
     }
 }
 
+void ThreadWeaver::Private::Job_Private::handleFinish(const JobPointer &job)
+{
+    QMutexLocker l(&mutex);
+    QList<std::function<void(const JobInterface &job)>> handlers = finishHandlers;
+    // We need to unlock mutex because
+    // handlers might want to use Job methods that also need this same mutex
+    l.unlock();
+    for (auto handler : handlers) {
+        handler(*job.get());
+    }
+}
+
 void ThreadWeaver::Private::DebugExecuteWrapper::execute(const JobPointer &job, ThreadWeaver::Thread *th)
 {
     Q_ASSERT_X(job, Q_FUNC_INFO, "job may not be zero!");

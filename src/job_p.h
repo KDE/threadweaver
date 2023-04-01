@@ -14,6 +14,7 @@
 #include <QMutex>
 
 #include <atomic>
+#include <functional>
 
 namespace ThreadWeaver
 {
@@ -55,6 +56,9 @@ public:
 
     /** The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
+
+    QList<std::function<void(const JobInterface &job)>> finishHandlers;
+    void handleFinish(const JobPointer &job);
 
     // FIXME What is the correct KDE frameworks no debug switch?
 #if !defined(NDEBUG)

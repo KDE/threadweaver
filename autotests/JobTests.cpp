@@ -1327,4 +1327,100 @@ void JobTests::RequestAbortSequenceTest()
     QVERIFY(abortable.waitForAbort.tryLock() == false);
 }
 
+void JobTests::JobOnFinishTest()
+{
+    QString sequence;
+    int finishedA = 0;
+    int finishedB = 0;
+    Collection jobCollection;
+    jobCollection << new AppendCharacterJob(QChar('a'), &sequence) << new AppendCharacterJob(QChar('b'), &sequence)
+                  << new AppendCharacterJob(QChar('c'), &sequence);
+
+    jobCollection.onFinish([&](const JobInterface &job) {
+        QCOMPARE(job.status(), Job::Status_Success);
+
+        // Result should already be correct now
+        QVERIFY(sequence.length() == 3);
+        QVERIFY(sequence.count('a') == 1);
+        QVERIFY(sequence.count('b') == 1);
+        QVERIFY(sequence.count('c') == 1);
+
+        // We should get same original instance
+        QVERIFY(&job == &jobCollection);
+
+        finishedA++;
+    });
+
+    jobCollection.onFinish([&](const JobInterface &job) {
+        QCOMPARE(jobCollection.status(), Job::Status_Success);
+
+        QVERIFY(sequence.length() == 3);
+        // We should get same original instance
+        QVERIFY(&job == &jobCollection);
+
+        finishedB++;
+    });
+
+    WaitForIdleAndFinished w(Queue::instance());
+    stream() << jobCollection;
+    w.finish();
+
+    QVERIFY(DependencyPolicy::instance().isEmpty());
+    QVERIFY(finishedA == 1);
+    QVERIFY(finishedB == 1);
+}
+
+void JobTests::JobOnFinishAbortTest()
+{
+    QString sequence;
+    int finishedA = 0;
+    int finishedB = 0;
+    Sequence jobSequence;
+
+    struct AbortingJob : public Job {
+        void run(JobPointer, Thread *) override
+        {
+            throw JobAborted();
+        }
+    };
+
+    AbortingJob aborting;
+
+    jobSequence << new AppendCharacterJob(QChar('a'), &sequence) << aborting << new AppendCharacterJob(QChar('c'), &sequence);
+
+    jobSequence.onFinish([&](const JobInterface &job) {
+        // Result should already be correct now
+        QCOMPARE(sequence, QLatin1String("a"));
+
+        // We should get same original instance
+        QVERIFY(&job == &jobSequence);
+
+        // We should be in aborted state
+        QCOMPARE(job.status(), Job::Status_Aborted);
+
+        finishedA++;
+    });
+
+    jobSequence.onFinish([&](const JobInterface &job) {
+        // Result should already be correct now
+        QCOMPARE(sequence, QLatin1String("a"));
+
+        // We should get same original instance
+        QVERIFY(&job == &jobSequence);
+
+        // We should be in aborted state
+        QCOMPARE(jobSequence.status(), Job::Status_Aborted);
+
+        finishedB++;
+    });
+
+    WaitForIdleAndFinished w(Queue::instance());
+    stream() << jobSequence;
+    w.finish();
+
+    QVERIFY(DependencyPolicy::instance().isEmpty());
+    QVERIFY(finishedA == 1);
+    QVERIFY(finishedB == 1);
+}
+
 QTEST_MAIN(JobTests)

@@ -127,6 +127,7 @@ void Job::defaultBegin(const JobPointer &, Thread *)
 
 void Job::defaultEnd(const JobPointer &job, Thread *)
 {
+    d()->handleFinish(job);
     d()->freeQueuePolicyResources(job);
 }
 
@@ -199,6 +200,12 @@ QMutex *Job::mutex() const
 bool Job::shouldAbort() const
 {
     return d()->shouldAbort;
+}
+
+void Job::onFinish(const std::function<void(const JobInterface &job)> &lambda)
+{
+    QMutexLocker l(mutex());
+    d()->finishHandlers << lambda;
 }
 
 }
