@@ -1,6 +1,12 @@
 add_library(KF6ThreadWeaver)
 add_library(KF6::ThreadWeaver ALIAS KF6ThreadWeaver)
 
+set_target_properties(KF6ThreadWeaver PROPERTIES
+    VERSION     ${THREADWEAVER_VERSION}
+    SOVERSION   ${THREADWEAVER_SOVERSION}
+    EXPORT_NAME ThreadWeaver
+)
+
 target_sources(KF6ThreadWeaver PRIVATE
     collection.cpp
     collection.h
@@ -85,6 +91,7 @@ ecm_generate_export_header(KF6ThreadWeaver
     DEPRECATION_VERSIONS
     EXCLUDE_DEPRECATED_BEFORE_AND_AT ${EXCLUDE_DEPRECATED_BEFORE_AND_AT}
 )
+
 target_link_libraries(KF6ThreadWeaver PUBLIC Qt6::Core)
 set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
 target_include_directories(KF6ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
@@ -92,11 +99,6 @@ target_include_directories(KF6ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 kde_target_enable_exceptions(KF6ThreadWeaver PRIVATE)
 
-set_target_properties(KF6ThreadWeaver PROPERTIES
-    VERSION ${THREADWEAVER_VERSION}
-    SOVERSION ${THREADWEAVER_SOVERSION}
-    EXPORT_NAME ThreadWeaver
-)
 install(TARGETS KF6ThreadWeaver EXPORT KF6ThreadWeaverTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
