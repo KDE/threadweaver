@@ -239,4 +239,5 @@ void Queue::reschedule()
     d->implementation->reschedule();
 }
 
+#include "moc_queue.cpp"
 #include "queue.moc"

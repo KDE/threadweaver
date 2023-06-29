@@ -281,3 +281,5 @@ void DeleteTest::countCompletedDecoratedCollection(JobPointer)
 QMutex s_GlobalMutex;
 
 QTEST_MAIN(DeleteTest)
+
+#include "moc_DeleteTest.cpp"

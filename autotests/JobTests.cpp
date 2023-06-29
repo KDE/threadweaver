@@ -1424,3 +1424,5 @@ void JobTests::JobOnFinishAbortTest()
 }
 
 QTEST_MAIN(JobTests)
+
+#include "moc_JobTests.cpp"

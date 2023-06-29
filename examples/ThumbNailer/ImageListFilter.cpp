@@ -25,3 +25,5 @@ bool ImageListFilter::filterAcceptsRow(int source_row, const QModelIndex &source
     const int step = index.data(Model::Role_StepRole).value<int>();
     return step == m_step;
 }
+
+#include "moc_ImageListFilter.cpp"

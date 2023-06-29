@@ -50,3 +50,5 @@ const QFileInfoList Benchmark::images()
     const QDir dir = QDir(QLatin1String("/usr/share/backgrounds"));
     return dir.entryInfoList(QStringList() << QLatin1String("*.jpg"));
 }
+
+#include "moc_Benchmark.cpp"

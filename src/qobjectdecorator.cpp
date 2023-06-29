@@ -43,3 +43,5 @@ void QObjectDecorator::defaultEnd(const JobPointer &self, Thread *thread)
 }
 
 }
+
+#include "moc_qobjectdecorator.cpp"

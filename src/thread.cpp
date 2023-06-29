@@ -113,3 +113,5 @@ void Thread::requestAbort()
         d->job->requestAbort();
     }
 }
+
+#include "moc_thread.cpp"

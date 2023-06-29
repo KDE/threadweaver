@@ -23,3 +23,5 @@ void JobLoggingWeaver::enqueue(const QList<JobPointer> &jobs)
     });
     Weaver::enqueue(decorated);
 }
+
+#include "moc_JobLoggingWeaver.cpp"
