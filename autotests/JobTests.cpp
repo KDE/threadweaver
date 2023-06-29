@@ -1231,3 +1231,5 @@ void JobTests::DeeperNestedGeneratingCollectionsTest()
 }
 
 QTEST_MAIN(JobTests)
+
+#include "moc_JobTests.cpp"

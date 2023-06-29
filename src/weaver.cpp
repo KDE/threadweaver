@@ -601,3 +601,5 @@ void Weaver::blockThreadUntilJobsAreBeingAssigned_locked(Thread *th)
     d()->jobAvailable.wait(d()->mutex);
     TWDEBUG(4, "WeaverImpl::blockThreadUntilJobsAreBeingAssigned_locked: thread %i resumed  (%s state).\n", th->id(), qPrintable(state()->stateName()));
 }
+
+#include "moc_weaver.cpp"

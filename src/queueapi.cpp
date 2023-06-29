@@ -21,3 +21,5 @@ QueueAPI::QueueAPI(Private::QueueSignals_Private *d, QObject *parent)
 }
 
 }
+
+#include "moc_queueapi.cpp"

@@ -87,3 +87,5 @@ QSize ItemDelegate::sizeHint(const QStyleOptionViewItem &, const QModelIndex &) 
     static const int Height = Image::ThumbHeight + 2 * FrameWidth + 2 * Margin + 2;
     return QSize(Width, Height);
 }
+
+#include "moc_ItemDelegate.cpp"

@@ -49,3 +49,5 @@ void MainWidget::setStatus(QString text)
 {
     m_status->setText(text);
 }
+
+#include "moc_MainWidget.cpp"

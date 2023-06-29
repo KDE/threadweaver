@@ -150,3 +150,5 @@ QString ViewController::attributeTextFor(const QDomDocument &doc, const char *ta
     const QString content = elements.at(0).toElement().attribute(attributeString);
     return content;
 }
+
+#include "moc_ViewController.cpp"

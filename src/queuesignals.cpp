@@ -41,3 +41,5 @@ const Private::QueueSignals_Private *QueueSignals::d() const
 }
 
 }
+
+#include "moc_queuesignals.cpp"

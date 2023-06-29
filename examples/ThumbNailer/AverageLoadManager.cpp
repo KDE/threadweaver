@@ -70,3 +70,5 @@ void AverageLoadManager::update()
     Q_EMIT recommendedWorkerCount(threads);
 #endif
 }
+
+#include "moc_AverageLoadManager.cpp"

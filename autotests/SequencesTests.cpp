@@ -50,3 +50,5 @@ void SequencesTests::RecursiveStopTest()
 }
 
 QTEST_MAIN(SequencesTests)
+
+#include "moc_SequencesTests.cpp"

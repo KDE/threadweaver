@@ -203,3 +203,5 @@ void MainWindow::slotQuit()
     ThreadWeaver::Queue::instance()->finish();
     QApplication::instance()->quit();
 }
+
+#include "moc_MainWindow.cpp"

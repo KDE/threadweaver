@@ -247,3 +247,5 @@ void Model::slotElementChanged(int id)
         Q_EMIT dataChanged(i, i);
     }
 }
+
+#include "moc_Model.cpp"
