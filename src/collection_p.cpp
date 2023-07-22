@@ -176,22 +176,22 @@ void Collection_Private::dequeueElements(Collection *collection, bool queueApiIs
         return; // not queued
     }
 
-    for (int index = 0; index < elements.size(); ++index) {
+    for (const auto &job : elements) {
         bool result;
         if (queueApiIsLocked) {
-            result = api->dequeue_p(elements.at(index));
+            result = api->dequeue_p(job);
         } else {
-            result = api->dequeue(elements.at(index));
+            result = api->dequeue(job);
         }
         if (result) {
             jobCounter.fetchAndAddOrdered(-1);
         }
         TWDEBUG(3,
                 "Collection::Private::dequeueElements: dequeueing %p (%s, %i jobs left).\n",
-                (void *)elements.at(index).data(),
+                (void *)job.data(),
                 result ? "found" : "not found",
                 jobCounter.loadAcquire());
-        elementDequeued(elements.at(index));
+        elementDequeued(job);
     }
 
     if (jobCounter.loadAcquire() == 1) {
