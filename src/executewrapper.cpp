@@ -19,7 +19,7 @@ Executor *ExecuteWrapper::wrap(Executor *previous)
     return wrapped.fetchAndStoreOrdered(previous);
 }
 
-Executor *ExecuteWrapper::unwrap(const JobPointer &job)
+Executor *ExecuteWrapper::unwrap(JobInterface *job)
 {
     Executor *executor = job->setExecutor(wrapped.fetchAndStoreOrdered(nullptr));
     Q_ASSERT_X(executor == this, Q_FUNC_INFO, "ExecuteWrapper can only unwrap itself!");

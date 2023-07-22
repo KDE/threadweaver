@@ -26,7 +26,7 @@ class ExecuteWrapper : public Executor
 public:
     ExecuteWrapper();
     Executor *wrap(Executor *previous);
-    Executor *unwrap(const JobPointer &job);
+    Executor *unwrap(JobInterface *job);
     void begin(const JobPointer &job, Thread *) override;
     void execute(const JobPointer &job, Thread *thread) override;
     void executeWrapped(const JobPointer &job, Thread *thread);

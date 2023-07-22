@@ -57,7 +57,7 @@ public:
     {
         // Once job is unwrapped from us, this object is dangling. Job::executor points to the next higher up execute wrapper.
         // It is thus safe to "delete this". By no means add any later steps after delete!
-        delete unwrap(job);
+        delete unwrap(job.data());
     }
 
 private:
@@ -127,6 +127,15 @@ void Collection::aboutToBeDequeued_locked(QueueAPI *api)
     Q_ASSERT(api && d()->api == api);
     d()->dequeueElements(this, true);
     d()->api = nullptr;
+
+    Q_ASSERT(dynamic_cast<CollectionExecuteWrapper *>(executor()));
+    auto wrapper = static_cast<CollectionExecuteWrapper *>(executor());
+    wrapper->unwrap(this);
+    delete wrapper;
+
+    Q_ASSERT(executor() == &d()->selfExecuteWrapper);
+    d()->selfExecuteWrapper.unwrap(this);
+
     Job::aboutToBeDequeued_locked(api);
 }
 
