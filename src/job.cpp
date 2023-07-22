@@ -77,7 +77,6 @@ void Job::execute(const JobPointer &self, Thread *th)
     }
     Q_ASSERT(self->status() > Status_Running);
     executor->end(self, th);
-    executor->cleanup(self, th);
 }
 
 void Job::blockingExecute()

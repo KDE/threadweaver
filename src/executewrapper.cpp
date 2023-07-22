@@ -14,6 +14,13 @@ ExecuteWrapper::ExecuteWrapper()
 {
 }
 
+ExecuteWrapper::~ExecuteWrapper()
+{
+    auto wrapped = this->wrapped.loadAcquire();
+    if (wrapped && wrapped->ownedByJob())
+        delete wrapped;
+}
+
 Executor *ExecuteWrapper::wrap(Executor *previous)
 {
     return wrapped.fetchAndStoreOrdered(previous);

@@ -23,6 +23,9 @@ ThreadWeaver::Private::Job_Private::Job_Private()
 
 ThreadWeaver::Private::Job_Private::~Job_Private()
 {
+    auto executor = this->executor.loadAcquire();
+    if (executor->ownedByJob())
+        delete executor;
 }
 
 void ThreadWeaver::Private::Job_Private::freeQueuePolicyResources(JobPointer job)

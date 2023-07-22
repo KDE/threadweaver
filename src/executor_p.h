@@ -27,7 +27,12 @@ public:
     virtual void execute(const JobPointer &, Thread *) = 0;
     virtual void end(const JobPointer &, Thread *) = 0;
     void defaultEnd(const JobPointer &job, Thread *thread);
-    virtual void cleanup(const JobPointer &, Thread *);
+
+    /// @return true when this executor should be owned by the job and deleted alongside it
+    virtual bool ownedByJob() const
+    {
+        return false;
+    }
 
     void run(const JobPointer &job, Thread *thread);
 };

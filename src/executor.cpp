@@ -24,10 +24,6 @@ void Executor::defaultEnd(const JobPointer &job, Thread *thread)
     job->defaultEnd(job, thread);
 }
 
-void Executor::cleanup(const JobPointer &, Thread *)
-{
-}
-
 void Executor::run(const JobPointer &job, Thread *thread)
 {
     job->run(job, thread);

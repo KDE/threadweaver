@@ -53,11 +53,9 @@ public:
         collection->d()->elementFinished(collection, job, thread);
     }
 
-    void cleanup(const JobPointer &job, Thread *) override
+    bool ownedByJob() const override
     {
-        // Once job is unwrapped from us, this object is dangling. Job::executor points to the next higher up execute wrapper.
-        // It is thus safe to "delete this". By no means add any later steps after delete!
-        delete unwrap(job.data());
+        return true;
     }
 
 private:

@@ -25,6 +25,7 @@ class ExecuteWrapper : public Executor
 {
 public:
     ExecuteWrapper();
+    ~ExecuteWrapper();
     Executor *wrap(Executor *previous);
     Executor *unwrap(JobInterface *job);
     void begin(const JobPointer &job, Thread *) override;
