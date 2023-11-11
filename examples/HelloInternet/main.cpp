@@ -10,6 +10,6 @@ int main(int argc, char *argv[])
     MainWidget w;
     ViewController v(&w);
     w.show();
-    a.exec();
+    return a.exec();
 }
 //@@snippet_end
