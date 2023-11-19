@@ -94,7 +94,7 @@ void Model::prepareConversions(const QFileInfoList &filenames, const QString &ou
     Q_ASSERT(m_images.isEmpty());
     m_images.reserve(filenames.size());
     int counter = 0;
-    auto initializeImage = [=, &counter](const QFileInfo &file) {
+    auto initializeImage = [this, outputDirectory, &counter](const QFileInfo &file) {
         auto const out = QFileInfo(outputDirectory, file.fileName()).absoluteFilePath();
         return Image(file.absoluteFilePath(), out, this, counter++);
     };

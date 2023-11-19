@@ -23,11 +23,11 @@ ViewController::ViewController(MainWidget *mainwidget)
 
     using namespace ThreadWeaver;
     auto s = new Sequence;
-    *s << make_job([=]() {
+    *s << make_job([this]() {
         loadPlaceholderFromResource();
-    }) << make_job([=]() {
+    }) << make_job([this]() {
         loadPostFromTumblr();
-    }) << make_job([=]() {
+    }) << make_job([this]() {
         loadImageFromTumblr();
     });
     stream() << s;
