@@ -77,6 +77,7 @@ install(FILES
 
 install(EXPORT KF6ThreadWeaverTargets DESTINATION "${CMAKECONFIG_INSTALL_DIR}" FILE KF6ThreadWeaverTargets.cmake NAMESPACE KF6:: )
 
-feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
+include(ECMFeatureSummary)
+ecm_feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
 
 kde_configure_git_pre_commit_hook(CHECKS CLANG_FORMAT)
