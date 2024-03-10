@@ -6,8 +6,9 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include <QtCore>
 #include <ThreadWeaver/ThreadWeaver>
+
+#include <QCoreApplication>
 
 using namespace ThreadWeaver;
 
