@@ -375,8 +375,10 @@ void JobTests::CollectionDependenciesTest()
     QVERIFY(result.startsWith(jobC->character()));
     // QSKIP("This test is too fragile"); // PENDING(Mirko): fix
     // QTRY_COMPARE(collectionStartedSignalSpy.count(), 1);
-    QTimer::singleShot(2000, &loop, &QEventLoop::quit); // timeout
-    loop.exec();
+    if (collectionStartedSignalSpy.count() < 1) {
+        QTimer::singleShot(5000, &loop, &QEventLoop::quit); // timeout
+        loop.exec();
+    }
     qApp->processEvents();
     QCOMPARE(collectionStartedSignalSpy.count(), 1);
     QVERIFY(Queue::instance()->isIdle());
