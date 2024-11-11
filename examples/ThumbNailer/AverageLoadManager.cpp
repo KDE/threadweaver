@@ -46,7 +46,7 @@ QPair<int, int> AverageLoadManager::workersRange() const
 
 void AverageLoadManager::update()
 {
-#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID)
+#if defined(Q_OS_UNIX) && !defined(Q_OS_ANDROID) && !defined(Q_OS_HAIKU)
     double averages[3];
     if (getloadavg(averages, 3) == -1) {
         return;
