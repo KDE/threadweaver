@@ -9,6 +9,7 @@
 #include <ThreadWeaver/ThreadWeaver>
 
 #include <QCoreApplication>
+#include <QDebug>
 
 using namespace ThreadWeaver;
 
