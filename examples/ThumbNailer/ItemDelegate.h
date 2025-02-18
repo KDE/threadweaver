@@ -18,10 +18,17 @@
 #include <QItemDelegate>
 #include <QSize>
 
+/*!
+ * \class ItemDelegate
+ *
+ * \inmodule ThreadWeaver
+ */
 class ItemDelegate : public QItemDelegate
 {
     Q_OBJECT
 public:
+    /*!
+     */
     ItemDelegate(QObject *parent = nullptr);
     static const int FrameWidth;
     static const int TextMargin;

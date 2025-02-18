@@ -18,12 +18,29 @@
 
 class Model;
 
-/** @brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
+/*!
+ * \class Image
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Image loads an image from a path, and then calculates and saves a thumbnail for it.
+ */
 class Image
 {
     Q_DECLARE_TR_FUNCTIONS(Image)
 
 public:
+    /*!
+     * \enum Steps
+     *
+     * \value Step_NotStarted
+     * \value Step_LoadFile
+     * \value Step_LoadImage
+     * \value Step_ComputeThumbNail
+     * \value Step_SaveThumbNail
+     * \value Step_NumberOfSteps
+     * \value Step_Complete
+     */
     enum Steps {
         Step_NotStarted,
         Step_LoadFile,
@@ -34,27 +51,57 @@ public:
         Step_Complete = Step_SaveThumbNail,
     };
 
+    /*!
+     */
     Image(const QString inputFileName = QString(), const QString outputFileName = QString(), Model *model = nullptr, int id = 0);
+    /*!
+     */
     Progress progress() const;
+    /*!
+     */
     QString description() const;
+    /*!
+     */
     QString details() const;
+    /*!
+     */
     QString details2() const;
+    /*!
+     */
     int processingOrder() const;
 
+    /*!
+     */
     const QString inputFileName() const;
+    /*!
+     */
     const QString outputFileName() const;
+    /*!
+     */
     QImage thumbNail() const;
 
+    /*!
+     */
     void loadFile();
+    /*!
+     */
     void loadImage();
+    /*!
+     */
     void computeThumbNail();
+    /*!
+     */
     void saveThumbNail();
 
     static const int ThumbHeight;
     static const int ThumbWidth;
 
 private:
+    /*!
+     */
     void announceProgress(Steps step);
+    /*!
+     */
     void error(Steps step, const QString &message);
 
     QString m_inputFileName;

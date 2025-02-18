@@ -22,11 +22,18 @@ class MainWindow;
 
 class AverageLoadManager;
 
+/*!
+ * \class MainWindow
+ *
+ * \inmodule ThreadWeaver
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT
 
 public:
+    /*!
+     */
     explicit MainWindow(QWidget *parent = nullptr);
     ~MainWindow() override;
 
@@ -34,18 +41,40 @@ protected:
     void closeEvent(QCloseEvent *) override;
 
 public Q_SLOTS:
+    /*!
+     */
     void slotProgress(int step, int total);
 
 private Q_SLOTS:
+    /*!
+     */
     void slotOpenFiles();
+    /*!
+     */
     void slotSelectOutputDirectory();
+    /*!
+     */
     void slotFileLoaderCapChanged();
+    /*!
+     */
     void slotImageLoaderCapChanged();
+    /*!
+     */
     void slotComputeThumbNailCapChanged();
+    /*!
+     */
     void slotSaveThumbNailCapChanged();
+    /*!
+     */
     void slotWorkerCapChanged();
+    /*!
+     */
     void slotEnableAverageLoadManager(bool);
+    /*!
+     */
     void slotRecommendedWorkerCountChanged(int);
+    /*!
+     */
     void slotQuit();
 
 private:

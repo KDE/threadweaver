@@ -42,7 +42,7 @@ public:
     Job_Private();
     virtual ~Job_Private();
 
-    /** Free the queue policies acquired before this job has been executed. */
+    /* Free the queue policies acquired before this job has been executed. */
     virtual void freeQueuePolicyResources(JobPointer);
 
     /* The list of QueuePolicies assigned to this Job. */
@@ -54,7 +54,7 @@ public:
 
     std::atomic_bool shouldAbort;
 
-    /** The Executor that will execute this Job. */
+    /* The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
 
     QList<std::function<void(const JobInterface &job)>> finishHandlers;
@@ -62,13 +62,12 @@ public:
 
     // FIXME What is the correct KDE frameworks no debug switch?
 #if !defined(NDEBUG)
-    /** DebugExecuteWrapper for logging of Job execution. */
+    /* DebugExecuteWrapper for logging of Job execution. */
     DebugExecuteWrapper debugExecuteWrapper;
 #endif
 };
 
 }
-
 }
 
 #endif // JOB_P_H

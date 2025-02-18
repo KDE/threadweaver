@@ -19,32 +19,40 @@ namespace ThreadWeaver
 class Collection;
 class Sequence;
 
-/** @brief IdDecorator decorates a job without changing it's behaviour.
+/*!
+ * \class ThreadWeaver::IdDecorator
+ * \inheaderfile ThreadWeaver/IdDecorator
+ * \inmodule ThreadWeaver
  *
- *  It is supposed to be used as the base class for actual decorators that do change the behaviour of jobs. */
+ * \brief IdDecorator decorates a job without changing it's behaviour.
+ *
+ * It is supposed to be used as the base class for actual decorators that do change the behaviour of jobs.
+ */
 class THREADWEAVER_EXPORT IdDecorator : public JobInterface
 {
 public:
+    /*!
+     */
     explicit IdDecorator(JobInterface *job, bool autoDelete = true);
     ~IdDecorator() override;
-    /** Retrieve the decorated job. */
+    /*! Retrieve the decorated job. */
     const JobInterface *job() const;
-    /** Retrieve the decorated job. */
+    /*! Retrieve the decorated job. */
     JobInterface *job();
-    /** Auto-delete the decoratee or not. */
+    /*! Auto-delete the decoratee or not. */
     void setAutoDelete(bool onOff);
-    /** Will the decoratee be auto-deleted? */
+    /*! Will the decoratee be auto-deleted? */
     bool autoDelete() const;
-    /** Retrieve the decorated job as a Collection.
+    /*! Retrieve the decorated job as a Collection.
      *  If the decorated Job is not a Collection, 0 is returned. */
     const Collection *collection() const;
-    /** Retrieve the decorated job as a Collection.
+    /*! Retrieve the decorated job as a Collection.
      *  If the decorated Job is not a Collection, 0 is returned. */
     Collection *collection();
-    /** Retrieve the decorated job as a Sequence.
+    /*! Retrieve the decorated job as a Sequence.
      *  If the decorated Job is not a Sequence, 0 is returned. */
     const Sequence *sequence() const;
-    /** Retrieve the decorated job as a Sequence.
+    /*! Retrieve the decorated job as a Sequence.
      *  If the decorated Job is not a Sequence, 0 is returned. */
     Sequence *sequence();
 

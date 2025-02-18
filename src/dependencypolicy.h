@@ -22,7 +22,12 @@ namespace ThreadWeaver
 class JobInterface;
 class Dependency;
 
-/** @brief DependencyPolicy implements execution-time dependencies dependencies between Jobs.
+/*!
+ * \class ThreadWeaver::DependencyPolicy
+ * \inheaderfile ThreadWeaver/DependencyPolicy
+ * \inmodule ThreadWeaver
+ *
+ * \brief DependencyPolicy implements execution-time dependencies dependencies between Jobs.
  *
  *  To declare that Job B can only be executed when Job A is finished, call addDependency.
  *
@@ -32,37 +37,51 @@ class Dependency;
 class THREADWEAVER_EXPORT DependencyPolicy : public QueuePolicy
 {
 public:
-    /** Destructor. */
+    /*! Destructor. */
     ~DependencyPolicy() override;
 
-    /** @brief Add jobB as a dependency of jobA.
-     *  jobA will only be executed after jobB has been successfully processed.
-     *  @param jobA the depending job
-     *  @param jobB the job jobA depends on
+    /*!
+     * \brief Add jobB as a dependency of jobA.
+     *
+     * jobA will only be executed after jobB has been successfully processed.
+     *
+     * \a jobA the depending job
+     *
+     * \a jobB the job jobA depends on
      */
     void addDependency(JobPointer jobA, JobPointer jobB);
     void addDependency(const Dependency &dep);
 
-    /** @brief Remove a dependency.
-     *  The dependency of jobA on jobB is removed. If no dependencies are left for jobA, canRun will return true.
-     *  Returns false if the given object is not dependency of this job.
-     *  @param jobA the depending job
-     *  @param jobB the job jobA depends on
-     *  @return true if dependency existed, false otherwise
+    /*!
+     * \brief Remove a dependency.
+     *
+     * The dependency of jobA on jobB is removed. If no dependencies are left for jobA, canRun will return true.
+     *
+     * Returns false if the given object is not dependency of this job.
+     *
+     * \a jobA the depending job
+     *
+     * \a jobB the job jobA depends on
+     *
+     * Returns true if dependency existed, false otherwise
      */
     bool removeDependency(JobPointer jobA, JobPointer jobB);
     bool removeDependency(const Dependency &dep);
 
-    /** @brief Resolve all dependencies for a job.
-     *  This method is called after the Job has been finished, or when it is deleted without being executed (performed by the
-     *  destructor). The method will remove all entries stating that another Job depends on this one.
+    /*!
+     * \brief Resolve all dependencies for a job.
+     *
+     * This method is called after the Job has been finished, or when it is deleted without being executed (performed by the
+     * destructor). The method will remove all entries stating that another Job depends on this one.
      */
     void resolveDependencies(JobPointer);
 
     // FIXME remove
-    //    /** @brief Retrieve a list of dependencies of this job. */
+    //    /*! \brief Retrieve a list of dependencies of this job. */
     //    QList<JobPointer> getDependencies(JobPointer) const;
 
+    /*!
+     */
     static DependencyPolicy &instance();
 
     bool canRun(JobPointer) override;
@@ -73,15 +92,21 @@ public:
 
     void destructed(JobInterface *job) override;
 
+    /*!
+     */
     bool isEmpty() const;
 
 protected:
-    /** @brief Query whether the job has an unresolved dependency.
-     *  In case it does, the policy will return false from canRun().
+    /*!
+     * \brief Query whether the job has an unresolved dependency.
+     *
+     * In case it does, the policy will return false from canRun().
      */
     bool hasUnresolvedDependencies(JobPointer) const;
 
 private:
+    /*!
+     */
     DependencyPolicy();
     class Private;
     Private *const d;

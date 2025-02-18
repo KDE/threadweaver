@@ -35,41 +35,41 @@ extern THREADWEAVER_EXPORT bool Debug;
 extern THREADWEAVER_EXPORT int DebugLevel;
 extern THREADWEAVER_EXPORT QMutex GlobalMutex;
 
-/** Set the debug log level.
-@see debug
-*/
+/*! Set the debug log level.
+ * \sa debug
+ */
 extern inline void setDebugLevel(bool TWDEBUG, int level);
 
-/** This method prints a text message on the screen, if debugging is
-enabled. Otherwise, it does nothing. The message is thread safe,
-therefore providing that the messages appear in the order they where
-issued by the different threads.
-All messages are suppressed when Debug is false. All messages with a
-lower importance (higher number) than DebugLevel will be suppressed,
-too. Debug level 0 messages will always be printed as long as
-Debug is true.
-    We use our own debugging method, since debugging threads is a more
-    complicated experience than debugging single threaded
-    contexts. This might change in future in the way that debug
-    prints its messages to another logging facility provided by
-    the platform.
-Use setDebugLevel () to integrate adapt debug () to your platform.
-*/
+/*! This method prints a text message on the screen, if debugging is
+ * enabled. Otherwise, it does nothing. The message is thread safe,
+ * therefore providing that the messages appear in the order they where
+ * issued by the different threads.
+ * All messages are suppressed when Debug is false. All messages with a
+ * lower importance (higher number) than DebugLevel will be suppressed,
+ * too. Debug level 0 messages will always be printed as long as
+ * Debug is true.
+ *     We use our own debugging method, since debugging threads is a more
+ *     complicated experience than debugging single threaded
+ *     contexts. This might change in future in the way that debug
+ *     prints its messages to another logging facility provided by
+ *     the platform.
+ * Use setDebugLevel () to integrate adapt debug () to your platform.
+ */
 inline void TWDEBUG(int severity, const char *cformat, ...)
 #ifdef __GNUC__
     __attribute__((format(printf, 2, 3)))
 #endif
     ;
 
-/** Prints the message to the console if condition is true. */
+/*! Prints the message to the console if condition is true. */
 inline void TWDEBUG(bool condition, int severity, const char *cformat, ...)
 #ifdef __GNUC__
     __attribute__((format(printf, 3, 4)))
 #endif
     ;
 
-/** PROTECT executes x with GlobalMutex locked.
-    Mostly used for debugging, as in P_ASSERT. */
+/* PROTECT executes x with GlobalMutex locked.
+ *  Mostly used for debugging, as in P_ASSERT. */
 #ifdef PROTECT
 #undef PROTECT
 #endif
@@ -82,7 +82,7 @@ inline void TWDEBUG(bool condition, int severity, const char *cformat, ...)
     } while (0)
 /* clang-format on */
 
-/** P_ASSERT ensures that error messages occur in the correct order. */
+/*! P_ASSERT ensures that error messages occur in the correct order. */
 #ifdef P_ASSERT
 #undef P_ASSERT
 #endif
@@ -95,6 +95,8 @@ inline void TWDEBUG(bool condition, int severity, const char *cformat, ...)
     } while (0)
 /* clang-format on */
 
+/*!
+ */
 inline void setDebugLevel(bool debug, int level)
 {
     Debug = debug;
@@ -104,6 +106,8 @@ inline void setDebugLevel(bool debug, int level)
 #ifndef QT_NO_DEBUG
 
 #define TWDEBUG(...) ThreadWeaver::threadweaver_debug(__VA_ARGS__)
+/*!
+ */
 inline void threadweaver_debug(int severity, const char *cformat, ...)
 {
     if (Debug == true && (severity <= DebugLevel || severity == 0)) {
@@ -116,6 +120,8 @@ inline void threadweaver_debug(int severity, const char *cformat, ...)
     }
 }
 
+/*!
+ */
 inline void threadweaver_debug(bool condition, int severity, const char *cformat, ...)
 {
     if (condition && Debug == true && (severity <= DebugLevel || severity == 0)) {
@@ -132,7 +138,11 @@ inline void threadweaver_debug(bool condition, int severity, const char *cformat
 #endif
 
 // Macros to ensure that mutexes are locked or unlocked:
+/*!
+ */
 void THREADWEAVER_EXPORT mutexAssertUnlocked(QMutex *mutex, const char *where);
+/*!
+ */
 void THREADWEAVER_EXPORT mutexAssertLocked(QMutex *mutex, const char *where);
 
 #ifndef QT_NO_DEBUG
@@ -143,6 +153,8 @@ void THREADWEAVER_EXPORT mutexAssertLocked(QMutex *mutex, const char *where);
 #define MUTEX_ASSERT_LOCKED(x)
 #endif
 
+/*!
+ */
 inline bool invariant()
 {
     return true;

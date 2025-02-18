@@ -28,7 +28,7 @@ public:
     virtual void end(const JobPointer &, Thread *) = 0;
     void defaultEnd(const JobPointer &job, Thread *thread);
 
-    /// @return true when this executor should be owned by the job and deleted alongside it
+    /* Returns true when this executor should be owned by the job and deleted alongside it */
     virtual bool ownedByJob() const
     {
         return false;

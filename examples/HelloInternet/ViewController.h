@@ -8,26 +8,53 @@
 class MainWidget;
 class QDomDocument;
 
+/*!
+ * \class ViewController
+ *
+ * \inmodule ThreadWeaver
+ */
 class ViewController : public QObject
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit ViewController(MainWidget *mainwidget);
     ~ViewController() override;
 
 Q_SIGNALS:
+    /*!
+     */
     void setImage(QImage image);
+    /*!
+     */
     void setCaption(QString text);
+    /*!
+     */
     void setStatus(QString text);
 
 private:
+    /*!
+     */
     void loadPlaceholderFromResource();
+    /*!
+     */
     void loadPostFromTumblr();
+    /*!
+     */
     void loadImageFromTumblr();
 
+    /*!
+     */
     QByteArray download(const QUrl &url);
+    /*!
+     */
     void error(const QString &message);
+    /*!
+     */
     void showResourceImage(const char *file);
+    /*!
+     */
     QString attributeTextFor(const QDomDocument &doc, const char *tag, const char *attribute);
 
     QUrl m_imageUrl;

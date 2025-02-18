@@ -20,20 +20,32 @@ namespace Private
 class Sequence_Private;
 }
 
-/** @brief A Sequence is a vector of Jobs that will be executed in a sequence.
+/*!
+ * \class ThreadWeaver::Sequence
+ * \inheaderfile ThreadWeaver/Sequence
+ * \inmodule ThreadWeaver
+ *
+ * \brief A Sequence is a vector of Jobs that will be executed in a sequence.
  *
  * It is implemented by automatically creating the necessary dependencies between the Jobs in the sequence.
  *
  * Sequence provides a handy cleanup and unwind mechanism: the stop() slot. If it is called, the processing
  * of the sequence will stop, and all its remaining Jobs will be dequeued.
- * A Sequence is the first element of itself. */
+ * A Sequence is the first element of itself.
+ */
 class THREADWEAVER_EXPORT Sequence : public Collection
 {
 public:
+    /*!
+     */
     explicit Sequence();
 
 private:
+    /*!
+     */
     Private::Sequence_Private *d();
+    /*!
+     */
     const Private::Sequence_Private *d() const;
 };
 

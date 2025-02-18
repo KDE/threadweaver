@@ -18,20 +18,19 @@ namespace ThreadWeaver
 class Weaver;
 class Queue;
 
-/** InConstructionState handles the calls to the Weaver
-        object until the constructor has finished.
-    */
+/*
+ * InConstructionState handles the calls to the Weaver object until the constructor has finished.
+ */
 class InConstructionState : public WeaverImplState
 {
 public:
     explicit InConstructionState(QueueSignals *weaver);
-    /** Suspend job processing. */
+    /* Suspend job processing. */
     void suspend() override;
-    /** Resume job processing. */
+    /* Resume job processing. */
     void resume() override;
-    /** Assign a job to an idle thread. */
+    /* Assign a job to an idle thread. */
     JobPointer applyForWork(Thread *th, bool wasBusy) override;
-    /** reimpl */
     StateId stateId() const override;
 };
 

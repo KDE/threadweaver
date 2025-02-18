@@ -16,20 +16,30 @@ namespace ThreadWeaver
 class Job;
 class Thread;
 
+/*!
+ * \class ThreadWeaver::WeaverInterface
+ * \inheaderfile ThreadWeaver/WeaverInterface
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT WeaverInterface
 {
 public:
+    /*!
+     */
     virtual ~WeaverInterface()
     {
     }
 
-    /** @brief Assign a job to an idle thread.
-     * @param th the thread to give a new Job to
-     * @param wasBusy true if a job was previously assigned to the calling thread
+    /*!
+     * \brief Assign a job to an idle thread.
+     *
+     * \a th the thread to give a new Job to
+     *
+     * \a wasBusy true if a job was previously assigned to the calling thread
      */
     virtual JobPointer applyForWork(Thread *th, bool wasBusy) = 0;
 
-    /** @brief Wait (by suspending the calling thread) until a job becomes available. */
+    /*! \brief Wait (by suspending the calling thread) until a job becomes available. */
     virtual void waitForAvailableJob(Thread *th) = 0;
 };
 

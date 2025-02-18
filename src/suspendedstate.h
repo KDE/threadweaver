@@ -16,19 +16,20 @@
 
 namespace ThreadWeaver
 {
-/** In SuspendedState, jobs are queued, but will not be executed. All
- *  thread remains blocked.  */
+/*
+ * In SuspendedState, jobs are queued, but will not be executed. All thread remains blocked.
+ */
 class SuspendedState : public WeaverImplState
 {
 public:
     explicit SuspendedState(Weaver *weaver);
-    /** Suspend job processing. */
+    /*! Suspend job processing. */
     void suspend() override;
-    /** Resume job processing. */
+    /*! Resume job processing. */
     void resume() override;
-    /** Assign a job to an idle thread. */
+    /*! Assign a job to an idle thread. */
     JobPointer applyForWork(Thread *th, bool wasBusy) override;
-    /** reimpl */
+    /*! reimpl */
     StateId stateId() const override;
 };
 

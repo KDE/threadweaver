@@ -41,37 +41,37 @@ public:
     Collection_Private();
     ~Collection_Private() override;
 
-    /** Dequeue all elements of the collection.
-     * Note: This will not dequeue the collection itself.
+    /* Dequeue all elements of the collection.
+     * @note This will not dequeue the collection itself.
      */
     void dequeueElements(Collection *collection, bool queueApiIsLocked);
 
-    /** Perform the task usually done when one individual job is
+    /* Perform the task usually done when one individual job is
      * finished, but in our case only when the whole collection
      * is finished or partly dequeued.
      */
     void finalCleanup(Collection *collection);
 
-    /** @brief Enqueue the elements of the collection. */
+    /* @brief Enqueue the elements of the collection. */
     void enqueueElements();
 
     void elementStarted(Collection *collection, JobPointer, Thread *);
     void elementFinished(Collection *collection, JobPointer job, Thread *thread);
 
-    /** @brief Prepare to enqueue the elements. */
+    /* @brief Prepare to enqueue the elements. */
     virtual void prepareToEnqueueElements();
 
     virtual JobInterface::Status updateStatus(Collection *collection, JobPointer job);
 
-    /** @brief Process a completed element. */
+    /* @brief Process a completed element. */
     virtual void processCompletedElement(Collection *collection, JobPointer job, Thread *thread);
 
-    /** @brief Implement stop. */
+    /* @brief Implement stop. */
     void stop(Collection *collection);
 
     void requestAbort(Collection *collection);
 
-    /** @brief Called before an element will be dequeued. */
+    /* @brief Called before an element will be dequeued. */
     virtual void elementDequeued(const JobPointer &)
     {
     }
@@ -94,7 +94,6 @@ public:
 };
 
 }
-
 }
 
 #endif // COLLECTION_COLLECTION_P_H

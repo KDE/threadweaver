@@ -100,6 +100,8 @@ target_include_directories(KF6ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 kde_target_enable_exceptions(KF6ThreadWeaver PRIVATE)
 
+ecm_generate_qdoc(KF6ThreadWeaver threadweaver.qdocconf)
+
 install(TARGETS KF6ThreadWeaver EXPORT KF6ThreadWeaverTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS
@@ -148,31 +150,3 @@ install(FILES
     ${ThreadWeaver_HEADERS}
     DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver/threadweaver COMPONENT Devel
 )
-
-if(BUILD_QCH)
-    ecm_add_qch(
-        KF6ThreadWeaver_QCH
-        NAME ThreadWeaver
-        BASE_NAME KF6ThreadWeaver
-        VERSION ${KF_VERSION}
-        ORG_DOMAIN org.kde
-        SOURCES # using only public headers, to cover only public API
-            ${ThreadWeaver_HEADERS}
-            "${CMAKE_SOURCE_DIR}/docs/use-cases.md"
-            "${CMAKE_SOURCE_DIR}/docs/whymultithreading.md"
-        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
-        LINK_QCHS
-            Qt6Core_QCH
-        INCLUDE_DIRS
-            ${threadweaver_BUILD_INCLUDE_DIRS}
-        BLANK_MACROS
-            THREADWEAVER_EXPORT
-            THREADWEAVER_DEPRECATED
-            THREADWEAVER_DEPRECATED_EXPORT
-            "THREADWEAVER_DEPRECATED_VERSION(x, y, t)"
-        TAGFILE_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        COMPONENT Devel
-    )
-endif()
-
