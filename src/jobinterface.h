@@ -24,6 +24,9 @@ class QueueAPI;
 class QueuePolicy;
 
 class JobInterface;
+/*!
+ * \typedef ThreadWeaver::JobPointer
+ */
 typedef QSharedPointer<JobInterface> JobPointer;
 
 /*!

@@ -46,6 +46,9 @@ protected:
     void defaultEnd(const JobPointer &job, Thread *thread) override;
 };
 
+/*!
+ * \typedef ThreadWeaver::QJobPointer
+ */
 typedef QSharedPointer<QObjectDecorator> QJobPointer;
 
 }
