@@ -17,33 +17,63 @@
 
 namespace ThreadWeaver
 {
+/*!
+ * \class ThreadWeaver::Exception
+ * \inheaderfile ThreadWeaver/Exception
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT Exception : public std::runtime_error
 {
 public:
+    /*!
+     */
     explicit Exception(const QString &message = QString());
     ~Exception() throw() override;
+    /*!
+     */
     QString message() const;
 
 private:
     QString m_message;
 };
 
+/*!
+ * \class ThreadWeaver::JobAborted
+ * \inheaderfile ThreadWeaver/Exception
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT JobAborted : public Exception
 {
 public:
+    /*!
+     */
     explicit JobAborted(const QString &message = QString());
 };
 
+/*!
+ * \class ThreadWeaver::JobFailed
+ * \inheaderfile ThreadWeaver/Exception
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT JobFailed : public Exception
 {
 public:
+    /*!
+     */
     explicit JobFailed(const QString &message = QString());
 };
 
 // test:
+/*!
+ * \class ThreadWeaver::AbortThread
+ * \inheaderfile ThreadWeaver/Exception
+ * \inmodule ThreadWeaver
+ */
 class AbortThread : public Exception
 {
 public:
+    /*!
+     */
     AbortThread(const QString &message = QString());
 };
 

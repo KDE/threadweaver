@@ -11,9 +11,16 @@
 
 #include <ThreadWeaver/ThreadWeaver>
 
+/*!
+ * \class PriorityDecorator
+ *
+ * \inmodule ThreadWeaver
+ */
 class PriorityDecorator : public ThreadWeaver::IdDecorator
 {
 public:
+    /*!
+     */
     explicit PriorityDecorator(int priority, ThreadWeaver::JobInterface *job, bool autoDelete = true);
 
     // FIXME temp

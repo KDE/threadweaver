@@ -1,0 +1,29 @@
+include($KDE_DOCS/global/qt-module-defaults.qdocconf)
+
+project = ThreadWeaver
+description = Helper for multithreaded programming
+
+documentationinheaders = true
+
+headerdirs += .
+sourcedirs += . ../docs
+
+imagedirs = ../docs/pics
+
+outputformats = HTML
+
+depends += kde qtcore
+
+qhp.projects            = ThreadWeaver
+
+qhp.ThreadWeaver.file                = threadweaver.qhp
+qhp.ThreadWeaver.namespace           = org.kde.threadweaver.$QT_VERSION_TAG
+qhp.ThreadWeaver.virtualFolder       = threadweaver
+qhp.ThreadWeaver.indexTitle          = ThreadWeaver
+qhp.ThreadWeaver.indexRoot           =
+
+qhp.ThreadWeaver.subprojects         = classes
+qhp.ThreadWeaver.subprojects.classes.title = C++ Classes
+qhp.ThreadWeaver.subprojects.classes.indexTitle = ThreadWeaver C++ Classes
+qhp.ThreadWeaver.subprojects.classes.selectors = class fake:headerfile
+qhp.ThreadWeaver.subprojects.classes.sortPages = true

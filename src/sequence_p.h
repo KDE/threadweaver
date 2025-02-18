@@ -41,7 +41,6 @@ public:
 };
 
 }
-
 }
 
 #endif // SEQUENCE_P_H

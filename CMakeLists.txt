@@ -19,15 +19,12 @@ include(ECMGenerateExportHeader)
 include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMDeprecationSettings)
-include(ECMAddQch)
+include(ECMGenerateQDoc)
 
 set(REQUIRED_QT_VERSION 6.7.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)
 
 set(EXCLUDE_DEPRECATED_BEFORE_AND_AT 0 CACHE STRING "Control the range of deprecated API excluded from the build [default=0].")
-
-option(BUILD_QCH "Build API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)" OFF)
-add_feature_info(QCH ${BUILD_QCH} "API documentation in QCH format (for e.g. Qt Assistant, Qt Creator & KDevelop)")
 
 set(threadweaver_version_header "${CMAKE_CURRENT_BINARY_DIR}/src/threadweaver_version.h")
 ecm_setup_version(PROJECT VARIABLE_PREFIX THREADWEAVER
@@ -47,16 +44,6 @@ add_subdirectory(examples)
 
 # create a Config.cmake and a ConfigVersion.cmake file and install them
 set(CMAKECONFIG_INSTALL_DIR "${KDE_INSTALL_CMAKEPACKAGEDIR}/KF6ThreadWeaver")
-
-if (BUILD_QCH)
-    ecm_install_qch_export(
-        TARGETS KF6ThreadWeaver_QCH
-        FILE KF6ThreadWeaverQchTargets.cmake
-        DESTINATION "${CMAKECONFIG_INSTALL_DIR}"
-        COMPONENT Devel
-    )
-    set(PACKAGE_INCLUDE_QCHTARGETS "include(\"\${CMAKE_CURRENT_LIST_DIR}/KF6ThreadWeaverQchTargets.cmake\")")
-endif()
 
 include(CMakePackageConfigHelpers)
 

@@ -14,7 +14,8 @@ namespace ThreadWeaver
 class Queue;
 }
 
-/** @brief Helper class for tests to ensure that after the scope if left, the queue is idle and resumed.
+/*
+ * @brief Helper class for tests to ensure that after the scope if left, the queue is idle and resumed.
  * Upon destruction, ensure the weaver is idle and suspended.
  */
 class WaitForIdleAndFinished
@@ -30,7 +31,7 @@ private:
     ThreadWeaver::Queue *weaver_;
 };
 
-/** @brief Create a WaitForIdleAndFinished, and suppress the IDE unused warning. */
+/* @brief Create a WaitForIdleAndFinished, and suppress the IDE unused warning. */
 /* clang-format off */
 #define WAITFORIDLEANDFINISHED(queue) \
     const WaitForIdleAndFinished waitForIdleAndFinished##__LINE__(queue); \

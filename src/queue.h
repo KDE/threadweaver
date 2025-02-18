@@ -19,7 +19,12 @@ namespace ThreadWeaver
 class Job;
 class State;
 
-/** @brief Queue implements a ThreadWeaver job queue.
+/*!
+ * \class ThreadWeaver::Queue
+ * \inheaderfile ThreadWeaver/Queue
+ * \inmodule ThreadWeaver
+ *
+ * \brief Queue implements a ThreadWeaver job queue.
  *
  * Queues process jobs enqueued in them by automatically assigning them to worker threads they manage.
  * Applications using ThreadWeaver can make use of a global Queue which is instantiated on demand, or
@@ -28,20 +33,24 @@ class State;
  * Worker threads are created by the queues as needed. To create a customized global queue,
  * see GlobalQueueFactory.
  *
- * @see GlobalQueueFactory
- * @see Queue::enqueue()
- * @see Queue::instance()
+ * \sa GlobalQueueFactory
+ * \sa Queue::enqueue()
+ * \sa Queue::instance()
  */
 class THREADWEAVER_EXPORT Queue : public QueueSignals
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit Queue(QObject *parent = nullptr);
-    /** @brief Construct a queue with a customized implementation
+    /*! \brief Construct a queue with a customized implementation.
      * The queue takes ownership and will delete the implementation upon destruction. */
     explicit Queue(QueueSignals *implementation, QObject *parent = nullptr);
     ~Queue() override;
 
+    /*!
+     */
     QueueStream stream();
 
     const State *state() const override;
@@ -50,8 +59,12 @@ public:
     int maximumNumberOfThreads() const override;
     int currentNumberOfThreads() const override;
 
+    /*!
+     */
     static ThreadWeaver::Queue *instance();
     void enqueue(const QList<JobPointer> &jobs) override;
+    /*!
+     */
     void enqueue(const JobPointer &job);
     bool dequeue(const JobPointer &) override;
     void dequeue() override;
@@ -65,13 +78,18 @@ public:
     void reschedule() override;
     void shutDown() override;
 
-    /** @brief Interface for the global queue factory. */
+    /*!
+     * \inmodule ThreadWeaver
+     * \brief Interface for the global queue factory.
+     */
     struct GlobalQueueFactory {
         virtual ~GlobalQueueFactory()
         {
         }
         virtual Queue *create(QObject *parent) = 0;
     };
+    /*!
+     */
     static void setGlobalQueueFactory(GlobalQueueFactory *factory);
 
 private:

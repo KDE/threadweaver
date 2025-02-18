@@ -16,22 +16,23 @@
 
 namespace ThreadWeaver
 {
-/** SuspendingState is the state after suspend() has been called, but
- *  before all threads finished executing the current job and blocked.
+/*
+ * SuspendingState is the state after suspend() has been called, but
+ * before all threads finished executing the current job and blocked.
  */
 class SuspendingState : public WeaverImplState
 {
 public:
     explicit SuspendingState(Weaver *weaver);
-    /** Suspend job processing. */
+    /*! Suspend job processing. */
     void suspend() override;
-    /** Resume job processing. */
+    /*! Resume job processing. */
     void resume() override;
-    /** Assign a job to an idle thread. */
+    /*! Assign a job to an idle thread. */
     JobPointer applyForWork(Thread *th, bool wasBusy) override;
-    /** Overload. */
+    /*! Overload. */
     void activated() override;
-    /** reimpl */
+    /*! reimpl */
     StateId stateId() const override;
 };
 

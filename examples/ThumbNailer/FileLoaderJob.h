@@ -18,9 +18,16 @@ namespace ThreadWeaver
 class ResourceRestrictionPolicy;
 }
 
+/*!
+ * \class FileLoaderJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class FileLoaderJob : public ThreadWeaver::Job
 {
 public:
+    /*!
+     */
     explicit FileLoaderJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle);
     int priority() const override;
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;

@@ -16,21 +16,25 @@
 
 namespace ThreadWeaver
 {
-/* WorkingHardState handles the state dependent calls in the state where
- * jobs are executed.  */
+/*
+ * WorkingHardState handles the state dependent calls in the state where
+ * jobs are executed.
+ */
 class WorkingHardState : public WeaverImplState
 {
 public:
+    /*!
+     */
     explicit WorkingHardState(Weaver *weaver);
-    /** Suspend job processing. */
+    /*! Suspend job processing. */
     void suspend() override;
-    /** Resume job processing. */
+    /*! Resume job processing. */
     void resume() override;
-    /** Assign a job to an idle thread. */
+    /*! Assign a job to an idle thread. */
     JobPointer applyForWork(Thread *th, bool wasBusy) override;
-    /** Overload. */
+    /*! Overload. */
     void activated() override;
-    /** reimpl */
+    /*! reimpl */
     StateId stateId() const override;
 };
 

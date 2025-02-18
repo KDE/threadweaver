@@ -19,19 +19,28 @@ namespace ThreadWeaver
 class Collection;
 class Sequence;
 
+/*!
+ * \class ThreadWeaver::QObjectDecorator
+ * \inheaderfile ThreadWeaver/QObjectDecorator
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT QObjectDecorator : public QObject, public IdDecorator
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit QObjectDecorator(JobInterface *decoratee, QObject *parent = nullptr);
+    /*!
+     */
     explicit QObjectDecorator(JobInterface *decoratee, bool autoDelete, QObject *parent = nullptr);
 
 Q_SIGNALS:
-    /** This signal is emitted when this job is being processed by a thread. */
+    /*! This signal is emitted when this job is being processed by a thread. */
     void started(ThreadWeaver::JobPointer);
-    /** This signal is emitted when the job has been finished (no matter if it succeeded or not). */
+    /*! This signal is emitted when the job has been finished (no matter if it succeeded or not). */
     void done(ThreadWeaver::JobPointer);
-    /** This job has failed.
+    /*! This job has failed.
      *
      * This signal is emitted when success() returns false after the job is executed. */
     void failed(ThreadWeaver::JobPointer);
@@ -41,6 +50,9 @@ protected:
     void defaultEnd(const JobPointer &job, Thread *thread) override;
 };
 
+/*!
+ * \typedef ThreadWeaver::QJobPointer
+ */
 typedef QSharedPointer<QObjectDecorator> QJobPointer;
 
 }

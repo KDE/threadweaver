@@ -18,38 +18,84 @@
 #include "Image.h"
 #include "Progress.h"
 
+/*!
+ * \class Model
+ *
+ * \inmodule ThreadWeaver
+ */
 class Model : public QAbstractListModel
 {
     Q_OBJECT
 public:
+    /*!
+     * \enum Roles
+     *
+     * \value Role_SortRole
+     * \value Role_ImageRole
+     * \value Role_StepRole
+     */
     enum Roles {
         Role_SortRole = Qt::UserRole,
         Role_ImageRole,
         Role_StepRole,
     };
 
+    /*!
+     */
     explicit Model(QObject *parent = nullptr);
 
+    /*!
+     */
     int fileLoaderCap() const;
+    /*!
+     */
     void setFileLoaderCap(int cap);
 
+    /*!
+     */
     int imageLoaderCap() const;
+    /*!
+     */
     void setImageLoaderCap(int cap);
 
+    /*!
+     */
     int computeThumbNailCap() const;
+    /*!
+     */
     void setComputeThumbNailCap(int cap);
 
+    /*!
+     */
     int saveThumbNailCap() const;
+    /*!
+     */
     void setSaveThumbNailCap(int cap);
 
+    /*!
+     */
     void clear();
+    /*!
+     */
     void prepareConversions(const QFileInfoList &filenames, const QString &outputDirectory);
+    /*!
+     */
     bool computeThumbNailsBlockingInLoop();
+    /*!
+     */
     bool computeThumbNailsBlockingConcurrent();
 
+    /*!
+     */
     void queueUpConversion(const QStringList &files, const QString &outputDirectory);
+    /*!
+     */
     Progress progress() const;
+    /*!
+     */
     void progressChanged();
+    /*!
+     */
     void elementChanged(int id);
 
     int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -57,11 +103,19 @@ public:
     QVariant headerData(int section, Qt::Orientation orientation, int role = Qt::DisplayRole) const override;
 
 Q_SIGNALS:
+    /*!
+     */
     void completed();
+    /*!
+     */
     void progressStepChanged(int, int);
+    /*!
+     */
     void signalElementChanged(int);
 
 private Q_SLOTS:
+    /*!
+     */
     void slotElementChanged(int id);
 
 private:

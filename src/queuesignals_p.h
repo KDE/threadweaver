@@ -21,7 +21,6 @@ public:
 };
 
 }
-
 }
 
 #endif // QUEUESIGNALS_P_H
