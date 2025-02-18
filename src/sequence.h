@@ -36,10 +36,16 @@ class Sequence_Private;
 class THREADWEAVER_EXPORT Sequence : public Collection
 {
 public:
+    /*!
+     */
     explicit Sequence();
 
 private:
+    /*!
+     */
     Private::Sequence_Private *d();
+    /*!
+     */
     const Private::Sequence_Private *d() const;
 };
 

@@ -41,12 +41,16 @@ class THREADWEAVER_EXPORT Queue : public QueueSignals
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit Queue(QObject *parent = nullptr);
     /*! \brief Construct a queue with a customized implementation.
      * The queue takes ownership and will delete the implementation upon destruction. */
     explicit Queue(QueueSignals *implementation, QObject *parent = nullptr);
     ~Queue() override;
 
+    /*!
+     */
     QueueStream stream();
 
     const State *state() const override;
@@ -55,8 +59,12 @@ public:
     int maximumNumberOfThreads() const override;
     int currentNumberOfThreads() const override;
 
+    /*!
+     */
     static ThreadWeaver::Queue *instance();
     void enqueue(const QList<JobPointer> &jobs) override;
+    /*!
+     */
     void enqueue(const JobPointer &job);
     bool dequeue(const JobPointer &) override;
     void dequeue() override;
@@ -77,6 +85,8 @@ public:
         }
         virtual Queue *create(QObject *parent) = 0;
     };
+    /*!
+     */
     static void setGlobalQueueFactory(GlobalQueueFactory *factory);
 
 private:

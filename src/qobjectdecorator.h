@@ -28,7 +28,11 @@ class THREADWEAVER_EXPORT QObjectDecorator : public QObject, public IdDecorator
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit QObjectDecorator(JobInterface *decoratee, QObject *parent = nullptr);
+    /*!
+     */
     explicit QObjectDecorator(JobInterface *decoratee, bool autoDelete, QObject *parent = nullptr);
 
 Q_SIGNALS:

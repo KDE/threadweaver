@@ -41,7 +41,11 @@ public:
 class Sequence_Private : public Collection_Private
 {
 public:
+    /*!
+     */
     Sequence_Private();
+    /*!
+     */
     BlockerPolicy *blocker();
     void prepareToEnqueueElements() override;
     void processCompletedElement(Collection *collection, JobPointer job, Thread *thread) override;

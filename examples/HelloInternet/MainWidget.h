@@ -15,6 +15,8 @@ class MainWidget : public QWidget
     Q_OBJECT
 
 public:
+    /*!
+     */
     explicit MainWidget(QWidget *parent = nullptr);
     ~MainWidget() override;
 
@@ -22,8 +24,14 @@ protected:
     void resizeEvent(QResizeEvent *) override;
 
 public Q_SLOTS:
+    /*!
+     */
     void setImage(QImage image);
+    /*!
+     */
     void setCaption(QString text);
+    /*!
+     */
     void setStatus(QString text);
 
 private:

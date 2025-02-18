@@ -25,10 +25,20 @@ class Queue;
 class WaitForIdleAndFinished
 {
 public:
+    /*!
+     */
     explicit WaitForIdleAndFinished(ThreadWeaver::Queue *weaver);
+    /*!
+     */
     ~WaitForIdleAndFinished();
+    /*!
+     */
     WaitForIdleAndFinished(const WaitForIdleAndFinished &) = delete;
+    /*!
+     */
     WaitForIdleAndFinished &operator=(const WaitForIdleAndFinished &) = delete;
+    /*!
+     */
     void finish();
 
 private:

@@ -25,6 +25,8 @@ template<typename T>
 class Lambda : public Job
 {
 public:
+    /*!
+     */
     explicit Lambda(T t_)
         : t(t_)
     {

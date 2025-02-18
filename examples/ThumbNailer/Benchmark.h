@@ -21,10 +21,16 @@ class Benchmark : public QObject
 {
     Q_OBJECT
 private Q_SLOTS:
+    /*!
+     */
     void processThumbNailsAsBenchmarkInLoop();
+    /*!
+     */
     void processThumbNailsAsBenchmarkWithThreadWeaver();
 
 private:
+    /*!
+     */
     const QFileInfoList images();
 };
 

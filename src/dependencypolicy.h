@@ -68,6 +68,8 @@ public:
     //    /*! \brief Retrieve a list of dependencies of this job. */
     //    QList<JobPointer> getDependencies(JobPointer) const;
 
+    /*!
+     */
     static DependencyPolicy &instance();
 
     bool canRun(JobPointer) override;
@@ -78,6 +80,8 @@ public:
 
     void destructed(JobInterface *job) override;
 
+    /*!
+     */
     bool isEmpty() const;
 
 protected:
@@ -87,6 +91,8 @@ protected:
     bool hasUnresolvedDependencies(JobPointer) const;
 
 private:
+    /*!
+     */
     DependencyPolicy();
     class Private;
     Private *const d;

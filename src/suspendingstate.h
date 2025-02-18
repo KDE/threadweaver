@@ -27,6 +27,8 @@ namespace ThreadWeaver
 class SuspendingState : public WeaverImplState
 {
 public:
+    /*!
+     */
     explicit SuspendingState(Weaver *weaver);
     /*! Suspend job processing. */
     void suspend() override;

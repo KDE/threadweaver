@@ -48,6 +48,8 @@ class WeaverObserver;
 class THREADWEAVER_EXPORT QueueInterface
 {
 public:
+    /*!
+     */
     virtual ~QueueInterface()
     {
     }

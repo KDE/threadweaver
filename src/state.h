@@ -92,6 +92,8 @@ public:
 protected:
     /*! The Weaver interface this state handles. */
     virtual QueueInterface *weaver();
+    /*!
+     */
     virtual const QueueInterface *weaver() const;
 
 private:

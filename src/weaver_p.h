@@ -31,12 +31,20 @@ namespace Private
 class Weaver_Private : public QueueSignals_Private
 {
 public:
+    /*!
+     */
     Weaver_Private();
     ~Weaver_Private() override;
 
+    /*!
+     */
     void dumpJobs();
 
+    /*!
+     */
     bool canBeExecuted(JobPointer);
+    /*!
+     */
     void deleteExpiredThreads();
 
     /*! The thread inventory. */

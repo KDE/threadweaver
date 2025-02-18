@@ -39,7 +39,11 @@ class Collection_Private;
 class THREADWEAVER_EXPORT Collection : public Job
 {
 public:
+    /*!
+     */
     Collection();
+    /*!
+     */
     Collection(ThreadWeaver::Private::Collection_Private *d);
     ~Collection() override;
 
@@ -72,6 +76,8 @@ public:
 
     /*! \brief Add the job to this collection. */
     Collection &operator<<(const ThreadWeaver::JobPointer &job);
+    /*!
+     */
     Collection &operator<<(JobInterface &job);
 
 protected:
@@ -101,7 +107,11 @@ protected:
 protected:
     friend class CollectionExecuteWrapper; // needs to access d()
     friend class Collection_Private;
+    /*!
+     */
     ThreadWeaver::Private::Collection_Private *d();
+    /*!
+     */
     const ThreadWeaver::Private::Collection_Private *d() const;
 };
 

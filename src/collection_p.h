@@ -32,7 +32,11 @@ public:
     void begin(const JobPointer &, Thread *) override;
     void end(const JobPointer &, Thread *) override;
 
+    /*!
+     */
     void callBegin();
+    /*!
+     */
     void callEnd();
 
 private:
@@ -48,6 +52,8 @@ private:
 class Collection_Private : public Job_Private
 {
 public:
+    /*!
+     */
     Collection_Private();
     ~Collection_Private() override;
 
@@ -65,12 +71,18 @@ public:
     /*! \brief Enqueue the elements of the collection. */
     void enqueueElements();
 
+    /*!
+     */
     void elementStarted(Collection *collection, JobPointer, Thread *);
+    /*!
+     */
     void elementFinished(Collection *collection, JobPointer job, Thread *thread);
 
     /*! \brief Prepare to enqueue the elements. */
     virtual void prepareToEnqueueElements();
 
+    /*!
+     */
     virtual JobInterface::Status updateStatus(Collection *collection, JobPointer job);
 
     /*! \brief Process a completed element. */
@@ -79,6 +91,8 @@ public:
     /*! \brief Implement stop. */
     void stop(Collection *collection);
 
+    /*!
+     */
     void requestAbort(Collection *collection);
 
     /*! \brief Called before an element will be dequeued. */

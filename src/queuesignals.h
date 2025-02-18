@@ -30,7 +30,11 @@ class THREADWEAVER_EXPORT QueueSignals : public QObject, public QueueInterface
 {
     Q_OBJECT
 public:
+    /*!
+     */
     explicit QueueSignals(QObject *parent = nullptr);
+    /*!
+     */
     explicit QueueSignals(ThreadWeaver::Private::QueueSignals_Private *d, QObject *parent = nullptr);
     ~QueueSignals() override;
 
@@ -58,7 +62,11 @@ Q_SIGNALS:
     void stateChanged(ThreadWeaver::State *);
 
 protected:
+    /*!
+     */
     ThreadWeaver::Private::QueueSignals_Private *d();
+    /*!
+     */
     const ThreadWeaver::Private::QueueSignals_Private *d() const;
 
 private:

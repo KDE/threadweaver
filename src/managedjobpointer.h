@@ -15,6 +15,8 @@
 
 namespace ThreadWeaver
 {
+/*!
+ */
 inline void doNotDeleteJob(JobInterface *)
 {
 }
@@ -28,6 +30,8 @@ template<typename T>
 class ManagedJobPointer : public QSharedPointer<T>
 {
 public:
+    /*!
+     */
     ManagedJobPointer(T *job)
         : QSharedPointer<T>(job, doNotDeleteJob)
     {

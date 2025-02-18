@@ -43,6 +43,8 @@ class JobInterface;
 class THREADWEAVER_EXPORT QueuePolicy
 {
 public:
+    /*!
+     */
     virtual ~QueuePolicy()
     {
     }

@@ -39,6 +39,8 @@ class JobInterface;
 class THREADWEAVER_EXPORT ResourceRestrictionPolicy : public QueuePolicy
 {
 public:
+    /*!
+     */
     explicit ResourceRestrictionPolicy(int cap = 0);
     ~ResourceRestrictionPolicy() override;
 
@@ -49,6 +51,8 @@ public:
      *  \a newCap the new cap to limit the amount of parallel jobs.
      */
     void setCap(int newCap);
+    /*!
+     */
     int cap() const;
     bool canRun(JobPointer) override;
     void free(JobPointer) override;

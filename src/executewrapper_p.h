@@ -29,12 +29,22 @@ class Thread;
 class ExecuteWrapper : public Executor
 {
 public:
+    /*!
+     */
     ExecuteWrapper();
+    /*!
+     */
     ~ExecuteWrapper();
+    /*!
+     */
     Executor *wrap(Executor *previous);
+    /*!
+     */
     Executor *unwrap(JobInterface *job);
     void begin(const JobPointer &job, Thread *) override;
     void execute(const JobPointer &job, Thread *thread) override;
+    /*!
+     */
     void executeWrapped(const JobPointer &job, Thread *thread);
     void end(const JobPointer &job, Thread *) override;
 

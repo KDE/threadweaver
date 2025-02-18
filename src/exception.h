@@ -25,8 +25,12 @@ namespace ThreadWeaver
 class THREADWEAVER_EXPORT Exception : public std::runtime_error
 {
 public:
+    /*!
+     */
     explicit Exception(const QString &message = QString());
     ~Exception() throw() override;
+    /*!
+     */
     QString message() const;
 
 private:
@@ -41,6 +45,8 @@ private:
 class THREADWEAVER_EXPORT JobAborted : public Exception
 {
 public:
+    /*!
+     */
     explicit JobAborted(const QString &message = QString());
 };
 
@@ -52,6 +58,8 @@ public:
 class THREADWEAVER_EXPORT JobFailed : public Exception
 {
 public:
+    /*!
+     */
     explicit JobFailed(const QString &message = QString());
 };
 
@@ -64,6 +72,8 @@ public:
 class AbortThread : public Exception
 {
 public:
+    /*!
+     */
     AbortThread(const QString &message = QString());
 };
 

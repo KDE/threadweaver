@@ -26,6 +26,8 @@ class ResourceRestrictionPolicy;
 class ComputeThumbNailJob : public ThreadWeaver::Job
 {
 public:
+    /*!
+     */
     ComputeThumbNailJob(Image *image, ThreadWeaver::ResourceRestrictionPolicy *throttle);
     int priority() const override;
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;

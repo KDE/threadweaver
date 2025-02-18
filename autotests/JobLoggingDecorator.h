@@ -37,6 +37,8 @@ public:
         }
     };
 
+    /*!
+     */
     explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector *collector);
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 
@@ -53,8 +55,14 @@ private:
 class JobLoggingDecoratorCollector
 {
 public:
+    /*!
+     */
     JobLoggingDecoratorCollector();
+    /*!
+     */
     void storeJobData(const JobLoggingDecorator::JobData &data);
+    /*!
+     */
     qint64 time();
 
 private:

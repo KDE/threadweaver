@@ -31,6 +31,8 @@ class Sequence;
 class THREADWEAVER_EXPORT IdDecorator : public JobInterface
 {
 public:
+    /*!
+     */
     explicit IdDecorator(JobInterface *job, bool autoDelete = true);
     ~IdDecorator() override;
     /*! Retrieve the decorated job. */

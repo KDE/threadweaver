@@ -26,6 +26,8 @@ class QueueSignals;
 class WeaverImplState : public State
 {
 public:
+    /*!
+     */
     explicit WeaverImplState(QueueSignals *weaver);
 
     const State *state() const override;

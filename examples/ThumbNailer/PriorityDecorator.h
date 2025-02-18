@@ -19,6 +19,8 @@
 class PriorityDecorator : public ThreadWeaver::IdDecorator
 {
 public:
+    /*!
+     */
     explicit PriorityDecorator(int priority, ThreadWeaver::JobInterface *job, bool autoDelete = true);
 
     // FIXME temp

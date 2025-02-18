@@ -28,6 +28,8 @@ class QueueSignals;
 class DestructedState : public WeaverImplState
 {
 public:
+    /*!
+     */
     explicit DestructedState(QueueSignals *weaver);
     void shutDown() override;
     Weaver *weaver() override;

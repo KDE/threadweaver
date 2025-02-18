@@ -54,7 +54,11 @@ public:
 class Job_Private
 {
 public:
+    /*!
+     */
     Job_Private();
+    /*!
+     */
     virtual ~Job_Private();
 
     /*! Free the queue policies acquired before this job has been executed. */
@@ -72,7 +76,11 @@ public:
     /* The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
 
+    /*!
+     */
     QList<std::function<void(const JobInterface &job)>> finishHandlers;
+    /*!
+     */
     void handleFinish(const JobPointer &job);
 
     // FIXME What is the correct KDE frameworks no debug switch?

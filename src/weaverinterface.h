@@ -24,6 +24,8 @@ class Thread;
 class THREADWEAVER_EXPORT WeaverInterface
 {
 public:
+    /*!
+     */
     virtual ~WeaverInterface()
     {
     }

@@ -20,6 +20,8 @@
 namespace ThreadWeaver
 {
 // make a job that calls a functor, anything that responds to operator()
+/*!
+ */
 template<typename T>
 QSharedPointer<Lambda<T>> make_job(T t)
 {
@@ -28,6 +30,8 @@ QSharedPointer<Lambda<T>> make_job(T t)
 }
 
 // make a job pointer holding a pointer to a Job(Interface)
+/*!
+ */
 template<typename T>
 inline QSharedPointer<T> make_job(T *job)
 {
@@ -37,12 +41,16 @@ inline QSharedPointer<T> make_job(T *job)
 }
 
 // make a job pointer holding anything resembling JobInterface
+/*!
+ */
 inline JobPointer make_job_raw(JobInterface *job)
 {
     return ManagedJobPointer<JobInterface>(job);
 }
 
 // enqueue any functor type to the specified queue:
+/*!
+ */
 template<typename T>
 JobPointer enqueue(Queue *weaver, T t)
 {
@@ -51,6 +59,8 @@ JobPointer enqueue(Queue *weaver, T t)
     return ret;
 }
 
+/*!
+ */
 template<typename T>
 QSharedPointer<T> enqueue(Queue *weaver, T *t)
 {
@@ -62,6 +72,8 @@ QSharedPointer<T> enqueue(Queue *weaver, T *t)
 }
 
 // specialize for JobPointer:
+/*!
+ */
 template<>
 inline JobPointer enqueue<JobPointer>(Queue *weaver, JobPointer job)
 {
@@ -70,6 +82,8 @@ inline JobPointer enqueue<JobPointer>(Queue *weaver, JobPointer job)
 }
 
 // convenience overload: enqueue the functor to the global queue:
+/*!
+ */
 template<typename T>
 JobPointer enqueue(T t)
 {
@@ -77,12 +91,16 @@ JobPointer enqueue(T t)
 }
 
 // enqueue a raw pointer with no memory management
+/*!
+ */
 inline JobPointer enqueue_raw(Queue *weaver, JobInterface *job)
 {
     return enqueue(weaver, make_job_raw(job));
 }
 
 // overload to enqueue to the global pool
+/*!
+ */
 inline JobPointer enqueue_raw(JobInterface *job)
 {
     return enqueue(Queue::instance(), make_job_raw(job));

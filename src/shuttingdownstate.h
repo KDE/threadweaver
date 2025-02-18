@@ -28,6 +28,8 @@ class Queue;
 class ShuttingDownState : public WeaverImplState
 {
 public:
+    /*!
+     */
     explicit ShuttingDownState(QueueSignals *weaver);
 
     /*! Shut down the queue. */
