@@ -16,7 +16,7 @@
  *
  * \inmodule ThreadWeaver
  *
- * \brief Represents adsl setting
+ * \brief Represents adsl setting.
  */
 class AppendCharacterAndVerifyJob : public AppendCharacterJob
 {

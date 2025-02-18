@@ -41,7 +41,7 @@ class Executor;
  * the protected data members of the Job until somehow notified by the Job.
  *
  * Jobs may not be executed twice. Create two different objects to perform two consecutive or parallel runs.
- * (\note this rule is being reconsidered.)
+ * (\note this rule is being reconsidered).
  *
  * Jobs may declare dependencies. If Job B depends on Job A, B may not be executed before A is finished. To learn about
  * dependencies, see DependencyPolicy.
@@ -95,7 +95,7 @@ public:
 
     /*! \brief Set the status of the Job.
      *
-     * Do not call this method unless you know what you are doing, please :-) */
+     * Do not call this method unless you know what you are doing, please :-) . */
     void setStatus(Status) override;
 
     /*! \brief The status of the job.
