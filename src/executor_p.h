@@ -18,6 +18,11 @@ class Thread;
 
 // FIXME Pimpl, make part of the API, document
 // TODO can JobPointer references be used?
+/*!
+ * \class ThreadWeaver::Executor
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT Executor
 {
 public:

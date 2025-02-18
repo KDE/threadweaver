@@ -26,6 +26,11 @@ class QueuePolicy;
 class JobInterface;
 typedef QSharedPointer<JobInterface> JobPointer;
 
+/*!
+ * \class ThreadWeaver::JobInterface
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT JobInterface
 {
 public:

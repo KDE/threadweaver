@@ -16,8 +16,14 @@
 
 namespace ThreadWeaver
 {
-/*! WorkingHardState handles the state dependent calls in the state where
- * jobs are executed.  */
+/*!
+ * \class ThreadWeaver::Private::BlockerPolicy
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief WorkingHardState handles the state dependent calls in the state where
+ * jobs are executed.
+ */
 class WorkingHardState : public WeaverImplState
 {
 public:

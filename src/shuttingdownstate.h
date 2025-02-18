@@ -17,7 +17,12 @@ namespace ThreadWeaver
 {
 class Queue;
 
-/*! ShuttingDownState is enabled when the Weaver destructor is entered. It
+/*!
+ * \class ThreadWeaver::ShuttingDownState
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief ShuttingDownState is enabled when the Weaver destructor is entered. It
  *  prevents threads from still accessing queue management methods, and new jobs being queued.
  */
 class ShuttingDownState : public WeaverImplState

@@ -18,7 +18,12 @@ namespace ThreadWeaver
 {
 class JobInterface;
 
-/*! \brief QueuePolicy is an interface for customizations of the queueing behaviour of jobs.
+/*!
+ * \class ThreadWeaver::QueuePolicy
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief QueuePolicy is an interface for customizations of the queueing behaviour of jobs.
  *
  *  A job can have a number of queue policies assigned. In that case, the job is only
  *  executed when the method canRun() of all assigned policies return true. For every call to

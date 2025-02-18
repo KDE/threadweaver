@@ -20,7 +20,12 @@ namespace ThreadWeaver
 {
 class JobInterface;
 
-/*! \brief ResourceRestrictionPolicy is used to limit the number of concurrent accesses to the same resource.
+/*!
+ * \class ThreadWeaver::ResourceRestrictionPolicy
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief ResourceRestrictionPolicy is used to limit the number of concurrent accesses to the same resource.
  *
  *  If a set of Jobs accesses a resource that can be overloaded, this may degrade application performance. For
  *  example, loading too many files from the hard disc at the same time may lead to longer load times.
@@ -31,7 +36,6 @@ class JobInterface;
  *  The  example uses a resource restriction to limit the number of images files that are loaded from
  *  the disk at the same time.
  */
-
 class THREADWEAVER_EXPORT ResourceRestrictionPolicy : public QueuePolicy
 {
 public:

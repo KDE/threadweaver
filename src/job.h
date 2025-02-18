@@ -30,7 +30,12 @@ class QueuePolicy;
 class QueueAPI;
 class Executor;
 
-/*! \brief A Job is a simple abstraction of an action that is to be executed in a thread context.
+/*!
+ * \class ThreadWeaver::Private::Job_Private
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief A Job is a simple abstraction of an action that is to be executed in a thread context.
  *
  * It is essential for the ThreadWeaver library that as a kind of convention, the different creators of Job objects do not touch
  * the protected data members of the Job until somehow notified by the Job.

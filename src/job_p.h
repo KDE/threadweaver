@@ -20,6 +20,11 @@ namespace ThreadWeaver
 {
 namespace Private
 {
+/*!
+ * \class ThreadWeaver::Private::DefaultExecutor
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT DefaultExecutor : public ThreadWeaver::Executor
 {
 public:
@@ -30,12 +35,22 @@ public:
 
 extern DefaultExecutor defaultExecutor;
 
+/*!
+ * \class ThreadWeaver::Private::DebugExecuteWrapper
+ *
+ * \inmodule ThreadWeaver
+ */
 class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
 public:
     void execute(const JobPointer &job, ThreadWeaver::Thread *th) override;
 };
 
+/*!
+ * \class ThreadWeaver::Private::Job_Private
+ *
+ * \inmodule ThreadWeaver
+ */
 class Job_Private
 {
 public:

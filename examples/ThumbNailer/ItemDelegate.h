@@ -18,6 +18,11 @@
 #include <QItemDelegate>
 #include <QSize>
 
+/*!
+ * \class ItemDelegate
+ *
+ * \inmodule ThreadWeaver
+ */
 class ItemDelegate : public QItemDelegate
 {
     Q_OBJECT

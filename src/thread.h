@@ -20,10 +20,16 @@ namespace ThreadWeaver
 class Job;
 class Weaver;
 
-/*! \brief Thread represents a worker thread in a Queue's inventory.
+/*!
+ * \class ThreadWeaver::Private::Thread
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Thread represents a worker thread in a Queue's inventory.
  *
  * Threads are created and managed by queues on demand. A Thread will try to retrieve and process
- * jobs from the queue until it is told to exit. */
+ * jobs from the queue until it is told to exit.
+ */
 class THREADWEAVER_EXPORT Thread : public QThread
 {
     Q_OBJECT

@@ -22,6 +22,11 @@ class Job;
 
 using namespace ThreadWeaver;
 
+/*!
+ * \class ThreadWeaver::BusyJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class DeleteTest : public QObject
 {
     Q_OBJECT

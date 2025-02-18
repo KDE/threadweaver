@@ -18,6 +18,11 @@
 
 class JobLoggingDecoratorCollector;
 
+/*!
+ * \class JobLoggingDecorator
+ *
+ * \inmodule ThreadWeaver
+ */
 class JobLoggingDecorator : public ThreadWeaver::IdDecorator
 {
 public:
@@ -40,6 +45,11 @@ private:
     JobLoggingDecoratorCollector *collector_;
 };
 
+/*!
+ * \class JobLoggingDecoratorCollector
+ *
+ * \inmodule ThreadWeaver
+ */
 class JobLoggingDecoratorCollector
 {
 public:

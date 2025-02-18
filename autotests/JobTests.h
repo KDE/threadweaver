@@ -19,6 +19,11 @@ class Job;
 
 using ThreadWeaver::Job;
 
+/*!
+ * \class JobTests
+ *
+ * \inmodule ThreadWeaver
+ */
 class JobTests : public QObject
 {
     Q_OBJECT

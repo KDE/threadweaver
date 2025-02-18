@@ -16,8 +16,14 @@
 
 namespace ThreadWeaver
 {
-/*! In SuspendedState, jobs are queued, but will not be executed. All
- *  thread remains blocked.  */
+/*!
+ * \class ThreadWeaver::Private::SuspendedState
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief In SuspendedState, jobs are queued, but will not be executed. All
+ *  thread remains blocked.
+ */
 class SuspendedState : public WeaverImplState
 {
 public:

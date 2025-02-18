@@ -23,6 +23,11 @@ namespace ThreadWeaver
 {
 namespace Private
 {
+/*!
+ * \class ThreadWeaver::Private::Weaver_Private
+ *
+ * \inmodule ThreadWeaver
+ */
 class Weaver_Private : public QueueSignals_Private
 {
 public:

@@ -18,7 +18,13 @@
 
 class Model;
 
-/*! \brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
+/*!
+ * \class Image
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Image loads an image from a path, and then calculates and saves a thumbnail for it.
+ */
 class Image
 {
     Q_DECLARE_TR_FUNCTIONS(Image)

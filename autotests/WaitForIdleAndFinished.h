@@ -14,7 +14,12 @@ namespace ThreadWeaver
 class Queue;
 }
 
-/*! \brief Helper class for tests to ensure that after the scope if left, the queue is idle and resumed.
+/*!
+ * \class WaitForIdleAndFinished
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Helper class for tests to ensure that after the scope if left, the queue is idle and resumed.
  * Upon destruction, ensure the weaver is idle and suspended.
  */
 class WaitForIdleAndFinished

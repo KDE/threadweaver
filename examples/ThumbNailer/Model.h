@@ -18,6 +18,11 @@
 #include "Image.h"
 #include "Progress.h"
 
+/*!
+ * \class Model
+ *
+ * \inmodule ThreadWeaver
+ */
 class Model : public QAbstractListModel
 {
     Q_OBJECT

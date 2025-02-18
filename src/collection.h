@@ -25,7 +25,12 @@ namespace Private
 class Collection_Private;
 }
 
-/*! A Collection is a vector of Jobs that will be queued together.
+/*!
+ * \class ThreadWeaver::Collection
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief A Collection is a vector of Jobs that will be queued together.
  * In a Collection, the order of execution of the elements is not specified.
  *
  * It is intended that the collection is set up first and then

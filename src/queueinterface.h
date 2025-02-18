@@ -22,7 +22,12 @@ class Job;
 class State;
 class WeaverObserver;
 
-/*! WeaverInterface provides a common interface for weaver implementations.
+/*!
+ * \class ThreadWeaver::QueueInterface
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief WeaverInterface provides a common interface for weaver implementations.
  *
  * In most cases, it is sufficient for an application to hold exactly one
  * ThreadWeaver job queue. To execute jobs in a specific order, use job
@@ -40,7 +45,6 @@ class WeaverObserver;
  * decorators. The member documentation is provided in the Weaver and
  * WeaverImpl classes.
  */
-
 class THREADWEAVER_EXPORT QueueInterface
 {
 public:

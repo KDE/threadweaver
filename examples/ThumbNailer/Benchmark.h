@@ -12,6 +12,11 @@
 #include <QFileInfoList>
 #include <QObject>
 
+/*!
+ * \class Benchmark
+ *
+ * \inmodule ThreadWeaver
+ */
 class Benchmark : public QObject
 {
     Q_OBJECT

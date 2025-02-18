@@ -11,6 +11,13 @@
 
 #include <AppendCharacterJob.h>
 
+/*!
+ * \class AppendCharacterAndVerifyJob
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Represents adsl setting
+ */
 class AppendCharacterAndVerifyJob : public AppendCharacterJob
 {
 public:

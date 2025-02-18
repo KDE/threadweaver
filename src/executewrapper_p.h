@@ -21,6 +21,11 @@ class Thread;
 
 // FIXME Pimpl, make part of the API, document
 // Find a way to avoid new/delete operation, this is rather performance sensitive area
+/*!
+ * \class ThreadWeaver::ExecuteWrapper
+ *
+ * \inmodule ThreadWeaver
+ */
 class ExecuteWrapper : public Executor
 {
 public:

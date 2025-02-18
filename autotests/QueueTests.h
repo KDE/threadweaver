@@ -13,6 +13,11 @@
 
 #include "AppendCharacterJob.h"
 
+/*!
+ * \class LowPriorityAppendCharacterJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class LowPriorityAppendCharacterJob : public AppendCharacterJob
 {
 public:
@@ -21,6 +26,11 @@ public:
     int priority() const override;
 };
 
+/*!
+ * \class HighPriorityAppendCharacterJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class HighPriorityAppendCharacterJob : public AppendCharacterJob
 {
 public:
@@ -38,6 +48,11 @@ class QObjectDecorator;
 
 using ThreadWeaver::Job;
 
+/*!
+ * \class ThreadWeaver::Job::HighPriorityAppendCharacterJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class SecondThreadThatQueues : public QThread
 {
     Q_OBJECT
@@ -49,6 +64,11 @@ protected:
     void run() override;
 };
 
+/*!
+ * \class ThreadWeaver::Job::QueueTests
+ *
+ * \inmodule ThreadWeaver
+ */
 class QueueTests : public QObject
 {
     Q_OBJECT

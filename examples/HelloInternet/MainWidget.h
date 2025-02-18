@@ -5,6 +5,11 @@
 #include <QLabel>
 #include <QWidget>
 
+/*!
+ * \class MainWidget
+ *
+ * \inmodule ThreadWeaver
+ */
 class MainWidget : public QWidget
 {
     Q_OBJECT

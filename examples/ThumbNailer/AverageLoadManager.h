@@ -5,6 +5,11 @@
 
 class QTimer;
 
+/*!
+ * \class AverageLoadManager
+ *
+ * \inmodule ThreadWeaver
+ */
 class AverageLoadManager : public QObject
 {
     Q_OBJECT

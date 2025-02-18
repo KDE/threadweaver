@@ -18,6 +18,11 @@ namespace ThreadWeaver
 class ResourceRestrictionPolicy;
 }
 
+/*!
+ * \class ComputeThumbNailJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class ComputeThumbNailJob : public ThreadWeaver::Job
 {
 public:

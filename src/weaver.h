@@ -25,7 +25,12 @@ namespace Private
 class Weaver_Private;
 }
 
-/*! \brief A Weaver manages worker threads.
+/*!
+ * \class ThreadWeaver::Weaver
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief A Weaver manages worker threads.
  *
  * It creates an inventory of Thread objects to which it assigns jobs from its queue.
  * It extends the API of Queue, hiding methods that need to be public to implement state handling, but

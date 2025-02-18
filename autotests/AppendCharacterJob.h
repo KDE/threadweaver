@@ -20,6 +20,11 @@
 
 extern QMutex s_GlobalMutex;
 
+/*!
+ * \class AppendCharacterAndVerifyJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class AppendCharacterJob : public ThreadWeaver::Job
 {
 public:
@@ -59,6 +64,11 @@ private:
     QString *m_stringref;
 };
 
+/*!
+ * \class FailingAppendCharacterJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class FailingAppendCharacterJob : public AppendCharacterJob
 {
 public:
@@ -74,6 +84,11 @@ public:
     }
 };
 
+/*!
+ * \class BusyJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class BusyJob : public ThreadWeaver::Job
 {
 public:

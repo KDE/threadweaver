@@ -18,6 +18,11 @@ namespace ThreadWeaver
 class ResourceRestrictionPolicy;
 }
 
+/*!
+ * \class ImageLoaderJob
+ *
+ * \inmodule ThreadWeaver
+ */
 class ImageLoaderJob : public ThreadWeaver::Job
 {
 public:

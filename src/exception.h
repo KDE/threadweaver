@@ -17,6 +17,11 @@
 
 namespace ThreadWeaver
 {
+/*!
+ * \class ThreadWeaver::Exception
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT Exception : public std::runtime_error
 {
 public:
@@ -28,12 +33,22 @@ private:
     QString m_message;
 };
 
+/*!
+ * \class ThreadWeaver::JobAborted
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT JobAborted : public Exception
 {
 public:
     explicit JobAborted(const QString &message = QString());
 };
 
+/*!
+ * \class ThreadWeaver::JobFailed
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT JobFailed : public Exception
 {
 public:
@@ -41,6 +56,11 @@ public:
 };
 
 // test:
+/*!
+ * \class ThreadWeaver::AbortThread
+ *
+ * \inmodule ThreadWeaver
+ */
 class AbortThread : public Exception
 {
 public:

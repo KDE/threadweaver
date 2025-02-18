@@ -8,6 +8,11 @@
 class MainWidget;
 class QDomDocument;
 
+/*!
+ * \class ViewController
+ *
+ * \inmodule ThreadWeaver
+ */
 class ViewController : public QObject
 {
     Q_OBJECT

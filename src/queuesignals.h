@@ -19,7 +19,13 @@ namespace Private
 class QueueSignals_Private;
 }
 
-/*! \brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes. */
+/*!
+ * \class ThreadWeaver::Private::QueueSignals
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes.
+ */
 class THREADWEAVER_EXPORT QueueSignals : public QObject, public QueueInterface
 {
     Q_OBJECT

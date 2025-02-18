@@ -13,6 +13,11 @@
 #include "src/jobpointer.h"
 #include "src/weaver.h"
 
+/*!
+ * \class JobLoggingWeaver
+ *
+ * \inmodule ThreadWeaver
+ */
 class JobLoggingWeaver : public ThreadWeaver::Weaver
 {
     Q_OBJECT

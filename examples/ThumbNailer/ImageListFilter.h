@@ -12,6 +12,11 @@
 #include "Image.h"
 #include <QSortFilterProxyModel>
 
+/*!
+ * \class ImageListFilter
+ *
+ * \inmodule ThreadWeaver
+ */
 class ImageListFilter : public QSortFilterProxyModel
 {
     Q_OBJECT

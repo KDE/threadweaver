@@ -19,6 +19,11 @@ namespace ThreadWeaver
 {
 namespace Private
 {
+/*!
+ * \class ThreadWeaver::Private::BlockerPolicy
+ *
+ * \inmodule ThreadWeaver
+ */
 class BlockerPolicy : public QueuePolicy
 {
 public:
@@ -28,6 +33,11 @@ public:
     void destructed(JobInterface *job) override;
 };
 
+/*!
+ * \class ThreadWeaver::Private::Sequence_Private
+ *
+ * \inmodule ThreadWeaver
+ */
 class Sequence_Private : public Collection_Private
 {
 public:

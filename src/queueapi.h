@@ -16,6 +16,11 @@
 
 namespace ThreadWeaver
 {
+/*!
+ * \class ThreadWeaver::QueueAPI
+ *
+ * \inmodule ThreadWeaver
+ */
 class QueueAPI : public QueueSignals, public WeaverInterface
 {
     Q_OBJECT

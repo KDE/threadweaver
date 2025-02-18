@@ -19,9 +19,15 @@ namespace ThreadWeaver
 class Collection;
 class Sequence;
 
-/*! \brief IdDecorator decorates a job without changing it's behaviour.
+/*!
+ * \class ThreadWeaver::Executor
  *
- *  It is supposed to be used as the base class for actual decorators that do change the behaviour of jobs. */
+ * \inmodule ThreadWeaver
+ *
+ * \brief IdDecorator decorates a job without changing it's behaviour.
+ *
+ * It is supposed to be used as the base class for actual decorators that do change the behaviour of jobs.
+ */
 class THREADWEAVER_EXPORT IdDecorator : public JobInterface
 {
 public:

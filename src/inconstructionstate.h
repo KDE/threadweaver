@@ -18,7 +18,12 @@ namespace ThreadWeaver
 class Weaver;
 class Queue;
 
-/*! InConstructionState handles the calls to the Weaver
+/*!
+ * \class ThreadWeaver::Executor
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief InConstructionState handles the calls to the Weaver
  *      object until the constructor has finished.
  */
 class InConstructionState : public WeaverImplState

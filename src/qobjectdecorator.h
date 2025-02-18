@@ -19,6 +19,11 @@ namespace ThreadWeaver
 class Collection;
 class Sequence;
 
+/*!
+ * \class ThreadWeaver::QObjectDecorator
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT QObjectDecorator : public QObject, public IdDecorator
 {
     Q_OBJECT

@@ -21,6 +21,11 @@ class Collection;
 
 namespace Private
 {
+/*!
+ * \class Private::CollectionSelfExecuteWrapper
+ *
+ * \inmodule ThreadWeaver
+ */
 class CollectionSelfExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
 public:
@@ -35,6 +40,11 @@ private:
     Thread *thread_;
 };
 
+/*!
+ * \class Private::Collection_Private
+ *
+ * \inmodule ThreadWeaver
+ */
 class Collection_Private : public Job_Private
 {
 public:

@@ -16,6 +16,11 @@ namespace ThreadWeaver
 class Job;
 class Thread;
 
+/*!
+ * \class ThreadWeaver::WeaverInterface
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT WeaverInterface
 {
 public:

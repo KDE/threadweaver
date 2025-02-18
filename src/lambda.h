@@ -14,7 +14,13 @@
 
 namespace ThreadWeaver
 {
-/*! \brief Lambda is a template that takes any type on which operator() is available, and executes it in run(). */
+/*!
+ * \class ThreadWeaver::Lambda
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Lambda is a template that takes any type on which operator() is available, and executes it in run().
+ */
 template<typename T>
 class Lambda : public Job
 {

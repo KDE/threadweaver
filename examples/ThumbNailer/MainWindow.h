@@ -22,6 +22,11 @@ class MainWindow;
 
 class AverageLoadManager;
 
+/*!
+ * \class MainWindow
+ *
+ * \inmodule ThreadWeaver
+ */
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

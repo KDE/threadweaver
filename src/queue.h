@@ -19,7 +19,12 @@ namespace ThreadWeaver
 class Job;
 class State;
 
-/*! \brief Queue implements a ThreadWeaver job queue.
+/*!
+ * \class ThreadWeaver::Queue
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief Queue implements a ThreadWeaver job queue.
  *
  * Queues process jobs enqueued in them by automatically assigning them to worker threads they manage.
  * Applications using ThreadWeaver can make use of a global Queue which is instantiated on demand, or

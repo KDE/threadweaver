@@ -15,6 +15,11 @@ namespace ThreadWeaver
 {
 class JobInterface;
 
+/*!
+ * \class ThreadWeaver::Dependency
+ *
+ * \inmodule ThreadWeaver
+ */
 class THREADWEAVER_EXPORT Dependency
 {
 public:

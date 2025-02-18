@@ -22,7 +22,12 @@ namespace ThreadWeaver
 class JobInterface;
 class Dependency;
 
-/*! \brief DependencyPolicy implements execution-time dependencies dependencies between Jobs.
+/*!
+ * \class ThreadWeaver::DependencyPolicy
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief DependencyPolicy implements execution-time dependencies dependencies between Jobs.
  *
  *  To declare that Job B can only be executed when Job A is finished, call addDependency.
  *

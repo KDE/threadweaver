@@ -61,7 +61,13 @@ enum StateId {
     NoOfStates,
 };
 
-/*! We use a State pattern to handle the system state in ThreadWeaver. */
+/*!
+ * \class ThreadWeaver::State
+ *
+ * \inmodule ThreadWeaver
+ *
+ * \brief We use a State pattern to handle the system state in ThreadWeaver.
+ */
 class THREADWEAVER_EXPORT State : public QueueInterface, public WeaverInterface
 {
 public:
