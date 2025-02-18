@@ -100,6 +100,8 @@ target_include_directories(KF6ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 kde_target_enable_exceptions(KF6ThreadWeaver PRIVATE)
 
+ecm_generate_qdoc(KF6ThreadWeaver threadweaver.qdocconf)
+
 install(TARGETS KF6ThreadWeaver EXPORT KF6ThreadWeaverTargets ${KF_INSTALL_TARGETS_DEFAULT_ARGS})
 
 ecm_generate_headers(ThreadWeaver_CamelCase_HEADERS

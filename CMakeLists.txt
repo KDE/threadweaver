@@ -20,6 +20,7 @@ include(ECMSetupVersion)
 include(ECMGenerateHeaders)
 include(ECMDeprecationSettings)
 include(ECMAddQch)
+include(ECMGenerateQDoc)
 
 set(REQUIRED_QT_VERSION 6.6.0)
 find_package(Qt6Core ${REQUIRED_QT_VERSION} REQUIRED NO_MODULE)

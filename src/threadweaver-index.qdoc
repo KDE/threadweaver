@@ -1,0 +1,24 @@
+/*!
+    \page threadweaver-index.html
+    \title ThreadWeaver
+
+    ThreadWeaver is a helper for multithreaded programming.
+
+    \section1 Using the Module
+
+    \include {module-use.qdocinc} {using the c++ api}
+
+    \section2 Building with CMake
+
+    \include {module-use.qdocinc} {building with cmake} {ThreadWeaver}
+
+    \section1 API Reference
+
+    \list
+        \li \l{ThreadWeaver C++ Classes}
+    \endlist
+
+    \section1 Licenses
+
+    TODO
+*/
