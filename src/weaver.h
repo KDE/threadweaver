@@ -25,7 +25,7 @@ namespace Private
 class Weaver_Private;
 }
 
-/** @brief A Weaver manages worker threads.
+/*! \brief A Weaver manages worker threads.
  *
  * It creates an inventory of Thread objects to which it assigns jobs from its queue.
  * It extends the API of Queue, hiding methods that need to be public to implement state handling, but
@@ -89,11 +89,11 @@ public:
     void requestAbort_p() override;
 
 Q_SIGNALS:
-    /** @brief A Thread has been created. */
+    /*! \brief A Thread has been created. */
     void threadStarted(ThreadWeaver::Thread *);
-    /** @brief A thread has exited. */
+    /*! \brief A thread has exited. */
     void threadExited(ThreadWeaver::Thread *);
-    /** @brief A thread has been suspended. */
+    /*! \brief A thread has been suspended. */
     void threadSuspended(ThreadWeaver::Thread *);
 
 protected:

@@ -19,7 +19,7 @@ namespace Private
 class QueueSignals_Private;
 }
 
-/** @brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes. */
+/*! \brief QueueSignals declares the Qt signals shared by the Queue and Weaver classes. */
 class THREADWEAVER_EXPORT QueueSignals : public QObject, public QueueInterface
 {
     Q_OBJECT
@@ -29,7 +29,7 @@ public:
     ~QueueSignals() override;
 
 Q_SIGNALS:
-    /** @brief Emitted when the Queue has completed all jobs currently queued.
+    /*! \brief Emitted when the Queue has completed all jobs currently queued.
      *
      * The Queue emits finished() when the job queue is empty, and the last job currently processed by a worker threads was
      * completed. Beware that if multiple jobs are enqueued repeatedly one by one, this signal might be emitted multiple times, because the
@@ -38,17 +38,17 @@ Q_SIGNALS:
      */
     void finished();
 
-    /** @brief The Queue has been suspended.
+    /*! \brief The Queue has been suspended.
      *
      * When the Queue is suspended, worker threads will not be assigned new jobs to process. Jobs waiting in the queue will not be
      * started until processing is resumed. When suspend() is called, the worker threads will continue to process the job currently
      * assigned to them. When the last thread finishes it's current assignment, suspended() is emitted.
      *
-     * @see suspend()
+     * \sa suspend()
      */
     void suspended();
 
-    /** @brief Emitted when the processing state of the Queue has changed. */
+    /*! \brief Emitted when the processing state of the Queue has changed. */
     void stateChanged(ThreadWeaver::State *);
 
 protected:

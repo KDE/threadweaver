@@ -20,7 +20,7 @@ namespace ThreadWeaver
 {
 class JobInterface;
 
-/** @brief ResourceRestrictionPolicy is used to limit the number of concurrent accesses to the same resource.
+/*! \brief ResourceRestrictionPolicy is used to limit the number of concurrent accesses to the same resource.
  *
  *  If a set of Jobs accesses a resource that can be overloaded, this may degrade application performance. For
  *  example, loading too many files from the hard disc at the same time may lead to longer load times.
@@ -38,11 +38,11 @@ public:
     explicit ResourceRestrictionPolicy(int cap = 0);
     ~ResourceRestrictionPolicy() override;
 
-    /** @brief Cap the number of simultaneously executing jobs.
+    /*! \brief Cap the number of simultaneously executing jobs.
      *  Capping the amount of jobs will make sure that at max the number of jobs executing at any time is
      *  limited to the capped amount. Note that immediately after setting the amount of running jobs may be
      *  higher than the set amount. This setting only limits the starting of new jobs.
-     *  @param newCap the new cap to limit the amount of parallel jobs.
+     *  \a newCap the new cap to limit the amount of parallel jobs.
      */
     void setCap(int newCap);
     int cap() const;

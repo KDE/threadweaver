@@ -17,7 +17,7 @@ namespace ThreadWeaver
 class Queue;
 class Job;
 
-/** @brief QueueStream implements a stream based API to access ThreadWeaver queues. */
+/*! \brief QueueStream implements a stream based API to access ThreadWeaver queues. */
 class THREADWEAVER_EXPORT QueueStream
 {
 public:

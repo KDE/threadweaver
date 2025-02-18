@@ -22,6 +22,13 @@ class Model : public QAbstractListModel
 {
     Q_OBJECT
 public:
+    /*!
+     * \enum Roles
+     *
+     * \value Role_SortRole
+     * \value Role_ImageRole
+     * \value Role_StepRole
+     */
     enum Roles {
         Role_SortRole = Qt::UserRole,
         Role_ImageRole,

@@ -29,6 +29,18 @@ typedef QSharedPointer<JobInterface> JobPointer;
 class THREADWEAVER_EXPORT JobInterface
 {
 public:
+    /*!
+     * \enum Status
+     *
+     * \value Status_NoStatus
+     * \value Status_New
+     * \value Status_Queued
+     * \value Status_Running
+     * \value Status_Success
+     * \value Status_Failed
+     * \value Status_Aborted
+     * \value Status_NumberOfStatuses
+     */
     enum Status {
         Status_NoStatus = 0,
         Status_New,

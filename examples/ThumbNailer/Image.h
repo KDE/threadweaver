@@ -18,12 +18,23 @@
 
 class Model;
 
-/** @brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
+/*! \brief Image loads an image from a path, and then calculates and saves a thumbnail for it. */
 class Image
 {
     Q_DECLARE_TR_FUNCTIONS(Image)
 
 public:
+    /*!
+     * \enum Steps
+     *
+     * \value Step_NotStarted
+     * \value Step_LoadFile
+     * \value Step_LoadImage
+     * \value Step_ComputeThumbNail
+     * \value Step_SaveThumbNail
+     * \value Step_NumberOfSteps
+     * \value Step_Complete
+     */
     enum Steps {
         Step_NotStarted,
         Step_LoadFile,

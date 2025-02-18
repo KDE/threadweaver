@@ -17,7 +17,7 @@ namespace ThreadWeaver
 {
 class Queue;
 
-/** ShuttingDownState is enabled when the Weaver destructor is entered. It
+/*! ShuttingDownState is enabled when the Weaver destructor is entered. It
  *  prevents threads from still accessing queue management methods, and new jobs being queued.
  */
 class ShuttingDownState : public WeaverImplState
@@ -25,17 +25,17 @@ class ShuttingDownState : public WeaverImplState
 public:
     explicit ShuttingDownState(QueueSignals *weaver);
 
-    /** Shut down the queue. */
+    /*! Shut down the queue. */
     void shutDown() override;
-    /** Suspend job processing. */
+    /*! Suspend job processing. */
     void suspend() override;
-    /** Resume job processing. */
+    /*! Resume job processing. */
     void resume() override;
-    /** Assign a job to an idle thread. */
+    /*! Assign a job to an idle thread. */
     JobPointer applyForWork(Thread *th, bool wasBusy) override;
-    /** Wait (by suspending the calling thread) until a job becomes available. */
+    /*! Wait (by suspending the calling thread) until a job becomes available. */
     void waitForAvailableJob(Thread *th) override;
-    /** reimpl */
+    /*! reimpl */
     StateId stateId() const override;
 };
 
