@@ -2,14 +2,9 @@
 # https://cmake.org/documentation/
 # https://community.kde.org/Guidelines_and_HOWTOs/CMake
 ##@@snippet_begin(adding_tw_1)
-cmake_minimum_required(VERSION 3.0)
+cmake_minimum_required(VERSION 3.16)
 find_package(ECM 1.1.0 REQUIRED NO_MODULE)
 ##@@snippet_end
-
-if(POLICY CMP0063)
-    cmake_policy(SET CMP0063 NEW)
-endif()
-
 
 if (NOT TARGET KF6ThreadWeaver)
   # Find the ThreadWeaver framework when we compiling this example stand-alone
