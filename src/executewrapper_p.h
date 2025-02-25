@@ -21,30 +21,15 @@ class Thread;
 
 // FIXME Pimpl, make part of the API, document
 // Find a way to avoid new/delete operation, this is rather performance sensitive area
-/*!
- * \class ThreadWeaver::ExecuteWrapper
- *
- * \inmodule ThreadWeaver
- */
 class ExecuteWrapper : public Executor
 {
 public:
-    /*!
-     */
     ExecuteWrapper();
-    /*!
-     */
     ~ExecuteWrapper();
-    /*!
-     */
     Executor *wrap(Executor *previous);
-    /*!
-     */
     Executor *unwrap(JobInterface *job);
     void begin(const JobPointer &job, Thread *) override;
     void execute(const JobPointer &job, Thread *thread) override;
-    /*!
-     */
     void executeWrapped(const JobPointer &job, Thread *thread);
     void end(const JobPointer &job, Thread *) override;
 

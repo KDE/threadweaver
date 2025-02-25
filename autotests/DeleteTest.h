@@ -22,50 +22,25 @@ class Job;
 
 using namespace ThreadWeaver;
 
-/*!
- * \class ThreadWeaver::BusyJob
- *
- * \inmodule ThreadWeaver
- */
 class DeleteTest : public QObject
 {
     Q_OBJECT
 public:
-    /*!
-     */
     DeleteTest();
 
 private Q_SLOTS:
-    /*!
-     */
     void DeleteJobsTest();
-    /*!
-     */
     void MutexLockingAssertsTest();
-    /*!
-     */
     void DeleteCollectionTest();
-    /*!
-     */
     void DeleteDecoratedCollectionTest();
-    /*!
-     */
     void DeleteSequenceTest();
 
 public Q_SLOTS: // not a test!
-    /*!
-     */
     void deleteSequence(ThreadWeaver::JobPointer job);
-    /*!
-     */
     void countCompletedDecoratedCollection(ThreadWeaver::JobPointer job);
 
 Q_SIGNALS:
-    /*!
-     */
     void deleteSequenceTestCompleted();
-    /*!
-     */
     void deleteDecoratedCollectionTestCompleted();
 
 private:

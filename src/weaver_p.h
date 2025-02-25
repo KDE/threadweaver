@@ -23,61 +23,47 @@ namespace ThreadWeaver
 {
 namespace Private
 {
-/*!
- * \class ThreadWeaver::Private::Weaver_Private
- *
- * \inmodule ThreadWeaver
- */
 class Weaver_Private : public QueueSignals_Private
 {
 public:
-    /*!
-     */
     Weaver_Private();
     ~Weaver_Private() override;
 
-    /*!
-     */
     void dumpJobs();
 
-    /*!
-     */
     bool canBeExecuted(JobPointer);
-    /*!
-     */
     void deleteExpiredThreads();
 
-    /*! The thread inventory. */
+    /* The thread inventory. */
     QList<Thread *> inventory;
-    /*! Threads that have exited and can be deleted. */
+    /* Threads that have exited and can be deleted. */
     QList<Thread *> expiredThreads;
-    /*! The job queue. */
+    /* The job queue. */
     QList<JobPointer> assignments;
-    /*! The number of jobs that are assigned to the worker threads, but not finished. */
+    /* The number of jobs that are assigned to the worker threads, but not finished. */
     int active;
-    /*! The maximum number of worker threads. */
+    /* The maximum number of worker threads. */
     int inventoryMax;
-    /*! Wait condition all idle or done threads wait for. */
+    /* Wait condition all idle or done threads wait for. */
     QWaitCondition jobAvailable;
-    /*! Wait for a job to finish. */
+    /* Wait for a job to finish. */
     QWaitCondition jobFinished;
-    /*! Mutex to serialize operations. */
+    /* Mutex to serialize operations. */
     QMutex *mutex;
-    /*! Semaphore to ensure thread startup is in sequence. */
+    /* Semaphore to ensure thread startup is in sequence. */
     QSemaphore semaphore;
-    /*! Before shutdown can proceed to close the running threads, it needs to ensure that all of them
+    /* Before shutdown can proceed to close the running threads, it needs to ensure that all of them
      *  entered the run method. */
     QAtomicInt createdThreads;
-    /*! The state of the art.
+    /* The state of the art.
      * \sa StateId
      */
     QAtomicPointer<State> state;
-    /*! The state objects. */
+    /* The state objects. */
     QSharedPointer<State> states[NoOfStates];
 };
 
 }
-
 }
 
 #endif // WEAVER_P_H

@@ -13,31 +13,17 @@
 
 #include "AppendCharacterJob.h"
 
-/*!
- * \class LowPriorityAppendCharacterJob
- *
- * \inmodule ThreadWeaver
- */
 class LowPriorityAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    /*!
-     */
     LowPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = nullptr);
 
     int priority() const override;
 };
 
-/*!
- * \class HighPriorityAppendCharacterJob
- *
- * \inmodule ThreadWeaver
- */
 class HighPriorityAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    /*!
-     */
     HighPriorityAppendCharacterJob(QChar character = QChar(), QString *stringref = nullptr);
 
     int priority() const override;
@@ -52,79 +38,45 @@ class QObjectDecorator;
 
 using ThreadWeaver::Job;
 
-/*!
- * \class ThreadWeaver::Job::HighPriorityAppendCharacterJob
- *
- * \inmodule ThreadWeaver
- */
 class SecondThreadThatQueues : public QThread
 {
     Q_OBJECT
 
 public:
-    /*!
-     */
     SecondThreadThatQueues();
 
 protected:
     void run() override;
 };
 
-/*!
- * \class ThreadWeaver::Job::QueueTests
- *
- * \inmodule ThreadWeaver
- */
 class QueueTests : public QObject
 {
     Q_OBJECT
 
 public:
-    /*!
-     */
     explicit QueueTests(QObject *parent = nullptr);
 
 public Q_SLOTS:
     // this slot (which is not a test) is part of
     // DeleteDoneJobsFromSequenceTest
-    /*!
-     */
     void deleteJob(ThreadWeaver::JobPointer);
     // this slot is part of DeleteCollectionOnDoneTest
-    /*!
-     */
     void deleteCollection(ThreadWeaver::JobPointer);
 
 private:
     // this is also part of DeleteDoneJobsFromSequenceTest
-    /*!
-     */
     ThreadWeaver::QObjectDecorator *autoDeleteJob;
     // this is part of DeleteCollectionOnDoneTest
-    /*!
-     */
     ThreadWeaver::QObjectDecorator *autoDeleteCollection;
 
 private Q_SLOTS:
 
-    /*!
-     */
     void initTestCase();
 
-    /*!
-     */
     void SimpleQueuePrioritiesTest();
-    /*!
-     */
     void WeaverInitializationTest();
-    /*!
-     */
     void QueueFromSecondThreadTest();
-    /*!
-     */
     void DeleteDoneJobsFromSequenceTest();
-    /*!
-     */
     void DeleteCollectionOnDoneTest();
 };
 

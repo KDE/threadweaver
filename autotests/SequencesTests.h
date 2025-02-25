@@ -11,23 +11,14 @@
 
 #include <QObject>
 
-/*!
- * \class SequencesTests
- *
- * \inmodule ThreadWeaver
- */
 class SequencesTests : public QObject
 {
     Q_OBJECT
 
 public:
-    /*!
-     */
     SequencesTests();
 
 private Q_SLOTS:
-    /*!
-     */
     void RecursiveStopTest();
 };
 

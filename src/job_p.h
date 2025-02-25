@@ -20,11 +20,6 @@ namespace ThreadWeaver
 {
 namespace Private
 {
-/*!
- * \class ThreadWeaver::Private::DefaultExecutor
- *
- * \inmodule ThreadWeaver
- */
 class THREADWEAVER_EXPORT DefaultExecutor : public ThreadWeaver::Executor
 {
 public:
@@ -35,33 +30,19 @@ public:
 
 extern DefaultExecutor defaultExecutor;
 
-/*!
- * \class ThreadWeaver::Private::DebugExecuteWrapper
- *
- * \inmodule ThreadWeaver
- */
 class DebugExecuteWrapper : public ThreadWeaver::ExecuteWrapper
 {
 public:
     void execute(const JobPointer &job, ThreadWeaver::Thread *th) override;
 };
 
-/*!
- * \class ThreadWeaver::Private::Job_Private
- *
- * \inmodule ThreadWeaver
- */
 class Job_Private
 {
 public:
-    /*!
-     */
     Job_Private();
-    /*!
-     */
     virtual ~Job_Private();
 
-    /*! Free the queue policies acquired before this job has been executed. */
+    /* Free the queue policies acquired before this job has been executed. */
     virtual void freeQueuePolicyResources(JobPointer);
 
     /* The list of QueuePolicies assigned to this Job. */
@@ -76,11 +57,7 @@ public:
     /* The Executor that will execute this Job. */
     QAtomicPointer<Executor> executor;
 
-    /*!
-     */
     QList<std::function<void(const JobInterface &job)>> finishHandlers;
-    /*!
-     */
     void handleFinish(const JobPointer &job);
 
     // FIXME What is the correct KDE frameworks no debug switch?
@@ -91,7 +68,6 @@ public:
 };
 
 }
-
 }
 
 #endif // JOB_P_H
