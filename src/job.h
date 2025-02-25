@@ -31,7 +31,7 @@ class QueueAPI;
 class Executor;
 
 /*!
- * \class ThreadWeaver::Private::Job_Private
+ * \class ThreadWeaver::Private::Job
  *
  * \inmodule ThreadWeaver
  *

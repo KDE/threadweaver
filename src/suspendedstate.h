@@ -17,7 +17,7 @@
 namespace ThreadWeaver
 {
 /*!
- * \class ThreadWeaver::Private::SuspendedState
+ * \class ThreadWeaver::SuspendedState
  *
  * \inmodule ThreadWeaver
  *

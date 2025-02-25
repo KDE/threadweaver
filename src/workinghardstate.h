@@ -17,7 +17,7 @@
 namespace ThreadWeaver
 {
 /*!
- * \class ThreadWeaver::Private::BlockerPolicy
+ * \class ThreadWeaver::WorkingHardState
  *
  * \inmodule ThreadWeaver
  *

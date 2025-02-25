@@ -21,7 +21,7 @@
 extern QMutex s_GlobalMutex;
 
 /*!
- * \class AppendCharacterAndVerifyJob
+ * \class AppendCharacterJob
  *
  * \inmodule ThreadWeaver
  */

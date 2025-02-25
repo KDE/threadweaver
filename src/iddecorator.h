@@ -20,7 +20,7 @@ class Collection;
 class Sequence;
 
 /*!
- * \class ThreadWeaver::Executor
+ * \class ThreadWeaver::IdDecorator
  *
  * \inmodule ThreadWeaver
  *

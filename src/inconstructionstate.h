@@ -19,7 +19,7 @@ class Weaver;
 class Queue;
 
 /*!
- * \class ThreadWeaver::Executor
+ * \class ThreadWeaver::InConstructionState
  *
  * \inmodule ThreadWeaver
  *

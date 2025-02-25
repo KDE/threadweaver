@@ -21,7 +21,7 @@ class Job;
 class Weaver;
 
 /*!
- * \class ThreadWeaver::Private::Thread
+ * \class ThreadWeaver::Thread
  *
  * \inmodule ThreadWeaver
  *
