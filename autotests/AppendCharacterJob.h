@@ -20,24 +20,15 @@
 
 extern QMutex s_GlobalMutex;
 
-/*!
- * \class AppendCharacterJob
- *
- * \inmodule ThreadWeaver
- */
 class AppendCharacterJob : public ThreadWeaver::Job
 {
 public:
-    /*!
-     */
     AppendCharacterJob(QChar c = QChar(), QString *stringref = nullptr)
         : ThreadWeaver::Job()
     {
         setValues(c, stringref);
     }
 
-    /*!
-     */
     void setValues(QChar c, QString *stringref)
     {
         m_c = c;
@@ -52,16 +43,12 @@ public:
         TWDEBUG(3, "AppendCharacterJob::run: %c appended, result is %s.\n", m_c.toLatin1(), qPrintable(*m_stringref));
     }
 
-    /*!
-     */
     QChar character() const
     {
         return m_c;
     }
 
 protected:
-    /*!
-     */
     QString *stringRef() const
     {
         return m_stringref;
@@ -72,16 +59,9 @@ private:
     QString *m_stringref;
 };
 
-/*!
- * \class FailingAppendCharacterJob
- *
- * \inmodule ThreadWeaver
- */
 class FailingAppendCharacterJob : public AppendCharacterJob
 {
 public:
-    /*!
-     */
     FailingAppendCharacterJob(QChar c = QChar(), QString *stringref = nullptr)
         : AppendCharacterJob(c, stringref)
     {
@@ -94,16 +74,9 @@ public:
     }
 };
 
-/*!
- * \class BusyJob
- *
- * \inmodule ThreadWeaver
- */
 class BusyJob : public ThreadWeaver::Job
 {
 public:
-    /*!
-     */
     BusyJob()
         : ThreadWeaver::Job()
     {

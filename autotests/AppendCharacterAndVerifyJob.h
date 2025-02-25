@@ -11,21 +11,10 @@
 
 #include <AppendCharacterJob.h>
 
-/*!
- * \class AppendCharacterAndVerifyJob
- *
- * \inmodule ThreadWeaver
- *
- * \brief Represents adsl setting.
- */
 class AppendCharacterAndVerifyJob : public AppendCharacterJob
 {
 public:
-    /*!
-     */
     AppendCharacterAndVerifyJob();
-    /*!
-     */
     void setValues(QChar character, QString *stringref, const QString &expected);
     void run(ThreadWeaver::JobPointer, ThreadWeaver::Thread *) override;
 

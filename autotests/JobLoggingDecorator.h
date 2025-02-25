@@ -18,11 +18,6 @@
 
 class JobLoggingDecoratorCollector;
 
-/*!
- * \class JobLoggingDecorator
- *
- * \inmodule ThreadWeaver
- */
 class JobLoggingDecorator : public ThreadWeaver::IdDecorator
 {
 public:
@@ -37,8 +32,6 @@ public:
         }
     };
 
-    /*!
-     */
     explicit JobLoggingDecorator(const ThreadWeaver::JobPointer &job, JobLoggingDecoratorCollector *collector);
     void run(ThreadWeaver::JobPointer self, ThreadWeaver::Thread *thread) override;
 
@@ -47,22 +40,11 @@ private:
     JobLoggingDecoratorCollector *collector_;
 };
 
-/*!
- * \class JobLoggingDecoratorCollector
- *
- * \inmodule ThreadWeaver
- */
 class JobLoggingDecoratorCollector
 {
 public:
-    /*!
-     */
     JobLoggingDecoratorCollector();
-    /*!
-     */
     void storeJobData(const JobLoggingDecorator::JobData &data);
-    /*!
-     */
     qint64 time();
 
 private:
