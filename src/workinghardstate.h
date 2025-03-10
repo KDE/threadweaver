@@ -17,11 +17,7 @@
 namespace ThreadWeaver
 {
 /*!
- * \class ThreadWeaver::WorkingHardState
- *
- * \inmodule ThreadWeaver
- *
- * \brief WorkingHardState handles the state dependent calls in the state where
+ * WorkingHardState handles the state dependent calls in the state where
  * jobs are executed.
  */
 class WorkingHardState : public WeaverImplState

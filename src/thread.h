@@ -22,7 +22,7 @@ class Weaver;
 
 /*!
  * \class ThreadWeaver::Thread
- *
+ * \inheaderfile ThreadWeaver/Thread
  * \inmodule ThreadWeaver
  *
  * \brief Thread represents a worker thread in a Queue's inventory.

@@ -21,7 +21,7 @@ class State;
 
 /*!
  * \class ThreadWeaver::Queue
- *
+ * \inheaderfile ThreadWeaver/Queue
  * \inmodule ThreadWeaver
  *
  * \brief Queue implements a ThreadWeaver job queue.

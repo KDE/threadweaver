@@ -19,7 +19,7 @@ class Job;
 
 /*!
  * \class ThreadWeaver::QueueStream
- *
+ * \inheaderfile ThreadWeaver/QueueStream
  * \inmodule ThreadWeaver
  *
  * \brief QueueStream implements a stream based API to access ThreadWeaver queues.

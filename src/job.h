@@ -133,7 +133,7 @@ public:
      * but it's up to the job implementation itself to honor it
      * and some implementations might not actually abort (ie. unabortable job).
      *
-     * @threadsafe
+     * This function is threadsafe
      *
      * \since 6.0
      */

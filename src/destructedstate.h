@@ -17,19 +17,12 @@ namespace ThreadWeaver
 {
 class QueueSignals;
 
-/*!
- * \class ThreadWeaver::DestructedState
- *
- * \inmodule ThreadWeaver
- *
- * \brief DestructedState is only active after the thread have been destroyed by
- *  the destructor, but before superclass destructors have finished.
+/*
+ * DestructedState is only active after the thread have been destroyed by the destructor, but before superclass destructors have finished.
  */
 class DestructedState : public WeaverImplState
 {
 public:
-    /*!
-     */
     explicit DestructedState(QueueSignals *weaver);
     void shutDown() override;
     Weaver *weaver() override;

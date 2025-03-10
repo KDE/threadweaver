@@ -27,7 +27,7 @@ class Weaver_Private;
 
 /*!
  * \class ThreadWeaver::Weaver
- *
+ * \inheaderfile ThreadWeaver/Weaver
  * \inmodule ThreadWeaver
  *
  * \brief A Weaver manages worker threads.

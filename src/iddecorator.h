@@ -21,7 +21,7 @@ class Sequence;
 
 /*!
  * \class ThreadWeaver::IdDecorator
- *
+ * \inheaderfile ThreadWeaver/IdDecorator
  * \inmodule ThreadWeaver
  *
  * \brief IdDecorator decorates a job without changing it's behaviour.

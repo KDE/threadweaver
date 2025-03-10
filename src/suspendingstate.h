@@ -17,18 +17,12 @@
 namespace ThreadWeaver
 {
 /*!
- * \class ThreadWeaver::SuspendingState
- *
- * \inmodule ThreadWeaver
- *
- * \brief SuspendingState is the state after suspend() has been called, but
- *  before all threads finished executing the current job and blocked.
+ * SuspendingState is the state after suspend() has been called, but
+ * before all threads finished executing the current job and blocked.
  */
 class SuspendingState : public WeaverImplState
 {
 public:
-    /*!
-     */
     explicit SuspendingState(Weaver *weaver);
     /*! Suspend job processing. */
     void suspend() override;

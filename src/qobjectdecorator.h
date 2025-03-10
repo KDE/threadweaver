@@ -21,7 +21,7 @@ class Sequence;
 
 /*!
  * \class ThreadWeaver::QObjectDecorator
- *
+ * \inheaderfile ThreadWeaver/QObjectDecorator
  * \inmodule ThreadWeaver
  */
 class THREADWEAVER_EXPORT QObjectDecorator : public QObject, public IdDecorator

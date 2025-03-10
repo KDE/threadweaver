@@ -17,11 +17,7 @@ namespace ThreadWeaver
 class QueueSignals;
 
 /*!
- * \class ThreadWeaver::WeaverImplState
- *
- * \inmodule ThreadWeaver
- *
- * \brief Base class for all WeaverImpl states.
+ * Base class for all WeaverImpl states.
  */
 class WeaverImplState : public State
 {

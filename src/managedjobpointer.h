@@ -15,17 +15,10 @@
 
 namespace ThreadWeaver
 {
-/*!
- */
 inline void doNotDeleteJob(JobInterface *)
 {
 }
 
-/*!
- * \class ThreadWeaver::ManagedJobPointer
- *
- * \inmodule ThreadWeaver
- */
 template<typename T>
 class ManagedJobPointer : public QSharedPointer<T>
 {

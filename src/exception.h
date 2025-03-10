@@ -19,7 +19,7 @@ namespace ThreadWeaver
 {
 /*!
  * \class ThreadWeaver::Exception
- *
+ * \inheaderfile ThreadWeaver/Exception
  * \inmodule ThreadWeaver
  */
 class THREADWEAVER_EXPORT Exception : public std::runtime_error
@@ -39,7 +39,7 @@ private:
 
 /*!
  * \class ThreadWeaver::JobAborted
- *
+ * \inheaderfile ThreadWeaver/Exception
  * \inmodule ThreadWeaver
  */
 class THREADWEAVER_EXPORT JobAborted : public Exception
@@ -52,7 +52,7 @@ public:
 
 /*!
  * \class ThreadWeaver::JobFailed
- *
+ * \inheaderfile ThreadWeaver/Exception
  * \inmodule ThreadWeaver
  */
 class THREADWEAVER_EXPORT JobFailed : public Exception
@@ -66,7 +66,7 @@ public:
 // test:
 /*!
  * \class ThreadWeaver::AbortThread
- *
+ * \inheaderfile ThreadWeaver/Exception
  * \inmodule ThreadWeaver
  */
 class AbortThread : public Exception

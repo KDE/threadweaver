@@ -20,7 +20,7 @@ class JobInterface;
 
 /*!
  * \class ThreadWeaver::QueuePolicy
- *
+ * \inheaderfile ThreadWeaver/QueuePolicy
  * \inmodule ThreadWeaver
  *
  * \brief QueuePolicy is an interface for customizations of the queueing behaviour of jobs.

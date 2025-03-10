@@ -17,7 +17,7 @@ class JobInterface;
 
 /*!
  * \class ThreadWeaver::Dependency
- *
+ * \inheaderfile ThreadWeaver/Dependency
  * \inmodule ThreadWeaver
  */
 class THREADWEAVER_EXPORT Dependency

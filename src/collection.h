@@ -27,7 +27,7 @@ class Collection_Private;
 
 /*!
  * \class ThreadWeaver::Collection
- *
+ * \inheaderfile ThreadWeaver/Collection
  * \inmodule ThreadWeaver
  *
  * \brief A Collection is a vector of Jobs that will be queued together.

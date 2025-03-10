@@ -22,7 +22,7 @@ class JobInterface;
 
 /*!
  * \class ThreadWeaver::ResourceRestrictionPolicy
- *
+ * \inheaderfile ThreadWeaver/ResourceRestrictionPolicy
  * \inmodule ThreadWeaver
  *
  * \brief ResourceRestrictionPolicy is used to limit the number of concurrent accesses to the same resource.

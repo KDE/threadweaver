@@ -22,7 +22,7 @@ class Sequence_Private;
 
 /*!
  * \class ThreadWeaver::Sequence
- *
+ * \inheaderfile ThreadWeaver/Sequence
  * \inmodule ThreadWeaver
  *
  * \brief A Sequence is a vector of Jobs that will be executed in a sequence.

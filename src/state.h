@@ -24,8 +24,6 @@ class Job;
 class Thread;
 
 /*!
- * \enum StateId
- *
  * All weaver objects maintain a state of operation which can be
  * queried by the application. See the threadweaver documentation on
  * how the different states are related.
@@ -63,7 +61,7 @@ enum StateId {
 
 /*!
  * \class ThreadWeaver::State
- *
+ * \inheaderfile ThreadWeaver/State
  * \inmodule ThreadWeaver
  *
  * \brief We use a State pattern to handle the system state in ThreadWeaver.
