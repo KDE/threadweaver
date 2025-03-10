@@ -150,31 +150,3 @@ install(FILES
     ${ThreadWeaver_HEADERS}
     DESTINATION ${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver/threadweaver COMPONENT Devel
 )
-
-if(BUILD_QCH)
-    ecm_add_qch(
-        KF6ThreadWeaver_QCH
-        NAME ThreadWeaver
-        BASE_NAME KF6ThreadWeaver
-        VERSION ${KF_VERSION}
-        ORG_DOMAIN org.kde
-        SOURCES # using only public headers, to cover only public API
-            ${ThreadWeaver_HEADERS}
-            "${CMAKE_SOURCE_DIR}/docs/use-cases.md"
-            "${CMAKE_SOURCE_DIR}/docs/whymultithreading.md"
-        MD_MAINPAGE "${CMAKE_SOURCE_DIR}/README.md"
-        LINK_QCHS
-            Qt6Core_QCH
-        INCLUDE_DIRS
-            ${threadweaver_BUILD_INCLUDE_DIRS}
-        BLANK_MACROS
-            THREADWEAVER_EXPORT
-            THREADWEAVER_DEPRECATED
-            THREADWEAVER_DEPRECATED_EXPORT
-            "THREADWEAVER_DEPRECATED_VERSION(x, y, t)"
-        TAGFILE_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        QCH_INSTALL_DESTINATION ${KDE_INSTALL_QTQCHDIR}
-        COMPONENT Devel
-    )
-endif()
-
