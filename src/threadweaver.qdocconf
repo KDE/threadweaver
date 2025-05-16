@@ -12,6 +12,8 @@ imagedirs = ../docs/pics
 
 outputformats = HTML
 
+navigation.landingpage = "ThreadWeaver"
+
 depends += kde qtcore
 
 qhp.projects            = ThreadWeaver
