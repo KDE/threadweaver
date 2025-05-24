@@ -29,3 +29,5 @@ qhp.ThreadWeaver.subprojects.classes.title = C++ Classes
 qhp.ThreadWeaver.subprojects.classes.indexTitle = ThreadWeaver C++ Classes
 qhp.ThreadWeaver.subprojects.classes.selectors = class fake:headerfile
 qhp.ThreadWeaver.subprojects.classes.sortPages = true
+
+tagfile = threadweaver.tags
