@@ -94,8 +94,7 @@ ecm_generate_export_header(KF6ThreadWeaver
 )
 
 target_link_libraries(KF6ThreadWeaver PUBLIC Qt6::Core)
-set(threadweaver_BUILD_INCLUDE_DIRS ${CMAKE_CURRENT_SOURCE_DIR}/.. ${CMAKE_CURRENT_BINARY_DIR})
-target_include_directories(KF6ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${threadweaver_BUILD_INCLUDE_DIRS}>")
+target_include_directories(KF6ThreadWeaver PUBLIC "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/..>")
 target_include_directories(KF6ThreadWeaver INTERFACE "$<INSTALL_INTERFACE:${KDE_INSTALL_INCLUDEDIR_KF}/ThreadWeaver>")
 #FIXME: make this PUBLIC, so that it applies to anything that links against
 kde_target_enable_exceptions(KF6ThreadWeaver PRIVATE)
