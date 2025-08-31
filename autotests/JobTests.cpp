@@ -115,10 +115,10 @@ void JobTests::SimpleJobCollectionTest()
 
     Queue::instance()->finish();
 
-    QVERIFY(sequence.length() == 3);
-    QVERIFY(sequence.count('a') == 1);
-    QVERIFY(sequence.count('b') == 1);
-    QVERIFY(sequence.count('c') == 1);
+    QCOMPARE(sequence.length(), 3);
+    QCOMPARE(sequence.count('a'), 1);
+    QCOMPARE(sequence.count('b'), 1);
+    QCOMPARE(sequence.count('c'), 1);
 }
 
 void JobTests::EmptyJobCollectionTest()
@@ -836,7 +836,7 @@ void JobTests::JobSignalsAreEmittedAsynchronouslyTest()
     enqueue_raw(&collection);
     QCoreApplication::processEvents();
     Queue::instance()->finish();
-    QVERIFY(sequence.length() == NumberOfBits);
+    QCOMPARE(sequence.length(), NumberOfBits);
 }
 
 QAtomicInt deliveryTestCounter;
@@ -1293,11 +1293,11 @@ void JobTests::RequestAbortCollectionTest()
     w.finish();
 
     QVERIFY(DependencyPolicy::instance().isEmpty());
-    QVERIFY(sequence.length() == 2);
-    QVERIFY(sequence.count('a') == 1);
-    QVERIFY(sequence.count('c') == 1);
-    QVERIFY(abortable.aborted == 1);
-    QVERIFY(abortable.extraCode == 0);
+    QCOMPARE(sequence.length(), 2);
+    QCOMPARE(sequence.count('a'), 1);
+    QCOMPARE(sequence.count('c'), 1);
+    QCOMPARE(abortable.aborted, 1);
+    QCOMPARE(abortable.extraCode, 0);
     QCOMPARE(jobCollection.status(), Job::Status_Aborted);
     QVERIFY(abortable.waitForStart.tryLock() == false);
     QVERIFY(abortable.waitForAbort.tryLock() == false);
@@ -1324,8 +1324,8 @@ void JobTests::RequestAbortSequenceTest()
 
     QVERIFY(DependencyPolicy::instance().isEmpty());
     QCOMPARE(sequence, QLatin1String("a"));
-    QVERIFY(abortable.aborted == 1);
-    QVERIFY(abortable.extraCode == 0);
+    QCOMPARE(abortable.aborted, 1);
+    QCOMPARE(abortable.extraCode, 0);
     QCOMPARE(jobSequence.status(), Job::Status_Aborted);
     QVERIFY(abortable.waitForStart.tryLock() == false);
     QVERIFY(abortable.waitForAbort.tryLock() == false);
@@ -1344,10 +1344,10 @@ void JobTests::JobOnFinishTest()
         QCOMPARE(job.status(), Job::Status_Success);
 
         // Result should already be correct now
-        QVERIFY(sequence.length() == 3);
-        QVERIFY(sequence.count('a') == 1);
-        QVERIFY(sequence.count('b') == 1);
-        QVERIFY(sequence.count('c') == 1);
+        QCOMPARE(sequence.length(), 3);
+        QCOMPARE(sequence.count('a'), 1);
+        QCOMPARE(sequence.count('b'), 1);
+        QCOMPARE(sequence.count('c'), 1);
 
         // We should get same original instance
         QVERIFY(&job == &jobCollection);
@@ -1358,7 +1358,7 @@ void JobTests::JobOnFinishTest()
     jobCollection.onFinish([&](const JobInterface &job) {
         QCOMPARE(jobCollection.status(), Job::Status_Success);
 
-        QVERIFY(sequence.length() == 3);
+        QCOMPARE(sequence.length(), 3);
         // We should get same original instance
         QVERIFY(&job == &jobCollection);
 
@@ -1370,8 +1370,8 @@ void JobTests::JobOnFinishTest()
     w.finish();
 
     QVERIFY(DependencyPolicy::instance().isEmpty());
-    QVERIFY(finishedA == 1);
-    QVERIFY(finishedB == 1);
+    QCOMPARE(finishedA, 1);
+    QCOMPARE(finishedB, 1);
 }
 
 void JobTests::JobOnFinishAbortTest()
@@ -1423,8 +1423,8 @@ void JobTests::JobOnFinishAbortTest()
     w.finish();
 
     QVERIFY(DependencyPolicy::instance().isEmpty());
-    QVERIFY(finishedA == 1);
-    QVERIFY(finishedB == 1);
+    QCOMPARE(finishedA, 1);
+    QCOMPARE(finishedB, 1);
 }
 
 QTEST_MAIN(JobTests)
