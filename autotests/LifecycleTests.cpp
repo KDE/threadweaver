@@ -90,7 +90,7 @@ void LifecycleTests::testJobAutoDeletion()
         QCOMPARE(job2Exists, false);
         QCOMPARE(job1Exists, true);
     }
-    QVERIFY(ThreadWeaver::Queue::instance() == nullptr);
+    QCOMPARE(ThreadWeaver::Queue::instance(), nullptr);
     QCOMPARE(job2Exists, false);
     QCOMPARE(job1Exists, false);
 }

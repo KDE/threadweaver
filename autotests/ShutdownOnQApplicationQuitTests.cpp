@@ -39,7 +39,7 @@ void ShutdownOnQApplicationQuitTests::testShutdownOnQApplicationQuit()
         ThreadWeaver::Queue::instance()->resume();
         QTest::qWait(10);
     }
-    QVERIFY(ThreadWeaver::Queue::instance() == nullptr);
+    QCOMPARE(ThreadWeaver::Queue::instance(), nullptr);
 }
 
 QTEST_APPLESS_MAIN(ShutdownOnQApplicationQuitTests)

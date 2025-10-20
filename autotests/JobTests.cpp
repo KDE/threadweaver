@@ -806,12 +806,12 @@ void JobTests::ResourceRestrictionPolicyBasicsTest()
 
 void JobTests::jobStarted(JobPointer)
 {
-    QVERIFY(thread() == QThread::currentThread());
+    QCOMPARE(thread(), QThread::currentThread());
 }
 
 void JobTests::jobDone(JobPointer)
 {
-    QVERIFY(thread() == QThread::currentThread());
+    QCOMPARE(thread(), QThread::currentThread());
 }
 
 void JobTests::JobSignalsAreEmittedAsynchronouslyTest()
@@ -1299,8 +1299,8 @@ void JobTests::RequestAbortCollectionTest()
     QCOMPARE(abortable.aborted, 1);
     QCOMPARE(abortable.extraCode, 0);
     QCOMPARE(jobCollection.status(), Job::Status_Aborted);
-    QVERIFY(abortable.waitForStart.tryLock() == false);
-    QVERIFY(abortable.waitForAbort.tryLock() == false);
+    QCOMPARE(abortable.waitForStart.tryLock(), false);
+    QCOMPARE(abortable.waitForAbort.tryLock(), false);
 }
 
 void JobTests::RequestAbortSequenceTest()
@@ -1327,8 +1327,8 @@ void JobTests::RequestAbortSequenceTest()
     QCOMPARE(abortable.aborted, 1);
     QCOMPARE(abortable.extraCode, 0);
     QCOMPARE(jobSequence.status(), Job::Status_Aborted);
-    QVERIFY(abortable.waitForStart.tryLock() == false);
-    QVERIFY(abortable.waitForAbort.tryLock() == false);
+    QCOMPARE(abortable.waitForStart.tryLock(), false);
+    QCOMPARE(abortable.waitForAbort.tryLock(), false);
 }
 
 void JobTests::JobOnFinishTest()
@@ -1350,7 +1350,7 @@ void JobTests::JobOnFinishTest()
         QCOMPARE(sequence.count('c'), 1);
 
         // We should get same original instance
-        QVERIFY(&job == &jobCollection);
+        QCOMPARE(&job, &jobCollection);
 
         finishedA++;
     });
@@ -1360,7 +1360,7 @@ void JobTests::JobOnFinishTest()
 
         QCOMPARE(sequence.length(), 3);
         // We should get same original instance
-        QVERIFY(&job == &jobCollection);
+        QCOMPARE(&job, &jobCollection);
 
         finishedB++;
     });
@@ -1397,7 +1397,7 @@ void JobTests::JobOnFinishAbortTest()
         QCOMPARE(sequence, QLatin1String("a"));
 
         // We should get same original instance
-        QVERIFY(&job == &jobSequence);
+        QCOMPARE(&job, &jobSequence);
 
         // We should be in aborted state
         QCOMPARE(job.status(), Job::Status_Aborted);
@@ -1410,7 +1410,7 @@ void JobTests::JobOnFinishAbortTest()
         QCOMPARE(sequence, QLatin1String("a"));
 
         // We should get same original instance
-        QVERIFY(&job == &jobSequence);
+        QCOMPARE(&job, &jobSequence);
 
         // We should be in aborted state
         QCOMPARE(jobSequence.status(), Job::Status_Aborted);
