@@ -6,8 +6,6 @@
     SPDX-License-Identifier: LGPL-2.0-or-later
 */
 
-#include "executewrapper_p.h"
-
 namespace ThreadWeaver
 {
 ExecuteWrapper::ExecuteWrapper()

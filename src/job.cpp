@@ -22,7 +22,6 @@
 #include "exception.h"
 #include "executewrapper_p.h"
 #include "executor_p.h"
-#include "managedjobpointer.h"
 #include "queuepolicy.h"
 
 namespace ThreadWeaver
