@@ -58,5 +58,3 @@ void ExecuteWrapper::end(const JobPointer &job, Thread *thread)
 }
 
 }
-
-#include "executewrapper_p.h"

@@ -208,5 +208,3 @@ void Job::onFinish(const std::function<void(const JobInterface &job)> &lambda)
 }
 
 }
-
-#include "managedjobpointer.h"
