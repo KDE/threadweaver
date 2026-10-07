@@ -1,5 +1,5 @@
 /* -*- C++ -*-
-    This file contains a testsuite for the queueing behaviour in ThreadWeaver.
+    This file contains a testsuite for the queueing behavior in ThreadWeaver.
 
     SPDX-FileCopyrightText: 2005-2013 Mirko Boehm <mirko@kde.org>
 
@@ -104,7 +104,7 @@ void QueueTests::SimpleQueuePrioritiesTest()
 
 void QueueTests::WeaverInitializationTest()
 {
-    // this one mostly tests the sanity of the startup behaviour
+    // this one mostly tests the sanity of the startup behavior
     ThreadWeaver::Queue weaver;
     QCOMPARE(weaver.currentNumberOfThreads(), 0);
     QVERIFY(weaver.isEmpty());

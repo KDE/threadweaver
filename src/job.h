@@ -187,7 +187,7 @@ public:
 
     /*! Assign a queue policy.
      *
-     * Queue Policies customize the queueing (running) behaviour of sets of jobs. Examples for queue policies are dependencies
+     * Queue Policies customize the queueing (running) behavior of sets of jobs. Examples for queue policies are dependencies
      * and resource restrictions. Every queue policy object can only be assigned once to a job, multiple assignments will be
      * IGNORED. */
     void assignQueuePolicy(QueuePolicy *) override;
@@ -220,7 +220,7 @@ protected:
      * The Job will be executed in the specified thread. thread may be zero, indicating that the job is being executed some
      * other way (for example, synchronously by some other job). self specifies the job as the queue sees it. Whenever publishing
      * information about the job to the outside world, for example by emitting signals, use self, not this. self is the reference
-     * counted object handled by the queue. Using it as signal parameters will amongst other things prevent thejob from being
+     * counted object handled by the queue. Using it as signal parameters will among other things prevent thejob from being
      * memory managed and deleted.
      */
     void run(JobPointer self, Thread *thread) override = 0;

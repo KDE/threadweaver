@@ -1,5 +1,5 @@
 /* -*- C++ -*-
-    This file contains a testsuite for the queueing behaviour in ThreadWeaver.
+    This file contains a testsuite for the queueing behavior in ThreadWeaver.
 
     SPDX-FileCopyrightText: 2005-2013 Mirko Boehm <mirko@kde.org>
 

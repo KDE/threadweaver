@@ -24,9 +24,9 @@ class Sequence;
  * \inheaderfile ThreadWeaver/IdDecorator
  * \inmodule ThreadWeaver
  *
- * \brief IdDecorator decorates a job without changing it's behaviour.
+ * \brief IdDecorator decorates a job without changing it's behavior.
  *
- * It is supposed to be used as the base class for actual decorators that do change the behaviour of jobs.
+ * It is supposed to be used as the base class for actual decorators that do change the behavior of jobs.
  */
 class THREADWEAVER_EXPORT IdDecorator : public JobInterface
 {

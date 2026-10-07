@@ -1,5 +1,5 @@
 /* -*- C++ -*-
-    This file contains a testsuite for JobPointer behaviour in ThreadWeaver.
+    This file contains a testsuite for JobPointer behavior in ThreadWeaver.
 
     SPDX-FileCopyrightText: 2005-2013 Mirko Boehm <mirko@kde.org>
 
