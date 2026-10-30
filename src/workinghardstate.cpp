@@ -13,7 +13,6 @@
 #include "debuggingaids.h"
 #include "job.h"
 #include "thread.h"
-#include "threadweaver.h"
 
 namespace ThreadWeaver
 {

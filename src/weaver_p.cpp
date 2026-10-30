@@ -9,14 +9,8 @@
 #include <QMutexLocker>
 
 #include "debuggingaids.h"
-#include "destructedstate.h"
-#include "inconstructionstate.h"
 #include "queuepolicy.h"
-#include "shuttingdownstate.h"
-#include "suspendedstate.h"
-#include "suspendingstate.h"
 #include "weaver_p.h"
-#include "workinghardstate.h"
 
 namespace ThreadWeaver
 {

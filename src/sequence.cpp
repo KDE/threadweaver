@@ -9,10 +9,6 @@
 */
 
 #include "sequence.h"
-#include "debuggingaids.h"
-#include "dependencypolicy.h"
-#include "managedjobpointer.h"
-#include "queueapi.h"
 #include "sequence_p.h"
 
 namespace ThreadWeaver

@@ -16,7 +16,6 @@
 
 namespace ThreadWeaver
 {
-class Job;
 class Thread;
 
 // FIXME Pimpl, make part of the API, document

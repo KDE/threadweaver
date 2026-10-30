@@ -10,8 +10,6 @@
 
 #include "suspendedstate.h"
 
-#include "threadweaver.h"
-
 namespace ThreadWeaver
 {
 SuspendedState::SuspendedState(Weaver *weaver)

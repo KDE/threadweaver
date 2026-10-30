@@ -16,7 +16,6 @@
 
 #include "Benchmark.h"
 #include "MainWindow.h"
-#include "Model.h"
 
 using namespace std;
 

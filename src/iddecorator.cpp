@@ -7,7 +7,6 @@
 */
 
 #include "collection.h"
-#include "managedjobpointer.h"
 #include "sequence.h"
 
 #include "iddecorator.h"
