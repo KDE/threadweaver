@@ -39,9 +39,9 @@ bool AverageLoadManager::available() const
 #endif
 }
 
-QPair<int, int> AverageLoadManager::workersRange() const
+std::pair<int, int> AverageLoadManager::workersRange() const
 {
-    return qMakePair(m_min, m_max);
+    return std::make_pair(m_min, m_max);
 }
 
 void AverageLoadManager::update()

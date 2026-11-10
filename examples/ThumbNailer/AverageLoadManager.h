@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+#include <utility>
+
 class QTimer;
 
 /*!
@@ -26,7 +28,7 @@ public:
     bool available() const;
     /*!
      */
-    QPair<int, int> workersRange() const;
+    std::pair<int, int> workersRange() const;
 
 Q_SIGNALS:
     /*!

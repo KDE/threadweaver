@@ -1,9 +1,11 @@
 #ifndef PROGRESS_H
 #define PROGRESS_H
 
+#include <utility>
+
 /*!
- * \typedef QPair
+ * \typedef std::pair
  */
-typedef QPair<int, int> Progress;
+typedef std::pair<int, int> Progress;
 
 #endif // PROGRESS_H

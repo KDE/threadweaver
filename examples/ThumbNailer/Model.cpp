@@ -188,7 +188,7 @@ Progress Model::progress() const
 {
     auto sumItUp = [](const Progress &sum, const Image &image) {
         auto const values = image.progress();
-        return qMakePair(sum.first + values.first, sum.second + values.second);
+        return std::make_pair(sum.first + values.first, sum.second + values.second);
     };
     auto const soFar = accumulate(m_images.begin(), m_images.end(), Progress(), sumItUp);
     return soFar;
